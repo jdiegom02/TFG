@@ -7,8 +7,10 @@
             $usuario ="admin";
             $pass ="1234";
 
-            $conexion = new PDO('mysql: host=localhost; dbname=fielsalud', $usuario, $pass);
-
+            $conexion = new PDO('mysql: host=localhost; dbname=bonAppetit', $usuario, $pass);
+            if ($conexion) {
+                echo "patata";
+            }
             $consulta = "SELECT Email, Clave from usuarios";
             $resultado = $conexion -> query($consulta);
 
