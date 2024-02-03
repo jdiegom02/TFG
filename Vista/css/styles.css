@@ -1,0 +1,65 @@
+body {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    color: #4BBEA1;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+a {
+    color: #4BBEA1;
+    text-decoration: none;
+}
+a:hover {
+    color: #6fcab4;
+    text-decoration: none;
+}
+
+#contenedor {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+}
+form {
+    margin-top: 2%;
+    color: #4BBEA1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+}
+
+form input {
+    color: #4BBEA1;
+    border: none;
+    border-bottom: #4BBEA1 1px solid;
+    width: 30%;
+}
+
+form input::placeholder {
+    color: #4BBEA1;
+}
+
+form input:focus {
+    outline: none;
+}
+
+#login {
+    background-color: #4BBEA1;
+    border: none;
+    color: white;
+    padding: 15px;
+    margin-top: 1%;
+}
+
+#login:hover {
+    cursor: pointer;
+    background-color: #6fcab4;
+}
