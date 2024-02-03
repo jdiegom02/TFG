@@ -7,15 +7,15 @@
             $usuario ="admin";
             $pass ="1234";
 
-            $conexion = new PDO('mysql: host=localhost; dbname=bonAppetit', $usuario, $pass);
+            $conexion = new PDO('mysql: host=localhost; dbname=bonappetit', $usuario, $pass);
             if ($conexion) {
                 echo "patata";
             }
-            $consulta = "SELECT Email, Clave from usuarios";
+            $consulta = "SELECT correo, contraseña from usuario";
             $resultado = $conexion -> query($consulta);
 
             while($fila = $resultado -> fetch()) {
-                if($fila["Email"] === $email && password_verify($password, $fila["Clave"])) {
+                if($fila["correo"] === $email && password_verify($password, $fila["contraseña"])) {
                     echo "Sessión Iniciada";
                     $sessionIniciada = true;
                     break;
