@@ -9,7 +9,7 @@
 
             $conexion = new PDO('mysql: host=localhost; dbname=fielsalud', $usuario, $pass);
 
-            $consulta = "select Email, Clave from usuarios";
+            $consulta = "SELECT Email, Clave from usuarios";
             $resultado = $conexion -> query($consulta);
 
             while($fila = $resultado -> fetch()) {
