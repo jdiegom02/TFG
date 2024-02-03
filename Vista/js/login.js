@@ -4,32 +4,32 @@ function principal() {
     document.querySelector("#login").addEventListener("click" , validarFormulario);
 }
 
-function validarFormulario() {
-    limpiarHTML();
-    let validarEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-    let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
+// function validarFormulario() {
+//     limpiarHTML();
+//     let validarEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+//     let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
 
-    let emailUsuario = document.querySelector("#email").value;
-    let passwordUsuario = document.querySelector("#password").value;
+//     let emailUsuario = document.querySelector("#email").value;
+//     let passwordUsuario = document.querySelector("#password").value;
 
-    if(validarEmail.test(emailUsuario) && validarPass.test(passwordUsuario)) {
-        $.ajax({
-            type: "POST",
-            url: "../../Controlador/php/login.php",
-            data: { 
-                email: emailUsuario, 
-                password: passwordUsuario 
-            },
-        })
-        .done(function(a){
-            console.log(a);
-        });
-    } else if(!validarEmail.test(emailUsuario)) {
-        imprimirMensaje("Has introducido un email inválido <br> Ej:ejemplo@ejemplo.com");
-    } else {
-        imprimirMensaje("La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios");
-    }
-}
+//     if(validarEmail.test(emailUsuario) && validarPass.test(passwordUsuario)) {
+//         $.ajax({
+//             type: "POST",
+//             url: "../../Controlador/php/login.php",
+//             data: { 
+//                 email: emailUsuario, 
+//                 password: passwordUsuario 
+//             },
+//         })
+//         .done(function(a){
+//             console.log(a);
+//         });
+//     } else if(!validarEmail.test(emailUsuario)) {
+//         imprimirMensaje("Has introducido un email inválido <br> Ej:ejemplo@ejemplo.com");
+//     } else {
+//         imprimirMensaje("La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios");
+//     }
+// }
 
 function imprimirMensaje(mensaje) {
     let mensajeError = document.querySelector("#msg");

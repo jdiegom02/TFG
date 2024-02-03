@@ -4,7 +4,7 @@
             $email = $_POST["email"];
             $password = $_POST["password"];
             $sessionIniciada = false;
-            $usuario ="jose";
+            $usuario ="admin";
             $pass ="1234";
 
             $conexion = new PDO('mysql: host=localhost; dbname=fielsalud', $usuario, $pass);
