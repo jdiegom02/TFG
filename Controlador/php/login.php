@@ -15,7 +15,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             while ($fila = $resultado->fetch()) {
                 if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
                     echo "Sessión Iniciada";
-                    $sessionIniciadsa = true;
+                    $sessionIniciada = true;
                     break;
                 }
             }
