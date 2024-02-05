@@ -7,7 +7,6 @@ function principal() {
 }
 
 function validarFormulario() {
-  console.log("vaalida");
   limpiarHTML();
   let validarEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;

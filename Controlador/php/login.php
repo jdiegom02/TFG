@@ -6,7 +6,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $sessionIniciada = false;
         $usuario = "admin";
         $pass = "1234";
-        $conexion = new PDO('mysql: host=localhost; dbname=bonappetit', $usuario, $pass);
+        $conexion = new PDO('mysql: host=localhost; dbname=bonAppetit', $usuario, $pass);
         if ($conexion) {
             echo "patata";
         }
@@ -19,13 +19,14 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
 
                 echo "Sessión Iniciada";
-                $sessionIniciada = true;
+                $sessionIniciadsa = true;
                 break;
             }
         }
 
-        if (!$sessionIniciada) {
-            echo ("Los datos no coinciden con ningun usuario");
+            if (!$sessionIniciada) {
+                echo ("Los datos no coinciden con ningun usuario");
+            }
         }
         unset($conexion);
     }
