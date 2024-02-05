@@ -19,7 +19,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
 
                 echo "Sessión Iniciada";
-                $sessionIniciadsa = true;
+                $sessionIniciada = true;
                 break;
             }
         }
