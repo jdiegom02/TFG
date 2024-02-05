@@ -56,13 +56,5 @@
             }
         }
 
-        public function anadirProducto()  {
-
-
-
-        }
-
-
-
     }
 ?>
