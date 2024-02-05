@@ -7,6 +7,7 @@ function principal() {
 }
 
 function validarFormulario() {
+  console.log("vaalida");
   limpiarHTML();
   let validarEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
@@ -26,10 +27,12 @@ function validarFormulario() {
       console.log(a);
     });
   } else if (!validarEmail.test(emailUsuario)) {
+    $("#modalerror").modal("show");
     imprimirMensaje(
       "Has introducido un email inválido <br> Ej:ejemplo@ejemplo.com"
     );
   } else {
+    $("#modalerror").modal("show");
     imprimirMensaje(
       "La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios"
     );
