@@ -7,7 +7,6 @@ function principal() {
 }
 
 function validarFormulario() {
-  console.log("vaalida");
   limpiarHTML();
   let validarEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
@@ -24,7 +23,9 @@ function validarFormulario() {
         password: passwordUsuario,
       },
     }).done(function (a) {
-      console.log(a);
+      if(a == 1) {
+        location.href = "../html/pedidos.html";
+      }
     });
   } else if (!validarEmail.test(emailUsuario)) {
     $("#modalerror").modal("show");
