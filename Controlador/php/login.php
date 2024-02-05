@@ -8,21 +8,17 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $pass = "1234";
         $conexion = new PDO('mysql: host=localhost; dbname=bonAppetit', $usuario, $pass);
         if ($conexion) {
-            echo "patata";
-        }
-        $consulta = "SELECT email , password from usuarios";
-        $resultado = $conexion->query($consulta);
-        echo $password;
-        echo $email;
-        while ($fila = $resultado->fetch()) {
-            echo $fila['password'];
-            if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
-
-                echo "Sessión Iniciada";
-                $sessionIniciadsa = true;
-                break;
+            $consulta = "SELECT email , password usuarios";
+            $resultado = $conexion->query($consulta);
+            echo $password;
+            echo $email;
+            while ($fila = $resultado->fetch()) {
+                if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
+                    echo "Sessión Iniciada";
+                    $sessionIniciadsa = true;
+                    break;
+                }
             }
-        }
 
             if (!$sessionIniciada) {
                 echo ("Los datos no coinciden con ningun usuario");
@@ -31,3 +27,4 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         unset($conexion);
     }
 }
+?>
