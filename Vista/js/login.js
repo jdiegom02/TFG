@@ -23,7 +23,9 @@ function validarFormulario() {
         password: passwordUsuario,
       },
     }).done(function (a) {
-      console.log(a);
+      if(a == 1) {
+        location.href = "../html/pedidos.html";
+      }
     });
   } else if (!validarEmail.test(emailUsuario)) {
     $("#modalerror").modal("show");

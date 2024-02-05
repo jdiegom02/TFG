@@ -8,14 +8,12 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $pass = "1234";
         $conexion = new PDO('mysql: host=localhost; dbname=bonAppetit', $usuario, $pass);
         if ($conexion) {
-            $consulta = "SELECT email , password usuarios";
+            $consulta = "SELECT email, password from usuarios";
             $resultado = $conexion->query($consulta);
-            echo $password;
-            echo $email;
             while ($fila = $resultado->fetch()) {
                 if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
-                    echo "Sessión Iniciada";
-                    $sessionIniciadsa = true;
+                    $sessionIniciada = true;
+                    echo $sessionIniciada;
                     break;
                 }
             }
