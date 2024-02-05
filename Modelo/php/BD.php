@@ -55,5 +55,14 @@
                 return $e->getMessage();
             }
         }
+
+        public function anadirProducto()  {
+
+
+
+        }
+
+
+
     }
 ?>
