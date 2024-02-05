@@ -84,6 +84,7 @@
   }
   .contenedor-imagen .imagen {
     width: 100%;
+    margin-left: 3vw;
   }
   .campos {
     display: grid;
