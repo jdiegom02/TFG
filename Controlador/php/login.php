@@ -14,7 +14,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                                      "nombre" => $fila["nombre"],
                                      "telefono" => $fila["telefono"],
                                      "sesion" => $sessionIniciada);
-
                     echo json_encode($usuario);
                     break;
                 }
