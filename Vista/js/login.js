@@ -23,8 +23,7 @@ function validarFormulario() {
         password: passwordUsuario,
       },
     }).done(function (a) {
-      let usuario = JSON.parse(a);
-      if(usuario.sesion) {
+      if(a == 1) {
         location.href = "../html/pedidos.html";
       } else {
         crearMensajeError(a);

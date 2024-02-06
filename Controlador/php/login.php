@@ -10,12 +10,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                 if ($fila["email"] === $_POST["email"] && password_verify($_POST["password"], $fila["password"]) && $fila["activo"] == 1) {
                     $sessionIniciada = true;
                     session_start();
-                    $usuario = array("admin" => $fila["esAdmin"],
-                                     "nombre" => $fila["nombre"],
-                                     "telefono" => $fila["telefono"],
-                                     "sesion" => $sessionIniciada);
-
-                    echo json_encode($usuario);
+                    $_SESSION["admin"] = $fila["esAdmin"];
+                    $_SESSION["nombre"] = $fila["nombre"];
+                    echo $sessionIniciada;
                     break;
                 }
             }
