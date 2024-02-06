@@ -24,7 +24,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                 echo ("Los datos no coinciden con ningun usuario");
             }
         }
-
         unset($conexion);
     }
 }
