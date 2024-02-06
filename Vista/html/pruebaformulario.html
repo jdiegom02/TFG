@@ -4,46 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Pedido</title>
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
-<h2>Formulario de Pedido</h2>
+<div class="container">
+    <h2 class="text-center">Formulario de Pedido</h2>
 
-<!-- BOTONES PARA LAS CATEGORIAS -->
-<div>
-    <button class="tablinks" id="btn_fruteria" >Frutería</button>
-    <button class="tablinks" id="btn_pasteleria" >Pastelería</button>
-    <button class="tablinks" id="btn_pescaderia" >Pescadería</button>
-    <button class="tablinks" id="btn_carniceria" >Carnicería</button>
-  
-    
+    <!-- Menú desplegable y campo de búsqueda -->
+    <div class="row mb-4">
+        <div class="col-md-6 offset-md-3">
+            <form id="filterForm">
+                <div class="input-group">
+                    <select class="custom-select" id="categorySelect">
+                        <option value="all">Todas</option>
+                        <option value="frutas">Frutas</option>
+                        <option value="verduras">Verduras</option>
+                        <option value="carnes">Carnes</option>
+                        <!-- Agrega más opciones según tus categorías -->
+                    </select>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar producto...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <!-- Agrega más columnas según tus datos -->
+                    </tr>
+                </thead>
+                <tbody id="productTable">
+                    <!-- Aquí se mostrarán los productos -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div id="fruteria" class="tab">
-    <!-- Contenido de la categoría Frutería -->
-    <table id="tablaProductos"></table>
-</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<div id="pasteleria" class="tab">
-    <!-- Contenido de la categoría Pastelería -->
-    <table id="tablaProductos"></table>
-</div>
+<script>
+    // Simulación de datos de productos
+    const productos = [
+        { id: 1, nombre: "Manzana", categoria: "frutas" },
+        { id: 2, nombre: "Pera", categoria: "frutas" },
+        { id: 3, nombre: "Lechuga", categoria: "verduras" },
+        { id: 4, nombre: "Tomate", categoria: "verduras" },
+        { id: 5, nombre: "Filete de ternera", categoria: "carnes" }
+        // Agrega más productos según tus datos
+    ];
 
-<div id="pescaderia" class="tab">
-    <!-- Contenido de la categoría Pescadería -->
-    <table id="tablaProductos"></table>
-</div>
+    // Función para mostrar los productos según la categoría seleccionada
+    function mostrarProductos(categoria) {
+        let html = "";
+        productos.forEach(producto => {
+            if (categoria === "all" || producto.categoria === categoria) {
+                html += `<tr>
+                            <td>${producto.id}</td>
+                            <td>${producto.nombre}</td>
+                            <td>${producto.categoria}</td>
+                        </tr>`;
+            }
+        });
+        $('#productTable').html(html);
+    }
 
-<div id="carniceria" class="tab">
-    <!-- Contenido de la categoría Carnicería -->
-    <table id="tablaProductos"></table>
-</div>
+    // Evento cuando se cambia la categoría seleccionada
+    $('#categorySelect').change(function() {
+        const categoria = $(this).val();
+        mostrarProductos(categoria);
+    });
 
-<div id="prueba_rama" class="tab">
-    <!-- Contenido de la categoría Frutería -->
-    <table id="tablaProductos"></table>
-</div>
+    // Evento cuando se envía el formulario (buscador)
+    $('#filterForm').submit(function(event) {
+        event.preventDefault();
+        const categoria = $('#categorySelect').val();
+        const busqueda = $('#searchInput').val().toLowerCase();
+        let productosFiltrados = productos.filter(producto => {
+            return (categoria === "all" || producto.categoria === categoria) &&
+                   producto.nombre.toLowerCase().includes(busqueda);
+        });
+        let html = "";
+        productosFiltrados.forEach(producto => {
+            html += `<tr>
+                        <td>${producto.id}</td>
+                        <td>${producto.nombre}</td>
+                        <td>${producto.categoria}</td>
+                    </tr>`;
+        });
+        $('#productTable').html(html);
+    });
+
+    // Mostrar todos los productos al cargar la página
+    mostrarProductos("all");
+</script>
 
 </body>
 </html>
