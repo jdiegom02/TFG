@@ -103,7 +103,7 @@ var productos = [
     id: 17,
     descripcion: "Jamón Ahumado",
     fk_unidades: 2,
-    observaciones: "Jamón ahumado de calidad",
+    observaciones: "Jamón humano de calidad",
   },
   {
     id: 18,
