@@ -49,6 +49,27 @@ function miXHRCambiaEstado(event) {
     }
   }
 }
+function mostrarProductos(categoria) {
+  let html = "";
+  misProductos.forEach((producto) => {
+    if (categoria === "all" || producto.fk_unidades === categoria) {
+      html += `<tr>
+                      <td>${producto.id}</td>
+                      <td>${producto.descripcion}</td>
+                      <td>${producto.observaciones}</td>
+                  </tr>`;
+    }
+  });
+  $("#productTable").html(html);
+}
+function crearTabla() {
+  for (var i = 0; i < misProductos.length; i++) {
+    var li = document.createElement("li");
+    li.textContent = `${misProductos[i].descripcion} (ID: ${misProductos[i].id}) - (UNIDADES: ${misProductos[i].fk_unidades} - (OBSERVACIONES: ${misProductos[i].observaciones}))`;
+    resultados.appendChild(li);
+    console.log(misProductos[i].toString());
+  }
+}
 function crearLista(misProductos) {
   for (var i = 0; i < misProductos.length; i++) {
     var li = document.createElement("li");
@@ -58,26 +79,26 @@ function crearLista(misProductos) {
   }
 }
 /*FIN FIN FIN FIN METODOS DE RECOGIDA DE DATOS PETICION*/
-function buscarDinamicamente(event) {
-  let term = this.value.toLowerCase();
-  let productos = misProductos || [];
-  let resultados = document.getElementById("resultados");
-  // Limpia los resultados anteriores
-  resultados.innerHTML = "";
-  // Filtra las productos que coinciden con el término de búsqueda
-  let coincidencias = productos.filter(function (producto) {
-    return (
-      producto.descripcion.toLowerCase().includes(term) ||
-      producto.observaciones.toLowerCase().includes(term)
-    );
-  });
-  // Muestra los resultados
-  coincidencias.forEach(function (coincidencia) {
-    var li = document.createElement("li");
-    li.textContent = `${coincidencia.descripcion} (ID: ${coincidencia.id}) - (UNIDADES: ${coincidencia.fk_unidades} - (OBSERVACIONES: ${coincidencia.observaciones}))`;
-    resultados.appendChild(li);
-  });
-}
+// function buscarDinamicamente(event) {
+//   let term = this.value.toLowerCase();
+//   let productos = misProductos || [];
+//   let resultados = document.getElementById("resultados");
+//   // Limpia los resultados anteriores
+//   resultados.innerHTML = "";
+//   // Filtra las productos que coinciden con el término de búsqueda
+//   let coincidencias = productos.filter(function (producto) {
+//     return (
+//       producto.descripcion.toLowerCase().includes(term) ||
+//       producto.observaciones.toLowerCase().includes(term)
+//     );
+//   });
+//   // Muestra los resultados
+//   coincidencias.forEach(function (coincidencia) {
+//     var li = document.createElement("li");
+//     li.textContent = `${coincidencia.descripcion} (ID: ${coincidencia.id}) - (UNIDADES: ${coincidencia.fk_unidades} - (OBSERVACIONES: ${coincidencia.observaciones}))`;
+//     resultados.appendChild(li);
+//   });
+// }
 function crearElemento(tagNombre, opciones) {
   let elemento = document.createElement(tagNombre);
   if (

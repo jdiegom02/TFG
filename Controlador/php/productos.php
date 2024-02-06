@@ -1,12 +1,8 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 $productos = array();
-
-
 $opciones = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
 $conexion = new BD("bonAppetit", "admin", "1234");
-//Configura el nivel de error
-
 try {
     //ARMAMOS LA QUERY
     $sql = "select * from productos";   // Consulta básica SQL con todos los alumnos
