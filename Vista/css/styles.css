@@ -3,10 +3,10 @@
 :root {
     /*CAMBIAR UN VALOR AQUI SIGNIFICA CAMBIARLO EN TODO EL DOC, POR LO QUE ES MAS COMODO*/
     --colorblanco: #ffffff; /*BLANCO FONDOS*/
-    --colorverde: rgb(115, 193, 31); /*PRIMARIO USADO EN TEXTOS TAMBIEN*/
+    --colorverde: grey; /*PRIMARIO USADO EN TEXTOS TAMBIEN*/
     --colorgris: #f3f2f2; /*GRIS PARA FONDOS*/
     --colorgrisoscuro: #2b2d28; /*GRIS OSCURO USADO EN FOOTERS*/
-    --colorverdelima: #9cff5e;
+    --colorverdelima: lightgrey;
   }
   /*resets*/
   body,
