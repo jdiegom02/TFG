@@ -1,5 +1,9 @@
 //// CONSTRUCTOR
 class Producto {
+  _id;
+  _nombre;
+  _
+
   constructor() {
     this._id;
     this._descripcion;
@@ -30,12 +34,6 @@ class Producto {
   //// MÉTODOS
   toString() {
     return this._descripcion + " " + this._observaciones;
-  }
-  crearProductoDesdeLiteral(objetoProducto) {
-    this._id = objetoProducto.id;
-    this._nombre = objetoProducto.descripcion;
-    this._fk_unidades = objetoProducto.fk_unidades;
-    this._observaciones = objetoProducto.observaciones;
   }
 }
 
