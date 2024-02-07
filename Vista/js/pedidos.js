@@ -1,0 +1,6 @@
+addEventListener("DOMContentLoaded", () => {
+    recogerProductos();
+})
+
+
+

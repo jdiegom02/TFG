@@ -2,39 +2,30 @@
 class Producto {
   _id;
   _nombre;
-  _
+  _categoria
+  _unidades;
 
-  constructor() {
-    this._id;
-    this._descripcion;
-    this._fk_unidades;
-    this._observaciones;
+  constructor(id, nombre, categoria, unidades) {
+    this._id = id;
+    this._nombre = nombre;
+    this._categoria = categoria;
+    this._unidades = unidades;
   }
   //// FIN - CONSTRUCTOR
   //// SETTERS Y GETTERS
   getId() {
     return this._id;
   }
-  getDescripcion() {
-    return this._descripcion;
+  getNombre() {
+    return this._nombre;
   }
-  getFk_Unidades() {
-    return this._fk_unidades;
+  getUnidades() {
+    return this._unidades;
   }
-  getObservaciones() {
-    return this._observaciones;
-  }
-  setDescripcion(descripcion) {
-    this._descripcion = descripcion;
-  }
-  setObservaciones(observaciones) {
-    this._observaciones = observaciones;
-  }
-  //// FIN - SETTERS Y GETTERS
-  //// MÉTODOS
-  toString() {
-    return this._descripcion + " " + this._observaciones;
-  }
-}
 
-//// FIN - MÉTODOS
+  getCategoria() {
+    return this._categoria;
+  }
+
+    
+}

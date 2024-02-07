@@ -3,16 +3,13 @@
     $productos = array();
     $conexion = new BD("bonAppetit", "admin", "1234");
         //ARMAMOS LA QUERY
-        $sql = "select * from productos";   // Consulta básica SQL con todos los alumnos
-        // Comprobamos si se ha indicado algún parámetro
+        $sql = "select * from productos";  
         $resultado = $conexion->realizarConsulta($sql);
-        // Para cada fila recibida generaremos una instancia de Alumno, le asignaremos sus datos y lo añadiremos al array de salida.
         foreach ($resultado as $fila) {
             $producto = [ "id"=> $fila["id"],"descripcion"=>$fila["descripcion"], "fk_unidades"=>$fila["fk_unidades"],"observaciones"=>$fila["observaciones"]];
-            // echo $producto->id  . "---" . $producto->descripcion ."---" .$producto->fk_unidades . "---" . $producto->observaciones;
             array_push($productos, $producto);
         }
-    // Devolvemos codificada la colección de alumnos
+    // Devolvemos codificada la colección de productos
     echo json_encode($productos);
     unset($conexion);
 ?>

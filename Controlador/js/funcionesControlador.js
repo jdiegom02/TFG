@@ -10,7 +10,7 @@ function recogerProductos() {
     dataType: "json",
     success: function (a) {
       a.forEach(element => {
-        
+        console.log(element);
       });
     }
   });
