@@ -1,4 +1,5 @@
-addEventListener("DOMContentLoaded",principal)
+var productos = [];
+addEventListener("DOMContentLoaded", principal);
 function principal() {
   recogerProductos();
 }
@@ -9,9 +10,10 @@ function recogerProductos() {
     url: "../../Controlador/php/productos.php",
     dataType: "json",
     success: function (a) {
-      a.forEach(element => {
+      a.forEach((element) => {
         console.log(element);
+        productos.push(element);
       });
-    }
+    },
   });
 }

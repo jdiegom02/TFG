@@ -7,6 +7,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         if ($conexion) {
             $resultado = $conexion->realizarConsulta("SELECT * from usuarios");
             while ($fila = $resultado->fetch()) {
+                echo "";
                 if ($fila["email"] === $_POST["email"] && password_verify($_POST["password"], $fila["password"]) && $fila["activo"] == 1) {
                     $sessionIniciada = true;
                     session_start();
