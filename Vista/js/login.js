@@ -35,7 +35,6 @@ function validarFormulario() {
     crearMensajeError("La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios");
   }
 }
-
 function crearMensajeError(mensaje) {
   $("#modalerror").modal("show");
   imprimirMensaje(mensaje);
