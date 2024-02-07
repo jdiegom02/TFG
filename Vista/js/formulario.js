@@ -78,8 +78,45 @@
         });
         $('#productTable').html(html);
     }
-
+function opcionesDinamico() {
+    
+}
     
 
     // Mostrar todos los productos al cargar la página
-   
+    function mostrarProductosDos(categoria) {
+        const tabla = document.createElement('table');
+        const cabecera = document.createElement('thead');
+        const cuerpo = document.createElement('tbody');
+        
+        const cabeceraHTML = '<th>ID</th><th>Nombre</th><th>Categoría</th>';
+        cabecera.innerHTML = cabeceraHTML;
+        tabla.appendChild(cabecera);
+        
+        productos.forEach(producto => {
+            if (categoria === "all" || producto.categoria === categoria) {
+                const fila = document.createElement('tr');
+                
+                const id = document.createElement('td');
+                id.textContent = producto.id;
+                fila.appendChild(id);
+                
+                const nombre = document.createElement('td');
+                nombre.textContent = producto.nombre;
+                fila.appendChild(nombre);
+                
+                const categoria = document.createElement('td');
+                categoria.textContent = producto.categoria;
+                fila.appendChild(categoria);
+                
+                cuerpo.appendChild(fila);
+            }
+        });
+        
+        tabla.appendChild(cuerpo);
+        
+        const contenedorTabla = document.getElementById('productTable');
+        contenedorTabla.innerHTML = '';
+        contenedorTabla.appendChild(tabla);
+    }
+    
