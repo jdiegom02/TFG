@@ -1,6 +1,8 @@
 window.addEventListener("load", main);
 var carritoCompras = [];
 function main(e) {
+  let productos = [];
+  recogerProductos();
   mostrarProductos("all");
   // Evento cuando se cambia la categoría seleccionada y cuando se hace un submit
   let categoriasUnicas = obtenerCategoriasUnicas(productos);
@@ -29,7 +31,7 @@ function main(e) {
   // });
 }
 function mostrarCarrito() {
-  let modalBody=document.getElementById('modalBody');
+  let modalBody=document.getElementById('pedido');
 
   for (let i = 0; i < carritoCompras.length; i++) {
      carritoCompras[i];
