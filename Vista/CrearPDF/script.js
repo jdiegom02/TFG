@@ -177,7 +177,6 @@ function recorrerTabla() {
     str += '--------------------------------------------------\n';
 
     const table = document.getElementById('table-usuarios');
-
     for (let i = 0; i < table.rows.length; i++) {
         const rowData = [];
 
