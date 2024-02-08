@@ -175,6 +175,12 @@ function filtrarInputSelect(params) {
   });
   $("#productTable").html(html);
   //<td><input type="number" id="` +producto.id + `" class="campo" placeholder="Seleccione la cantidad" /></td>
+  let temporal = document.querySelectorAll('[id^="pedido_"]');
+  temporal.forEach((elemento) => {
+    console.log("hola");
+    console.log(elemento);
+    elemento.addEventListener("click", crearTablaPedidos);
+  });
 }
 function obtenerCategoriasUnicas(arrayObjetos) {
   const categoriasUnicas = [];
@@ -214,6 +220,12 @@ function mostrarProductos(categoria) {
     }
   });
   $("#productTable").html(html);
+  let temporal = document.querySelectorAll('[id^="pedido_"]');
+  temporal.forEach((elemento) => {
+    console.log("hola");
+    console.log(elemento);
+    elemento.addEventListener("click", crearTablaPedidos);
+  });
 }
 //HERRAMIENTAS
 function crearElemento(etiqueta, texto, atributos) {
