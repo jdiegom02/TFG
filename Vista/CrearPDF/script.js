@@ -156,7 +156,7 @@ function generarPDF(event) {
     doc.setFontSize(10);
     doc.text(20, 40, str);
 
-    doc.save('lista-usuarios.pdf')
+    //doc.save('lista-usuarios.pdf')
 }
 
 
@@ -177,6 +177,7 @@ function recorrerTabla() {
     str += '--------------------------------------------------\n';
 
     const table = document.getElementById('table-usuarios');
+    
     for (let i = 0; i < table.rows.length; i++) {
         const rowData = [];
 
