@@ -55,4 +55,20 @@ class Pedido {
   getTramitado() {
     return this._tramitado;
   }
+  mostrarPedidosComoLista() {
+    // Crear una lista desordenada
+    const lista = document.createElement("ul");
+
+    // Iterar sobre cada pedido en el array
+    
+      // Crear un elemento de lista
+      const listItem = document.createElement("li");
+      // Agregar el contenido del pedido al elemento de lista
+      listItem.textContent = `ID: ${this._id}, Fecha: ${this._fecha}, Descripción: ${this._descripcion}, Unidades: ${this._unidades}, Cantidad: ${this._cantidad}, Observaciones: ${this._observaciones}, FK Usuario: ${this._fk_usuario}, Tramitado: ${this._tramitado}`;
+      // Agregar el elemento de lista a la lista desordenada
+      lista.appendChild(listItem);
+
+    // Devolver la lista desordenada
+    return lista;
+  }
 }

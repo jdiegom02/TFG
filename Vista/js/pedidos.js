@@ -20,10 +20,22 @@ function main(e) {
     console.log(elemento);
     elemento.addEventListener("click", crearTablaPedidos);
   });
+  document
+    .getElementById("carritoCompras")
+    .addEventListener("click", mostrarCarrito);
   // let botonesPedidos = document.querySelectorAll('[id^="añadir_"]');
   // botonesPedidos.forEach((botonPedido) => {
   //   botonPedido.addEventListener("click", añadirAlCarrito);
   // });
+}
+function mostrarCarrito() {
+  let modalBody=document.getElementById('modalBody');
+
+  for (let i = 0; i < carritoCompras.length; i++) {
+     carritoCompras[i];
+     modalBody.appendChild(carritoCompras[i].mostrarPedidosComoLista())
+   
+  }
 }
 function crearTablaPedidos(event) {
   let tabla;
@@ -68,7 +80,10 @@ function crearTablaPedidos(event) {
     let unidad = crearElemento("td", this.getAttribute("unidad"));
     let cantidad = crearElemento("td");
     cantidad.appendChild(
-      crearElemento("input", undefined, { type: "number", id: "cantidad" })
+      crearElemento("input", undefined, {
+        type: "number",
+        id: "cantidad_" + this.id,
+      })
     );
     let comentario = crearElemento("td", "Comentario");
     let botonEnviar = crearElemento("td", undefined);
@@ -90,7 +105,34 @@ function crearTablaPedidos(event) {
   }
 }
 function añadirAlCarrito(event) {
-  
+  let fechaFormateada = devolverFechaActual();
+  let idCompleto = event.target.id;
+  let numero = idCompleto.replaceAll(/\D/g, "");
+  var fila = document.getElementById("fila_pedido_" + numero);
+  console.log(numero);
+  // Obtener todas las celdas (td) dentro de la fila
+  var celdas = fila.getElementsByTagName("td");
+  // Iterar sobre las celdas y obtener su innerHTML
+  let descripcion = celdas[0].innerHTML;
+  let unidad = celdas[1].innerHTML;
+  let cantidad = document.getElementById("cantidad_pedido_" + numero).value;
+  let observaciones = celdas[3].innerHTML;
+  console.log(numero);
+  console.log(descripcion);
+  console.log(unidad);
+  console.log(cantidad);
+  console.log(observaciones);
+  let pedido = new Pedido(
+    numero,
+    fechaFormateada,
+    descripcion,
+    unidad,
+    cantidad,
+    observaciones,
+    "USUARIO ENN SESION",
+    1
+  );
+  carritoCompras.push(pedido);
 }
 function crearSelectCategorias(categoriasUnicas) {
   let selectCategoria = document.getElementById("categorySelect");
@@ -186,4 +228,23 @@ function crearElemento(etiqueta, texto, atributos) {
     }
   }
   return elementoNuevo;
+}
+function devolverFechaActual() {
+  var fechaActual = new Date();
+
+  // Obtener el año, mes y día
+  let año = fechaActual.getFullYear();
+  let mes = ("0" + (fechaActual.getMonth() + 1)).slice(-2); // Agregar 1 porque los meses comienzan desde 0
+  let dia = ("0" + fechaActual.getDate()).slice(-2);
+
+  // Obtener la hora y los minutos
+  let horas = ("0" + fechaActual.getHours()).slice(-2);
+  let minutos = ("0" + fechaActual.getMinutes()).slice(-2);
+
+  // Construir la cadena de fecha y hora
+  let fechaHoraActual =
+    año + "-" + mes + "-" + dia + " " + horas + ":" + minutos;
+
+  // Mostrar la fecha y hora actual
+  return fechaHoraActual;
 }
