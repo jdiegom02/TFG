@@ -13,3 +13,17 @@ function mostrarProductos() {
   })
   });
 }
+
+function crearElemento(etiqueta, texto, atributos) {
+  let elementoNuevo = document.createElement(etiqueta);
+  if(texto !== undefined) {
+      let contenidoTexto = document.createTextNode(texto);
+      elementoNuevo.appendChild(contenidoTexto);
+  }
+  if(atributos !== undefined) {
+      for(let clave in atributos) {
+          elementoNuevo.setAttribute(clave, atributos[clave]);
+      }
+  }
+  return elementoNuevo;
+}
