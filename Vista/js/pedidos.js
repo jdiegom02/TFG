@@ -193,11 +193,6 @@ function obtenerCategoriasUnicas(arrayObjetos) {
   });
   return categoriasUnicas;
 }
-=======
-addEventListener("DOMContentLoaded", () => {
-  
-});
->>>>>>> JoseManuel
 
 function cambiaCategoria() {
   //al cambiarse de categoria tambien se actualiza la tabla
