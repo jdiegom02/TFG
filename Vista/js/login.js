@@ -25,19 +25,19 @@ function validarFormulario() {
     }).done(function (a) {
       if(a == 1) {
         location.href = "../html/pedidos.html";
+      } else {
+        crearMensajeError(a);
       }
     });
   } else if (!validarEmail.test(emailUsuario)) {
-    $("#modalerror").modal("show");
-    imprimirMensaje(
-      "Has introducido un email inválido <br> Ej:ejemplo@ejemplo.com"
-    );
+    crearMensajeError("Has introducido un email inválido <br> Ej:ejemplo@ejemplo.com");
   } else {
-    $("#modalerror").modal("show");
-    imprimirMensaje(
-      "La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios"
-    );
+    crearMensajeError("La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios");
   }
+}
+function crearMensajeError(mensaje) {
+  $("#modalerror").modal("show");
+  imprimirMensaje(mensaje);
 }
 
 function imprimirMensaje(mensaje) {

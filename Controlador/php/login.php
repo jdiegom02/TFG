@@ -1,23 +1,22 @@
 <?php
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     if (preg_match("/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/", $_POST["email"]) && preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/", $_POST["password"])) {
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+        include_once("../../Modelo/php/BD.php");
         $sessionIniciada = false;
-        $usuario = "admin";
-        $pass = "1234";
-        $conexion = new PDO('mysql: host=localhost; dbname=bonAppetit', $usuario, $pass);
+        $conexion = new BD("bonAppetit", "admin", "1234");
         if ($conexion) {
-            $consulta = "SELECT email, password from usuarios";
-            $resultado = $conexion->query($consulta);
+            $resultado = $conexion->realizarConsulta("SELECT * from usuarios");
             while ($fila = $resultado->fetch()) {
-                if ($fila["email"] === $email && password_verify($password, $fila["password"])) {
+                echo "";
+                if ($fila["email"] === $_POST["email"] && password_verify($_POST["password"], $fila["password"]) && $fila["activo"] == 1) {
                     $sessionIniciada = true;
+                    session_start();
+                    $_SESSION["admin"] = $fila["esAdmin"];
+                    $_SESSION["nombre"] = $fila["nombre"];
                     echo $sessionIniciada;
                     break;
                 }
             }
-
             if (!$sessionIniciada) {
                 echo ("Los datos no coinciden con ningun usuario");
             }
@@ -25,4 +24,3 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         unset($conexion);
     }
 }
-?>

@@ -55,21 +55,16 @@ class BD
         }
     }
 
-        public function revertirTransaccion() {
-            try {
-                return $this->conexion -> rollBack();
-            } catch (PDOException $e) {
-                return $e->getMessage();
-            }
+    public function revertirTransaccion()
+    {
+        try {
+            return $this->conexion->rollBack();
+        } catch (PDOException $e) {
+            return $e->getMessage();
         }
-
-        public function anadirProducto()  {
-
-
-
-        }
-
-
-
     }
-?>
+
+    public function anadirProducto()
+    {
+    }
+}
