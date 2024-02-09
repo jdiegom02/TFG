@@ -21,7 +21,7 @@ function insertarEnSolicitudes(pedido) {
       datos: datos
     },
   }).done(function (a) {
-    console.log("datos:"+a);
+    console.log("datos:",a);
     console.log("hecho");
   });
 }
