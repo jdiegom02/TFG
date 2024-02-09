@@ -10,7 +10,7 @@ function addSolicitud($desc, $unidad, $cantidad, $observaciones, $correo)
     $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, observaciones, fk_usuario) 
     values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', '$cantidad', '$observaciones', '$idUsuario')";
     
-    echo $conexion->realizarModificacion($sqlInsertar);
+    $conexion->realizarModificacion($sqlInsertar);
 }
 
 function idUsuario($correo, $conexion)
@@ -21,5 +21,5 @@ function idUsuario($correo, $conexion)
     $IDUsuario = $IDUsuario[0];
     return $IDUsuario;
 }
-echo addSolicitud("caca", "bien gorda", 5, "pero bien gorda", "admin@example.com");
+// echo addSolicitud("caca", "bien gorda", 5, "pero bien gorda", "admin@example.com");
 ?>
