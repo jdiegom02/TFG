@@ -1,20 +1,17 @@
 <?php
 include_once("../../Modelo/php/BD.php");
-echo "yfuwggyfuewgfue";
 
 if (isset($_POST["datos"])) {
     $datos = $_POST["datos"];
     $correo = $datos[0]; // Obtener el correo del primer elemento
-    echo "yfuwggyfuewgfue";
 
     // Iterar sobre los elementos restantes de $datos
     for ($i = 1; $i < count($datos); $i++) {
         $solicitud = $datos[$i]; // Obtener la información de la solicitud actual
-        echo "yfuwggyfuewgfue";
         $desc = $solicitud[0]; // Descripción de la solicitud
         $unidad = $solicitud[1]; // Unidad de la solicitud
         $cantidad = $solicitud[2]; // Cantidad de la solicitud
-        $observaciones = $solicitud[3]; // Observaciones de la solicitudaaa
+        $observaciones = $solicitud[3]; // Observaciones de la solicitud
 
         // Llamar a la función addSolicitud con los datos actuales
         addSolicitud($correo, $desc, $unidad, $cantidad, $observaciones);
