@@ -2,7 +2,7 @@
 include_once("../../Modelo/php/BD.php");
 
 /* CAMBIAR A LO QUE SE RECIBA POR JS */
-function addSolicitud($desc, $unidad, $cantidad, $observaciones, $correo)
+function addSolicitud($correo, $desc, $unidad, $cantidad, $observaciones)
 {
     // Crear una instancia de la clase BD
     $conexion = new BD("bonAppetit", "admin", "1234");
