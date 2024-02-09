@@ -1,4 +1,4 @@
-var pedido = [];
+var pedido = ["admin@example.com"]
 addEventListener("DOMContentLoaded", () => {
   mostrarProductos();
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
@@ -27,20 +27,23 @@ function pedirTodo(event) {
   if (pedido.length == 0) {
     console.log("no hacer nada");
   } else {
+    insertarEnSolicitudes(pedido);
     console.log("se pide todo dentro del array pedido");
     console.log(pedido);
   }
-
 }
+
 function modalCarritoCrearTabla(event) {
   let tabla = crearTabla(["Producto", "Unidad", "Cantidad", "Comentario", "Quitar Del Carrito"], pedido)
-  for (let i = 0; i < pedido.length; i++) {
-    document.getElementById('fila_0_columna_3');
-
-  }
   let modalBody = document.getElementById('modalBody');
+  for (let index = 0; index < modalBody.querySelectorAll('[id^="filaPedido"]').length; index++) {
+    let td = modalBody.querySelectorAll('[id^="filaPedido"]').children[4];
+    console.log(td);
+    td.appendChild(crearElemento("input", undefined, { value: "creado" }))
+  }
+  // tds[4].appendChild(crearElemento("button",undefined,{class:"btn"}))
   modalBody.innerHTML = "";
-  modalBody.appendChild(tabla)
+  modalBody.appendChild(tabla);
 }
 function añadirProducto(event) {
   console.log("añadirProducto: " + this.id);
@@ -49,22 +52,14 @@ function añadirProducto(event) {
   modalLabel.innerHTML = "";
   modalLabel.appendChild(crearElemento("h5", "Pedir " + this.getAttribute("nombre"), { id: this.id }))
   modalBody.innerHTML = ""
-  // modalBody.appendChild(crearElemento("label", "CANTIDAD: "))
-  // modalBody.appendChild(crearElemento("input", undefined, { type: "number", min: "1", id: "cantidadPedido" }))
-  // modalBody.appendChild(crearElemento("label", this.getAttribute("unidad")))
   var divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
-  // Crear el span con clase "input-group-text" y contenido "$"
   var spanDolar = crearElemento('span', "Cantidad: ", { class: 'input-group-text' });
-  // Crear el input con clase "form-control" y atributo aria-label
   var input = crearElemento('input', undefined, { type: 'text', class: 'form-control', 'aria-label': 'Amount (to the nearest dollar)', type: "number", min: "1", id: "cantidadPedido" });
-  // Crear el segundo span con clase "input-group-text" y contenido ".00"
   var spanPunto = crearElemento('span', this.getAttribute("unidad"), { class: 'input-group-text' });
-  // Agregar los elementos al div principal en el orden deseado
   divInputGroup.appendChild(spanDolar);
   divInputGroup.appendChild(input);
   divInputGroup.appendChild(spanPunto);
   modalBody.appendChild(divInputGroup)
-  // modalBody.appendChild(crearElemento("textarea", undefined, { , id: "comentarioPedido" }))
   var divPrincipal = crearElemento('div', undefined, { class: 'form-floating' });
   var label = crearElemento('label', 'Comentario', { for: 'comentarioPedido' });
   let textarea = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' });
@@ -87,24 +82,22 @@ function añadirCarrito(event) {
 }
 function crearTabla(titulos, datos) {
   let tabla = crearElemento('table');
-  // Crear el thead y los títulos de columna
   let thead = crearElemento('thead');
   let trTitulos = crearElemento('tr');
   for (let i = 0; i < titulos.length; i++) {
     let th = crearElemento('th', titulos[i]);
-    th.id = 'titulo_' + i; // Asignar un id único a cada título de columna
+    th.id = 'titulo_' + i;
     trTitulos.appendChild(th);
   }
   thead.appendChild(trTitulos);
   tabla.appendChild(thead);
-  // Crear el tbody y los datos de las filas
   let tbody = crearElemento('tbody');
   for (let j = 0; j < datos.length; j++) {
     let fila = datos[j];
-    let tr = crearElemento('tr');
+    let tr = crearElemento('tr', undefined, { id: "filaPedido" + j + 1 });
     for (let k = 0; k < fila.length; k++) {
       let td = crearElemento('td', fila[k]);
-      td.id = 'fila_' + j + '_columna_' + k; // Asignar un id único a cada celda de datos
+      td.id = 'fila_' + j + '_columna_' + k;
       tr.appendChild(td);
     }
     tbody.appendChild(tr);

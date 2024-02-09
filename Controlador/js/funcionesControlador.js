@@ -8,7 +8,20 @@ function recogerProductos(callback) {
       data.forEach(element => {
         productos.push(new Producto(element.id, element.descripcion, element.categoria, element.unidad));
       });
-      callback(productos); 
+      callback(productos);
     },
+  });
+}
+function insertarEnSolicitudes(pedido) {
+  let datos = pedido;
+  $.ajax({
+    type: "POST",
+    url: "../../Controlador/php/solicitudes.php",
+    data: {
+      datos: datos
+    },
+  }).done(function (a) {
+    console.log("datos:"+a);
+    console.log("hecho");
   });
 }
