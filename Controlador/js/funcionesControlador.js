@@ -16,7 +16,7 @@ function insertarEnSolicitudes(pedido) {
   let datos = pedido;
   $.ajax({
     type: "POST",
-    url: "../../Controlador/php/solicitudes.php",
+    url: "../../Controlador/php/funcionesSolicitudes.php",
     data: {
       datos: datos
     },
