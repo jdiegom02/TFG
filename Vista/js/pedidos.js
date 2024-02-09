@@ -1,41 +1,27 @@
-window.addEventListener("load", main);
-var carritoCompras = [];
-function main(e) {
-  mostrarProductos("all");
-  // Evento cuando se cambia la categoría seleccionada y cuando se hace un submit
-  let categoriasUnicas = obtenerCategoriasUnicas(productos);
-  document
-    .getElementById("categorySelect")
-    .addEventListener("change", cambiaCategoria);
-  document
-    .getElementById("filterForm")
-    .addEventListener("submit", filtrarInputSelect);
-  // Crear opciones para cada categoría única
-  crearSelectCategorias(categoriasUnicas);
-  //evento para todos los botones clickeados
-
-  let temporal = document.querySelectorAll('[id^="pedido_"]');
-  temporal.forEach((elemento) => {
-    console.log("hola");
-    console.log(elemento);
-    elemento.addEventListener("click", crearTablaPedidos);
+var pedido = []
+addEventListener("DOMContentLoaded", () => {
+  mostrarProductos();
+  document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
+  document.getElementById('pedir').addEventListener("click", pedirTodo);
+});
+function mostrarProductos() {
+  recogerProductos(function (productos) {
+    let i = 1;
+    productos.forEach(producto => {
+      let fila = crearElemento("tr", undefined, { id: "producto" + i });
+      fila.appendChild(crearElemento("td", producto.getNombre()));
+      fila.appendChild(crearElemento("td", producto.getUnidades()));
+      let img = crearElemento("img", undefined, { src: "../assets/botonMas.svg" })
+      let boton = crearElemento("button", undefined, { class: " btn btn-outline-success me-2 botones", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: producto.getNombre(), unidad: producto.getUnidades(), id: producto.getId() });
+      let td = crearElemento("td")
+      boton.addEventListener("click", añadirProducto)
+      boton.appendChild(img)
+      td.appendChild(boton)
+      fila.appendChild(td);
+      document.querySelector("#productTable").appendChild(fila);
+      i++;
+    })
   });
-  document
-    .getElementById("carritoCompras")
-    .addEventListener("click", mostrarCarrito);
-  // let botonesPedidos = document.querySelectorAll('[id^="añadir_"]');
-  // botonesPedidos.forEach((botonPedido) => {
-  //   botonPedido.addEventListener("click", añadirAlCarrito);
-  // });
-}
-function mostrarCarrito() {
-  let modalBody=document.getElementById('modalBody');
-
-  for (let i = 0; i < carritoCompras.length; i++) {
-     carritoCompras[i];
-     modalBody.appendChild(carritoCompras[i].mostrarPedidosComoLista())
-   
-  }
 }
 function pedirTodo(event) {
   if (pedido.length == 0) {
@@ -106,7 +92,7 @@ function crearTabla(titulos, datos) {
   thead.appendChild(trTitulos);
   tabla.appendChild(thead);
   let tbody = crearElemento('tbody');
-  for (let j = 1; j < datos.length; j++) {
+  for (let j = 0; j < datos.length; j++) {
     let fila = datos[j];
     let tr = crearElemento('tr', undefined, { id: "filaPedido" + j + 1 });
     for (let k = 0; k < fila.length; k++) {
