@@ -14,7 +14,7 @@ if (isset($_POST["datos"])) {
         $desc = $solicitud[0]; // Descripción de la solicitud
         $unidad = $solicitud[1]; // Unidad de la solicitud
         $cantidad = $solicitud[2]; // Cantidad de la solicitud
-        $observaciones = $solicitud[3]; // Observaciones de la solicitud
+        $observaciones = $solicitud[3]; // Observaciones de la solicitudaaa
 
         // Llamar a la función addSolicitud con los datos actuales
         addSolicitud($correo, $desc, $unidad, $cantidad, $observaciones);
