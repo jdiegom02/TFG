@@ -92,7 +92,7 @@ function crearTabla(titulos, datos) {
   thead.appendChild(trTitulos);
   tabla.appendChild(thead);
   let tbody = crearElemento('tbody');
-  for (let j = 0; j < datos.length; j++) {
+  for (let j = 1; j < datos.length; j++) {
     let fila = datos[j];
     let tr = crearElemento('tr', undefined, { id: "filaPedido" + j + 1 });
     for (let k = 0; k < fila.length; k++) {
