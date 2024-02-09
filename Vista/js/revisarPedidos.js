@@ -25,7 +25,7 @@ function mostrarPedidos(pedidos) {
         pedidoTarjeta.classList.add('card', 'pedido');
         var tarjetaContenido = `
             <div class="card-body">
-                <h5 class="card-title">Pedido ${pedido.id}</h5>
+                <h5 class="card-title">Pedido ${pedido.cliente}</h5>
                 <p class="card-text"><strong>Cliente:</strong> <span id="cliente${pedido.id}">${pedido.cliente}</span></p>
                 <p class="card-text"><strong>Detalles:</strong> <span id="detalles${pedido.id}">${pedido.detalles}</span></p>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#modalModificarPedido${pedido.id}">Modificar Pedido</button>

@@ -16,12 +16,12 @@ function insertarEnSolicitudes(pedido) {
   let datos = pedido;
   $.ajax({
     type: "POST",
-    url: "../../Controlador/php/insertar.php",
+    url: "../../Controlador/php/solicitudes.php",
     data: {
       datos: datos
     },
   }).done(function (a) {
-    console.log("datos:"+a);
+    console.log("datos:",a);
     console.log("hecho");
   });
 }
