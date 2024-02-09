@@ -1,38 +1,32 @@
-window.addEventListener("load",principal,false)
+window.addEventListener("load", principal, false)
 
 
 
-function principal(e)
-{
-  document.getElementById("realizarPedido").addEventListener("click",manejadorClick);
-  document.getElementById("revisarPedidos").addEventListener("click",manejadorClick);
-  document.getElementById("gestionarResiduos").addEventListener("click",manejadorClick);
-  document.getElementById("anadir").addEventListener("click",manejadorClick);
-  document.getElementById("anadirProducto").addEventListener("click",insertarProducto);
-  
+function principal(e) {
+    document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
+    document.getElementById("revisarPedidos").addEventListener("click", manejadorClick);
+    document.getElementById("gestionarResiduos").addEventListener("click", manejadorClick);
+    document.getElementById("anadir").addEventListener("click", manejadorClick);
+    document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
+
 }
 
 
-function manejadorClick(e)
-{
+function manejadorClick(e) {
     console.log(this.id);
-    if(this.id==="anadir")
-    {
+    if (this.id === "anadir") {
         $('#modalAgregarProducto').modal('show');
     }
-    else if(this.id==="revisarPedidos")
-    {
-        location.href ='revisarPedidos.html';
+    else if (this.id === "revisarPedidos") {
+        location.href = 'revisarPedidos.html';
     }
-    else if(this.id==="realizarPedido")
-    {
-        location.href ='pedidos.html';
+    else if (this.id === "realizarPedido") {
+        location.href = 'pedidos.html';
     }
-    else if(this.id==="gestionarResiduos")
-    {
-        location.href ='gestionarResiduos.html';
+    else if (this.id === "gestionarResiduos") {
+        location.href = 'gestionarResiduos.html';
     }
-   
+
 }
 
 /*Funcion para mandar los productos al php para hacer la inserccion. */
@@ -82,17 +76,17 @@ function mostrarMensajeExito() {
     contenedorPrincipal.style.filter = 'blur(5px)';
 
     // Eliminar el efecto de difuminado después de 5 segundos
-    setTimeout(function() {
+    setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
     }, 5000);
 
     // Eliminar el mensaje después de 5 segundos
-    setTimeout(function() {
+    setTimeout(function () {
         mensajeElemento.remove();
     }, 3000);
 
     // Permitir al usuario quitar el mensaje haciendo clic en él
-    mensajeElemento.addEventListener('click', function() {
+    mensajeElemento.addEventListener('click', function () {
         contenedorPrincipal.style.filter = 'none';
         mensajeElemento.remove();
     });
@@ -118,17 +112,17 @@ function mostrarMensajeError(mensaje) {
     // Agregar mensaje al body
     document.body.appendChild(mensajeElemento);
 
-       // Difuminar el fondo
-       var contenedorPrincipal = document.querySelector('.container');
-       contenedorPrincipal.style.filter = 'blur(5px)';
-   
-       // Eliminar el efecto de difuminado después de 5 segundos
-       setTimeout(function() {
-           contenedorPrincipal.style.filter = 'none';
-       }, 5000);
+    // Difuminar el fondo
+    var contenedorPrincipal = document.querySelector('.container');
+    contenedorPrincipal.style.filter = 'blur(5px)';
+
+    // Eliminar el efecto de difuminado después de 5 segundos
+    setTimeout(function () {
+        contenedorPrincipal.style.filter = 'none';
+    }, 5000);
 
     // Eliminar el mensaje después de 5 segundos
-    setTimeout(function() {
+    setTimeout(function () {
         mensajeElemento.remove();
     }, 3000);
 }
@@ -136,15 +130,15 @@ function mostrarMensajeError(mensaje) {
 
 
 /* fUNCION PARA CREAR ELEMENTO */
-function crearElemento(etiqueta,texto,atributos){
+function crearElemento(etiqueta, texto, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
-    if(texto!==undefined){
+    if (texto !== undefined) {
         let contenidoTexto = document.createTextNode(texto);
         elementoNuevo.appendChild(contenidoTexto);
     }
-    if(atributos!== undefined){
-        for(let clave in atributos){
-            elementoNuevo.setAttribute(clave,atributos[clave]);
+    if (atributos !== undefined) {
+        for (let clave in atributos) {
+            elementoNuevo.setAttribute(clave, atributos[clave]);
         }
     }
     return elementoNuevo;
