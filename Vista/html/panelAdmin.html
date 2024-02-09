@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/panelAdmin.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5 mb-4">Panel de Administración</h1>
+        <!-- Opciones del panel de administración -->
+        <div class="row">
+            <div class="col-sm-4" id="realizarPedido">
+                <div class="opcion">
+                    <img src="../img/iconos/carrito.png" alt="Realizar Pedido">
+                    <p>Realizar Pedido</p>
+                </div>
+            </div>
+            <div class="col-sm-4" id="revisarPedidos">
+                <div class="opcion">
+                    <img src="../img/iconos/pedidos.png" alt="Revisar Pedidos de Otros Usuarios">
+                    <p>Revisar Pedidos</p>
+                </div>
+            </div>
+            <div class="col-sm-4" id="gestionarResiduos">
+                <div class="opcion">
+                    <img src="../img/iconos/residuos.png" alt="Revisar Pedidos de Otros Usuarios">
+                    <p>Gestionar Residuos</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="anadir">
+            <div class="col-sm-8 offset-sm-2"> <!-- Ajustar el tamaño de la columna y agregar desplazamiento -->
+                <div class="opcion alargado"> <!-- Agregar clase "alargado" para aplicar estilos adicionales -->
+                    <img src="../img/iconos/mas.png" alt="Añadir Producto">
+                    <p>Añadir Producto</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---------------------------------------------- Modal --------------------------------->
+    <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog" aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido del formulario de agregar producto aquí -->
+                    <form>
+                        <div class="form-group">
+                            <label for="nombreProducto">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="nombreProducto">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoriaProducto">Categoría del Producto</label>
+                            <div class="input-group">
+                                <select class="custom-select" id="categoriaProducto">
+                                    <option value="">Seleccione una categoría...</option>
+                                    <!-- Aquí se cargarán las opciones de categoría -->
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">Nueva Categoría</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="unidadMedida">Unidad de medida del Producto</label>
+                            <div class="input-group">
+                                <select class="custom-select" id="unidadMedida">
+                                    <option value="">Seleccione una unidad...</option>
+                                    <!-- Aquí se cargarán las opciones de unidad de medida -->
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">Nueva Unidad</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="residuos">Residuos del Producto</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="residuos" placeholder="Residuos del producto">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">Gestionar Residuos</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="anadirProducto">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Script personalizado para el panel de administración -->
+    <script src="../js/adminPanel.js"></script>
+</body>
+</html>
