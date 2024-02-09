@@ -1,3 +1,9 @@
+window.addEventListener("load", principal, false);
+
+function principal(e) {
+    
+    document.getElementById("btn-generar").addEventListener("click",generarPDF);
+}
 const usuario = {
     id: '',
     nombre: '',
@@ -132,7 +138,6 @@ function validarCampos() {
 
 function generarPDF(event) {
     event.preventDefault()
-
     const tbody = document.querySelector('tbody')
     if(tbody.childElementCount === 0) {
         alert('No se puede crear el PDF ya que no existen registros en la tabla')
@@ -156,7 +161,7 @@ function generarPDF(event) {
     doc.setFontSize(10);
     doc.text(20, 40, str);
 
-    //doc.save('lista-usuarios.pdf')
+    doc.save('lista-usuarios.pdf')
 }
 
 
