@@ -3,24 +3,30 @@ body {
   background-color: #f8f9fa;
   font-family: Arial, sans-serif;
 }
+
 .container {
   margin-top: 50px;
 }
+
 h2 {
   color: #007bff;
 }
+
 .input-group {
   margin-bottom: 20px;
 }
+
 .table {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 th,
 td {
   text-align: center;
 }
+
 #buscar {
   margin-left: 8px;
   padding-left: 30px;
@@ -32,17 +38,28 @@ td {
   transition: all 0.5s ease;
 
 }
-#buscar {
-  
+
+tr:hover {
+background: #eeeeee;
 }
+
+#buscar {}
+
 #buscar:hover {
   background: #343A40;
   color: #007bff;
   border: 2px solid #000000;
   transition: all 0.35s ease;
-}car:active {
+}
+
+car:active {
   transform: translate(5px, 5px);
 }
-.botones img{
-  width: 20px;
+#carritoCompras img{
+  width: 100%;
+}
+
+.botones {
+  width: 40px;
+  height: 40px;
 }
