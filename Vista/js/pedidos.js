@@ -36,10 +36,16 @@ function pedirTodo(event) {
 function modalCarritoCrearTabla(event) {
   let tabla = crearTabla(["Producto", "Unidad", "Cantidad", "Comentario", "Quitar Del Carrito"], pedido)
   let modalBody = document.getElementById('modalBody');
-  for (let index = 0; index < modalBody.querySelectorAll('[id^="filaPedido"]').length; index++) {
-    let td = modalBody.querySelectorAll('[id^="filaPedido"]').children[4];
-    console.log(td);
-    td.appendChild(crearElemento("input", undefined, { value: "creado" }))
+  /* antes en el for se iba al modal.legnth
+  en la primera iteracion el length sempre será 0 
+  por ello se lo he cambiado a tabla, que es lo mismo pero
+  actualizado, buenos dias */
+  for (let index = 0; index < tabla.querySelectorAll('[id^="filaPedido"]').length; index++) {
+    let tr = modalBody.querySelectorAll('[id^="filaPedido"]')[index];
+    console.log(tr);
+    /*acceder al hijo de el de tbody(tabla.childern[1]) */
+    tabla.children[1].children[index].appendChild(crearElemento("input", "boton", { value: "Quitar del carrito, falta funcionalidad", type:"button"}))
+    console.log(tabla);
   }
   // tds[4].appendChild(crearElemento("button",undefined,{class:"btn"}))
   modalBody.innerHTML = "";
