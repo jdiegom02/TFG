@@ -40,7 +40,7 @@ td {
 }
 
 tr:hover {
-background: #eeeeee;
+  background: #eeeeee;
 }
 
 #buscar {}
@@ -55,11 +55,19 @@ background: #eeeeee;
 car:active {
   transform: translate(5px, 5px);
 }
-#carritoCompras img{
+
+#carritoCompras img {
   width: 100%;
 }
 
 .botones {
   width: 40px;
   height: 40px;
+}
+
+.botonesAdd {
+  width: 40px;
+  height: 40px;
+  background-image: url(../assets/botonMas.svg);
+  background-size: contain;
 }
