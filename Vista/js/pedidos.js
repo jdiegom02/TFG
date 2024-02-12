@@ -11,11 +11,9 @@ function mostrarProductos() {
       let fila = crearElemento("tr", undefined, { id: "producto" + i });
       fila.appendChild(crearElemento("td", producto.getNombre()));
       fila.appendChild(crearElemento("td", producto.getUnidades()));
-      let img = crearElemento("img", undefined, { src: "../assets/botonMas.svg" })
-      let boton = crearElemento("button", undefined, { class: " btn btn-outline-success me-2 botones", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: producto.getNombre(), unidad: producto.getUnidades(), id: producto.getId() });
+      let boton = crearElemento("button", undefined, { class: " btn btn-outline-success me-2 botonesAdd", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: producto.getNombre(), unidad: producto.getUnidades(), id: producto.getId() });
       let td = crearElemento("td")
       boton.addEventListener("click", añadirProducto)
-      boton.appendChild(img)
       td.appendChild(boton)
       fila.appendChild(td);
       document.querySelector("#productTable").appendChild(fila);
