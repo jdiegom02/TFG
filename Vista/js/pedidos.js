@@ -14,7 +14,7 @@ function mostrarProductos() {
       let card = crearElemento("div", undefined, {"class":"card"});
       columna.appendChild(card);
       card.appendChild(crearElemento("img", undefined, {"src":"../img/iconos/1654549.png", "class":"card-img-top"}));
-      card.appendChild(crearElemento("h4",producto.getNombre(), {"class":"card-title"}));
+      card.appendChild(crearElemento("h6",producto.getNombre(), {"class":"card-title"}));
       card.appendChild(crearElemento("input",undefined,{"class": "btn", "value":"Añadir al carro"}))
     })
   });
