@@ -17,14 +17,12 @@ h2 {
 }
 
 .table {
+  font-size: 1.5em;
+  text-align: center;
+  width: 100%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  text-align: center;
 }
 
 #buscar {
@@ -36,14 +34,11 @@ td {
   border: 2px solid #e6e6e6;
   border-radius: 5px;
   transition: all 0.5s ease;
-
 }
 
 tr:hover {
-background: #eeeeee;
+  background: #eeeeee;
 }
-
-#buscar {}
 
 #buscar:hover {
   background: #343A40;
@@ -55,11 +50,43 @@ background: #eeeeee;
 car:active {
   transform: translate(5px, 5px);
 }
-#carritoCompras img{
+#carritoCompras {
+  width: 100px;
+  height: 100px;
+}
+#carritoCompras img {
   width: 100%;
 }
 
 .botones {
-  width: 40px;
-  height: 40px;
+  width: 10px;
+}
+
+#divBotones {
+margin: auto;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 90%;
+height: 70px;
+}
+
+#botonMas,
+#botonCheck {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+}
+
+#botonMas:hover,
+#botonCheck:hover {
+  background: #029702;
+}
+
+#botonMas img,
+#botonCheckimg {
+  width: 50px;
 }

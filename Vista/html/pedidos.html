@@ -19,9 +19,10 @@
   <header class="navbar navbar-dark bg-dark">
     <div class="container-fluid justify-content-end">
       <!-- Icono de carrito de compras -->
+      <button class=" btn me-2 btn-danger" id="cerrarSesion">Cerrar Sesion</button>
       <button class="btn btn-outline-light me-2 botones" data-bs-toggle="modal" data-bs-target="#carritoModal"
         id="carritoCompras">
-        <img src="../assets/market-purchase-svgrepo-com.svg" alt="" />
+        <img src="../assets/market-purchase-svgrepo-com.svg" alt="" / id="imagenCarritoCompras">
         <i class="bi bi-cart"></i>
       </button>
     </div>
@@ -54,16 +55,16 @@
   <!--MODAL DE CANTIDAD INPUT PRODUCTO-->
   <!-- Modal -->
   <div class="modal fade" id="pedidoModal" tabindex="-1" aria-labelledby="pedidoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" id="pedidoModalContent">
         <div class="modal-header">
           <h5 class="modal-title" id="pedidoModalLabel">Modal title</h5>
         </div>
         <div class="modal-body" id="pedidoModalBody">
         </div>
         <div class="modal-footer">
-          <button type="button" id="cerrarPedido" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="pedirProducto">Pedir</button>
+          <!-- <button type="button" id="cerrarPedido" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="pedirProducto">Pedir</button> -->
         </div>
       </div>
     </div>
@@ -93,7 +94,7 @@
     </div>
     <!-- Tabla de productos -->
     <div class="row d-flex align-items-center justify-content-center">
-      <div class="col-md-10 ">
+      <div class="col-md-10 " id="informacionProductos">
         <table class="table">
           <thead class="thead-light">
             <tr>
@@ -106,6 +107,7 @@
             <!-- Aquí se mostrarán los productos -->
           </tbody>
         </table>
+        <div></div>
       </div>
     </div>
   </div>
