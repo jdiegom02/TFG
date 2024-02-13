@@ -8,16 +8,14 @@ function mostrarProductos() {
   recogerProductos(function (productos) {
     let i = 1;
     productos.forEach(producto => {
-      let fila = crearElemento("tr", undefined, { id: "producto" + i });
-      fila.appendChild(crearElemento("td", producto.getNombre()));
-      fila.appendChild(crearElemento("td", producto.getUnidades()));
-      let boton = crearElemento("button", undefined, { class: " btn btn-outline-success me-2 botonesAdd", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: producto.getNombre(), unidad: producto.getUnidades(), id: producto.getId() });
-      let td = crearElemento("td")
-      boton.addEventListener("click", añadirProducto)
-      td.appendChild(boton)
-      fila.appendChild(td);
-      document.querySelector("#productTable").appendChild(fila);
-      i++;
+
+      let columna = crearElemento("div", undefined, {"class":"col-md-3"});
+      document.querySelector("#productos").appendChild(columna);
+      let card = crearElemento("div", undefined, {"class":"card"});
+      columna.appendChild(card);
+      card.appendChild(crearElemento("img", undefined, {"src":"../img/iconos/1654549.png", "class":"card-img-top"}));
+      card.appendChild(crearElemento("h4",producto.getNombre(), {"class":"card-title"}));
+      card.appendChild(crearElemento("input",undefined,{"class": "btn", "value":"Añadir al carro"}))
     })
   });
 }
