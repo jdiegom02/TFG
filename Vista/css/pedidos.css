@@ -50,12 +50,25 @@ tr:hover {
 car:active {
   transform: translate(5px, 5px);
 }
+
 #carritoCompras {
-  width: 100px;
-  height: 100px;
+  background: #00000000;
+  width: 70px;
+  height: 70px;
+  border-radius: 7px;
+  border: none;
+  margin: 0px 10px;
 }
+
+#carritoCompras:hover {
+  background: #fff;
+  border: 2px #000000 solid;
+}
+
 #carritoCompras img {
-  width: 100%;
+  margin: auto;
+  width: 50px;
+  height: 50px;
 }
 
 .botones {
@@ -63,12 +76,12 @@ car:active {
 }
 
 #divBotones {
-margin: auto;
-display: flex;
-justify-content: center;
-align-items: center;
-width: 90%;
-height: 70px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 70px;
 }
 
 #botonMas,
