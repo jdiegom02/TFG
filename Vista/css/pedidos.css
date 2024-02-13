@@ -25,6 +25,36 @@ h2 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+th,
+td {
+  text-align: center;
+}
+
+.btn {
+  border-radius: 0;
+  background-color: grey;
+  border-color: grey;
+  width: 100%;
+  color: white;
+}
+
+.btn:hover {
+  background-color: rgb(146, 146, 146);
+  border-color: 146, 146, 146;
+  color: white;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: 20px;
+  margin-bottom: 4vh;
+}
+
 #buscar {
   margin-left: 8px;
   padding-left: 30px;
@@ -102,4 +132,11 @@ car:active {
 #botonMas img,
 #botonCheckimg {
   width: 50px;
+}
+
+.botonesAdd {
+  width: 40px;
+  height: 40px;
+  background-image: url(../assets/botonMas.svg);
+  background-size: contain;
 }
