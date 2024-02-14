@@ -1,11 +1,12 @@
 var pedido = [];
 var categoriasUnicas = []
 addEventListener("DOMContentLoaded", () => {
-  mostrarSeleccionableCategorias();mostrarProductos();
+  mostrarSeleccionableCategorias(); mostrarProductos();
   document.getElementById("buscar").addEventListener("click", mostrarProductos)
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
   document.getElementById('pedir').addEventListener("click", pedirTodo);
 });
+
 function mostrarProductos(categoria) {
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
@@ -25,7 +26,7 @@ function mostrarProductos(categoria) {
         //ICONO MENOS MAS E INPUT CANTIDAD
         let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
         let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
-        let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
+        let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad" + productofiltrado.getId(), min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
         let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
         //asegurarme de que no sea menor que 1 nunca al teclear;
         inputCantidad.addEventListener("change", function () {
@@ -46,12 +47,12 @@ function mostrarProductos(categoria) {
         cantidadDiv.appendChild(iconoMenos);
         cantidadDiv.appendChild(inputCantidad);
         cantidadDiv.appendChild(iconoMas);
-        //BOTON DE AÑADIR PRODUCTO
-        let botonAñadir = crearElemento("button", "Añadir al carrito", { "class": "btn", "value": "Añadir al carro", id: "botonAñadir", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
-        botonAñadir.addEventListener("click", añadirProducto)
+        //BOTON DE  PRODUCTO
+        let boton = crearElemento("button", " al carrito", { "class": "btn", "value": " al carro", id: "boton", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
+        boton.addEventListener("click", añadirProducto)
         carta.appendChild(cantidadDiv)
         carta.appendChild(crearElemento("h6", productofiltrado.getUnidades(), { "class": "card-title" }));
-        carta.appendChild(botonAñadir);
+        carta.appendChild(boton);
         contenedorCarta.appendChild(carta);
         divProductos.appendChild(contenedorCarta);
         i++;
@@ -61,63 +62,62 @@ function mostrarProductos(categoria) {
       let carta = crearElemento("div", undefined, { "class": "card grid-item", id: "producto" + i });
       carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
       carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
-      let botonMas = crearElemento("button", undefined, { id: "botonAñadir", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
+      let botonMas = crearElemento("button", undefined, { id: "boton", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
       botonMas.addEventListener("click", añadirProducto)
       botonMas.appendChild(img);
       div.appendChild(botonMas);
     }
   });
 }
-//añadir producto nuevo
-function añadirProducto(event) {
+function añadirProducto(params) {
   let id = this.id;
-  let identificador = this.getAttribute("identificador");
+  let identificadorProducto = this.getAttribute("identificador");
   let nombre = this.getAttribute("nombre");
   let unidad = this.getAttribute("unidad");
-  console.log(id, identificador, nombre, unidad)
-  let modal = document.getElementById("pedidoModalContent");
-  let modalHeader = modal.children[0]
-  let modalBody = modal.children[1];
-  let modalFooter = modal.children[2];
-  modalHeader.innerHTML = "";
-  modalHeader.appendChild(crearElemento("h5", "Pedir " + nombre))
-  let divInputGroup;
-  if (unidad == "nodefinida") {
-    divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
-    divInputGroup.appendChild(crearElemento('span', "Cantidad: ", { class: 'input-group-text' }));
-    divInputGroup.appendChild(crearElemento('input', undefined, { type: "number", min: "1", id: "cantidadPedido", class: 'form-control' }));
-    divInputGroup.appendChild(crearElemento('span', "Unidad: ", { class: 'input-group-text' }));
-    divInputGroup.appendChild(crearElemento('input', undefined, { id: "unidadPedido", type: "text", class: 'form-control', placeholder: "Ingrese la unidad" }));
-  } else {
-    divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
-    divInputGroup.appendChild(crearElemento('span', "Cantidad: ", { class: 'input-group-text' }));
-    divInputGroup.appendChild(crearElemento('input', undefined, { type: "number", min: "1", id: "cantidadPedido", class: 'form-control' }));
-    divInputGroup.appendChild(crearElemento('span', unidad, { class: 'input-group-text' }));
-  }
-  modalBody.innerHTML = ""
-  modalBody.appendChild(divInputGroup)
-  let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
-  divComentario.appendChild(crearElemento('label', 'Comentario', { for: 'comentarioPedido' }));
-  divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
-  modalBody.appendChild(divComentario);
-  modalFooter.innerHTML = ""
-  modalFooter.appendChild(crearElemento("button", "Cancelar", { id: "cerrarPedido", class: "btn btn-danger", type: "button", "data-bs-dismiss": "modal" }))
-  modalFooter.appendChild(crearElemento("button", "Pedir", { id: "añadirPedido", class: "btn btn-primary", type: "button", identificador: identificador, nombre: nombre, unidad: unidad }))
-  document.getElementById('añadirPedido').addEventListener("click", añadirCarrito);
+  let inputCantidad = document.getElementById("cantidad" + identificadorProducto)
+  let cantidad = inputCantidad.value
+  console.log(id, identificadorProducto, nombre, unidad)
+  aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + unidad + " de " + nombre);
+  añadirCarrito(nombre, unidad, cantidad, identificadorProducto)
+  //reiniciar a 1 
+  inputCantidad.value = 1;
 }
-function añadirCarrito(event) {
-  if (this.getAttribute("unidad") == null) {
-    let unidad = document.getElementById("unidadPedido").value;
-    pedido.push([this.getAttribute("nombre"), unidad, document.getElementById("cantidadPedido").value, document.getElementById('comentarioPedido').value]);
+function añadirCarrito(nombre, unidad, cantidad, identificadorProducto) {
+  pedido.push([nombre, unidad, cantidad, ""]);
+  // reutilizar
+  // let fila = document.getElementById("producto" + this.getAttribute("identificador"));
+  // let divBotones = fila.querySelector("#divBotones")
+  // let botonCheck = crearElemento("button", undefined, { id: "botonCheck", class: "btn botones", identificador: pedido.length });
+  // botonCheck.appendChild(crearElemento("img", undefined, { src: "../assets/botonCheck.svg" }))
+  // divBotones.appendChild(botonCheck)
+  // document.getElementById("cerrarPedido").click();
+}
+function aparecerVentanaEmergente(titulo, descripcion) {
+  let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
+  let ventanaEmergente = crearElemento("div", undefined, { id: "ventanaEmergente" })
+  ventanaEmergente.appendChild(crearElemento("h3", titulo, { id: "ventanaEmergente-titulo" }))
+  ventanaEmergente.appendChild(crearElemento("h3", descripcion, { id: "ventanaEmergente-descripcion" }))
+  contenedorVentanaEmergente.appendChild(ventanaEmergente)
+  document.body.appendChild(contenedorVentanaEmergente);
+  setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 1000);
+}
+function desaparecerElementoFadeOut(elemento) {
+  let elementoDesaparecer
+  if (elemento == undefined) {
+    elementoDesaparecer = document.getElementById("contenedor-ventanaEmergente");
   } else {
-    pedido.push([this.getAttribute("nombre"), this.getAttribute("unidad"), document.getElementById("cantidadPedido").value, document.getElementById('comentarioPedido').value]);
-    let fila = document.getElementById("producto" + this.getAttribute("identificador"));
-    let divBotones = fila.querySelector("#divBotones")
-    let botonCheck = crearElemento("button", undefined, { id: "botonCheck", class: "btn botones", identificador: pedido.length });
-    botonCheck.appendChild(crearElemento("img", undefined, { src: "../assets/botonCheck.svg" }))
-    divBotones.appendChild(botonCheck)
+    elementoDesaparecer = elemento;
   }
-  document.getElementById("cerrarPedido").click();
+  let opacidad = 1;
+  let intervalo = setInterval(function () {
+    if (opacidad <= 0.1) {
+      clearInterval(intervalo);
+      elementoDesaparecer.style.display = "none";
+      elementoDesaparecer.parentNode.removeChild(elementoDesaparecer), 1000
+    }
+    elementoDesaparecer.style.opacity = opacidad;
+    opacidad -= opacidad * 0.1;
+  }, 50); // Velocidad de la animación (50 milisegundos)
 }
 function modalCarritoCrearTabla(event) {
   const theads = ["Producto", "Unidad", "Cantidad", "Comentario", "Quitar Del Carrito"];
@@ -149,6 +149,10 @@ function modalCarritoCrearTabla(event) {
   } else {
     modalBody.appendChild(crearElemento("h4", "El carrito se encuentra vacío por ahora...", { style: "color:red; font-style:italic;" }));
   }
+  let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
+  divComentario.appendChild(crearElemento('label', 'Comentario', { for: 'comentarioPedido' }));
+  divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
+  modalBody.appendChild(divComentario);
 }
 function borrarFilaPedido(event) {
   pedido.splice(this.id - 1, 1);
@@ -179,18 +183,6 @@ function filtrarProductos(array) {
   }
   return resultadosFiltradosPorNombre;
 }
-function añadirCarrito(event) {
-  let lineaPedido = [];
-  filaProducto = document.getElementById("producto" + event.target.parentElement.parentElement.children[0].children[0].children[0].id);
-  let celdas = filaProducto.getElementsByTagName("td");
-  let descripcion = celdas[0].innerHTML;
-  let unidades = celdas[1].innerHTML;
-  let cantidad = document.getElementById('cantidadPedido').value;
-  let observaciones = document.getElementById('comentarioPedido').value;
-  lineaPedido.push(descripcion, unidades, cantidad, observaciones)
-  pedido.push(lineaPedido)
-  document.getElementById('cerrarPedido').click();
-}
 //obtener las categorias unicas:
 function mostrarSeleccionableCategorias() {
   let categoriasDisponibles = [];
@@ -208,10 +200,7 @@ function mostrarSeleccionableCategorias() {
       }
     });
   })
-
-  //imprir categorias en el select
 }
-//recargar pagina al cambiar categoria
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);
   if (texto !== undefined) {

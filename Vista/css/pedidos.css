@@ -83,13 +83,12 @@ input[type="number"]::-webkit-outer-spin-button {
   grid-column-start: 2;
 }
 
-.grupoIconos:last-child {
-}
+.grupoIconos:last-child {}
 
-#cantidad {
+input[id^="cantidad"] {
   margin: auto;
+  font-size: 1.5em;
   text-align: center;
-  appearance: none;
   justify-content: center;
 }
 
@@ -172,4 +171,37 @@ car:active {
   height: 40px;
   background-image: url(../assets/botonMas.svg);
   background-size: contain;
+}
+
+#contenedor-ventanaEmergente {
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: #b3b3b364;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+#ventanaEmergente {
+  border-radius: 10px;
+  background: #fff;
+  width: 600px;
+  padding: 30px 50px;
+  max-width: 100%;
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+}
+
+#efectoDesaparecer {
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+#desaparecidoCompletamente {
+  opacity: 0;
+
 }
