@@ -50,7 +50,6 @@ function mostrarProductos() {
   });
 }
 //FUNCION QUE FUNCIONA CON CARTAS 
-
 function mostrarProductos() {
   recogerProductos(function (productos) {
     let tabla = document.querySelector("#productTable");
@@ -68,6 +67,49 @@ function mostrarProductos() {
       card.appendChild(crearElemento("h6", producto.getNombre(), { "class": "card-title" }));
       card.appendChild(crearElemento("input", undefined, { "class": "btn", "value": "Añadir al carro" }))
     })
+  });
+}
+//FUNCION FINAL DE mostrarProductos
+function mostrarProductos(params) {
+  /**
+   * CREAR ELEMENTOS DENTRO DEL DIV mostrarProductos que contengan esto:
+   * let columna = crearElemento("div", undefined, { "class": "col-md-3" }
+   * añadimos con appendChild a 
+   * let card = crearElemento("div", undefined, { "class": "card" });
+   * 
+   */
+
+  recogerProductos(function (productos) {
+    let divProductos = document.querySelector("#productos");
+    divProductos.innerHTML = "";
+    let resultadosFiltrados
+    let i = 1;
+    //filtrar productos devuelve el array filtado pasandole el array;
+    resultadosFiltrados = filtrarProductos(productos);
+    if (resultadosFiltrados.length != 0) {
+      resultadosFiltrados.forEach(productofiltrado => {
+        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-3" });
+        let carta = crearElemento("div", undefined, { "class": "card grid-item", id: "producto" + i });
+        carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+        carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
+        let botonMas = crearElemento("button", undefined, { "class": "btn", "value": "Añadir al carro", id: "botonMas", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
+        botonMas.addEventListener("click", añadirProducto)
+        carta.appendChild(botonMas);
+        contenedorCarta.appendChild(carta);
+        divProductos.appendChild(contenedorCarta);
+        i++;
+      })
+    } else {
+      div.appendChild(crearElemento("div", undefined, {}))
+      div.appendChild(crearElemento("h2", "No se encontraron elementos con ese nombre", { style: "color:red" }))
+      div.appendChild(crearElemento("div", undefined, { id: "mensajeTablaVacia" }))
+      div.appendChild(crearElemento("h5", "Si desea hacer el pedido de este producto igualmente click aqui ->", { style: "color:red" }))
+      let img = crearElemento("img", undefined, { src: "../assets/botonMas.svg" })
+      let botonMas = crearElemento("button", undefined, { id: "botonMas", class: "btn botones", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
+      botonMas.addEventListener("click", añadirProducto)
+      botonMas.appendChild(img);
+      div.appendChild(botonMas);
+    }
   });
 }
 function añadirProducto(event) {
@@ -161,7 +203,15 @@ function pedirTodo(event) {
   }
 }
 //-------HERRAMIENTAS-------
-
+function filtrarProductos(array) {
+  let resultadosFiltrados
+  if (document.getElementById("searchInput".replaceAll(/\s+/g, "" === ""))) {
+    resultadosFiltrados = array.filter(producto =>
+      producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.replaceAll(/\s+/g, "").toLowerCase())
+    );
+  }
+  return resultadosFiltrados;
+}
 function añadirCarrito(event) {
   let lineaPedido = [];
   filaProducto = document.getElementById("producto" + event.target.parentElement.parentElement.children[0].children[0].children[0].id);
