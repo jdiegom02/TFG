@@ -47,18 +47,51 @@ td {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: repeat();
   gap: 30px;
+  justify-items: center;
+  text-align: center;
 }
 
 #divCantidad {
+  margin-bottom: 20px;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: center;
 }
 
-.grupoIconos .card {}
+/*icono mas y menos*/
+.grupoIconos {
+  height: 40px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/*que deje 1 fr al inicio y al final de espacio*/
+.grupoIconos:first-child {
+  grid-column-start: 2;
+}
+
+.grupoIconos:last-child {
+}
+
+#cantidad {
+  margin: auto;
+  text-align: center;
+  appearance: none;
+  justify-content: center;
+}
 
 #buscar {
   margin-left: 8px;

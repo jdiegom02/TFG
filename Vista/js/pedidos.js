@@ -1,83 +1,23 @@
 var pedido = [];
+var categoriasUnicas = obtenerCategoriasUnicas();
 addEventListener("DOMContentLoaded", () => {
+  mostrarSeleccionableCategorias(categoriasUnicas);
   mostrarProductos();
   document.getElementById("buscar").addEventListener("click", mostrarProductos)
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
   document.getElementById('pedir').addEventListener("click", pedirTodo);
 });
-//FUNCION QUE FUNCIONA BIEN CON TABLA
-function mostrarProductos() {
-  recogerProductos(function (productos) {
-    let tabla = document.querySelector("#productTable");
-    let div = tabla.parentElement.parentElement.children[1];
-    tabla.innerHTML = "";
-    div.innerHTML = ""
-    let resultadosFiltrados
-    let i = 1;
-    if (document.getElementById("searchInput".replaceAll(/\s+/g, "" === ""))) {
-      resultadosFiltrados = productos.filter(producto =>
-        producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.replaceAll(/\s+/g, "").toLowerCase())
-      );
-    }
-    if (resultadosFiltrados.length != 0) {
-      resultadosFiltrados.forEach(productofiltrado => {
-        let fila = crearElemento("tr", undefined, { id: "producto" + i });
-        fila.appendChild(crearElemento("td", productofiltrado.getNombre()));
-        fila.appendChild(crearElemento("td", productofiltrado.getUnidades()));
-        let img = crearElemento("img", undefined, { src: "../assets/botonMas.svg" })
-        let divBotones = crearElemento("div", undefined, { id: "divBotones", class: "container-fluid" })
-        let botonMas = crearElemento("button", undefined, { id: "botonMas", class: "btn botones", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() });
-        let td = crearElemento("td");
-        botonMas.addEventListener("click", añadirProducto)
-        botonMas.appendChild(img)
-        divBotones.appendChild(botonMas);
-        td.appendChild(divBotones)
-        fila.appendChild(td);
-        tabla.appendChild(fila);
-        i++;
-      })
-    } else {
-      div.appendChild(crearElemento("div", undefined, {}))
-      div.appendChild(crearElemento("h2", "No se encontraron elementos con ese nombre", { style: "color:red" }))
-      div.appendChild(crearElemento("div", undefined, { id: "mensajeTablaVacia" }))
-      div.appendChild(crearElemento("h5", "Si desea hacer el pedido de este producto igualmente click aqui ->", { style: "color:red" }))
-      let img = crearElemento("img", undefined, { src: "../assets/botonMas.svg" })
-      let botonMas = crearElemento("button", undefined, { id: "botonMas", class: "btn botones", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
-      botonMas.addEventListener("click", añadirProducto)
-      botonMas.appendChild(img);
-      div.appendChild(botonMas);
-    }
-  });
-}
-//FUNCION QUE FUNCIONA CON CARTAS 
-function mostrarProductos() {
-  recogerProductos(function (productos) {
-    let tabla = document.querySelector("#productTable");
-    let div = tabla.parentElement.parentElement.children[1];
-    tabla.innerHTML = "";
-    div.innerHTML = ""
-    let resultadosFiltrados
-    let i = 1;
-    productos.forEach(producto => {
-      let columna = crearElemento("div", undefined, { "class": "col-md-3" });
-      document.querySelector("#productos").appendChild(columna);
-      let card = crearElemento("div", undefined, { "class": "card" });
-      columna.appendChild(card);
-      card.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
-      card.appendChild(crearElemento("h6", producto.getNombre(), { "class": "card-title" }));
-      card.appendChild(crearElemento("input", undefined, { "class": "btn", "value": "Añadir al carro" }))
-    })
+function mostrarSeleccionableCategorias(categoriasUnicas) {
+  console.log(categoriasUnicas)
+  let selectCategoria = document.getElementById("categorySelect");
+  categoriasUnicas.forEach(categoria => {
+    let textoCategoria = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+    let option = crearElemento("option", textoCategoria, { value: categoria });
+    selectCategoria.appendChild(option);
   });
 }
 //FUNCION FINAL DE mostrarProductos
-function mostrarProductos(params) {
-  /**
-   * CREAR ELEMENTOS DENTRO DEL DIV mostrarProductos que contengan esto:
-   * let columna = crearElemento("div", undefined, { "class": "col-md-3" }
-   * añadimos con appendChild a 
-   * let card = crearElemento("div", undefined, { "class": "card" });
-   * 
-   */
+function mostrarProductos(categoria) {
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
     divProductos.innerHTML = "";
@@ -95,9 +35,25 @@ function mostrarProductos(params) {
         carta.appendChild(crearElemento("h4", productofiltrado.getNombre(), { "class": "card-title" }));
         //ICONO MENOS MAS E INPUT CANTIDAD
         let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
-        let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos" , "src":"../assets/iconoMenos.png"});
-        let inputCantidad = crearElemento("input", undefined, { type: "number", id: "cantidad", min: 1 ,style:"width:40%; text-align:center"})
-        let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas" ,"src":"../assets/iconoMas.svg"});
+        let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
+        let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
+        let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
+        //asegurarme de que no sea menor que 1 nunca al teclear;
+        inputCantidad.addEventListener("change", function () {
+          let valor = parseInt(this.value);
+          if (valor < 1 || isNaN(valor)) {
+            this.value = 1;
+          }
+        });
+        //que los botones funcionen bien
+        iconoMas.addEventListener("click", function () {
+          inputCantidad.value++;
+        })
+        iconoMenos.addEventListener("click", function () {
+          if (inputCantidad.value > 1) {
+            inputCantidad.value--;
+          }
+        })
         cantidadDiv.appendChild(iconoMenos);
         cantidadDiv.appendChild(inputCantidad);
         cantidadDiv.appendChild(iconoMas);
@@ -105,6 +61,7 @@ function mostrarProductos(params) {
         let botonAñadir = crearElemento("button", "Añadir al carrito", { "class": "btn", "value": "Añadir al carro", id: "botonAñadir", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
         botonAñadir.addEventListener("click", añadirProducto)
         carta.appendChild(cantidadDiv)
+        carta.appendChild(crearElemento("h6", productofiltrado.getUnidades(), { "class": "card-title" }));
         carta.appendChild(botonAñadir);
         contenedorCarta.appendChild(carta);
         divProductos.appendChild(contenedorCarta);
@@ -122,7 +79,7 @@ function mostrarProductos(params) {
     }
   });
 }
-
+//añadir producto nuevo
 function añadirProducto(event) {
   let id = this.id;
   let identificador = this.getAttribute("identificador");
@@ -159,6 +116,43 @@ function añadirProducto(event) {
   modalFooter.appendChild(crearElemento("button", "Pedir", { id: "añadirPedido", class: "btn btn-primary", type: "button", identificador: identificador, nombre: nombre, unidad: unidad }))
   document.getElementById('añadirPedido').addEventListener("click", añadirCarrito);
 }
+//añadir producto antiguo
+// function añadirProducto(event) {
+//   let id = this.id;
+//   let identificador = this.getAttribute("identificador");
+//   let nombre = this.getAttribute("nombre");
+//   let unidad = this.getAttribute("unidad");
+//   console.log(id, identificador, nombre, unidad)
+//   let modal = document.getElementById("pedidoModalContent");
+//   let modalHeader = modal.children[0]
+//   let modalBody = modal.children[1];
+//   let modalFooter = modal.children[2];
+//   modalHeader.innerHTML = "";
+//   modalHeader.appendChild(crearElemento("h5", "Pedir " + nombre))
+//   let divInputGroup;
+//   if (unidad == "nodefinida") {
+//     divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
+//     divInputGroup.appendChild(crearElemento('span', "Cantidad: ", { class: 'input-group-text' }));
+//     divInputGroup.appendChild(crearElemento('input', undefined, { type: "number", min: "1", id: "cantidadPedido", class: 'form-control' }));
+//     divInputGroup.appendChild(crearElemento('span', "Unidad: ", { class: 'input-group-text' }));
+//     divInputGroup.appendChild(crearElemento('input', undefined, { id: "unidadPedido", type: "text", class: 'form-control', placeholder: "Ingrese la unidad" }));
+//   } else {
+//     divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
+//     divInputGroup.appendChild(crearElemento('span', "Cantidad: ", { class: 'input-group-text' }));
+//     divInputGroup.appendChild(crearElemento('input', undefined, { type: "number", min: "1", id: "cantidadPedido", class: 'form-control' }));
+//     divInputGroup.appendChild(crearElemento('span', unidad, { class: 'input-group-text' }));
+//   }
+//   modalBody.innerHTML = ""
+//   modalBody.appendChild(divInputGroup)
+//   let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
+//   divComentario.appendChild(crearElemento('label', 'Comentario', { for: 'comentarioPedido' }));
+//   divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
+//   modalBody.appendChild(divComentario);
+//   modalFooter.innerHTML = ""
+//   modalFooter.appendChild(crearElemento("button", "Cancelar", { id: "cerrarPedido", class: "btn btn-danger", type: "button", "data-bs-dismiss": "modal" }))
+//   modalFooter.appendChild(crearElemento("button", "Pedir", { id: "añadirPedido", class: "btn btn-primary", type: "button", identificador: identificador, nombre: nombre, unidad: unidad }))
+//   document.getElementById('añadirPedido').addEventListener("click", añadirCarrito);
+// }
 function añadirCarrito(event) {
   if (this.getAttribute("unidad") == null) {
     let unidad = document.getElementById("unidadPedido").value;
@@ -216,13 +210,22 @@ function pedirTodo(event) {
 }
 //-------HERRAMIENTAS-------
 function filtrarProductos(array) {
-  let resultadosFiltrados
+  let categoria = $("#categorySelect").val();
+  let resultadosFiltradosporCategoria
+  //primero filtro por categoria
+  if (categoria !== "all") {
+    resultadosFiltradosporCategoria = array.filter(producto =>
+      producto.getCategoria().toLowerCase().includes(categoria.toLowerCase())
+    )
+  } else {
+    resultadosFiltradosporCategoria = array
+  }
   if (document.getElementById("searchInput".replaceAll(/\s+/g, "" === ""))) {
-    resultadosFiltrados = array.filter(producto =>
+    resultadosFiltradosPorNombre = resultadosFiltradosporCategoria.filter(producto =>
       producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.replaceAll(/\s+/g, "").toLowerCase())
     );
   }
-  return resultadosFiltrados;
+  return resultadosFiltradosPorNombre;
 }
 function añadirCarrito(event) {
   let lineaPedido = [];
@@ -262,6 +265,27 @@ function crearTabla(titulos, datos) {
   return tabla;
 }
 
+//obtener las categorias unicas:
+function obtenerCategoriasUnicas() {
+  let categoriasUnicas = [];
+  recogerProductos(function (productos) {
+    productos.forEach(producto => {
+      // Verifica si la categoría del objeto ya existe en el array de categorías únicas
+      if (!categoriasUnicas.includes(producto.getCategoria())) {
+        // Si no existe, añade la categoría al array de categorías únicas
+        categoriasUnicas.push(producto.getCategoria());
+      }
+    });
+  })
+  return categoriasUnicas;
+}
+//recargar pagina al cambiar categoria
+function cambiaCategoria() {
+  //al cambiarse de categoria tambien se actualiza la tabla	
+  const categoria = $(this).val();
+  mostrarProductos(categoria);
+  document.getElementById("searchInput").value = "";
+}
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);
   if (texto !== undefined) {
