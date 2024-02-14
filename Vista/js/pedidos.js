@@ -1,22 +1,11 @@
 var pedido = [];
-var categoriasUnicas = obtenerCategoriasUnicas();
+var categoriasUnicas = []
 addEventListener("DOMContentLoaded", () => {
-  mostrarSeleccionableCategorias(categoriasUnicas);
-  mostrarProductos();
+  mostrarSeleccionableCategorias();mostrarProductos();
   document.getElementById("buscar").addEventListener("click", mostrarProductos)
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
   document.getElementById('pedir').addEventListener("click", pedirTodo);
 });
-function mostrarSeleccionableCategorias(categoriasUnicas) {
-  console.log(categoriasUnicas)
-  let selectCategoria = document.getElementById("categorySelect");
-  categoriasUnicas.forEach(categoria => {
-    let textoCategoria = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-    let option = crearElemento("option", textoCategoria, { value: categoria });
-    selectCategoria.appendChild(option);
-  });
-}
-//FUNCION FINAL DE mostrarProductos
 function mostrarProductos(categoria) {
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
@@ -116,43 +105,6 @@ function añadirProducto(event) {
   modalFooter.appendChild(crearElemento("button", "Pedir", { id: "añadirPedido", class: "btn btn-primary", type: "button", identificador: identificador, nombre: nombre, unidad: unidad }))
   document.getElementById('añadirPedido').addEventListener("click", añadirCarrito);
 }
-//añadir producto antiguo
-// function añadirProducto(event) {
-//   let id = this.id;
-//   let identificador = this.getAttribute("identificador");
-//   let nombre = this.getAttribute("nombre");
-//   let unidad = this.getAttribute("unidad");
-//   console.log(id, identificador, nombre, unidad)
-//   let modal = document.getElementById("pedidoModalContent");
-//   let modalHeader = modal.children[0]
-//   let modalBody = modal.children[1];
-//   let modalFooter = modal.children[2];
-//   modalHeader.innerHTML = "";
-//   modalHeader.appendChild(crearElemento("h5", "Pedir " + nombre))
-//   let divInputGroup;
-//   if (unidad == "nodefinida") {
-//     divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
-//     divInputGroup.appendChild(crearElemento('span', "Cantidad: ", { class: 'input-group-text' }));
-//     divInputGroup.appendChild(crearElemento('input', undefined, { type: "number", min: "1", id: "cantidadPedido", class: 'form-control' }));
-//     divInputGroup.appendChild(crearElemento('span', "Unidad: ", { class: 'input-group-text' }));
-//     divInputGroup.appendChild(crearElemento('input', undefined, { id: "unidadPedido", type: "text", class: 'form-control', placeholder: "Ingrese la unidad" }));
-//   } else {
-//     divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
-//     divInputGroup.appendChild(crearElemento('span', "Cantidad: ", { class: 'input-group-text' }));
-//     divInputGroup.appendChild(crearElemento('input', undefined, { type: "number", min: "1", id: "cantidadPedido", class: 'form-control' }));
-//     divInputGroup.appendChild(crearElemento('span', unidad, { class: 'input-group-text' }));
-//   }
-//   modalBody.innerHTML = ""
-//   modalBody.appendChild(divInputGroup)
-//   let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
-//   divComentario.appendChild(crearElemento('label', 'Comentario', { for: 'comentarioPedido' }));
-//   divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
-//   modalBody.appendChild(divComentario);
-//   modalFooter.innerHTML = ""
-//   modalFooter.appendChild(crearElemento("button", "Cancelar", { id: "cerrarPedido", class: "btn btn-danger", type: "button", "data-bs-dismiss": "modal" }))
-//   modalFooter.appendChild(crearElemento("button", "Pedir", { id: "añadirPedido", class: "btn btn-primary", type: "button", identificador: identificador, nombre: nombre, unidad: unidad }))
-//   document.getElementById('añadirPedido').addEventListener("click", añadirCarrito);
-// }
 function añadirCarrito(event) {
   if (this.getAttribute("unidad") == null) {
     let unidad = document.getElementById("unidadPedido").value;
@@ -239,53 +191,27 @@ function añadirCarrito(event) {
   pedido.push(lineaPedido)
   document.getElementById('cerrarPedido').click();
 }
-function crearTabla(titulos, datos) {
-  let tabla = crearElemento('table');
-  let thead = crearElemento('thead');
-  let trTitulos = crearElemento('tr');
-  for (let i = 0; i < titulos.length; i++) {
-    let th = crearElemento('th', titulos[i]);
-    th.id = 'titulo_' + i;
-    trTitulos.appendChild(th);
-  }
-  thead.appendChild(trTitulos);
-  tabla.appendChild(thead);
-  let tbody = crearElemento('tbody');
-  for (let j = 1; j < datos.length; j++) {
-    let fila = datos[j];
-    let tr = crearElemento('tr', undefined, { id: "filaPedido" + j + 1 });
-    for (let k = 0; k < fila.length; k++) {
-      let td = crearElemento('td', fila[k]);
-      td.id = 'fila_' + j + '_columna_' + k;
-      tr.appendChild(td);
-    }
-    tbody.appendChild(tr);
-  }
-  tabla.appendChild(tbody);
-  return tabla;
-}
-
 //obtener las categorias unicas:
-function obtenerCategoriasUnicas() {
-  let categoriasUnicas = [];
+function mostrarSeleccionableCategorias() {
+  let categoriasDisponibles = [];
+  let selectCategoria = document.getElementById("categorySelect");
   recogerProductos(function (productos) {
     productos.forEach(producto => {
       // Verifica si la categoría del objeto ya existe en el array de categorías únicas
-      if (!categoriasUnicas.includes(producto.getCategoria())) {
+      if (!categoriasDisponibles.includes(producto.getCategoria())) {
         // Si no existe, añade la categoría al array de categorías únicas
+        categoriasDisponibles.push(producto.getCategoria())
         categoriasUnicas.push(producto.getCategoria());
+        let textoCategoria = producto.getCategoria().charAt(0).toUpperCase() + producto.getCategoria().slice(1);
+        let option = crearElemento("option", textoCategoria, { value: producto.getCategoria() });
+        selectCategoria.appendChild(option);
       }
     });
   })
-  return categoriasUnicas;
+
+  //imprir categorias en el select
 }
 //recargar pagina al cambiar categoria
-function cambiaCategoria() {
-  //al cambiarse de categoria tambien se actualiza la tabla	
-  const categoria = $(this).val();
-  mostrarProductos(categoria);
-  document.getElementById("searchInput").value = "";
-}
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);
   if (texto !== undefined) {
