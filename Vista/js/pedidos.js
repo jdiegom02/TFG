@@ -78,45 +78,57 @@ function mostrarProductos(params) {
    * let card = crearElemento("div", undefined, { "class": "card" });
    * 
    */
-
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
     divProductos.innerHTML = "";
     let resultadosFiltrados
-    let i = 1;
     //filtrar productos devuelve el array filtado pasandole el array;
     resultadosFiltrados = filtrarProductos(productos);
+    let i = 1;
     if (resultadosFiltrados.length != 0) {
       resultadosFiltrados.forEach(productofiltrado => {
-        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-3" });
-        let carta = crearElemento("div", undefined, { "class": "card grid-item", id: "producto" + i });
+        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-12" });
+        let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
+        //IMAGEN 
         carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
-        carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
-        let botonMas = crearElemento("button", undefined, { "class": "btn", "value": "Añadir al carro", id: "botonMas", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
-        botonMas.addEventListener("click", añadirProducto)
-        carta.appendChild(botonMas);
+        //TEXTO DE PRODUCTO
+        carta.appendChild(crearElemento("h4", productofiltrado.getNombre(), { "class": "card-title" }));
+        //ICONO MENOS MAS E INPUT CANTIDAD
+        let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
+        let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos" , "src":"../assets/iconoMenos.png"});
+        let inputCantidad = crearElemento("input", undefined, { type: "number", id: "cantidad", min: 1 ,style:"width:40%; text-align:center"})
+        let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas" ,"src":"../assets/iconoMas.svg"});
+        cantidadDiv.appendChild(iconoMenos);
+        cantidadDiv.appendChild(inputCantidad);
+        cantidadDiv.appendChild(iconoMas);
+        //BOTON DE AÑADIR PRODUCTO
+        let botonAñadir = crearElemento("button", "Añadir al carrito", { "class": "btn", "value": "Añadir al carro", id: "botonAñadir", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
+        botonAñadir.addEventListener("click", añadirProducto)
+        carta.appendChild(cantidadDiv)
+        carta.appendChild(botonAñadir);
         contenedorCarta.appendChild(carta);
         divProductos.appendChild(contenedorCarta);
         i++;
       })
     } else {
-      div.appendChild(crearElemento("div", undefined, {}))
-      div.appendChild(crearElemento("h2", "No se encontraron elementos con ese nombre", { style: "color:red" }))
-      div.appendChild(crearElemento("div", undefined, { id: "mensajeTablaVacia" }))
-      div.appendChild(crearElemento("h5", "Si desea hacer el pedido de este producto igualmente click aqui ->", { style: "color:red" }))
-      let img = crearElemento("img", undefined, { src: "../assets/botonMas.svg" })
-      let botonMas = crearElemento("button", undefined, { id: "botonMas", class: "btn botones", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
+      let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-12" });
+      let carta = crearElemento("div", undefined, { "class": "card grid-item", id: "producto" + i });
+      carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+      carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
+      let botonMas = crearElemento("button", undefined, { id: "botonAñadir", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
       botonMas.addEventListener("click", añadirProducto)
       botonMas.appendChild(img);
       div.appendChild(botonMas);
     }
   });
 }
+
 function añadirProducto(event) {
   let id = this.id;
   let identificador = this.getAttribute("identificador");
   let nombre = this.getAttribute("nombre");
   let unidad = this.getAttribute("unidad");
+  console.log(id, identificador, nombre, unidad)
   let modal = document.getElementById("pedidoModalContent");
   let modalHeader = modal.children[0]
   let modalBody = modal.children[1];

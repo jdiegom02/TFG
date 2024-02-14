@@ -50,19 +50,15 @@ td {
   grid-template-rows: repeat();
   gap: 30px;
 }
-.grid-item{
-  
+
+#divCantidad {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
 }
-.card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 20px;
-  padding: 20px;
-  margin-bottom: 4vh;
-}
+
+.grupoIconos .card {}
 
 #buscar {
   margin-left: 8px;
@@ -123,7 +119,7 @@ car:active {
   height: 70px;
 }
 
-#botonMas,
+/* #botonMas,
 #botonCheck {
   margin: auto;
   display: flex;
@@ -131,16 +127,11 @@ car:active {
   align-items: center;
   width: 50px;
   height: 50px;
-}
+} */
 
 #botonMas:hover,
 #botonCheck:hover {
   background: #029702;
-}
-
-#botonMas img,
-#botonCheckimg {
-  width: 50px;
 }
 
 .botonesAdd {
