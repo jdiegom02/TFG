@@ -4,10 +4,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.container {
-  margin-top: 50px;
-}
-
 h2 {
   color: #007bff;
 }
@@ -30,36 +26,30 @@ td {
   text-align: center;
 }
 
-.btn {
-  border-radius: 0;
-  background-color: grey;
-  border-color: grey;
-  width: 100%;
-  color: white;
+.card {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.btn:hover {
-  background-color: rgb(146, 146, 146);
-  border-color: 146, 146, 146;
-  color: white;
+.card h6{
+  padding: 5%;
 }
-.grid-container-productos {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 40px;
-  justify-items: center;
-  text-align: center;
+
+.card img {
+  padding: 7%;
 }
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
-  justify-items: center;
-  text-align: center;
+
+.add{
+  border-radius: 0;
+  width: 100%;
 }
 
 #divCantidad {
-  margin-bottom: 20px;
+  margin: 0;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -84,46 +74,31 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+
 /*que deje 1 fr al inicio y al final de espacio*/
 .grupoIconos:first-child {
   grid-column-start: 2;
 }
 
-.grupoIconos:last-child {}
-
 input[id^="cantidad"] {
   border: none;
-  border-bottom: 2px #000 solid;
   margin: auto;
   font-size: 1.5em;
   text-align: center;
   justify-content: center;
 }
 
-#buscar {
-  margin-left: 8px;
-  padding-left: 30px;
-  padding-right: 30px;
-  font-size: 1.2em;
-  color: #c7f8f9;
-  border: 2px solid #e6e6e6;
-  border-radius: 5px;
-  transition: all 0.5s ease;
+button[id^="buscar"] {
+  border-radius: 0;
+  width: 100%;
 }
 
-tr:hover {
-  background: #eeeeee;
+.btn-danger {
+  border-radius: 0;
 }
 
-#buscar:hover {
-  background: #343A40;
-  color: #007bff;
-  border: 2px solid #000000;
-  transition: all 0.35s ease;
-}
-
-car:active {
-  transform: translate(5px, 5px);
+.btn-primary {
+  border-radius: 0;
 }
 
 #carritoCompras {
@@ -144,10 +119,6 @@ car:active {
   margin: auto;
   width: 50px;
   height: 50px;
-}
-
-.botones {
-  width: 10px;
 }
 
 #divBotones {

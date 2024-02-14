@@ -17,12 +17,12 @@ function mostrarProductos(categoria) {
     let i = 1;
     if (resultadosFiltrados.length != 0) {
       resultadosFiltrados.forEach(productofiltrado => {
-        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-12" });
+        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-3" });
         let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
         //IMAGEN 
         carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
         //TEXTO DE PRODUCTO
-        carta.appendChild(crearElemento("h4", productofiltrado.getNombre(), { "class": "card-title" }));
+        carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
         //ICONO MENOS MAS E INPUT CANTIDAD
         let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
         let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
@@ -48,7 +48,7 @@ function mostrarProductos(categoria) {
         cantidadDiv.appendChild(inputCantidad);
         cantidadDiv.appendChild(iconoMas);
         //BOTON DE  PRODUCTO
-        let boton = crearElemento("button", " al carrito", { "class": "btn", "value": " al carro", id: "boton", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
+        let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
         boton.addEventListener("click", añadirProducto)
         carta.appendChild(cantidadDiv)
         carta.appendChild(crearElemento("h6", productofiltrado.getUnidades(), { "class": "card-title" }));
@@ -58,8 +58,7 @@ function mostrarProductos(categoria) {
         i++;
       })
     } else {
-      let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-12" });
-      let carta = crearElemento("div", undefined, { "class": "card grid-item", id: "producto" + i });
+      let carta = crearElemento("div", undefined, {id: "producto" + i });
       carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
       carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
       let botonMas = crearElemento("button", undefined, { id: "boton", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
@@ -120,7 +119,7 @@ function desaparecerElementoFadeOut(elemento) {
   }, 50); // Velocidad de la animación (50 milisegundos)
 }
 function modalCarritoCrearTabla(event) {
-  const theads = ["Producto", "Unidad", "Cantidad", "Comentario", "Quitar Del Carrito"];
+  const theads = ["Producto", "Cantidad", "Unidad", "Quitar Del Carrito"];
   let modalBody = document.getElementById('modalBody');
   modalBody.innerHTML = "";
   if (pedido.length != 0) {
@@ -135,8 +134,7 @@ function modalCarritoCrearTabla(event) {
       filaPedido.appendChild(crearElemento("td", pedido[i][0]));
       filaPedido.appendChild(crearElemento("td", pedido[i][1]));
       filaPedido.appendChild(crearElemento("td", pedido[i][2]));
-      filaPedido.appendChild(crearElemento("td", pedido[i][3]));
-      let botonBorrar = crearElemento("button", "Remover", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
+      let botonBorrar = crearElemento("button", "Quitar del carrito", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
       botonBorrar.addEventListener("click", borrarFilaPedido);
       let tdBorrar = crearElemento("td", undefined);
       tdBorrar.appendChild(botonBorrar)
@@ -150,7 +148,6 @@ function modalCarritoCrearTabla(event) {
     modalBody.appendChild(crearElemento("h4", "El carrito se encuentra vacío por ahora...", { style: "color:red; font-style:italic;" }));
   }
   let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
-  divComentario.appendChild(crearElemento('label', 'Comentario', { for: 'comentarioPedido' }));
   divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
   modalBody.appendChild(divComentario);
 }
