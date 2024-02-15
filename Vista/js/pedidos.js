@@ -81,8 +81,8 @@ function añadirProducto(params) {
   //reiniciar a 1 
   inputCantidad.value = 1;
 }
-function añadirCarrito(nombre, unidad, cantidad, identificadorProducto) {
-  pedido.push([nombre, unidad, cantidad, ""]);
+function añadirCarrito(nombre, unidad, cantidad) {
+  pedido.push([nombre, cantidad, unidad]);
   // reutilizar
   // let fila = document.getElementById("producto" + this.getAttribute("identificador"));
   // let divBotones = fila.querySelector("#divBotones")
