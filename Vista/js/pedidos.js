@@ -69,15 +69,13 @@ function mostrarProductos(categoria) {
   });
 }
 function añadirProducto(params) {
-  let id = this.id;
   let identificadorProducto = this.getAttribute("identificador");
   let nombre = this.getAttribute("nombre");
   let unidad = this.getAttribute("unidad");
   let inputCantidad = document.getElementById("cantidad" + identificadorProducto)
   let cantidad = inputCantidad.value
-  console.log(id, identificadorProducto, nombre, unidad)
   aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + unidad + " de " + nombre);
-  añadirCarrito(nombre, unidad, cantidad, identificadorProducto)
+  añadirCarrito(nombre, unidad, cantidad)
   //reiniciar a 1 
   inputCantidad.value = 1;
 }
