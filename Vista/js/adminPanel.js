@@ -2,7 +2,18 @@ window.addEventListener("load", principal, false)
 
 
 
-function principal(e) {
+function principal() {
+    comprobarSesion(function(valor) {
+        if(valor == 0) {
+            location.href = "../html/index.html";
+        } else {
+            document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
+            document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+            document.querySelector("#cerrarsesion").addEventListener("click", () => {
+                cerrarSesion();
+            });
+        }
+    });
     document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
     document.getElementById("revisarPedidos").addEventListener("click", manejadorClick);
     document.getElementById("gestionarResiduos").addEventListener("click", manejadorClick);

@@ -25,6 +25,8 @@ function validarFormulario() {
     }).done(function (a) {
       if(a == 1) {
         location.href = "../html/pedidos.html";
+      } else if(a == 2) {
+        location.href = "../html/panelAdmin.html";
       } else {
         crearMensajeError(a);
       }

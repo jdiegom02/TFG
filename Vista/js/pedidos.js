@@ -1,13 +1,30 @@
 var pedido = [];
 var categoriasUnicas = []
 addEventListener("DOMContentLoaded", () => {
+  comprobarSesion(function(valor) {
+    if(valor == 0) {
+        location.href = "../html/index.html";
+    } else {
+      if(valor.esadmin) {
+        document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"administrar", "class":"btn btn-primary", "value":"Administrar"}));
+        document.querySelector("#administrar").addEventListener("click", () => {
+          location.href = "../html/panelAdmin.html";
+        });
+
+      }
+      document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
+      document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+      document.querySelector("#cerrarsesion").addEventListener("click", () => {
+        cerrarSesion();
+      });
+}});
   mostrarSeleccionableCategorias(); mostrarProductos();
   document.getElementById("buscar").addEventListener("click", mostrarProductos)
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
   document.getElementById('pedir').addEventListener("click", pedirTodo);
 });
 
-function mostrarProductos(categoria) {
+function mostrarProductos() {
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
     divProductos.innerHTML = "";

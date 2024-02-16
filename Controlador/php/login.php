@@ -15,7 +15,13 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     $_SESSION['email'] = $_POST['email'];
                     $_SESSION["admin"] = $fila["esAdmin"];
                     $_SESSION["nombre"] = $fila["nombre"];
-                    echo $sessionIniciada;
+                    if($_SESSION["admin"] == 1) {
+                        echo 2;
+                    } elseif($_SESSION["admin"] == 0) {
+                        echo 1;
+                    } else {
+                        echo 0;
+                    }
                     break;
                 }
             }

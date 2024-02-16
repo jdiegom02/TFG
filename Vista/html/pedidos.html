@@ -17,12 +17,13 @@
 <body>
   <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
   <header class="navbar navbar-dark bg-ligth">
-    <div class="container-fluid justify-content-end">
+    <div class="container-fluid justify-content-end" id="elementosnav">
       <!-- Icono de carrito de compras -->
         <button class=" " data-bs-toggle="modal" data-bs-target="#carritoModal" id="carritoCompras">
-        <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
-        <i class="bi bi-cart"></i>
-      </button>
+          <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
+          <i class="bi bi-cart"></i>
+        </button>
+        
     </div>
   </header>
   <!--MODAL DEL CARRITO DE COMPRAS DEL HEADER-->
@@ -52,7 +53,7 @@
   </div>
   <!--FIN DE CABECERA-->
   <div class="container">
-    <h2 class="text-center">Formulario de Pedido</h2>
+    <h2 class="text-center" id="usuariopedido"></h2>
     <!-- Menú desplegable y campo de búsqueda -->
     <div class="row mb-4">
       <div class="col-md-6 offset-md-3">
