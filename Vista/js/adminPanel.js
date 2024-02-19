@@ -7,11 +7,17 @@ function principal() {
         if(valor == 0) {
             location.href = "../html/index.html";
         } else {
-            document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
-            document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
-            document.querySelector("#cerrarsesion").addEventListener("click", () => {
-                cerrarSesion();
-            });
+            if(valor.esadmin) {
+                document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
+                document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+                document.querySelector("#cerrarsesion").addEventListener("click", () => {
+                    cerrarSesion();
+                }); 
+            } else {
+                location.href = "../html/pedidos.html";
+
+            }
+            
         }
     });
     document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
@@ -50,16 +56,48 @@ function insertarProducto(e) {
     var residuos = document.getElementById('residuos').value.trim();
 
     // Verificar los datos de entrada
-    if (nombreProducto === '' || categoriaProducto !== '' || unidadMedida !== '' || residuos === '') {
+    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuos === '') {
         // Mostrar mensaje de error si algún campo está vacío
         mostrarMensajeError('Por favor, complete todos los campos.');
         return;
     }
 
     // Si los datos de entrada son correctos, mostrar el mensaje de éxito
-    mostrarMensajeExito();
+    //mostrarMensajeExito();
+    // Crear objeto con los datos del producto
+    var producto = {
+        nombre: nombreProducto,
+        categoria: categoriaProducto,
+        unidadMedida: unidadMedida,
+        residuos: residuos
+    };
 
-    // Aquí podrías continuar con el proceso de inserción de datos en la base de datos u otra acción necesaria
+    // Realizar solicitud AJAX para enviar los datos al backend
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/funcionesProductos.php", // Especifica la URL de tu script de backend
+        data: producto,
+        success: function (response) {
+            // Manejar la respuesta del servidor
+            console.log(response);
+            // Mostrar mensaje de éxito
+            mostrarMensajeExito();
+            // Limpiar los campos del formulario después de la inserción exitosa
+            document.getElementById('nombreProducto').value = '';
+            document.getElementById('categoriaProducto').value = '';
+            document.getElementById('unidadMedida').value = '';
+            document.getElementById('residuos').value = '';
+            // Cerrar el modal
+            $('#modalAgregarProducto').modal('hide');
+        },
+        error: function (xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error(error);
+            // Mostrar mensaje de error
+            mostrarMensajeError('Hubo un error al procesar la solicitud.');
+        }
+    });
+
 }
 
 function mostrarMensajeExito() {
@@ -137,6 +175,76 @@ function mostrarMensajeError(mensaje) {
         mensajeElemento.remove();
     }, 3000);
 }
+
+
+/* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
+
+
+    function cargarOpcionesCategoria() {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/categorias2.php",
+            dataType: "json",
+            success: function(data) {
+                // Limpiar el select
+                $('#categoriaProducto').empty();
+                // Agregar la opción por defecto
+                $('#categoriaProducto').append('<option value="">Seleccione una categoría...</option>');
+                // Iterar sobre los datos recibidos y agregar las opciones al select
+                $.each(data, function(index, categoria) {
+                    $('#categoriaProducto').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las opciones del select al cargar la página
+    cargarOpcionesCategoria();
+
+    // Agregar evento al botón "Guardar Cambios" del modal
+    $('#anadirProducto').click(function() {
+        // Llamar a la función insertarProducto()
+        insertarProducto();
+    });
+
+
+    function cargarOpcionesUnidadMedida() {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/unidades.php",
+            dataType: "json",
+            success: function(data) {
+                // Limpiar el select
+                $('#unidadMedida').empty();
+                // Agregar la opción por defecto
+                $('#unidadMedida').append('<option value="">Seleccione una unidad...</option>');
+                // Iterar sobre los datos recibidos y agregar las opciones al select
+                $.each(data, function(index, unidad) {
+                    $('#unidadMedida').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
+    cargarOpcionesUnidadMedida();
+
+    // Agregar evento al botón "Guardar Cambios" del modal
+    $('#anadirProducto').click(function() {
+        // Llamar a la función insertarProducto()
+        insertarProducto();
+    });
+
+/* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL-------FIN--------- */
+
+
+
 
 
 

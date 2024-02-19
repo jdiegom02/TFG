@@ -15,11 +15,28 @@
     <div class="container">
         <h1 class="mt-5 mb-4">Revisar Pedidos</h1>
         <div id="lista-pedidos" class="mt-4">
-            <!-- Aquí se cargarán los pedidos dinámicamente -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Verificado</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Nombre del Producto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Unidad</th>
+                        <th scope="col">Proveedor</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-pedidos-body">
+                    <!-- Aquí se cargarán los pedidos dinámicamente -->
+                </tbody>
+            </table>
         </div>
     </div>
-   <!-- Agregar un botón para validar los pedidos con clase "btn-primary" de Bootstrap -->
-<button id="btnValidarPedidos" class="btn btn-primary btn-lg btn-block mt-4">Validar Pedidos</button>
+
+    <!-- Agregar un botón para validar los pedidos con clase "btn-primary" de Bootstrap -->
+    <button id="btnValidarPedidos" class="btn btn-primary btn-lg btn-block mt-4">Validar Pedidos</button>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
