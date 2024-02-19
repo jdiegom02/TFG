@@ -10,7 +10,6 @@ addEventListener("DOMContentLoaded", () => {
         document.querySelector("#administrar").addEventListener("click", () => {
           location.href = "../html/panelAdmin.html";
         });
-
       }
       document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
       document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
@@ -23,10 +22,119 @@ addEventListener("DOMContentLoaded", () => {
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos)
   document.getElementById("searchInput").addEventListener("input", mostrarProductos)
   document.getElementById("buscar").addEventListener("click", mostrarProductos)
-  document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
-  document.getElementById('pedir').addEventListener("click", pedirTodo);
+  // document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
+  document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
+  // document.getElementById('pedir').addEventListener("click", pedirTodo);
 });
+function abrirCarrito(event) {
+  let divCarrito = document.getElementById("carritoDerecha");
+  let overlay = document.getElementById("overlay");
+  //actualizar posiciones antes de la transicion
+  divCarrito.innerHTML = "";
+  divCarrito.style.top = 0;
+  divCarrito.style.right = 0;
+  divCarrito.style.display = "block";
+  overlay.style.display = "block";
+  document.body.style.overflow = 'hidden'; // Deshabilitar scroll en la página principal
+  //CREAR ELEMENTOS DEL CARRITO:
+  let cabecera = crearElemento("div", undefined, { id: "carrito-cabecera" });
+  let cerrarBoton = crearElemento("button", undefined, { id: "cerrarBoton", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
+  let iconoCerrar = crearElemento("img", undefined, { "src": "../assets/iconoCerrar.svg" });
+  cerrarBoton.appendChild(iconoCerrar)
+  cabecera.appendChild(cerrarBoton);
+  cabecera.appendChild(crearElemento("h2", "Carrito de Compras",))
+  divCarrito.appendChild(cabecera)
 
+  if (pedido.length != 0) {
+    mostrarCarrito();
+    let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
+    divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' }));
+    divCarrito.appendChild(divComentario)
+    let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn btn-primary", style: "width:100%;" })
+    botonPedir.addEventListener("click", pedirTodo);
+    divCarrito.appendChild(botonPedir);
+  }
+
+  document.addEventListener('click', function (event) {
+    overlay.addEventListener('click', function () {
+      divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+      overlay.style.display = 'none'; // Ocultar overlay
+      document.body.style.overflow = '';
+    });
+    cerrarBoton.addEventListener('click', function () {
+      // Establecer la propiedad right al valor negativo del ancho del div
+      divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+      overlay.style.display = 'none'; // Ocultar overlay
+      document.body.style.overflow = ''; // Deshabilitar scroll en la página principal
+    });
+  });
+}
+function mostrarCarrito(params) {
+  let carritoDerecha = document.getElementById('carritoDerecha');
+  let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" })
+  for (let i = 0; i < pedido.length; i++) {
+    let productoCarrito = crearElemento("div", undefined, { id: "filaPedido" + (i + 1), identificador: i, class: "grid-item-carrito" });
+    //Contenedor imagen
+    let contenedorImagen = crearElemento("div", undefined)
+    let imagenProducto = crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", class: "img-fluid", style: "width:50px; height:50px;" })
+    contenedorImagen.appendChild(imagenProducto);
+    productoCarrito.appendChild(contenedorImagen);
+    //Contenedor Todo
+    let contenedorTodo = crearElemento("div", undefined)
+    let divDescripcion = crearElemento("div", undefined, { class: "descripcion" })
+    divDescripcion.appendChild(crearElemento("p", "" + pedido[i][0]));
+    contenedorTodo.appendChild(divDescripcion);
+    let divInformacion = crearElemento("div", undefined, { class: "informacion" })
+    let divCantidades = crearElemento("div", undefined, { class: "cantidades" })
+    divCantidades.appendChild(crearElemento("p", "En carro:"))
+    divCantidades.appendChild(crearElemento("p", pedido[i][1] + " " + pedido[i][2]));
+    let divBoton = crearElemento("div", undefined)
+    let botonBorrar = crearElemento("button", "Remover", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
+    botonBorrar.addEventListener("click", borrarFilaPedido);
+    divBoton.appendChild(botonBorrar);
+    divInformacion.appendChild(divCantidades);
+    divInformacion.appendChild(divBoton)
+    console.log(pedido[i][0]);
+    contenedorTodo.appendChild(divDescripcion)
+    contenedorTodo.appendChild(divInformacion)
+    productoCarrito.appendChild(contenedorTodo);
+    contenedorProductos.appendChild(productoCarrito)
+  }
+  carritoDerecha.appendChild(contenedorProductos)
+}
+// function modalCarritoCrearTabla(event) {
+//   const theads = ["Producto", "Cantidad", "Unidad", "Quitar Del Carrito"];
+//   let modalBody = document.getElementById('modalBody');
+//   modalBody.innerHTML = "";
+//   if (pedido.length != 0) {
+//     let tablaCarrito = crearElemento("table", undefined, { id: "tablaCarrito", class: "table " })
+//     let thead = crearElemento("thead", undefined, { id: "theadCarrito", class: "thead-light" })
+//     let tbody = crearElemento("tbody", undefined, { id: "tbodyCarrito" })
+//     for (let i = 0; i < theads.length; i++) {
+//       thead.appendChild(crearElemento("th", theads[i]));
+//     }
+//     for (let i = 0; i < pedido.length; i++) {
+//       let filaPedido = crearElemento("tr", undefined, { id: "filaPedido" + (i + 1), identificador: i });
+//       filaPedido.appendChild(crearElemento("td", pedido[i][0]));
+//       filaPedido.appendChild(crearElemento("td", pedido[i][1]));
+//       filaPedido.appendChild(crearElemento("td", pedido[i][2]));
+//       let botonBorrar = crearElemento("button", "Quitar del carrito", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
+//       botonBorrar.addEventListener("click", borrarFilaPedido);
+//       let tdBorrar = crearElemento("td", undefined);
+//       tdBorrar.appendChild(botonBorrar)
+//       filaPedido.appendChild(tdBorrar);
+//       tbody.appendChild(filaPedido);
+//     }
+//     tablaCarrito.appendChild(thead);
+//     tablaCarrito.appendChild(tbody);
+//     modalBody.appendChild(tablaCarrito)
+//     let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
+//     divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
+//     modalBody.appendChild(divComentario);
+//   } else {
+//     modalBody.appendChild(crearElemento("h4", "El carrito se encuentra vacío por ahora...", { style: "color:red; font-style:italic;" }));
+//   }
+// }
 function mostrarProductos() {
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
@@ -90,18 +198,37 @@ function mostrarProductos() {
   });
 }
 function añadirProducto(params) {
+  //buscar si existe antes
+  let encontrado = false;
+  let posicionEnArray = 0;
   let identificadorProducto = this.getAttribute("identificador");
   let nombre = this.getAttribute("nombre");
   let unidad = this.getAttribute("unidad");
   let inputCantidad = document.getElementById("cantidad" + identificadorProducto)
   let cantidad = inputCantidad.value
-  aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + unidad + " de " + nombre);
-  añadirCarrito(nombre, unidad, cantidad)
-  //reiniciar a 1 
+  for (let i = 0; i <= pedido.length; i++) {
+    if (pedido[i] == undefined || pedido[i][0] !== this.getAttribute("nombre")) {
+      let encontrado = false
+    } else {
+      posicionEnArray += i;
+      encontrado = true
+    }
+  }
+  if (!encontrado) {
+    aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + unidad + " de " + nombre);
+    añadirCarrito(nombre, unidad, cantidad)
+    //reiniciar a 1 
+  } else {
+    let inputCantidad = document.getElementById("cantidad" + identificadorProducto)
+    let cantidad = parseInt(inputCantidad.value)
+    pedido[posicionEnArray][1] += cantidad;
+    //SUMARLE A LA CANTIDAD DEL CARRITO
+  }
   inputCantidad.value = 1;
 }
 function añadirCarrito(nombre, unidad, cantidad) {
-  pedido.push([nombre, cantidad, unidad]);
+  pedido.push([nombre, parseInt(cantidad), unidad]);
+  console.log("agregado al carrito");
   // reutilizar
   // let fila = document.getElementById("producto" + this.getAttribute("identificador"));
   // let divBotones = fila.querySelector("#divBotones")
@@ -111,6 +238,8 @@ function añadirCarrito(nombre, unidad, cantidad) {
   // document.getElementById("cerrarPedido").click();
 }
 function aparecerVentanaEmergente(titulo, descripcion) {
+  let overlay = document.getElementById("overlay2");
+  overlay.style.display = "block";
   let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
   let ventanaEmergente = crearElemento("div", undefined, { id: "ventanaEmergente" })
   ventanaEmergente.appendChild(crearElemento("h3", titulo, { id: "ventanaEmergente-titulo" }))
@@ -131,52 +260,24 @@ function desaparecerElementoFadeOut(elemento) {
     if (opacidad <= 0.1) {
       clearInterval(intervalo);
       elementoDesaparecer.style.display = "none";
+      let overlay = document.getElementById("overlay2");
+      overlay.style.display = "none";
       elementoDesaparecer.parentNode.removeChild(elementoDesaparecer), 1000
     }
     elementoDesaparecer.style.opacity = opacidad;
     opacidad -= opacidad * 0.1;
   }, 50); // Velocidad de la animación (50 milisegundos)
 }
-function modalCarritoCrearTabla(event) {
-  const theads = ["Producto", "Cantidad", "Unidad", "Quitar Del Carrito"];
-  let modalBody = document.getElementById('modalBody');
-  modalBody.innerHTML = "";
-  if (pedido.length != 0) {
-    let tablaCarrito = crearElemento("table", undefined, { id: "tablaCarrito", class: "table " })
-    let thead = crearElemento("thead", undefined, { id: "theadCarrito", class: "thead-light" })
-    let tbody = crearElemento("tbody", undefined, { id: "tbodyCarrito" })
-    for (let i = 0; i < theads.length; i++) {
-      thead.appendChild(crearElemento("th", theads[i]));
-    }
-    for (let i = 0; i < pedido.length; i++) {
-      let filaPedido = crearElemento("tr", undefined, { id: "filaPedido" + (i + 1), identificador: i });
-      filaPedido.appendChild(crearElemento("td", pedido[i][0]));
-      filaPedido.appendChild(crearElemento("td", pedido[i][1]));
-      filaPedido.appendChild(crearElemento("td", pedido[i][2]));
-      let botonBorrar = crearElemento("button", "Quitar del carrito", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
-      botonBorrar.addEventListener("click", borrarFilaPedido);
-      let tdBorrar = crearElemento("td", undefined);
-      tdBorrar.appendChild(botonBorrar)
-      filaPedido.appendChild(tdBorrar);
-      tbody.appendChild(filaPedido);
-    }
-    tablaCarrito.appendChild(thead);
-    tablaCarrito.appendChild(tbody);
-    modalBody.appendChild(tablaCarrito)
-  } else {
-    modalBody.appendChild(crearElemento("h4", "El carrito se encuentra vacío por ahora...", { style: "color:red; font-style:italic;" }));
-  }
-  let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
-  divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
-  modalBody.appendChild(divComentario);
-}
+
 function borrarFilaPedido(event) {
   pedido.splice(this.id - 1, 1);
-  modalCarritoCrearTabla();
+  let elemento = event.target.parentNode.parentNode.parentNode.parentNode;
+  elemento.parentNode.removeChild(elemento);
 }
 function pedirTodo(event) {
   if (pedido.length == 0) {
   } else {
+    pedido.push(document.getElementById("comentarioPedido").value)
     insertarEnSolicitudes(pedido);
   }
 }
