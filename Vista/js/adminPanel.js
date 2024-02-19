@@ -172,6 +172,9 @@ function mostrarMensajeError(mensaje) {
 
 
 
+
+
+
 /* fUNCION PARA CREAR ELEMENTO */
 function crearElemento(etiqueta, texto, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
