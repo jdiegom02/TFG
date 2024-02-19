@@ -171,6 +171,74 @@ function mostrarMensajeError(mensaje) {
 }
 
 
+/* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
+
+
+    function cargarOpcionesCategoria() {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/categorias2.php",
+            dataType: "json",
+            success: function(data) {
+                // Limpiar el select
+                $('#categoriaProducto').empty();
+                // Agregar la opción por defecto
+                $('#categoriaProducto').append('<option value="">Seleccione una categoría...</option>');
+                // Iterar sobre los datos recibidos y agregar las opciones al select
+                $.each(data, function(index, categoria) {
+                    $('#categoriaProducto').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las opciones del select al cargar la página
+    cargarOpcionesCategoria();
+
+    // Agregar evento al botón "Guardar Cambios" del modal
+    $('#anadirProducto').click(function() {
+        // Llamar a la función insertarProducto()
+        insertarProducto();
+    });
+
+
+
+    function cargarOpcionesUnidadMedida() {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/unidades.php",
+            dataType: "json",
+            success: function(data) {
+                // Limpiar el select
+                $('#unidadMedida').empty();
+                // Agregar la opción por defecto
+                $('#unidadMedida').append('<option value="">Seleccione una unidad...</option>');
+                // Iterar sobre los datos recibidos y agregar las opciones al select
+                $.each(data, function(index, unidad) {
+                    $('#unidadMedida').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
+    cargarOpcionesUnidadMedida();
+
+    // Agregar evento al botón "Guardar Cambios" del modal
+    $('#anadirProducto').click(function() {
+        // Llamar a la función insertarProducto()
+        insertarProducto();
+    });
+
+/* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL-------FIN--------- */
+
+
 
 
 
