@@ -8,10 +8,21 @@ body {
 h2 {
   color: #007bff;
 }
-#carrito-cabecera{
+
+#carrito-cabecera {
+  text-align: center;
   display: grid;
   grid-template-columns: 1fr 6fr;
+  grid-template-rows: 70px;
+  align-items: center;
+  justify-content: center;
 }
+#carrito-cabecera h2{
+  padding: 5px;
+  margin: 10px;
+  border-bottom: 1px #00000040 solid;
+}
+
 #overlay {
   position: fixed;
   top: 0;
@@ -22,35 +33,33 @@ h2 {
   display: none;
   z-index: 999;
 }
+
 #overlay2 {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-
   display: none;
   z-index: 999;
 }
 
 #carritoDerecha {
-  display: block;
-  position: absolute;
+  position: fixed;
   top: 0;
-  right: -500px;
-  /* Inicialmente fuera de la pantalla */
-  transition: right 0.3s ease;
-  /* Transición suave al cambiar de posición */
-  width: 500px;
+  right: -400px;
+  width: 400px;
   background-color: white;
   height: 100vh;
   z-index: 1000;
-  /* Colocar encima del overlay */
+  transition: right 0.3s ease;
 }
+
+/* ELEMENTOS DEL CARRITO */
 
 #carritoDerecha .grid-carrito {
   display: grid;
-  grid-template-columns: 500px;
+  grid-template-columns: 400px;
   grid-auto-rows: 150px;
   row-gap: 20px;
   height: 70vh;
@@ -59,7 +68,7 @@ h2 {
 
 #carritoDerecha .grid-carrito .grid-item-carrito {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 2fr 4fr;
   border-top: 1px #00000056 solid;
   border-bottom: 1px #00000056 solid;
   gap: 5px;
@@ -74,7 +83,9 @@ h2 {
   grid-template-columns: 4fr 2fr;
   gap: 20px;
 }
-
+.cantidades p{
+  
+}
 #carritoDerecha .informacion {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -86,7 +97,16 @@ h2 {
   text-align: start;
 }
 
-#cerrarCarrito {}
+.grid-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-info{}
+#cerrarBoton {
+  border-radius: 50%;
+  border: 2px #000000 solid;
+}
 
 .input-group {
   margin-bottom: 20px;
@@ -146,6 +166,11 @@ td {
   text-align: center;
   gap: 20px;
   cursor: pointer;
+}
+
+.grupoIconos:hover {
+  width: 45px;
+  height: 45px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

@@ -30,12 +30,13 @@ function abrirCarrito(event) {
   let divCarrito = document.getElementById("carritoDerecha");
   let overlay = document.getElementById("overlay");
   //actualizar posiciones antes de la transicion
+  overlay.style.display = "block";
+  divCarrito.style.display = "block";
+  document.body.style.overflow = 'hidden'; // Deshabilitar scroll en la página principal
   divCarrito.innerHTML = "";
   divCarrito.style.top = 0;
   divCarrito.style.right = 0;
-  divCarrito.style.display = "block";
-  overlay.style.display = "block";
-  document.body.style.overflow = 'hidden'; // Deshabilitar scroll en la página principal
+  //que aparezca y luego se mueva;
   //CREAR ELEMENTOS DEL CARRITO:
   let cabecera = crearElemento("div", undefined, { id: "carrito-cabecera" });
   let cerrarBoton = crearElemento("button", undefined, { id: "cerrarBoton", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
@@ -44,7 +45,6 @@ function abrirCarrito(event) {
   cabecera.appendChild(cerrarBoton);
   cabecera.appendChild(crearElemento("h2", "Carrito de Compras",))
   divCarrito.appendChild(cabecera)
-
   if (pedido.length != 0) {
     mostrarCarrito();
     let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
@@ -55,39 +55,36 @@ function abrirCarrito(event) {
     divCarrito.appendChild(botonPedir);
   }
 
-  document.addEventListener('click', function (event) {
-    overlay.addEventListener('click', function () {
-      divCarrito.style.right = -divCarrito.offsetWidth + 'px';
-      overlay.style.display = 'none'; // Ocultar overlay
-      document.body.style.overflow = '';
-    });
-    cerrarBoton.addEventListener('click', function () {
-      // Establecer la propiedad right al valor negativo del ancho del div
-      divCarrito.style.right = -divCarrito.offsetWidth + 'px';
-      overlay.style.display = 'none'; // Ocultar overlay
-      document.body.style.overflow = ''; // Deshabilitar scroll en la página principal
-    });
+  overlay.addEventListener('click', function () {
+    divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+    overlay.style.display = 'none'; // Ocultar overlay
+    document.body.style.overflow = '';
+  });
+  cerrarBoton.addEventListener('click', function () {
+    // Establecer la propiedad right al valor negativo del ancho del div
+    divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+    overlay.style.display = 'none'; // Ocultar overlay
+    document.body.style.overflow = ''; // Deshabilitar scroll en la página principal
   });
 }
 function mostrarCarrito(params) {
-  let carritoDerecha = document.getElementById('carritoDerecha');
   let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" })
   for (let i = 0; i < pedido.length; i++) {
     let productoCarrito = crearElemento("div", undefined, { id: "filaPedido" + (i + 1), identificador: i, class: "grid-item-carrito" });
     //Contenedor imagen
-    let contenedorImagen = crearElemento("div", undefined)
+    let contenedorImagen = crearElemento("div", undefined, { class: "grid-img" })
     let imagenProducto = crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", class: "img-fluid", style: "width:50px; height:50px;" })
     contenedorImagen.appendChild(imagenProducto);
     productoCarrito.appendChild(contenedorImagen);
     //Contenedor Todo
-    let contenedorTodo = crearElemento("div", undefined)
+    let contenedorTodo = crearElemento("div", undefined,{class : "grid-info"})
     let divDescripcion = crearElemento("div", undefined, { class: "descripcion" })
     divDescripcion.appendChild(crearElemento("p", "" + pedido[i][0]));
     contenedorTodo.appendChild(divDescripcion);
     let divInformacion = crearElemento("div", undefined, { class: "informacion" })
     let divCantidades = crearElemento("div", undefined, { class: "cantidades" })
-    divCantidades.appendChild(crearElemento("p", "En carro:"))
-    divCantidades.appendChild(crearElemento("p", pedido[i][1] + " " + pedido[i][2]));
+    divCantidades.appendChild(crearElemento("p", "En carro:"+pedido[i][1]))
+    divCantidades.appendChild(crearElemento("p", " " + pedido[i][2]));
     let divBoton = crearElemento("div", undefined)
     let botonBorrar = crearElemento("button", "Remover", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
     botonBorrar.addEventListener("click", borrarFilaPedido);
@@ -112,7 +109,7 @@ function mostrarProductos() {
     let i = 1;
     if (resultadosFiltrados.length != 0) {
       resultadosFiltrados.forEach(productofiltrado => {
-        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-3" });
+        let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-3 col-md-4 col-sm-6" });
         let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
         //IMAGEN 
         carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
