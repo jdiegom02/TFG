@@ -1,24 +1,27 @@
 var pedido = [];
 var categoriasUnicas = []
 addEventListener("DOMContentLoaded", () => {
-  comprobarSesion(function(valor) {
-    if(valor == 0) {
-        location.href = "../html/index.html";
+  comprobarSesion(function (valor) {
+    if (valor == 0) {
+      location.href = "../html/index.html";
     } else {
-      if(valor.esadmin) {
-        document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"administrar", "class":"btn btn-primary", "value":"Administrar"}));
+      if (valor.esadmin) {
+        document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "administrar", "class": "btn btn-primary", "value": "Administrar" }));
         document.querySelector("#administrar").addEventListener("click", () => {
           location.href = "../html/panelAdmin.html";
         });
 
       }
       document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
-      document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+      document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
       document.querySelector("#cerrarsesion").addEventListener("click", () => {
         cerrarSesion();
       });
-}});
+    }
+  });
   mostrarSeleccionableCategorias(); mostrarProductos();
+  document.getElementById("categorySelect").addEventListener("change", mostrarProductos)
+  document.getElementById("searchInput").addEventListener("input", mostrarProductos)
   document.getElementById("buscar").addEventListener("click", mostrarProductos)
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
   document.getElementById('pedir').addEventListener("click", pedirTodo);
@@ -75,13 +78,14 @@ function mostrarProductos() {
         i++;
       })
     } else {
-      let carta = crearElemento("div", undefined, {id: "producto" + i });
+      let carta = crearElemento("div", undefined, { id: "producto" + i });
       carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
       carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
       let botonMas = crearElemento("button", undefined, { id: "boton", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
       botonMas.addEventListener("click", añadirProducto)
       botonMas.appendChild(img);
       div.appendChild(botonMas);
+      divProductos.appendChild(div)
     }
   });
 }
