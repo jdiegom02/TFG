@@ -9,13 +9,20 @@ function principal(e) {
     document.getElementById('guardarCambiosPedido').addEventListener('click', function() {
         guardarCambiosPedido();
     });
+
+    // Agregar event listener para detectar cambios en las celdas editables
+    document.querySelectorAll('.editable').forEach(function(cell, index) {
+        cell.addEventListener('input', function() {
+            guardarCambiosEnCelda(this, index);
+        });
+    });
 }
 
 function cargarPedidosDesdePHP() {
     // Realizar una solicitud AJAX para obtener los datos de los pedidos desde PHP
     $.ajax({
         url: '../../Controlador/php/pedidosmostrar.php',
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
         success: function(data) {
             mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
@@ -31,64 +38,62 @@ function mostrarPedidos(pedidos) {
     tablaPedidosBody.innerHTML = '';
     pedidos.forEach(function(pedido) {
         var row = document.createElement('tr');
+        row.dataset.idPedido = pedido.id;
         row.innerHTML = `
             <td><input type="checkbox" class="form-check-input"></td>
             <td>${pedido.fecha}</td>
-            <td>${pedido.descripcion}</td>
-            <td>${pedido.cantidad}</td>
-            <td>${pedido.unidad}</td>
-            <td>${pedido.usuario}</td>
+            <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
+            <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
+            <td class="unidad-editable"></td>
+            <td>${pedido.nombre_usuario}</td>
             <td>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modalModificarPedido" onclick="prepararModalModificarPedido(${pedido.id})">Modificar</button>
                 <button class="btn btn-danger" onclick="eliminarPedido(${pedido.id})">Eliminar</button>
             </td>
         `;
         tablaPedidosBody.appendChild(row);
+        cargarUnidades(pedido.id); // Cargar las unidades para este pedido
     });
 }
 
-function prepararModalModificarPedido(idPedido) {
-    // Aquí puedes obtener los datos del pedido con el ID proporcionado y preparar el modal para su modificación
-    var pedido = obtenerPedidoPorId(idPedido);
-    document.getElementById('fechaPedido').value = pedido.fecha;
-    document.getElementById('descripcionPedido').value = pedido.descripcion;
-    document.getElementById('cantidadPedido').value = pedido.cantidad;
-    document.getElementById('unidadPedido').value = pedido.unidad;
-    document.getElementById('usuarioPedido').value = pedido.usuario;
 
-    // Almacenar el ID del pedido que se está modificando en un atributo de datos del botón de guardar
-    document.getElementById('guardarCambiosPedido').dataset.idPedido = idPedido;
+
+function cargarUnidades(idPedido) {
+    $.ajax({
+        url: "../../Controlador/php/unidades.php", // Ruta al script PHP que devuelve las unidades
+        type: "POST",
+        dataType: "json",
+        success: function(unidades) {
+            var selectUnidad = document.createElement('select');
+            selectUnidad.classList.add('form-control');
+            unidades.forEach(function(unidad) {
+                var option = document.createElement('option');
+                option.value = unidad.unidad;
+                option.textContent = unidad.unidad;
+                selectUnidad.appendChild(option);
+            });
+            var filaPedido = document.querySelector(`tr[data-idPedido="${idPedido}"]`);
+            if (filaPedido) {
+                var tdUnidad = filaPedido.querySelector('.unidad-editable'); // Obtener la celda de unidad
+                tdUnidad.innerHTML = ''; // Limpiar el contenido existente
+                tdUnidad.appendChild(selectUnidad);
+            } else {
+                console.error('No se encontró la fila de pedido con ID:', idPedido);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar las unidades:', error);
+        }
+    });
 }
 
-function obtenerPedidoPorId(idPedido) {
-    // Implementa aquí la lógica para obtener el pedido por su ID
-    // Por ahora, solo se devolverá un pedido de ejemplo
-    return { id: idPedido, fecha: '2024-02-19', descripcion: 'Pedido de ejemplo', cantidad: 5, unidad: 'unidad', usuario: 'Usuario de ejemplo' };
-}
+function guardarCambiosEnCelda(cell, columna) {
+    var idPedido = cell.closest('tr').dataset.idPedido;
+    var nuevoValor = cell.textContent.trim();
 
-function guardarCambiosPedido() {
-    // Obtener el ID del pedido que se está modificando desde el atributo de datos del botón de guardar
-    var idPedido = document.getElementById('guardarCambiosPedido').dataset.idPedido;
-
-    // Obtener los nuevos valores del pedido desde el formulario modal
-    var nuevaDescripcion = document.getElementById('descripcionPedido').value;
-    var nuevaCantidad = document.getElementById('cantidadPedido').value;
-    var nuevaUnidad = document.getElementById('unidadPedido').value;
-
-    // Aquí puedes implementar la lógica para guardar los cambios del pedido con el ID proporcionado
+    // Aquí puedes implementar la lógica para guardar los cambios en el servidor
     console.log('Guardar cambios del pedido con ID:', idPedido);
-    console.log('Nueva descripción:', nuevaDescripcion);
-    console.log('Nueva cantidad:', nuevaCantidad);
-    console.log('Nueva unidad:', nuevaUnidad);
-
-    // Actualizar los valores en la tabla
-    var filaPedido = document.getElementById('pedido' + idPedido);
-    filaPedido.cells[2].textContent = nuevaDescripcion;
-    filaPedido.cells[3].textContent = nuevaCantidad;
-    filaPedido.cells[4].textContent = nuevaUnidad;
-
-    // Cerrar el modal después de guardar los cambios
-    $('#modalModificarPedido').modal('hide');
+    console.log('Columna:', columna);
+    console.log('Nuevo valor:', nuevoValor);
 }
 
 function eliminarPedido(idPedido) {
