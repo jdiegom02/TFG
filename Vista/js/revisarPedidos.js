@@ -45,45 +45,94 @@ function mostrarPedidos(pedidos) {
             <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
             <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
             <td class="unidad-editable"></td>
+            <td class="proveedor-editable"></td>
             <td>${pedido.nombre_usuario}</td>
             <td>
                 <button class="btn btn-danger" onclick="eliminarPedido(${pedido.id})">Eliminar</button>
             </td>
         `;
         tablaPedidosBody.appendChild(row);
-        cargarUnidades(pedido.id); // Cargar las unidades para este pedido
+        cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
+        cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
     });
 }
 
+function cargarUnidades(idPedido, unidad) {
+    // Encontrar la fila del pedido por su ID
+    var filaPedido = document.querySelector(`tr[data-id-pedido="${idPedido}"]`);
+    if (filaPedido) {
+        // Crear un elemento select para las unidades
+        var selectUnidad = document.createElement('select');
+        selectUnidad.classList.add('form-control');
 
+        // Realizar una solicitud AJAX para obtener las unidades desde el servidor
+        $.ajax({
+            url: "../../Controlador/php/unidades.php",
+            type: "POST",
+            dataType: "json",
+            success: function(unidades) {
+                // Iterar sobre las unidades recibidas y agregarlas al desplegable
+                unidades.forEach(function(unidadActual) {
+                    var option = document.createElement('option');
+                    option.value = unidadActual.unidad;
+                    option.textContent = unidadActual.unidad;
+                    if (unidadActual.unidad === unidad) { // Si la unidad actual coincide con la del pedido
+                        option.selected = true; // Establecer como preseleccionada
+                    }
+                    selectUnidad.appendChild(option);
+                });
 
-function cargarUnidades(idPedido) {
-    $.ajax({
-        url: "../../Controlador/php/unidades.php", // Ruta al script PHP que devuelve las unidades
-        type: "POST",
-        dataType: "json",
-        success: function(unidades) {
-            var selectUnidad = document.createElement('select');
-            selectUnidad.classList.add('form-control');
-            unidades.forEach(function(unidad) {
-                var option = document.createElement('option');
-                option.value = unidad.unidad;
-                option.textContent = unidad.unidad;
-                selectUnidad.appendChild(option);
-            });
-            var filaPedido = document.querySelector(`tr[data-idPedido="${idPedido}"]`);
-            if (filaPedido) {
-                var tdUnidad = filaPedido.querySelector('.unidad-editable'); // Obtener la celda de unidad
+                // Encontrar la celda de la columna de unidades y añadir el desplegable
+                var tdUnidad = filaPedido.querySelector('.unidad-editable');
                 tdUnidad.innerHTML = ''; // Limpiar el contenido existente
                 tdUnidad.appendChild(selectUnidad);
-            } else {
-                console.error('No se encontró la fila de pedido con ID:', idPedido);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al cargar las unidades:', error);
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error al cargar las unidades:', error);
-        }
-    });
+        });
+    } else {
+        console.error('No se encontró la fila de pedido con ID:', idPedido);
+    }
+}
+
+function cargarProveedores(idPedido, proveedor) {
+    // Encontrar la fila del pedido por su ID
+    var filaPedido = document.querySelector(`tr[data-id-pedido="${idPedido}"]`);
+    if (filaPedido) {
+        // Crear un elemento select para los proveedores
+        var selectProveedor = document.createElement('select');
+        selectProveedor.classList.add('form-control');
+
+        // Realizar una solicitud AJAX para obtener los proveedores desde el servidor
+        $.ajax({
+            url: "../../Controlador/php/proveedores.php",
+            type: "POST",
+            dataType: "json",
+            success: function(proveedores) {
+                // Iterar sobre los proveedores recibidos y agregarlos al desplegable
+                proveedores.forEach(function(proveedorActual) {
+                    var option = document.createElement('option');
+                    option.value = proveedorActual.descripcion;
+                    option.textContent = proveedorActual.descripcion;
+                    if (proveedorActual.descripcion === proveedor) { // Si el proveedor actual coincide con el del pedido
+                        option.selected = true; // Establecer como preseleccionado
+                    }
+                    selectProveedor.appendChild(option);
+                });
+
+                // Encontrar la celda de la columna de proveedores y añadir el desplegable
+                var tdProveedor = filaPedido.querySelector('.proveedor-editable');
+                tdProveedor.innerHTML = ''; // Limpiar el contenido existente
+                tdProveedor.appendChild(selectProveedor);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al cargar los proveedores:', error);
+            }
+        });
+    } else {
+        console.error('No se encontró la fila de pedido con ID:', idPedido);
+    }
 }
 
 function guardarCambiosEnCelda(cell, columna) {

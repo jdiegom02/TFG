@@ -17,9 +17,10 @@
                     <tr>
                         <th scope="col">Verificado</th>
                         <th scope="col">Fecha</th>
-                        <th scope="col">Descripción del Pedido</th>
+                        <th scope="col">Nombre del Producto</th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Unidad</th>
+                        <th scope="col">Proveedor</th>
                         <th scope="col">Usuario</th>
                         <th scope="col">Acciones</th>
                     </tr>
@@ -31,50 +32,8 @@
         </div>
     </div>
 
-    <!-- Modal para modificar pedido -->
-    <div class="modal fade" id="modalModificarPedido" tabindex="-1" role="dialog" aria-labelledby="modalModificarPedidoLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalModificarPedidoLabel">Modificar Pedido</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="formModificarPedido">
-                        <div class="form-group">
-                            <label for="fechaPedido">Fecha</label>
-                            <input type="text" class="form-control" id="fechaPedido" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionPedido">Descripción del Pedido</label>
-                            <input type="text" class="form-control" id="descripcionPedido">
-                        </div>
-                        <div class="form-group">
-                            <label for="cantidadPedido">Cantidad</label>
-                            <input type="number" class="form-control" id="cantidadPedido">
-                        </div>
-                        <div class="form-group">
-                            <label for="unidadPedido">Unidad</label>
-                            <input type="text" class="form-control" id="unidadPedido">
-                        </div>
-                        <div class="form-group">
-                            <label for="usuarioPedido">Usuario</label>
-                            <input type="text" class="form-control" id="usuarioPedido" readonly>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="guardarCambiosPedido">Guardar Cambios</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-   <!-- Agregar un botón para validar los pedidos con clase "btn-primary" de Bootstrap -->
-<button id="btnValidarPedidos" class="btn btn-primary btn-lg btn-block mt-4">Validar Pedidos</button>
+    <!-- Agregar un botón para validar los pedidos con clase "btn-primary" de Bootstrap -->
+    <button id="btnValidarPedidos" class="btn btn-primary btn-lg btn-block mt-4">Validar Pedidos</button>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
