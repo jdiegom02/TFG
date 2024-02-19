@@ -69,7 +69,7 @@ function insertarProducto(e) {
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
         type: "POST",
-        url: "ruta-a-tu-script-de-backend.php", // Especifica la URL de tu script de backend
+        url: "../../Controlador/php/funcionesProductos.php", // Especifica la URL de tu script de backend
         data: producto,
         success: function (response) {
             // Manejar la respuesta del servidor
@@ -92,7 +92,7 @@ function insertarProducto(e) {
         }
     });
 
- }
+}
 
 function mostrarMensajeExito() {
     // Crear elemento de mensaje de éxito
@@ -203,7 +203,6 @@ function mostrarMensajeError(mensaje) {
         // Llamar a la función insertarProducto()
         insertarProducto();
     });
-
 
 
     function cargarOpcionesUnidadMedida() {
