@@ -23,6 +23,10 @@ if (isset($_POST["carga"])) {
     mostrarSolicitudes();
 }
 
+if (isset($_POST["eliminarSolicitud"])) {
+    eliminarSolicitud();
+}
+
 function addSolicitud($correo, $desc, $unidad, $cantidad)
 {
     echo "entrando a addSolicitud";
@@ -65,4 +69,12 @@ function mostrarSolicitudes()
     echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     unset($conexion);
 
+}
+
+function eliminarSolicitud(){
+    $conexion = new BD("bonAppetit", "admin", "1234");
+    $idSolicitud = $_POST["eliminarSolicitud"];
+    $sqlEliminar = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
+    $conexion->realizarModificacion($sqlEliminar);
+    unset($conexion);
 }

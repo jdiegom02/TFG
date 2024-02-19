@@ -61,3 +61,15 @@ function cargarPedidos(callback) {
     callback(a);
   });
 }
+function eliminarSolicitud(id) {
+  $.ajax({
+    type: "POST",
+    url: "../../Controlador/php/funcionesSolicitudes.php",
+    data: { eliminarSolicitud: id },
+  }).done(function (a) {
+    console.log("datos:", a);
+    console.log("hecho");
+
+    cargarPedidosDesdePHP();
+  });
+}
