@@ -1,11 +1,7 @@
 /*CSS PARA PEDIDOS CSS*/
 body {
   background-color: #f8f9fa;
-  font-family: Arial, sans-serif;
-}
-
-.container {
-  margin-top: 50px;
+  font-family: "Open Sans";
 }
 
 h2 {
@@ -17,6 +13,9 @@ h2 {
 }
 
 .table {
+  font-size: 1.5em;
+  text-align: center;
+  width: 100%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -27,42 +26,123 @@ td {
   text-align: center;
 }
 
-#buscar {
-  margin-left: 8px;
-  padding-left: 30px;
-  padding-right: 30px;
-  font-size: 1.2em;
-  color: #c7f8f9;
-  border: 2px solid #e6e6e6;
-  border-radius: 5px;
-  transition: all 0.5s ease;
-
+.card {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-tr:hover {
-  background: #eeeeee;
+.card h6{
+  padding: 5%;
 }
 
-#buscar {}
-
-#buscar:hover {
-  background: #343A40;
-  color: #007bff;
-  border: 2px solid #000000;
-  transition: all 0.35s ease;
+.card img {
+  padding: 7%;
 }
 
-car:active {
-  transform: translate(5px, 5px);
-}
-
-#carritoCompras img {
+.add{
+  border-radius: 0;
   width: 100%;
 }
 
-.botones {
-  width: 40px;
+#divCantidad {
+  margin: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+}
+
+/*icono mas y menos*/
+.grupoIconos {
   height: 40px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/*que deje 1 fr al inicio y al final de espacio*/
+.grupoIconos:first-child {
+  grid-column-start: 2;
+}
+
+input[id^="cantidad"] {
+  border: none;
+  margin: auto;
+  font-size: 1.5em;
+  text-align: center;
+  justify-content: center;
+}
+
+button[id^="buscar"] {
+  border-radius: 0;
+  width: 100%;
+}
+
+.btn-danger {
+  border-radius: 0;
+}
+
+.btn-primary {
+  border-radius: 0;
+}
+
+#carritoCompras {
+  background: #00000000;
+  width: 70px;
+  height: 70px;
+  border-radius: 7px;
+  border: none;
+  margin: 0px 10px;
+}
+
+#carritoCompras:hover {
+  background: #fff;
+  border: 2px #000000 solid;
+}
+
+#carritoCompras img {
+  margin: auto;
+  width: 50px;
+  height: 50px;
+}
+
+#divBotones {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 70px;
+}
+
+/* #botonMas,
+#botonCheck {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+} */
+
+#botonMas:hover,
+#botonCheck:hover {
+  background: #029702;
 }
 
 .botonesAdd {
@@ -70,4 +150,37 @@ car:active {
   height: 40px;
   background-image: url(../assets/botonMas.svg);
   background-size: contain;
+}
+
+#contenedor-ventanaEmergente {
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: #b3b3b364;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+#ventanaEmergente {
+  border-radius: 10px;
+  background: #fff;
+  width: 600px;
+  padding: 30px 50px;
+  max-width: 100%;
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+}
+
+#efectoDesaparecer {
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+#desaparecidoCompletamente {
+  opacity: 0;
+
 }

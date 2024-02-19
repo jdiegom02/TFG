@@ -1,115 +1,218 @@
-var pedido = ["admin@example.com"]
+var pedido = [];
+var categoriasUnicas = []
 addEventListener("DOMContentLoaded", () => {
-  mostrarProductos();
+  comprobarSesion(function(valor) {
+    if(valor == 0) {
+        location.href = "../html/index.html";
+    } else {
+      if(valor.esadmin) {
+        document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"administrar", "class":"btn btn-primary", "value":"Administrar"}));
+        document.querySelector("#administrar").addEventListener("click", () => {
+          location.href = "../html/panelAdmin.html";
+        });
+
+      }
+      document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
+      document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+      document.querySelector("#cerrarsesion").addEventListener("click", () => {
+        cerrarSesion();
+      });
+}});
+  mostrarSeleccionableCategorias(); mostrarProductos();
+  document.getElementById("buscar").addEventListener("click", mostrarProductos)
   document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
   document.getElementById('pedir').addEventListener("click", pedirTodo);
 });
+
 function mostrarProductos() {
   recogerProductos(function (productos) {
+    let divProductos = document.querySelector("#productos");
+    divProductos.innerHTML = "";
+    let resultadosFiltrados
+    //filtrar productos devuelve el array filtado pasandole el array;
+    resultadosFiltrados = filtrarProductos(productos);
     let i = 1;
-    productos.forEach(producto => {
-      let fila = crearElemento("tr", undefined, { id: "producto" + i });
-      fila.appendChild(crearElemento("td", producto.getNombre()));
-      fila.appendChild(crearElemento("td", producto.getUnidades()));
-      let boton = crearElemento("button", undefined, { class: " btn btn-outline-success me-2 botonesAdd", "data-bs-toggle": "modal", "data-bs-target": "#pedidoModal", nombre: producto.getNombre(), unidad: producto.getUnidades(), id: producto.getId() });
-      let td = crearElemento("td")
-      boton.addEventListener("click", añadirProducto)
-      td.appendChild(boton)
-      fila.appendChild(td);
-      document.querySelector("#productTable").appendChild(fila);
-      i++;
-    })
+    if (resultadosFiltrados.length != 0) {
+      resultadosFiltrados.forEach(productofiltrado => {
+        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-3" });
+        let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
+        //IMAGEN 
+        carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+        //TEXTO DE PRODUCTO
+        carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
+        //ICONO MENOS MAS E INPUT CANTIDAD
+        let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
+        let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
+        let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad" + productofiltrado.getId(), min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
+        let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
+        //asegurarme de que no sea menor que 1 nunca al teclear;
+        inputCantidad.addEventListener("change", function () {
+          let valor = parseInt(this.value);
+          if (valor < 1 || isNaN(valor)) {
+            this.value = 1;
+          }
+        });
+        //que los botones funcionen bien
+        iconoMas.addEventListener("click", function () {
+          inputCantidad.value++;
+        })
+        iconoMenos.addEventListener("click", function () {
+          if (inputCantidad.value > 1) {
+            inputCantidad.value--;
+          }
+        })
+        cantidadDiv.appendChild(iconoMenos);
+        cantidadDiv.appendChild(inputCantidad);
+        cantidadDiv.appendChild(iconoMas);
+        //BOTON DE  PRODUCTO
+        let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
+        boton.addEventListener("click", añadirProducto)
+        carta.appendChild(cantidadDiv)
+        carta.appendChild(crearElemento("h6", productofiltrado.getUnidades(), { "class": "card-title" }));
+        carta.appendChild(boton);
+        contenedorCarta.appendChild(carta);
+        divProductos.appendChild(contenedorCarta);
+        i++;
+      })
+    } else {
+      let carta = crearElemento("div", undefined, {id: "producto" + i });
+      carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+      carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
+      let botonMas = crearElemento("button", undefined, { id: "boton", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
+      botonMas.addEventListener("click", añadirProducto)
+      botonMas.appendChild(img);
+      div.appendChild(botonMas);
+    }
   });
+}
+function añadirProducto(params) {
+  let identificadorProducto = this.getAttribute("identificador");
+  let nombre = this.getAttribute("nombre");
+  let unidad = this.getAttribute("unidad");
+  let inputCantidad = document.getElementById("cantidad" + identificadorProducto)
+  let cantidad = inputCantidad.value
+  aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + unidad + " de " + nombre);
+  añadirCarrito(nombre, unidad, cantidad)
+  //reiniciar a 1 
+  inputCantidad.value = 1;
+}
+function añadirCarrito(nombre, unidad, cantidad) {
+  pedido.push([nombre, cantidad, unidad]);
+  // reutilizar
+  // let fila = document.getElementById("producto" + this.getAttribute("identificador"));
+  // let divBotones = fila.querySelector("#divBotones")
+  // let botonCheck = crearElemento("button", undefined, { id: "botonCheck", class: "btn botones", identificador: pedido.length });
+  // botonCheck.appendChild(crearElemento("img", undefined, { src: "../assets/botonCheck.svg" }))
+  // divBotones.appendChild(botonCheck)
+  // document.getElementById("cerrarPedido").click();
+}
+function aparecerVentanaEmergente(titulo, descripcion) {
+  let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
+  let ventanaEmergente = crearElemento("div", undefined, { id: "ventanaEmergente" })
+  ventanaEmergente.appendChild(crearElemento("h3", titulo, { id: "ventanaEmergente-titulo" }))
+  ventanaEmergente.appendChild(crearElemento("h3", descripcion, { id: "ventanaEmergente-descripcion" }))
+  contenedorVentanaEmergente.appendChild(ventanaEmergente)
+  document.body.appendChild(contenedorVentanaEmergente);
+  setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 1000);
+}
+function desaparecerElementoFadeOut(elemento) {
+  let elementoDesaparecer
+  if (elemento == undefined) {
+    elementoDesaparecer = document.getElementById("contenedor-ventanaEmergente");
+  } else {
+    elementoDesaparecer = elemento;
+  }
+  let opacidad = 1;
+  let intervalo = setInterval(function () {
+    if (opacidad <= 0.1) {
+      clearInterval(intervalo);
+      elementoDesaparecer.style.display = "none";
+      elementoDesaparecer.parentNode.removeChild(elementoDesaparecer), 1000
+    }
+    elementoDesaparecer.style.opacity = opacidad;
+    opacidad -= opacidad * 0.1;
+  }, 50); // Velocidad de la animación (50 milisegundos)
+}
+function modalCarritoCrearTabla(event) {
+  const theads = ["Producto", "Cantidad", "Unidad", "Quitar Del Carrito"];
+  let modalBody = document.getElementById('modalBody');
+  modalBody.innerHTML = "";
+  if (pedido.length != 0) {
+    let tablaCarrito = crearElemento("table", undefined, { id: "tablaCarrito", class: "table " })
+    let thead = crearElemento("thead", undefined, { id: "theadCarrito", class: "thead-light" })
+    let tbody = crearElemento("tbody", undefined, { id: "tbodyCarrito" })
+    for (let i = 0; i < theads.length; i++) {
+      thead.appendChild(crearElemento("th", theads[i]));
+    }
+    for (let i = 0; i < pedido.length; i++) {
+      let filaPedido = crearElemento("tr", undefined, { id: "filaPedido" + (i + 1), identificador: i });
+      filaPedido.appendChild(crearElemento("td", pedido[i][0]));
+      filaPedido.appendChild(crearElemento("td", pedido[i][1]));
+      filaPedido.appendChild(crearElemento("td", pedido[i][2]));
+      let botonBorrar = crearElemento("button", "Quitar del carrito", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
+      botonBorrar.addEventListener("click", borrarFilaPedido);
+      let tdBorrar = crearElemento("td", undefined);
+      tdBorrar.appendChild(botonBorrar)
+      filaPedido.appendChild(tdBorrar);
+      tbody.appendChild(filaPedido);
+    }
+    tablaCarrito.appendChild(thead);
+    tablaCarrito.appendChild(tbody);
+    modalBody.appendChild(tablaCarrito)
+  } else {
+    modalBody.appendChild(crearElemento("h4", "El carrito se encuentra vacío por ahora...", { style: "color:red; font-style:italic;" }));
+  }
+  let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
+  divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
+  modalBody.appendChild(divComentario);
+}
+function borrarFilaPedido(event) {
+  pedido.splice(this.id - 1, 1);
+  modalCarritoCrearTabla();
 }
 function pedirTodo(event) {
   if (pedido.length == 0) {
-    console.log("no hacer nada");
   } else {
     insertarEnSolicitudes(pedido);
-    console.log("se pide todo dentro del array pedido");
-    console.log(pedido);
   }
 }
-
-function modalCarritoCrearTabla(event) {
-  let tabla = crearTabla(["Producto", "Unidad", "Cantidad", "Comentario", "Quitar Del Carrito"], pedido)
-  let modalBody = document.getElementById('modalBody');
-  /* antes en el for se iba al modal.legnth
-  en la primera iteracion el length sempre será 0 
-  por ello se lo he cambiado a tabla, que es lo mismo pero
-  actualizado, buenos dias */
-  for (let index = 0; index < tabla.querySelectorAll('[id^="filaPedido"]').length; index++) {
-    let tr = modalBody.querySelectorAll('[id^="filaPedido"]')[index];
-    console.log(tr);
-    /*acceder al hijo de el de tbody(tabla.childern[1]) */
-    tabla.children[1].children[index].appendChild(crearElemento("input", "boton", { value: "Quitar del carrito, falta funcionalidad", type:"button"}))
-    console.log(tabla);
+//-------HERRAMIENTAS-------
+function filtrarProductos(array) {
+  let categoria = $("#categorySelect").val();
+  let resultadosFiltradosporCategoria
+  //primero filtro por categoria
+  if (categoria !== "all") {
+    resultadosFiltradosporCategoria = array.filter(producto =>
+      producto.getCategoria().toLowerCase().includes(categoria.toLowerCase())
+    )
+  } else {
+    resultadosFiltradosporCategoria = array
   }
-  // tds[4].appendChild(crearElemento("button",undefined,{class:"btn"}))
-  modalBody.innerHTML = "";
-  modalBody.appendChild(tabla);
-}
-function añadirProducto(event) {
-  console.log("añadirProducto: " + this.id);
-  let modalBody = document.getElementById('pedidoModalBody');
-  let modalLabel = document.getElementById('pedidoModalLabel');
-  modalLabel.innerHTML = "";
-  modalLabel.appendChild(crearElemento("h5", "Pedir " + this.getAttribute("nombre"), { id: this.id }))
-  modalBody.innerHTML = ""
-  var divInputGroup = crearElemento('div', undefined, { class: 'input-group mb-3' });
-  var spanDolar = crearElemento('span', "Cantidad: ", { class: 'input-group-text' });
-  var input = crearElemento('input', undefined, { type: 'text', class: 'form-control', 'aria-label': 'Amount (to the nearest dollar)', type: "number", min: "1", id: "cantidadPedido" });
-  var spanPunto = crearElemento('span', this.getAttribute("unidad"), { class: 'input-group-text' });
-  divInputGroup.appendChild(spanDolar);
-  divInputGroup.appendChild(input);
-  divInputGroup.appendChild(spanPunto);
-  modalBody.appendChild(divInputGroup)
-  var divPrincipal = crearElemento('div', undefined, { class: 'form-floating' });
-  var label = crearElemento('label', 'Comentario', { for: 'comentarioPedido' });
-  let textarea = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' });
-  divPrincipal.appendChild(label);
-  divPrincipal.appendChild(textarea);
-  modalBody.appendChild(divPrincipal)
-  document.getElementById('pedirProducto').addEventListener("click", añadirCarrito);
-}
-function añadirCarrito(event) {
-  let lineaPedido = [];
-  filaProducto = document.getElementById("producto" + event.target.parentElement.parentElement.children[0].children[0].children[0].id);
-  let celdas = filaProducto.getElementsByTagName("td");
-  let descripcion = celdas[0].innerHTML;
-  let unidades = celdas[1].innerHTML;
-  let cantidad = document.getElementById('cantidadPedido').value;
-  let observaciones = document.getElementById('comentarioPedido').value;
-  lineaPedido.push(descripcion, unidades, cantidad, observaciones)
-  pedido.push(lineaPedido)
-  document.getElementById('cerrarPedido').click();
-}
-function crearTabla(titulos, datos) {
-  let tabla = crearElemento('table');
-  let thead = crearElemento('thead');
-  let trTitulos = crearElemento('tr');
-  for (let i = 0; i < titulos.length; i++) {
-    let th = crearElemento('th', titulos[i]);
-    th.id = 'titulo_' + i;
-    trTitulos.appendChild(th);
+  if (document.getElementById("searchInput".replaceAll(/\s+/g, "" === ""))) {
+    resultadosFiltradosPorNombre = resultadosFiltradosporCategoria.filter(producto =>
+      producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.replaceAll(/\s+/g, "").toLowerCase())
+    );
   }
-  thead.appendChild(trTitulos);
-  tabla.appendChild(thead);
-  let tbody = crearElemento('tbody');
-  for (let j = 1; j < datos.length; j++) {
-    let fila = datos[j];
-    let tr = crearElemento('tr', undefined, { id: "filaPedido" + j + 1 });
-    for (let k = 0; k < fila.length; k++) {
-      let td = crearElemento('td', fila[k]);
-      td.id = 'fila_' + j + '_columna_' + k;
-      tr.appendChild(td);
-    }
-    tbody.appendChild(tr);
-  }
-  tabla.appendChild(tbody);
-  return tabla;
+  return resultadosFiltradosPorNombre;
 }
-
+//obtener las categorias unicas:
+function mostrarSeleccionableCategorias() {
+  let categoriasDisponibles = [];
+  let selectCategoria = document.getElementById("categorySelect");
+  recogerProductos(function (productos) {
+    productos.forEach(producto => {
+      // Verifica si la categoría del objeto ya existe en el array de categorías únicas
+      if (!categoriasDisponibles.includes(producto.getCategoria())) {
+        // Si no existe, añade la categoría al array de categorías únicas
+        categoriasDisponibles.push(producto.getCategoria())
+        categoriasUnicas.push(producto.getCategoria());
+        let textoCategoria = producto.getCategoria().charAt(0).toUpperCase() + producto.getCategoria().slice(1);
+        let option = crearElemento("option", textoCategoria, { value: producto.getCategoria() });
+        selectCategoria.appendChild(option);
+      }
+    });
+  })
+}
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);
   if (texto !== undefined) {

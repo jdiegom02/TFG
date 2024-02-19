@@ -40,6 +40,4 @@ function ultimoID($conexion)
 }
 
 addProducto("nuervooo", "Sobre", "Fruteria");
-
-
 ?>

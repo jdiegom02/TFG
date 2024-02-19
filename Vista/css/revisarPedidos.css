@@ -1,4 +1,7 @@
 /* Estilos para el encabezado */
+body {
+    font-family: "Open Sans";
+}
 h1 {
     text-align: center;
 }
