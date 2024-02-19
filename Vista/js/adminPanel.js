@@ -50,17 +50,49 @@ function insertarProducto(e) {
     var residuos = document.getElementById('residuos').value.trim();
 
     // Verificar los datos de entrada
-    if (nombreProducto === '' || categoriaProducto !== '' || unidadMedida !== '' || residuos === '') {
+    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuos === '') {
         // Mostrar mensaje de error si algún campo está vacío
         mostrarMensajeError('Por favor, complete todos los campos.');
         return;
     }
 
     // Si los datos de entrada son correctos, mostrar el mensaje de éxito
-    mostrarMensajeExito();
+    //mostrarMensajeExito();
+    // Crear objeto con los datos del producto
+    var producto = {
+        nombre: nombreProducto,
+        categoria: categoriaProducto,
+        unidadMedida: unidadMedida,
+        residuos: residuos
+    };
 
-    // Aquí podrías continuar con el proceso de inserción de datos en la base de datos u otra acción necesaria
-}
+    // Realizar solicitud AJAX para enviar los datos al backend
+    $.ajax({
+        type: "POST",
+        url: "ruta-a-tu-script-de-backend.php", // Especifica la URL de tu script de backend
+        data: producto,
+        success: function (response) {
+            // Manejar la respuesta del servidor
+            console.log(response);
+            // Mostrar mensaje de éxito
+            mostrarMensajeExito();
+            // Limpiar los campos del formulario después de la inserción exitosa
+            document.getElementById('nombreProducto').value = '';
+            document.getElementById('categoriaProducto').value = '';
+            document.getElementById('unidadMedida').value = '';
+            document.getElementById('residuos').value = '';
+            // Cerrar el modal
+            $('#modalAgregarProducto').modal('hide');
+        },
+        error: function (xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error(error);
+            // Mostrar mensaje de error
+            mostrarMensajeError('Hubo un error al procesar la solicitud.');
+        }
+    });
+
+ }
 
 function mostrarMensajeExito() {
     // Crear elemento de mensaje de éxito
