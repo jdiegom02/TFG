@@ -7,11 +7,17 @@ function principal() {
         if(valor == 0) {
             location.href = "../html/index.html";
         } else {
-            document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
-            document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
-            document.querySelector("#cerrarsesion").addEventListener("click", () => {
-                cerrarSesion();
-            });
+            if(valor.esadmin) {
+                document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
+                document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+                document.querySelector("#cerrarsesion").addEventListener("click", () => {
+                    cerrarSesion();
+                }); 
+            } else {
+                location.href = "../html/pedidos.html";
+
+            }
+            
         }
     });
     document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
