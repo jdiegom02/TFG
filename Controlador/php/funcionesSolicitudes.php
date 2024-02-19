@@ -19,6 +19,9 @@ if (isset($_POST["datos"])) {
         addSolicitud($correo, $desc, $unidad, $cantidad);
     }
 }
+if (isset($_POST["carga"])) {
+    mostrarSolicitudes();
+}
 
 function addSolicitud($correo, $desc, $unidad, $cantidad)
 {
@@ -29,7 +32,7 @@ function addSolicitud($correo, $desc, $unidad, $cantidad)
         values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, $idUsuario)";
     echo $sqlInsertar;
     $conexion->realizarModificacion($sqlInsertar);
-
+    unset($conexion);
 }
 
 function idUsuario($correo, $conexion)
@@ -39,4 +42,27 @@ function idUsuario($correo, $conexion)
     $IDUsuario = $resultadoConsulta->fetch();
     $IDUsuario = $IDUsuario[0];
     return $IDUsuario;
+}
+
+function mostrarSolicitudes()
+{
+    $conexion = new BD("bonAppetit", "admin", "1234");
+    $sqlSolicitudes = "SELECT solicitudes.id AS solicitud_id, descripcion, unidades, cantidad, usuarios.nombre AS usuario_nombre
+                    FROM solicitudes
+                    JOIN usuarios ON solicitudes.fk_usuario = usuarios.id where tramitado=0 order by solicitudes.descripcion asc;";
+    $resultadoConsulta = $conexion->realizarConsulta($sqlSolicitudes);
+    $resultado = []; // Crear un nuevo array para almacenar los resultados
+    while ($fila = $resultadoConsulta->fetch()) {
+        $solicitud = [
+            "id" => $fila["solicitud_id"],
+            "descripcion" => $fila["descripcion"],
+            "unidades" => $fila["unidades"],
+            "cantidad" => $fila["cantidad"],
+            "usuario" => $fila["usuario_nombre"]
+        ];
+        array_push($resultado, $solicitud);
+    }
+    echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+    unset($conexion);
+
 }

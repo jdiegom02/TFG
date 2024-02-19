@@ -1,26 +1,19 @@
 window.addEventListener("load", principal, false);
 
 function principal(e) {
-    cargarPedidos();
-    var btnValidarPedidos = document.getElementById('btnValidarPedidos');
-    btnValidarPedidos.addEventListener('click', function() {
-        validarPedidosYGenerarPDF();
+    let pedidos = [];
+    cargarPedidos(function (data) {
+        pedidos = data;
+        mostrarPedidos(pedidos);
     });
 }
 
-function cargarPedidos() {
-    var pedidosEjemplo = [
-        { id: 1, cliente: 'Cliente 1', detalles: 'Detalles del pedido 1' },
-        { id: 2, cliente: 'Cliente 2', detalles: 'Detalles del pedido 2' },
-        { id: 3, cliente: 'Cliente 3', detalles: 'Detalles del pedido 3' }
-    ];
-    mostrarPedidos(pedidosEjemplo);
-}
+
 
 function mostrarPedidos(pedidos) {
     var listaPedidosContainer = document.getElementById('lista-pedidos');
     listaPedidosContainer.innerHTML = '';
-    pedidos.forEach(function(pedido) {
+    pedidos.forEach(function (pedido) {
         var pedidoTarjeta = document.createElement('div');
         pedidoTarjeta.classList.add('card', 'pedido');
         var tarjetaContenido = `
