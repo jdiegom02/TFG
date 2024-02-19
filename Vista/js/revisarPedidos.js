@@ -1,80 +1,99 @@
 window.addEventListener("load", principal, false);
 
 function principal(e) {
-    cargarPedidos();
+    cargarPedidosDesdePHP();
     var btnValidarPedidos = document.getElementById('btnValidarPedidos');
     btnValidarPedidos.addEventListener('click', function() {
         validarPedidosYGenerarPDF();
     });
-}
-
-function cargarPedidos() {
-    var pedidosEjemplo = [
-        { id: 1, cliente: 'Cliente 1', detalles: 'Detalles del pedido 1' },
-        { id: 2, cliente: 'Cliente 2', detalles: 'Detalles del pedido 2' },
-        { id: 3, cliente: 'Cliente 3', detalles: 'Detalles del pedido 3' }
-    ];
-    mostrarPedidos(pedidosEjemplo);
-}
-
-function mostrarPedidos(pedidos) {
-    var listaPedidosContainer = document.getElementById('lista-pedidos');
-    listaPedidosContainer.innerHTML = '';
-    pedidos.forEach(function(pedido) {
-        var pedidoTarjeta = document.createElement('div');
-        pedidoTarjeta.classList.add('card', 'pedido');
-        var tarjetaContenido = `
-            <div class="card-body">
-                <h5 class="card-title">Pedido ${pedido.cliente}</h5>
-                <p class="card-text"><strong>Cliente:</strong> <span id="cliente${pedido.id}">${pedido.cliente}</span></p>
-                <p class="card-text"><strong>Detalles:</strong> <span id="detalles${pedido.id}">${pedido.detalles}</span></p>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modalModificarPedido${pedido.id}">Modificar Pedido</button>
-            </div>
-        `;
-        pedidoTarjeta.innerHTML = tarjetaContenido;
-        listaPedidosContainer.appendChild(pedidoTarjeta);
-        var modalModificarPedido = `
-            <div class="modal fade" id="modalModificarPedido${pedido.id}" tabindex="-1" role="dialog" aria-labelledby="modalModificarPedido${pedido.id}Label" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalModificarPedido${pedido.id}Label">Modificar Pedido ${pedido.id}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="cliente${pedido.id}">Cliente</label>
-                                    <input type="text" class="form-control" id="nuevoCliente${pedido.id}" value="${pedido.cliente}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="detalles${pedido.id}">Detalles</label>
-                                    <input type="text" class="form-control" id="nuevosDetalles${pedido.id}" value="${pedido.detalles}">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" onclick="guardarCambiosPedido(${pedido.id})">Guardar Cambios</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', modalModificarPedido);
+    document.getElementById('guardarCambiosPedido').addEventListener('click', function() {
+        guardarCambiosPedido();
     });
 }
 
-function guardarCambiosPedido(idPedido) {
-    var nuevoCliente = document.getElementById(`nuevoCliente${idPedido}`).value;
-    var nuevosDetalles = document.getElementById(`nuevosDetalles${idPedido}`).value;
-    var clienteSpan = document.getElementById(`cliente${idPedido}`);
-    var detallesSpan = document.getElementById(`detalles${idPedido}`);
-    clienteSpan.textContent = nuevoCliente;
-    detallesSpan.textContent = nuevosDetalles;
-    $('#modalModificarPedido' + idPedido).modal('hide');
+function cargarPedidosDesdePHP() {
+    // Realizar una solicitud AJAX para obtener los datos de los pedidos desde PHP
+    $.ajax({
+        url: '../../Controlador/php/pedidosmostrar.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar los pedidos desde PHP:', error);
+        }
+    });
+}
+
+function mostrarPedidos(pedidos) {
+    var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
+    tablaPedidosBody.innerHTML = '';
+    pedidos.forEach(function(pedido) {
+        var row = document.createElement('tr');
+        row.innerHTML = `
+            <td><input type="checkbox" class="form-check-input"></td>
+            <td>${pedido.fecha}</td>
+            <td>${pedido.descripcion}</td>
+            <td>${pedido.cantidad}</td>
+            <td>${pedido.unidad}</td>
+            <td>${pedido.usuario}</td>
+            <td>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modalModificarPedido" onclick="prepararModalModificarPedido(${pedido.id})">Modificar</button>
+                <button class="btn btn-danger" onclick="eliminarPedido(${pedido.id})">Eliminar</button>
+            </td>
+        `;
+        tablaPedidosBody.appendChild(row);
+    });
+}
+
+function prepararModalModificarPedido(idPedido) {
+    // Aquí puedes obtener los datos del pedido con el ID proporcionado y preparar el modal para su modificación
+    var pedido = obtenerPedidoPorId(idPedido);
+    document.getElementById('fechaPedido').value = pedido.fecha;
+    document.getElementById('descripcionPedido').value = pedido.descripcion;
+    document.getElementById('cantidadPedido').value = pedido.cantidad;
+    document.getElementById('unidadPedido').value = pedido.unidad;
+    document.getElementById('usuarioPedido').value = pedido.usuario;
+
+    // Almacenar el ID del pedido que se está modificando en un atributo de datos del botón de guardar
+    document.getElementById('guardarCambiosPedido').dataset.idPedido = idPedido;
+}
+
+function obtenerPedidoPorId(idPedido) {
+    // Implementa aquí la lógica para obtener el pedido por su ID
+    // Por ahora, solo se devolverá un pedido de ejemplo
+    return { id: idPedido, fecha: '2024-02-19', descripcion: 'Pedido de ejemplo', cantidad: 5, unidad: 'unidad', usuario: 'Usuario de ejemplo' };
+}
+
+function guardarCambiosPedido() {
+    // Obtener el ID del pedido que se está modificando desde el atributo de datos del botón de guardar
+    var idPedido = document.getElementById('guardarCambiosPedido').dataset.idPedido;
+
+    // Obtener los nuevos valores del pedido desde el formulario modal
+    var nuevaDescripcion = document.getElementById('descripcionPedido').value;
+    var nuevaCantidad = document.getElementById('cantidadPedido').value;
+    var nuevaUnidad = document.getElementById('unidadPedido').value;
+
+    // Aquí puedes implementar la lógica para guardar los cambios del pedido con el ID proporcionado
+    console.log('Guardar cambios del pedido con ID:', idPedido);
+    console.log('Nueva descripción:', nuevaDescripcion);
+    console.log('Nueva cantidad:', nuevaCantidad);
+    console.log('Nueva unidad:', nuevaUnidad);
+
+    // Actualizar los valores en la tabla
+    var filaPedido = document.getElementById('pedido' + idPedido);
+    filaPedido.cells[2].textContent = nuevaDescripcion;
+    filaPedido.cells[3].textContent = nuevaCantidad;
+    filaPedido.cells[4].textContent = nuevaUnidad;
+
+    // Cerrar el modal después de guardar los cambios
+    $('#modalModificarPedido').modal('hide');
+}
+
+function eliminarPedido(idPedido) {
+    // Aquí puedes implementar la lógica para eliminar el pedido con el ID proporcionado
+    console.log('Eliminar pedido con ID:', idPedido);
 }
 
 function validarPedidosYGenerarPDF() {
