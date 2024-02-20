@@ -3,21 +3,7 @@ include_once("../../Modelo/php/BD.php");
 session_start();
 
 if (isset($_POST["datos"])) {
-    $datos = $_POST["datos"];
-    // $correo = $datos[0]; // Obtener el correo del primer elemento
-    print_r($datos);
-    // Iterar sobre los elementos restantes de $datos
-    for ($i = 0; $i < count($datos); $i++) {
-        $solicitud = $datos[$i]; // Obtener la información de la solicitud actual
-        $desc = $solicitud[0]; // Descripción de la solicitud
-        $cantidad = $solicitud[1]; // Cantidad de la solicitud
-        $unidad = $solicitud[2]; // Unidad de la solicitud
-
-        //Recoger dato de usuario (email) desde el session
-        $correo = $_SESSION['email'];
-        // Llamar a la función addSolicitud con los datos actuales
-        addSolicitud($correo, $desc, $unidad, $cantidad);
-    }
+    addSolicitud();
 }
 if (isset($_POST["carga"])) {
     mostrarSolicitudes();
@@ -27,15 +13,34 @@ if (isset($_POST["eliminarSolicitud"])) {
     eliminarSolicitud();
 }
 
-function addSolicitud($correo, $desc, $unidad, $cantidad)
+if (isset($_POST["addPedido"])) {
+    addPedido($_POST["addPedido"]);
+}
+
+function addSolicitud()
 {
-    echo "entrando a addSolicitud";
+    $datos = $_POST["datos"];
+    // $correo = $datos[0]; // Obtener el correo del primer elemento
+    print_r($datos);
+    // Iterar sobre los elementos restantes de $datos
     $conexion = new BD("bonAppetit", "admin", "1234");
-    $idUsuario = idUsuario($correo, $conexion);
-    $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, fk_usuario) 
-        values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, $idUsuario)";
-    echo $sqlInsertar;
-    $conexion->realizarModificacion($sqlInsertar);
+
+    for ($i = 0; $i < count($datos); $i++) {
+        $solicitud = $datos[$i]; // Obtener la información de la solicitud actual
+        $desc = $solicitud[0]; // Descripción de la solicitud
+        $cantidad = $solicitud[1]; // Cantidad de la solicitud
+        $unidad = $solicitud[2]; // Unidad de la solicitud
+
+        //Recoger dato de usuario (email) desde el session
+        $correo = $_SESSION['email'];
+        $idUsuario = idUsuario($correo, $conexion);
+        $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, fk_usuario) 
+            values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, $idUsuario)";
+        echo $sqlInsertar;
+        $conexion->realizarModificacion($sqlInsertar);
+        // Llamar a la función addSolicitud con los datos actuales
+    }
+
     unset($conexion);
 }
 
@@ -46,6 +51,23 @@ function idUsuario($correo, $conexion)
     $IDUsuario = $resultadoConsulta->fetch();
     $IDUsuario = $IDUsuario[0];
     return $IDUsuario;
+}
+function idUsuarioNombre($nombre, $conexion)
+{
+    $sqlIDUsuario = "SELECT id FROM usuarios WHERE nombre LIKE '$nombre'";
+    $resultadoConsulta = $conexion->realizarConsulta($sqlIDUsuario);
+    $IDUsuario = $resultadoConsulta->fetch();
+    $IDUsuario = $IDUsuario[0];
+    return $IDUsuario;
+}
+
+function idProveedor($nombre, $conexion)
+{
+    $sqlIDProveedor = "SELECT id FROM proveedores WHERE descripcion LIKE '$nombre'";
+    $resultadoConsulta = $conexion->realizarConsulta($sqlIDProveedor);
+    $IDProveedor = $resultadoConsulta->fetch();
+    $IDProveedor = $IDProveedor[0];
+    return $IDProveedor;
 }
 
 function mostrarSolicitudes()
@@ -71,10 +93,28 @@ function mostrarSolicitudes()
 
 }
 
-function eliminarSolicitud(){
+function eliminarSolicitud()
+{
     $conexion = new BD("bonAppetit", "admin", "1234");
     $idSolicitud = $_POST["eliminarSolicitud"];
     $sqlEliminar = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
     $conexion->realizarModificacion($sqlEliminar);
+    unset($conexion);
+}
+
+function addPedido($datos)
+{
+    print_r($datos);
+    $conexion = new BD("bonAppetit", "admin", "1234");
+    foreach ($datos as $dato) {
+        $idUsuario = idUsuarioNombre($dato[4], $conexion);
+        $idProveedor = idProveedor($dato[3], $conexion);
+        $sqlInsertar = "INSERT into pedidos (fecha, fk_estado, fk_usuario, fk_proveedor, observaciones ) 
+                values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), 1, $idUsuario, $idProveedor, 'observado')";
+        $conexion->realizarModificacion($sqlInsertar);
+
+        echo $sqlInsertar;
+    }
+
     unset($conexion);
 }

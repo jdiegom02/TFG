@@ -73,3 +73,14 @@ function eliminarSolicitud(id) {
     cargarPedidosDesdePHP();
   });
 }
+
+function insertarEnPedidos(datos) {
+  $.ajax({
+    type: "POST",
+    url: "../../Controlador/php/funcionesSolicitudes.php",
+    data: { addPedido: datos },
+  }).done(function (a) {
+    console.log(a);
+    // No volver a cargar los pedidos desde PHP aquí
+  });
+}
