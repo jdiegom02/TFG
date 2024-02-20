@@ -108,7 +108,8 @@ h2 {
 #cerrarBoton {
   border: 2px #000000 solid;
 }
-#cerrarBoton img{
+
+#cerrarBoton img {
   width: 70%;
   height: 70%;
 }
@@ -262,8 +263,31 @@ button[id^="buscar"] {
   background-size: contain;
 }
 
+#contenedor-popUpConfirmacion {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: #bebebe50;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+#popUpConfirmacion {
+  z-index: 1004;
+  border-radius: 10px;
+  background: #ffffff;
+  width: 600px;
+  height: 400px;
+  padding: 30px 50px;
+  max-width: 100%;
+}
+
 #contenedor-ventanaEmergente {
-  z-index: 5;
+  z-index: 1002;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -277,6 +301,7 @@ button[id^="buscar"] {
 }
 
 #ventanaEmergente {
+  z-index: 1001;
   border-radius: 10px;
   background: #fff;
   width: 600px;

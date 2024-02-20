@@ -1,5 +1,4 @@
 
-var pedido = [];
 var categoriasUnicas = []
 var nombreUsuario;
 addEventListener("DOMContentLoaded", () => {
@@ -14,6 +13,9 @@ addEventListener("DOMContentLoaded", () => {
         });
       }
       nombreUsuario = valor.nombre;
+      if (!verificarSessionStorage(nombreUsuario)) {
+        sessionStorage.setItem(nombreUsuario, "[]")
+      }
       document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
       document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
       document.querySelector("#cerrarsesion").addEventListener("click", () => {
@@ -21,6 +23,7 @@ addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
   mostrarSeleccionableCategorias(); mostrarProductos();
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos)
   document.getElementById("searchInput").addEventListener("input", mostrarProductos)
@@ -50,9 +53,6 @@ function abrirCarrito(event) {
   divCarrito.appendChild(cabecera)
   if (sessionStorage.getItem(nombreUsuario) !== null) {
     mostrarCarrito();
-    let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
-    divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' }));
-    divCarrito.appendChild(divComentario)
     let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn btn-primary", style: "width:100%;" })
     botonPedir.addEventListener("click", pedirTodo);
     divCarrito.appendChild(botonPedir);
@@ -96,7 +96,6 @@ function mostrarCarrito(params) {
     divBoton.appendChild(botonBorrar);
     divInformacion.appendChild(divCantidades);
     divInformacion.appendChild(divBoton)
-    console.log(arrayPedido[i][0]);
     contenedorTodo.appendChild(divDescripcion)
     contenedorTodo.appendChild(divInformacion)
     productoCarrito.appendChild(contenedorTodo);
@@ -116,7 +115,7 @@ function mostrarProductos() {
       resultadosFiltrados.forEach(productofiltrado => {
         let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-3 col-md-4 col-sm-6" });
         let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
-        //IMAGEN 
+        //IMAGEN
         carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
         //TEXTO DE PRODUCTO
         carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
@@ -166,37 +165,83 @@ function mostrarProductos() {
     }
   });
 }
-function añadirProducto(params) {
-  //buscar si existe antes
+function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad) {
+  console.log("POPUP");
+  let overlay = document.getElementById("overlay")
+  let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" })
+  let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" })
+  popUp.appendChild(crearElemento("h3", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }))
+  popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }))
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad })
+  popUp.appendChild(botonConfirmarProducto)
+  botonConfirmarProducto.addEventListener("click", confirmarProducto);
+  let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" })
+  popUp.appendChild(botonCancelarProducto)
+  botonCancelarProducto.addEventListener("click", cancelarProducto)
+  //crear comentario
+  let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
+  popUp.appendChild(comentario)
+  contenedorPopUp.appendChild(popUp)
+  document.body.appendChild(contenedorPopUp);
+}
+function confirmarProducto(event) {
+  //recoger todo y mandarlo al carrito
+  // document.getElementById("comentarioPedido").value;
+  let observacion = document.getElementById("comentarioPedido").value;
+  let cantidad = this.getAttribute("cantidad")
+  console.log(this.getAttribute("nombre"));
+  console.log(cantidad);
   let encontrado = false;
   let posicionEnArray = 0;
-  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
-  let cantidad = inputCantidad.value
-  for (let i = 0; i <= pedido.length; i++) {
-    if (pedido[i] == undefined || pedido[i][0] !== this.getAttribute("nombre")) {
-      let encontrado = false
-    } else {
-      posicionEnArray += i;
-      encontrado = true
+  if (verificarSessionStorage(nombreUsuario)) {
+    let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
+    for (let i = 0; i <= almacenado.length; i++) {
+      if (almacenado[i] == undefined || almacenado[i][0] !== this.getAttribute("nombre")) {
+        console.log("noo encontrado");
+      } else {
+        console.log("encontrado");
+        posicionEnArray = i;
+        encontrado = true;
+      }
     }
   }
   if (!encontrado) {
     aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
-    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidad)
+    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidad, observacion)
     //reiniciar a 1 
   } else {
-    let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
-    let cantidad = parseInt(inputCantidad.value)
-    pedido[posicionEnArray][1] += cantidad;
+    //si se encuentra se actualiza el valor de la session storage
+    let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
+    miArray[posicionEnArray][1] += cantidad
+    miArray[posicionEnArray][3] = observacion;
+    console.log(miArray);
+    sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
     //SUMARLE A LA CANTIDAD DEL CARRITO
   }
+  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+}
+function cancelarProducto(params) {
+  //finalmente cerrar
+  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+}
+function añadirProducto(event) {
+  //buscar si existe antes
+  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
+  let cantidad = inputCantidad.value
+  crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
   inputCantidad.value = 1;
 }
-function añadirCarrito(nombre, unidad, cantidad) {
-  pedido.push([nombre, parseInt(cantidad), unidad]);
-  console.log("agregado al carrito");
-  sessionStorage.setItem(nombreUsuario, JSON.stringify(pedido))
-  console.log(sessionStorage.getItem(nombreUsuario));
+
+function añadirCarrito(nombre, unidad, cantidad, observacion) {
+  let almacenar = ([nombre, parseInt(cantidad), unidad, observacion])
+  if (sessionStorage.getItem(nombreUsuario) != null) {
+    let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
+    almacenado.push([nombre, parseInt(cantidad), unidad, observacion])
+    sessionStorage.setItem(nombreUsuario, JSON.stringify(almacenado))
+  } else {
+    let almacenado = almacenar
+    sessionStorage.setItem(nombreUsuario, almacenado)
+  }
 }
 function aparecerVentanaEmergente(titulo, descripcion) {
   let overlay = document.getElementById("overlay2");
@@ -229,20 +274,28 @@ function desaparecerElementoFadeOut(elemento) {
     opacidad -= opacidad * 0.1;
   }, 50); // Velocidad de la animación (50 milisegundos)
 }
-
 function borrarFilaPedido(event) {
-  pedido.splice(this.id - 1, 1);
-  let elemento = event.target.parentNode.parentNode.parentNode.parentNode;
-  elemento.parentNode.removeChild(elemento);
+  let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  miArray = eliminarPosicionDelArray(miArray, this.id - 1)
+  sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
+  abrirCarrito();
 }
 function pedirTodo(event) {
   if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
-    let pedidoArray = JSON.parse(sessionStorage.getItem(nombreUsuario))
-    pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
-    console.log(pedido);
-    insertarEnSolicitudes(pedidoArray);
+    // let pedidoArray = JSON.parse(sessionStorage.getItem(nombreUsuario))
+    // pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
+    insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
+    sessionStorage.removeItem(nombreUsuario);
+    aparecerVentanaEmergente("Se ha hecho el pedido", "todo biem capo")
+    abrirCarrito();
+    if (!verificarSessionStorage(nombreUsuario)) {
+      sessionStorage.setItem(nombreUsuario, "[]")
+    }
   }
+}
+function verificarSessionStorage(nombreDelKeyDeLaSesion) {
+  return sessionStorage.getItem(nombreDelKeyDeLaSesion) != null;
 }
 //-------HERRAMIENTAS-------
 function filtrarProductos(array) {
@@ -280,6 +333,18 @@ function mostrarSeleccionableCategorias() {
       }
     });
   })
+}
+
+function eliminarPosicionDelArray(array, posicionEnArray) {
+  let arrayTempo = [];
+  if (posicionEnArray < array.length) {
+    for (let i = 0; i < array.length; i++) {
+      if (i != posicionEnArray) {
+        arrayTempo.push(array[i]);
+      }
+    }
+  }
+  return arrayTempo;
 }
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);
