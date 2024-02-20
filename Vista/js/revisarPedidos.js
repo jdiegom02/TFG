@@ -1,80 +1,156 @@
 window.addEventListener("load", principal, false);
 
 function principal(e) {
-    cargarPedidos();
+    cargarPedidosDesdePHP();
     var btnValidarPedidos = document.getElementById('btnValidarPedidos');
-    btnValidarPedidos.addEventListener('click', function() {
+    btnValidarPedidos.addEventListener('click', function () {
         validarPedidosYGenerarPDF();
+    });
+    // document.getElementById('guardarCambiosPedido').addEventListener('click', function() {
+    //     guardarCambiosPedido();
+    // });
+
+    // Agregar event listener para detectar cambios en las celdas editables
+    document.querySelectorAll('.editable').forEach(function (cell, index) {
+        cell.addEventListener('input', function () {
+            guardarCambiosEnCelda(this, index);
+        });
     });
 }
 
-function cargarPedidos() {
-    var pedidosEjemplo = [
-        { id: 1, cliente: 'Cliente 1', detalles: 'Detalles del pedido 1' },
-        { id: 2, cliente: 'Cliente 2', detalles: 'Detalles del pedido 2' },
-        { id: 3, cliente: 'Cliente 3', detalles: 'Detalles del pedido 3' }
-    ];
-    mostrarPedidos(pedidosEjemplo);
+function cargarPedidosDesdePHP() {
+    // Realizar una solicitud AJAX para obtener los datos de los pedidos desde PHP
+    $.ajax({
+        url: '../../Controlador/php/pedidosmostrar.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al cargar los pedidos desde PHP:', error);
+        }
+    });
 }
 
 function mostrarPedidos(pedidos) {
-    var listaPedidosContainer = document.getElementById('lista-pedidos');
-    listaPedidosContainer.innerHTML = '';
-    pedidos.forEach(function(pedido) {
-        var pedidoTarjeta = document.createElement('div');
-        pedidoTarjeta.classList.add('card', 'pedido');
-        var tarjetaContenido = `
-            <div class="card-body">
-                <h5 class="card-title">Pedido ${pedido.cliente}</h5>
-                <p class="card-text"><strong>Cliente:</strong> <span id="cliente${pedido.id}">${pedido.cliente}</span></p>
-                <p class="card-text"><strong>Detalles:</strong> <span id="detalles${pedido.id}">${pedido.detalles}</span></p>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modalModificarPedido${pedido.id}">Modificar Pedido</button>
-            </div>
+    var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
+    tablaPedidosBody.innerHTML = '';
+    pedidos.forEach(function (pedido) {
+        var row = document.createElement('tr');
+        row.dataset.idPedido = pedido.id;
+        row.innerHTML = `
+            <td><input type="checkbox" class="form-check-input"></td>
+            <td>${pedido.fecha}</td>
+            <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
+            <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
+            <td class="unidad-editable"></td>
+            <td class="proveedor-editable"></td>
+            <td>${pedido.nombre_usuario}</td>
+            <td>
+                <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
+            </td>
         `;
-        pedidoTarjeta.innerHTML = tarjetaContenido;
-        listaPedidosContainer.appendChild(pedidoTarjeta);
-        var modalModificarPedido = `
-            <div class="modal fade" id="modalModificarPedido${pedido.id}" tabindex="-1" role="dialog" aria-labelledby="modalModificarPedido${pedido.id}Label" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalModificarPedido${pedido.id}Label">Modificar Pedido ${pedido.id}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="cliente${pedido.id}">Cliente</label>
-                                    <input type="text" class="form-control" id="nuevoCliente${pedido.id}" value="${pedido.cliente}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="detalles${pedido.id}">Detalles</label>
-                                    <input type="text" class="form-control" id="nuevosDetalles${pedido.id}" value="${pedido.detalles}">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" onclick="guardarCambiosPedido(${pedido.id})">Guardar Cambios</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', modalModificarPedido);
+        tablaPedidosBody.appendChild(row);
+        cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
+        cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
+        document.querySelector("#pedido" + pedido.id).addEventListener('click', function () {
+            eliminarSolicitud(pedido.id);
+        });
     });
 }
 
-function guardarCambiosPedido(idPedido) {
-    var nuevoCliente = document.getElementById(`nuevoCliente${idPedido}`).value;
-    var nuevosDetalles = document.getElementById(`nuevosDetalles${idPedido}`).value;
-    var clienteSpan = document.getElementById(`cliente${idPedido}`);
-    var detallesSpan = document.getElementById(`detalles${idPedido}`);
-    clienteSpan.textContent = nuevoCliente;
-    detallesSpan.textContent = nuevosDetalles;
-    $('#modalModificarPedido' + idPedido).modal('hide');
+function cargarUnidades(idPedido, unidad) {
+    // Encontrar la fila del pedido por su ID
+    var filaPedido = document.querySelector(`tr[data-id-pedido="${idPedido}"]`);
+    if (filaPedido) {
+        // Crear un elemento select para las unidades
+        var selectUnidad = document.createElement('select');
+        selectUnidad.classList.add('form-control');
+
+        // Realizar una solicitud AJAX para obtener las unidades desde el servidor
+        $.ajax({
+            url: "../../Controlador/php/unidades.php",
+            type: "POST",
+            dataType: "json",
+            success: function (unidades) {
+                // Iterar sobre las unidades recibidas y agregarlas al desplegable
+                unidades.forEach(function (unidadActual) {
+                    var option = document.createElement('option');
+                    option.value = unidadActual.unidad;
+                    option.textContent = unidadActual.unidad;
+                    if (unidadActual.unidad === unidad) { // Si la unidad actual coincide con la del pedido
+                        option.selected = true; // Establecer como preseleccionada
+                    }
+                    selectUnidad.appendChild(option);
+                });
+
+                // Encontrar la celda de la columna de unidades y añadir el desplegable
+                var tdUnidad = filaPedido.querySelector('.unidad-editable');
+                tdUnidad.innerHTML = ''; // Limpiar el contenido existente
+                tdUnidad.appendChild(selectUnidad);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al cargar las unidades:', error);
+            }
+        });
+    } else {
+        console.error('No se encontró la fila de pedido con ID:', idPedido);
+    }
+}
+
+function cargarProveedores(idPedido, proveedor) {
+    // Encontrar la fila del pedido por su ID
+    var filaPedido = document.querySelector(`tr[data-id-pedido="${idPedido}"]`);
+    if (filaPedido) {
+        // Crear un elemento select para los proveedores
+        var selectProveedor = document.createElement('select');
+        selectProveedor.classList.add('form-control');
+
+        // Realizar una solicitud AJAX para obtener los proveedores desde el servidor
+        $.ajax({
+            url: "../../Controlador/php/proveedores.php",
+            type: "POST",
+            dataType: "json",
+            success: function (proveedores) {
+                // Iterar sobre los proveedores recibidos y agregarlos al desplegable
+                proveedores.forEach(function (proveedorActual) {
+                    var option = document.createElement('option');
+                    option.value = proveedorActual.descripcion;
+                    option.textContent = proveedorActual.descripcion;
+                    if (proveedorActual.descripcion === proveedor) { // Si el proveedor actual coincide con el del pedido
+                        option.selected = true; // Establecer como preseleccionado
+                    }
+                    selectProveedor.appendChild(option);
+                });
+
+                // Encontrar la celda de la columna de proveedores y añadir el desplegable
+                var tdProveedor = filaPedido.querySelector('.proveedor-editable');
+                tdProveedor.innerHTML = ''; // Limpiar el contenido existente
+                tdProveedor.appendChild(selectProveedor);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al cargar los proveedores:', error);
+            }
+        });
+    } else {
+        console.error('No se encontró la fila de pedido con ID:', idPedido);
+    }
+}
+
+function guardarCambiosEnCelda(cell, columna) {
+    var idPedido = cell.closest('tr').dataset.idPedido;
+    var nuevoValor = cell.textContent.trim();
+
+    // Aquí puedes implementar la lógica para guardar los cambios en el servidor
+    console.log('Guardar cambios del pedido con ID:', idPedido);
+    console.log('Columna:', columna);
+    console.log('Nuevo valor:', nuevoValor);
+}
+
+function eliminarPedido(idPedido) {
+    // Aquí puedes implementar la lógica para eliminar el pedido con el ID proporcionado
+    console.log('Eliminar pedido con ID:', idPedido);
 }
 
 function validarPedidosYGenerarPDF() {

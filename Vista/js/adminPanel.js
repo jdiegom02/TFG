@@ -7,11 +7,17 @@ function principal() {
         if(valor == 0) {
             location.href = "../html/index.html";
         } else {
-            document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
-            document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
-            document.querySelector("#cerrarsesion").addEventListener("click", () => {
-                cerrarSesion();
-            });
+            if(valor.esadmin) {
+                document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
+                document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+                document.querySelector("#cerrarsesion").addEventListener("click", () => {
+                    cerrarSesion();
+                }); 
+            } else {
+                location.href = "../html/pedidos.html";
+
+            }
+            
         }
     });
     document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
@@ -19,6 +25,8 @@ function principal() {
     document.getElementById("gestionarResiduos").addEventListener("click", manejadorClick);
     document.getElementById("anadir").addEventListener("click", manejadorClick);
     document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
+    document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
+    document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
 
 }
 
@@ -36,6 +44,12 @@ function manejadorClick(e) {
     }
     else if (this.id === "gestionarResiduos") {
         location.href = 'gestionarResiduos.html';
+    }
+    else if (this.id === "gestionarUsuarios") {
+        location.href = 'gestionarUsuarios.html';
+    }
+    else if (this.id === "gestionarProveedores") {
+        location.href = 'gestionarProveedores.html';
     }
 
 }
@@ -69,7 +83,7 @@ function insertarProducto(e) {
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
         type: "POST",
-        url: "ruta-a-tu-script-de-backend.php", // Especifica la URL de tu script de backend
+        url: "../../Controlador/php/funcionesProductos.php", // Especifica la URL de tu script de backend
         data: producto,
         success: function (response) {
             // Manejar la respuesta del servidor
@@ -92,7 +106,7 @@ function insertarProducto(e) {
         }
     });
 
- }
+}
 
 function mostrarMensajeExito() {
     // Crear elemento de mensaje de éxito
@@ -169,6 +183,76 @@ function mostrarMensajeError(mensaje) {
         mensajeElemento.remove();
     }, 3000);
 }
+
+
+/* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
+
+
+    function cargarOpcionesCategoria() {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/categorias2.php",
+            dataType: "json",
+            success: function(data) {
+                // Limpiar el select
+                $('#categoriaProducto').empty();
+                // Agregar la opción por defecto
+                $('#categoriaProducto').append('<option value="">Seleccione una categoría...</option>');
+                // Iterar sobre los datos recibidos y agregar las opciones al select
+                $.each(data, function(index, categoria) {
+                    $('#categoriaProducto').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las opciones del select al cargar la página
+    cargarOpcionesCategoria();
+
+    // Agregar evento al botón "Guardar Cambios" del modal
+    $('#anadirProducto').click(function() {
+        // Llamar a la función insertarProducto()
+        insertarProducto();
+    });
+
+
+    function cargarOpcionesUnidadMedida() {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/unidades.php",
+            dataType: "json",
+            success: function(data) {
+                // Limpiar el select
+                $('#unidadMedida').empty();
+                // Agregar la opción por defecto
+                $('#unidadMedida').append('<option value="">Seleccione una unidad...</option>');
+                // Iterar sobre los datos recibidos y agregar las opciones al select
+                $.each(data, function(index, unidad) {
+                    $('#unidadMedida').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
+    cargarOpcionesUnidadMedida();
+
+    // Agregar evento al botón "Guardar Cambios" del modal
+    $('#anadirProducto').click(function() {
+        // Llamar a la función insertarProducto()
+        insertarProducto();
+    });
+
+/* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL-------FIN--------- */
+
+
+
 
 
 

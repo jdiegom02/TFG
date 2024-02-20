@@ -7,6 +7,7 @@
     <title>Panel de Administración</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/panelAdmin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../../Controlador/js/funcionesControlador.js"></script>
     <script src="../js/adminPanel.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
@@ -19,7 +20,7 @@
         <h1 class="mt-5 mb-4" id="usuario"></h1>
 
         <!-- Opciones del panel de administración -->
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-sm-4" id="realizarPedido">
                 <div class="opcion">
                     <img src="../img/iconos/carrito.png" alt="Realizar Pedido">
@@ -34,16 +35,30 @@
             </div>
             <div class="col-sm-4" id="gestionarResiduos">
                 <div class="opcion">
-                    <img src="../img/iconos/residuos.png" alt="Revisar Pedidos de Otros Usuarios">
+                    <img src="../img/iconos/residuos.png" alt="Gestionar Residuos">
                     <p>Gestionar Residuos</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-8 offset-sm-2"> <!-- Ajustar el tamaño de la columna y agregar desplazamiento -->
+        <div class="row justify-content-center">
+            <div class="col-sm-4" id="gestionarUsuarios">
+                <div class="opcion">
+                    <img src="../img/iconos/usuarios.png" alt="Gestionar Usuarios">
+                    <p>Gestionar Usuarios</p>
+                </div>
+            </div>
+            <div class="col-sm-4" id="gestionarProveedores">
+                <div class="opcion">
+                    <img src="../img/iconos/proveedores.png" alt="Gestionar Proveedores">
+                    <p>Gestionar Proveedores</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-8"> <!-- Ajustar el tamaño de la columna y agregar desplazamiento -->
                 <div class="opcion alargado"  id="revisarPedidos">
                     <!-- Agregar clase "alargado" para aplicar estilos adicionales -->
-                    <img src="../img/iconos/pedidos.png" alt="Añadir Producto">
+                    <img src="../img/iconos/pedidos.png" alt="Revisar Pedidos">
                     <p>Revisar Pedidos</p>
                 </div>
             </div>
@@ -69,7 +84,6 @@
                             <div class="input-group">
                                 <select class="custom-select" id="categoriaProducto">
                                     <option value="">Seleccione una categoría...</option>
-                                    <option value="carniceria">Carniceria</option>
                                     <!-- Aquí se cargarán las opciones de categoría -->
                                 </select>
                                 <div class="input-group-append">
@@ -82,7 +96,6 @@
                             <div class="input-group">
                                 <select class="custom-select" id="unidadMedida">
                                     <option value="">Seleccione una unidad...</option>
-                                    <option value="litros">Litros</option>
                                     <!-- Aquí se cargarán las opciones de unidad de medida -->
                                 </select>
                                 <div class="input-group-append">
