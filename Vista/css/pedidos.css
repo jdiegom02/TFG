@@ -17,7 +17,8 @@ h2 {
   align-items: center;
   justify-content: center;
 }
-#carrito-cabecera h2{
+
+#carrito-cabecera h2 {
   padding: 5px;
   margin: 10px;
   border-bottom: 1px #00000040 solid;
@@ -58,6 +59,7 @@ h2 {
 /* ELEMENTOS DEL CARRITO */
 
 #carritoDerecha .grid-carrito {
+  font-weight: 700;
   display: grid;
   grid-template-columns: 400px;
   grid-auto-rows: 150px;
@@ -83,9 +85,9 @@ h2 {
   grid-template-columns: 4fr 2fr;
   gap: 20px;
 }
-.cantidades p{
-  
-}
+
+.cantidades p {}
+
 #carritoDerecha .informacion {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -102,10 +104,13 @@ h2 {
   justify-content: center;
   align-items: center;
 }
-.grid-info{}
+
 #cerrarBoton {
-  border-radius: 50%;
   border: 2px #000000 solid;
+}
+#cerrarBoton img{
+  width: 70%;
+  height: 70%;
 }
 
 .input-group {

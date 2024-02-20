@@ -1,5 +1,7 @@
+
 var pedido = [];
 var categoriasUnicas = []
+var nombreUsuario;
 addEventListener("DOMContentLoaded", () => {
   comprobarSesion(function (valor) {
     if (valor == 0) {
@@ -11,6 +13,7 @@ addEventListener("DOMContentLoaded", () => {
           location.href = "../html/panelAdmin.html";
         });
       }
+      nombreUsuario = valor.nombre;
       document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
       document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
       document.querySelector("#cerrarsesion").addEventListener("click", () => {
@@ -45,7 +48,7 @@ function abrirCarrito(event) {
   cabecera.appendChild(cerrarBoton);
   cabecera.appendChild(crearElemento("h2", "Carrito de Compras",))
   divCarrito.appendChild(cabecera)
-  if (pedido.length != 0) {
+  if (sessionStorage.getItem(nombreUsuario) !== null) {
     mostrarCarrito();
     let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
     divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' }));
@@ -68,8 +71,9 @@ function abrirCarrito(event) {
   });
 }
 function mostrarCarrito(params) {
-  let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" })
-  for (let i = 0; i < pedido.length; i++) {
+  let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" });
+  let arrayPedido = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  for (let i = 0; i < arrayPedido.length; i++) {
     let productoCarrito = crearElemento("div", undefined, { id: "filaPedido" + (i + 1), identificador: i, class: "grid-item-carrito" });
     //Contenedor imagen
     let contenedorImagen = crearElemento("div", undefined, { class: "grid-img" })
@@ -77,21 +81,22 @@ function mostrarCarrito(params) {
     contenedorImagen.appendChild(imagenProducto);
     productoCarrito.appendChild(contenedorImagen);
     //Contenedor Todo
-    let contenedorTodo = crearElemento("div", undefined,{class : "grid-info"})
+    let contenedorTodo = crearElemento("div", undefined, { class: "grid-info" })
     let divDescripcion = crearElemento("div", undefined, { class: "descripcion" })
-    divDescripcion.appendChild(crearElemento("p", "" + pedido[i][0]));
+    divDescripcion.appendChild(crearElemento("p", "" + arrayPedido[i][0]));
     contenedorTodo.appendChild(divDescripcion);
     let divInformacion = crearElemento("div", undefined, { class: "informacion" })
     let divCantidades = crearElemento("div", undefined, { class: "cantidades" })
-    divCantidades.appendChild(crearElemento("p", "En carro:"+pedido[i][1]))
-    divCantidades.appendChild(crearElemento("p", " " + pedido[i][2]));
+    divCantidades.appendChild(crearElemento("p", "En carro:" + arrayPedido[i][1]))
+    divCantidades.appendChild(crearElemento("p", " " + arrayPedido[i][2]));
     let divBoton = crearElemento("div", undefined)
-    let botonBorrar = crearElemento("button", "Remover", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
+    let botonBorrar = crearElemento("button", undefined, { id: i + 1, type: "button", class: "", value: "", style: "margin:auto; width:100%; height:100%;background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" })
+    botonBorrar.appendChild(crearElemento("img", undefined, { "src": "../assets/botonRemover1.png" }))
     botonBorrar.addEventListener("click", borrarFilaPedido);
     divBoton.appendChild(botonBorrar);
     divInformacion.appendChild(divCantidades);
     divInformacion.appendChild(divBoton)
-    console.log(pedido[i][0]);
+    console.log(arrayPedido[i][0]);
     contenedorTodo.appendChild(divDescripcion)
     contenedorTodo.appendChild(divInformacion)
     productoCarrito.appendChild(contenedorTodo);
@@ -190,6 +195,8 @@ function añadirProducto(params) {
 function añadirCarrito(nombre, unidad, cantidad) {
   pedido.push([nombre, parseInt(cantidad), unidad]);
   console.log("agregado al carrito");
+  sessionStorage.setItem(nombreUsuario, JSON.stringify(pedido))
+  console.log(sessionStorage.getItem(nombreUsuario));
 }
 function aparecerVentanaEmergente(titulo, descripcion) {
   let overlay = document.getElementById("overlay2");
@@ -229,10 +236,12 @@ function borrarFilaPedido(event) {
   elemento.parentNode.removeChild(elemento);
 }
 function pedirTodo(event) {
-  if (pedido.length == 0) {
+  if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
-    pedido.push(document.getElementById("comentarioPedido").value)
-    insertarEnSolicitudes(pedido);
+    let pedidoArray = JSON.parse(sessionStorage.getItem(nombreUsuario))
+    pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
+    console.log(pedido);
+    insertarEnSolicitudes(pedidoArray);
   }
 }
 //-------HERRAMIENTAS-------
