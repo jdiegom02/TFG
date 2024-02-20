@@ -123,3 +123,12 @@ body {
     z-index: 9999;
     cursor: pointer;
 }
+
+/* BOTON CAMBIAR CONTRASEÑA*/
+#tablaUsuarios td:last-child {
+    width: 20%; /* Ajustar según sea necesario */
+}
+
+.btn-cambiar-contrasena{
+    /* background-color: #afafaf; */
+}

@@ -1,23 +1,19 @@
-window.addEventListener("load", principal, false)
-
-
+window.addEventListener("load", principal, false);
 
 function principal() {
-    comprobarSesion(function(valor) {
-        if(valor == 0) {
+    comprobarSesion(function (valor) {
+        if (valor == 0) {
             location.href = "../html/index.html";
         } else {
-            if(valor.esadmin) {
+            if (valor.esadmin) {
                 document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
-                document.querySelector("#cerrar").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+                document.querySelector("#cerrar").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
                 document.querySelector("#cerrarsesion").addEventListener("click", () => {
                     cerrarSesion();
-                }); 
+                });
             } else {
                 location.href = "../html/pedidos.html";
-
             }
-            
         }
     });
     document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
@@ -27,9 +23,10 @@ function principal() {
     document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
     document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
     document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
-
+    $('#modalGestionarUsuarios').on('show.bs.modal', function () {
+        cargarUsuarios();
+    });
 }
-
 
 function manejadorClick(e) {
     console.log(this.id);
@@ -46,16 +43,14 @@ function manejadorClick(e) {
         location.href = 'gestionarResiduos.html';
     }
     else if (this.id === "gestionarUsuarios") {
-        location.href = 'gestionarUsuarios.html';
+        $('#modalGestionarUsuarios').modal('show');
     }
     else if (this.id === "gestionarProveedores") {
         location.href = 'gestionarProveedores.html';
     }
-
 }
 
 /*Funcion para mandar los productos al php para hacer la inserccion. */
-/* HAY QUE HACER QUE SE MANDEN DEMOMENTO SOLO ES QUE FUNCIONA */
 function insertarProducto(e) {
     // Obtener los valores de los campos de entrada
     var nombreProducto = document.getElementById('nombreProducto').value.trim();
@@ -71,8 +66,6 @@ function insertarProducto(e) {
     }
 
     // Si los datos de entrada son correctos, mostrar el mensaje de éxito
-    //mostrarMensajeExito();
-    // Crear objeto con los datos del producto
     var producto = {
         nombre: nombreProducto,
         categoria: categoriaProducto,
@@ -83,7 +76,7 @@ function insertarProducto(e) {
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
         type: "POST",
-        url: "../../Controlador/php/funcionesProductos.php", // Especifica la URL de tu script de backend
+        url: "../../Controlador/php/funcionesProductos.php",
         data: producto,
         success: function (response) {
             // Manejar la respuesta del servidor
@@ -184,77 +177,133 @@ function mostrarMensajeError(mensaje) {
     }, 3000);
 }
 
-
 /* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
 
 
-    function cargarOpcionesCategoria() {
-        $.ajax({
-            type: "POST",
-            url: "../../Controlador/php/categorias2.php",
-            dataType: "json",
-            success: function(data) {
-                // Limpiar el select
-                $('#categoriaProducto').empty();
-                // Agregar la opción por defecto
-                $('#categoriaProducto').append('<option value="">Seleccione una categoría...</option>');
-                // Iterar sobre los datos recibidos y agregar las opciones al select
-                $.each(data, function(index, categoria) {
-                    $('#categoriaProducto').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    }
-
-    // Llamar a la función para cargar las opciones del select al cargar la página
-    cargarOpcionesCategoria();
-
-    // Agregar evento al botón "Guardar Cambios" del modal
-    $('#anadirProducto').click(function() {
-        // Llamar a la función insertarProducto()
-        insertarProducto();
+function cargarOpcionesCategoria() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/categorias2.php",
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select
+            $('#categoriaProducto').empty();
+            // Agregar la opción por defecto
+            $('#categoriaProducto').append('<option value="">Seleccione una categoría...</option>');
+            // Iterar sobre los datos recibidos y agregar las opciones al select
+            $.each(data, function (index, categoria) {
+                $('#categoriaProducto').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
     });
+}
+
+// Llamar a la función para cargar las opciones del select al cargar la página
+cargarOpcionesCategoria();
+
+// Agregar evento al botón "Guardar Cambios" del modal
+$('#anadirProducto').click(function () {
+    // Llamar a la función insertarProducto()
+    insertarProducto();
+});
 
 
-    function cargarOpcionesUnidadMedida() {
-        $.ajax({
-            type: "POST",
-            url: "../../Controlador/php/unidades.php",
-            dataType: "json",
-            success: function(data) {
-                // Limpiar el select
-                $('#unidadMedida').empty();
-                // Agregar la opción por defecto
-                $('#unidadMedida').append('<option value="">Seleccione una unidad...</option>');
-                // Iterar sobre los datos recibidos y agregar las opciones al select
-                $.each(data, function(index, unidad) {
-                    $('#unidadMedida').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    }
-
-    // Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
-    cargarOpcionesUnidadMedida();
-
-    // Agregar evento al botón "Guardar Cambios" del modal
-    $('#anadirProducto').click(function() {
-        // Llamar a la función insertarProducto()
-        insertarProducto();
+function cargarOpcionesUnidadMedida() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/unidades.php",
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select
+            $('#unidadMedida').empty();
+            // Agregar la opción por defecto
+            $('#unidadMedida').append('<option value="">Seleccione una unidad...</option>');
+            // Iterar sobre los datos recibidos y agregar las opciones al select
+            $.each(data, function (index, unidad) {
+                $('#unidadMedida').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
     });
+}
+
+// Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
+cargarOpcionesUnidadMedida();
+
+// Agregar evento al botón "Guardar Cambios" del modal
+$('#anadirProducto').click(function () {
+    // Llamar a la función insertarProducto()
+    insertarProducto();
+});
 
 /* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL-------FIN--------- */
 
 
+/*-------------------------Para MODAL GESTIONAR USUARIOS--------------------- */
 
+function cargarUsuarios() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/usuarios.php",
+        dataType: "json",
+        success: function(data) {
+            // Limpiar el contenedor de usuarios
+            $('#tablaUsuarios').empty();
+            // Iterar sobre los datos de los usuarios y agregarlos al modal
+            data.forEach(function(usuario) {
+                var esAdmin = usuario.esAdmin;
+                var activo = usuario.activo;
+                // Crear una fila de la tabla para cada usuario
+                var fila = '<tr>' +
+                    '<td>' + usuario.nombre + '</td>' +
+                    '<td>' + usuario.email + '</td>' +
+                    '<td>' + usuario.telefono + '</td>' +
+                    '<td>' + esAdmin + '</td>' +
+                    '<td>' + activo + '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-primary btn-editar-usuario" data-id="' + usuario.id + '">Editar</button>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-primary btn-cambiar-contrasena ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
+                    '</td>' +
+                    '</tr>';
+                // Agregar la fila a la tabla
+                $('#tablaUsuarios').append(fila);
+            });
 
+            // Agregar evento a los botones "Editar" de los usuarios
+            $('.btn-editar-usuario').click(function() {
+                var idUsuario = $(this).data('id');
+                // Llamar a la función para editar el usuario con el ID correspondiente
+                editarUsuario(idUsuario);
+            });
 
+            // Agregar evento a los botones "Cambiar Contraseña" de los usuarios
+            $('.btn-cambiar-contrasena').click(function() {
+                var idUsuario = $(this).data('id');
+                // Llamar a la función para cambiar la contraseña del usuario con el ID correspondiente
+                cambiarContrasena(idUsuario);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            // Manejar errores, como mostrar un mensaje al usuario
+            $('#tablaUsuarios').html('<tr><td colspan="6">Error al cargar usuarios</td></tr>');
+        }
+    });
+    
+}
+
+/* Función para cambiar la contraseña de un usuario */
+function cambiarContrasena(idUsuario) {
+    $('#modalCambiarContrasena').modal('show');
+}
+
+/*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
 
 /* fUNCION PARA CREAR ELEMENTO */
 function crearElemento(etiqueta, texto, atributos) {
@@ -270,7 +319,3 @@ function crearElemento(etiqueta, texto, atributos) {
     }
     return elementoNuevo;
 }
-
-
-
-
