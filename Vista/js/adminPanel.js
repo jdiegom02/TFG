@@ -25,6 +25,8 @@ function principal() {
     document.getElementById("gestionarResiduos").addEventListener("click", manejadorClick);
     document.getElementById("anadir").addEventListener("click", manejadorClick);
     document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
+    document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
+    document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
 
 }
 
@@ -42,6 +44,14 @@ function manejadorClick(e) {
     }
     else if (this.id === "gestionarResiduos") {
         location.href = 'gestionarResiduos.html';
+    }
+    else if (this.id === "gestionarUsuarios") {
+        //location.href = 'pedidos.html';
+        console.log("USUARIOS");
+    }
+    else if (this.id === "gestionarProveedores") {
+       // location.href = 'gestionarResiduos.html';
+       console.log("PROVEEDORES");
     }
 
 }
