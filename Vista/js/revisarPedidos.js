@@ -3,16 +3,16 @@ window.addEventListener("load", principal, false);
 function principal(e) {
     cargarPedidosDesdePHP();
     var btnValidarPedidos = document.getElementById('btnValidarPedidos');
-    btnValidarPedidos.addEventListener('click', function() {
+    btnValidarPedidos.addEventListener('click', function () {
         validarPedidosYGenerarPDF();
     });
-    document.getElementById('guardarCambiosPedido').addEventListener('click', function() {
-        guardarCambiosPedido();
-    });
+    // document.getElementById('guardarCambiosPedido').addEventListener('click', function() {
+    //     guardarCambiosPedido();
+    // });
 
     // Agregar event listener para detectar cambios en las celdas editables
-    document.querySelectorAll('.editable').forEach(function(cell, index) {
-        cell.addEventListener('input', function() {
+    document.querySelectorAll('.editable').forEach(function (cell, index) {
+        cell.addEventListener('input', function () {
             guardarCambiosEnCelda(this, index);
         });
     });
@@ -24,10 +24,10 @@ function cargarPedidosDesdePHP() {
         url: '../../Controlador/php/pedidosmostrar.php',
         type: 'POST',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error al cargar los pedidos desde PHP:', error);
         }
     });
@@ -36,7 +36,7 @@ function cargarPedidosDesdePHP() {
 function mostrarPedidos(pedidos) {
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
-    pedidos.forEach(function(pedido) {
+    pedidos.forEach(function (pedido) {
         var row = document.createElement('tr');
         row.dataset.idPedido = pedido.id;
         row.innerHTML = `
@@ -48,12 +48,15 @@ function mostrarPedidos(pedidos) {
             <td class="proveedor-editable"></td>
             <td>${pedido.nombre_usuario}</td>
             <td>
-                <button class="btn btn-danger" onclick="eliminarPedido(${pedido.id})">Eliminar</button>
+                <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
             </td>
         `;
         tablaPedidosBody.appendChild(row);
         cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
         cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
+        document.querySelector("#pedido" + pedido.id).addEventListener('click', function () {
+            eliminarSolicitud(pedido.id);
+        });
     });
 }
 
@@ -70,9 +73,9 @@ function cargarUnidades(idPedido, unidad) {
             url: "../../Controlador/php/unidades.php",
             type: "POST",
             dataType: "json",
-            success: function(unidades) {
+            success: function (unidades) {
                 // Iterar sobre las unidades recibidas y agregarlas al desplegable
-                unidades.forEach(function(unidadActual) {
+                unidades.forEach(function (unidadActual) {
                     var option = document.createElement('option');
                     option.value = unidadActual.unidad;
                     option.textContent = unidadActual.unidad;
@@ -87,7 +90,7 @@ function cargarUnidades(idPedido, unidad) {
                 tdUnidad.innerHTML = ''; // Limpiar el contenido existente
                 tdUnidad.appendChild(selectUnidad);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error al cargar las unidades:', error);
             }
         });
@@ -109,9 +112,9 @@ function cargarProveedores(idPedido, proveedor) {
             url: "../../Controlador/php/proveedores.php",
             type: "POST",
             dataType: "json",
-            success: function(proveedores) {
+            success: function (proveedores) {
                 // Iterar sobre los proveedores recibidos y agregarlos al desplegable
-                proveedores.forEach(function(proveedorActual) {
+                proveedores.forEach(function (proveedorActual) {
                     var option = document.createElement('option');
                     option.value = proveedorActual.descripcion;
                     option.textContent = proveedorActual.descripcion;
@@ -126,7 +129,7 @@ function cargarProveedores(idPedido, proveedor) {
                 tdProveedor.innerHTML = ''; // Limpiar el contenido existente
                 tdProveedor.appendChild(selectProveedor);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error al cargar los proveedores:', error);
             }
         });

@@ -8,7 +8,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         if ($conexion) {
             $resultado = $conexion->realizarConsulta("SELECT * from usuarios");
             while ($fila = $resultado->fetch()) {
-                echo "";
                 if ($fila["email"] === $_POST["email"] && password_verify($_POST["password"], $fila["password"]) && $fila["activo"] == 1) {
                     $sessionIniciada = true;
                     session_start();
@@ -16,10 +15,8 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     $_SESSION["admin"] = $fila["esAdmin"];
                     $_SESSION["nombre"] = $fila["nombre"];
                     if($_SESSION["admin"] == 1) {
-                        echo 2;
-                    } elseif($_SESSION["admin"] == 0) {
                         echo 1;
-                    } else {
+                    } elseif($_SESSION["admin"] == 0) {
                         echo 0;
                     }
                     break;

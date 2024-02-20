@@ -5,7 +5,8 @@ $solicitudes = array();
 // ARMAMOS LA QUERY
 $sql = "SELECT solicitudes.id, solicitudes.descripcion AS nombre_pedido, solicitudes.fecha, solicitudes.cantidad, solicitudes.unidades, usuarios.nombre AS nombre_usuario
         FROM solicitudes
-        INNER JOIN usuarios  ON solicitudes.fk_usuario = usuarios.id";
+        INNER JOIN usuarios  ON solicitudes.fk_usuario = usuarios.id
+        WHERE solicitudes.tramitado=0";
 $resultado = $conexion->realizarConsulta($sql);
 foreach ($resultado as $fila) {
     $solicitud = array(
