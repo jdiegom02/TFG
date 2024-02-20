@@ -1,5 +1,5 @@
 window.addEventListener("load", principal, false);
-
+let usuarioIniciado;
 function principal() {
     comprobarSesion(function (valor) {
         if (valor == 0) {
@@ -7,6 +7,7 @@ function principal() {
         } else {
             if (valor.esadmin) {
                 document.getElementById("usuario").textContent = "Bienvenido " + valor.nombre;
+                usuarioIniciado=valor.nombre;
                 document.querySelector("#cerrar").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
                 document.querySelector("#cerrarsesion").addEventListener("click", () => {
                     cerrarSesion();
@@ -270,23 +271,37 @@ function cargarUsuarios() {
             data.forEach(function(usuario) {
                 var esAdmin = usuario.esAdmin;
                 var activo = usuario.activo;
-                // Crear una fila de la tabla para cada usuario
-                var fila = '<tr>' +
-                    '<td>' + usuario.nombre + '</td>' +
-                    '<td>' + usuario.email + '</td>' +
-                    '<td>' + usuario.telefono + '</td>' +
-                    '<td>' + esAdmin + '</td>' +
-                    '<td>' + activo + '</td>' +
-                    '<td>' +
-                    '<button type="button" class="btn btn-primary btn-editar-usuario" id="'+usuario.id+'" data-id="' + usuario.id + '">Editar</button>' +
-                    '<td>' +
-                    '<button type="button" class="btn btn-primary btn-cambiar-contrasena ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
-                    '</td>' +
-                    '</tr>';
+                var nombreUsuario = usuario.nombre;
+                // Verificar si el usuario es un administrador
+                if (esAdmin === "Sí" && nombreUsuario === usuarioIniciado) {
+                    // Si el usuario es un administrador, no se agregan los botones
+                    var fila = '<tr>' +
+                        '<td>' + usuario.nombre + '</td>' +
+                        '<td>' + usuario.email + '</td>' +
+                        '<td>' + usuario.telefono + '</td>' +
+                        '<td>' + esAdmin + '</td>' +
+                        '<td>' + activo + '</td>' +
+                        '</tr>';
+                } else {
+                    // Si el usuario no es un administrador, se agregan los botones de editar y cambiar contraseña
+                    var fila = '<tr>' +
+                        '<td>' + usuario.nombre + '</td>' +
+                        '<td>' + usuario.email + '</td>' +
+                        '<td>' + usuario.telefono + '</td>' +
+                        '<td>' + esAdmin + '</td>' +
+                        '<td>' + activo + '</td>' +
+                        '<td>' +
+                        '<button type="button" class="btn btn-primary btn-editar-usuario" id="'+usuario.id+'" data-id="' + usuario.id + '">Editar</button>' +
+                        '</td>' +
+                        '<td>' +
+                        '<button type="button" class="btn btn-primary btn-cambiar-contrasena ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
+                        '</td>' +
+                        '</tr>';
+                }
                 // Agregar la fila a la tabla
                 $('#tablaUsuarios').append(fila);
-
             });
+            
 
             // Agregar evento a los botones "Editar" de los usuarios
             $('.btn-editar-usuario').click(function() {
