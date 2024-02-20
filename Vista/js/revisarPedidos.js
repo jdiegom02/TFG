@@ -43,6 +43,7 @@ function cargarPedidosDesdePHP() {
 }
 
 function mostrarPedidos(pedidos) {
+    // console.log(pedidos);
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
     pedidos.forEach(function (pedido) {
@@ -175,7 +176,8 @@ function validarPedidosYGenerarPDF(idPedido) {
                 chequeo.parentNode.parentNode.children[3].textContent, // Texto de la columna 3
                 chequeo.parentNode.parentNode.children[4].querySelector('select').selectedOptions[0].textContent, // Texto de la columna 4
                 chequeo.parentNode.parentNode.children[5].querySelector('select').selectedOptions[0].textContent, // Texto seleccionado del select de la columna 5
-                chequeo.parentNode.parentNode.children[6].textContent
+                chequeo.parentNode.parentNode.children[6].textContent,
+                chequeo.parentNode.parentNode.getAttribute('data-id-pedido')
             ]);
              }
         // console.log(chequeo.parentNode.parentNode.children[2].textContent);

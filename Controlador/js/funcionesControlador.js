@@ -81,6 +81,6 @@ function insertarEnPedidos(datos) {
     data: { addPedido: datos },
   }).done(function (a) {
     console.log(a);
-    // No volver a cargar los pedidos desde PHP aquí
+    cargarPedidosDesdePHP();
   });
 }

@@ -107,13 +107,23 @@ function addPedido($datos)
     print_r($datos);
     $conexion = new BD("bonAppetit", "admin", "1234");
     foreach ($datos as $dato) {
+
         $idUsuario = idUsuarioNombre($dato[4], $conexion);
         $idProveedor = idProveedor($dato[3], $conexion);
-        $sqlInsertar = "INSERT into pedidos (fecha, fk_estado, fk_usuario, fk_proveedor, observaciones ) 
+        $sqlInsertarPedido = "INSERT into pedidos (fecha, fk_estado, fk_usuario, fk_proveedor, observaciones ) 
                 values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), 1, $idUsuario, $idProveedor, 'observado')";
-        $conexion->realizarModificacion($sqlInsertar);
+        $conexion->realizarModificacion($sqlInsertarPedido);
 
-        echo $sqlInsertar;
+        $nombre = $dato[0];
+        $cantidad = $dato[1];
+        $unidad = $dato[2];
+        $sqlInsertarLineaPedido = "INSERT into linea_pedido (fk_pedido, descripcion, cantidad, unidades, observaciones ) 
+                values ((select max(id) from pedidos), '$nombre', $cantidad, '$unidad','observados')";
+        $conexion->realizarModificacion($sqlInsertarLineaPedido);
+
+        $idSolicitud = $dato[5];
+        $sqlTramitados="UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
+        $conexion->realizarModificacion($sqlTramitados);
     }
 
     unset($conexion);
