@@ -46,12 +46,10 @@ function manejadorClick(e) {
         location.href = 'gestionarResiduos.html';
     }
     else if (this.id === "gestionarUsuarios") {
-        //location.href = 'pedidos.html';
-        console.log("USUARIOS");
+        location.href = 'gestionarUsuarios.html';
     }
     else if (this.id === "gestionarProveedores") {
-       // location.href = 'gestionarResiduos.html';
-       console.log("PROVEEDORES");
+        location.href = 'gestionarProveedores.html';
     }
 
 }
