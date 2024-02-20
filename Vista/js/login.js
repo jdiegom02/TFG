@@ -23,8 +23,10 @@ function validarFormulario() {
         password: passwordUsuario,
       },
     }).done(function (a) {
-      if(a == 1) {
+      if(a == 0) {
         location.href = "../html/pedidos.html";
+      } else if(a == 1) {
+        location.href = "../html/panelAdmin.html";
       } else {
         crearMensajeError(a);
       }

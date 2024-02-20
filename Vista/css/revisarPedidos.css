@@ -1,0 +1,38 @@
+/* Estilos para el encabezado */
+body {
+    font-family: "Open Sans";
+}
+h1 {
+    text-align: center;
+}
+
+/* Estilos para la lista de pedidos */
+#lista-pedidos {
+    margin-top: 20px;
+}
+
+/* Estilos para las tarjetas de pedidos */
+.card {
+    margin-bottom: 20px;
+}
+
+/* Estilos para los botones de modificar pedido */
+.btn-modificar {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* Hacer que el botón ocupe todo el ancho disponible */
+}
+
+/* Estilos para el botón de validar pedidos */
+#btnValidarPedidos {
+    font-weight: bold; /* Texto en negrita */
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* Hacer que el botón ocupe todo el ancho disponible */
+    width: 200px; /* Ancho fijo para el botón */
+}
+
+
+
