@@ -44,11 +44,23 @@ function manejadorClick(e) {
     }
     else if (this.id === "gestionarUsuarios") {
         $('#modalGestionarUsuarios').modal('show');
+        /*ASIGNAR MANEJADOR AL BOTON AÑADIR USUARIO */
+        document.getElementById("btnanadirUsuario").addEventListener("click", manejadorAnadir);
+        
     }
     else if (this.id === "gestionarProveedores") {
         location.href = 'gestionarProveedores.html';
     }
 }
+
+function manejadorAnadir(e)
+{
+    $('#modalAgregarUsuario').modal('show');
+}
+
+
+
+
 
 /*Funcion para mandar los productos al php para hacer la inserccion. */
 function insertarProducto(e) {
@@ -286,18 +298,18 @@ function cargarUsuarios() {
                 $('#nombreEditar').val(nombre);
                 $('#emailEditar').val(email);
                 $('#telefonoEditar').val(telefono);
-                
+                $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
+                 //SE ABRE MODAL DE EDITAR
                 $('#modalEditar').modal('show');
 
-                /*var idUsuario = $(this).data('id');
-                editarUsuario(idUsuario);*/
             });
 
-            // Agregar evento a los botones "Cambiar Contraseña" de los usuarios
+            // Agregar evento a los botones "Cambiar Contraseña" de los usuarios 
             $('.btn-cambiar-contrasena').click(function() {
-                var idUsuario = $(this).data('id');
-                // Llamar a la función para cambiar la contraseña del usuario con el ID correspondiente
-                cambiarContrasena(idUsuario);
+                var fila = $(this).closest('tr'); 
+                var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
+                $('#modalCambiarContrasena .modal-title').text('Cambiar Contraseña de: ' + nombre);
+                $('#modalCambiarContrasena').modal('show');
             });
         },
         error: function(xhr, status, error) {
@@ -309,25 +321,11 @@ function cargarUsuarios() {
     
 }
 
-/* Función para cambiar la contraseña de un usuario */
-function cambiarContrasena(idUsuario) {
-    $('#modalCambiarContrasena').modal('show');
-}
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
 
 
-/* ------------PULSAR BOTON EDITAR---------------------- */
 
-
-// Función para editar un usuario
-function editarUsuario(idUsuario) {
-    $('#modalEditar').modal('show');
-    
-
-}
-
-/* ------------PULSAR BOTON EDITAR-----------FIN--------------------- */
 
 
 
