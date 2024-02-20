@@ -8,7 +8,7 @@ $conexion = new BD("bonAppetit", "admin", "1234");
 $usuarios = array();
 
 // Consulta SQL para obtener los usuarios
-$sql = "SELECT esAdmin, nombre, email, activo, telefono FROM usuarios";
+$sql = "SELECT id,esAdmin, nombre, email, activo, telefono FROM usuarios";
 $resultado = $conexion->realizarConsulta($sql);
 
 // Verifica si hay resultados de la consulta
@@ -17,6 +17,7 @@ if ($resultado) {
     foreach ($resultado as $fila) {
         // Agrega cada fila al array de usuarios
         $usuario = array(
+            "id" => $fila["id"],
             "esAdmin" => $fila["esAdmin"] == 1 ? 'Sí' : 'No',
             "nombre" => $fila["nombre"],
             "email" => $fila["email"],

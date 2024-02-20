@@ -173,9 +173,15 @@ aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
             </button>
         </div>
         <div class="modal-body">
-            <!-- Contenido del formulario para cambiar contraseña -->
-            <form>
-                <!-- Aquí colocar campos para cambiar contraseña -->
+            <form id="formCambiarContrasena">
+                <div class="form-group">
+                    <label for="nuevaContrasena">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
+                </div>
+                <div class="form-group">
+                    <label for="repetirNuevaContrasena">Repetir Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="repetirNuevaContrasena" name="repetirNuevaContrasena">
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -186,6 +192,64 @@ aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
 </div>
 </div>
 <!-- Fin del Nuevo Modal "Cambiar Contraseña" -->
+
+
+<!-- Nuevo Modal "Editar" -->
+<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog"
+aria-labelledby="modalEditar" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalEditar">Editar</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="formEditar">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombreEditar" name="nombreEditar">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="emailEditar" name="emailEditar">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefonoEditar" name="telefono">
+                </div>
+                <div class="form-group">
+                    <label for="admin">Admin</label>
+                    <select class="form-control" id="adminEditar" name="admin">
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activo">Activo</label>
+                    <select class="form-control" id="activoEditar" name="activo">
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Fin del Nuevo Modal "Editar" -->
+
+
+
+
+
+
+
 
 
     <!-- Scripts -->

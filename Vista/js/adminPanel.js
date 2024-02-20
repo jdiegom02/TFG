@@ -266,20 +266,31 @@ function cargarUsuarios() {
                     '<td>' + esAdmin + '</td>' +
                     '<td>' + activo + '</td>' +
                     '<td>' +
-                    '<button type="button" class="btn btn-primary btn-editar-usuario" data-id="' + usuario.id + '">Editar</button>' +
+                    '<button type="button" class="btn btn-primary btn-editar-usuario" id="'+usuario.id+'" data-id="' + usuario.id + '">Editar</button>' +
                     '<td>' +
                     '<button type="button" class="btn btn-primary btn-cambiar-contrasena ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
                     '</td>' +
                     '</tr>';
                 // Agregar la fila a la tabla
                 $('#tablaUsuarios').append(fila);
+
             });
 
             // Agregar evento a los botones "Editar" de los usuarios
             $('.btn-editar-usuario').click(function() {
-                var idUsuario = $(this).data('id');
-                // Llamar a la función para editar el usuario con el ID correspondiente
-                editarUsuario(idUsuario);
+                var fila = $(this).closest('tr'); // Obtener la fila más cercana al botón de editar
+                var idUsuario = $(this).data('id'); // Obtener el ID del usuario
+                var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
+                var email = fila.find('td:eq(1)').text(); // Obtener el texto del segundo td (columna) de la fila
+                var telefono = fila.find('td:eq(2)').text(); // Obtener el texto del tercer td (columna) de la fila
+                $('#nombreEditar').val(nombre);
+                $('#emailEditar').val(email);
+                $('#telefonoEditar').val(telefono);
+                
+                $('#modalEditar').modal('show');
+
+                /*var idUsuario = $(this).data('id');
+                editarUsuario(idUsuario);*/
             });
 
             // Agregar evento a los botones "Cambiar Contraseña" de los usuarios
@@ -304,6 +315,29 @@ function cambiarContrasena(idUsuario) {
 }
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
+
+
+/* ------------PULSAR BOTON EDITAR---------------------- */
+
+
+// Función para editar un usuario
+function editarUsuario(idUsuario) {
+    $('#modalEditar').modal('show');
+    
+
+}
+
+/* ------------PULSAR BOTON EDITAR-----------FIN--------------------- */
+
+
+
+
+
+
+
+
+
+
 
 /* fUNCION PARA CREAR ELEMENTO */
 function crearElemento(etiqueta, texto, atributos) {
