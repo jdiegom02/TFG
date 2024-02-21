@@ -43,39 +43,30 @@ function cargarPedidosDesdePHP() {
 }
 
 function mostrarPedidos(pedidos) {
-    var contenedorPedidos = document.getElementById('contenedor-pedidos');
-    contenedorPedidos.innerHTML = '';
-
-    pedidos.forEach(function(pedido) {
-        var pedidoContainer = document.createElement('div');
-        pedidoContainer.classList.add('pedido-container');
-        
-        var fecha = document.createElement('div');
-        fecha.textContent = `Fecha: ${pedido.fecha}`;
-        pedidoContainer.appendChild(fecha);
-
-        var nombre = document.createElement('div');
-        nombre.textContent = `Nombre: ${pedido.nombre_pedido}`;
-        pedidoContainer.appendChild(nombre);
-
-        var cantidad = document.createElement('div');
-        cantidad.textContent = `Cantidad: ${pedido.cantidad}`;
-        pedidoContainer.appendChild(cantidad);
-
-        var nombreUsuario = document.createElement('div');
-        nombreUsuario.textContent = `Usuario: ${pedido.nombre_usuario}`;
-        pedidoContainer.appendChild(nombreUsuario);
-
-        var eliminarBtn = document.createElement('button');
-        eliminarBtn.textContent = 'Eliminar';
-        eliminarBtn.classList.add('btn', 'btn-danger');
-        eliminarBtn.dataset.idPedido = pedido.id;
-        eliminarBtn.addEventListener('click', function() {
+    // console.log(pedidos);
+    var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
+    tablaPedidosBody.innerHTML = '';
+    pedidos.forEach(function (pedido) {
+        var row = document.createElement('tr');
+        row.dataset.idPedido = pedido.id;
+        row.innerHTML = `
+            <td><input type="checkbox" class="form-check-input"></td>
+            <td>${pedido.fecha}</td>
+            <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
+            <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
+            <td class="unidad-editable"></td>
+            <td class="proveedor-editable"></td>
+            <td>${pedido.nombre_usuario}</td>
+            <td>
+                <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
+            </td>
+        `;
+        tablaPedidosBody.appendChild(row);
+        cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
+        cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
+        document.querySelector("#pedido" + pedido.id).addEventListener('click', function () {
             eliminarSolicitud(pedido.id);
         });
-        pedidoContainer.appendChild(eliminarBtn);
-
-        contenedorPedidos.appendChild(pedidoContainer);
     });
 }
 
