@@ -172,25 +172,27 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad)
   let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" })
   popUp.appendChild(crearElemento("h3", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }))
   popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }))
+  //crear comentario
+  let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
+  popUp.appendChild(comentario)
   let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad })
   popUp.appendChild(botonConfirmarProducto)
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
   let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" })
   popUp.appendChild(botonCancelarProducto)
   botonCancelarProducto.addEventListener("click", cancelarProducto)
-  //crear comentario
-  let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
-  popUp.appendChild(comentario)
   contenedorPopUp.appendChild(popUp)
   document.body.appendChild(contenedorPopUp);
 }
 function confirmarProducto(event) {
   //recoger todo y mandarlo al carrito
   // document.getElementById("comentarioPedido").value;
+  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
+  let cantidad = parseInt(inputCantidad.value)
   let observacion = document.getElementById("comentarioPedido").value;
-  let cantidad = this.getAttribute("cantidad")
+  let cantidadAtributo = parseInt(this.getAttribute("cantidad"));
   console.log(this.getAttribute("nombre"));
-  console.log(cantidad);
+  console.log(cantidadAtributo);
   let encontrado = false;
   let posicionEnArray = 0;
   if (verificarSessionStorage(nombreUsuario)) {
@@ -206,8 +208,8 @@ function confirmarProducto(event) {
     }
   }
   if (!encontrado) {
-    aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
-    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidad, observacion)
+    aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
+    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion)
     //reiniciar a 1 
   } else {
     //si se encuentra se actualiza el valor de la session storage
@@ -227,7 +229,7 @@ function cancelarProducto(params) {
 function añadirProducto(event) {
   //buscar si existe antes
   let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
-  let cantidad = inputCantidad.value
+  let cantidad = parseInt(inputCantidad.value)
   crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
   inputCantidad.value = 1;
 }
