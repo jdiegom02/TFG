@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", principal);
 function principal(params) {
     cargarProveedoresDesdePHP(function (proveedores) {
         let padre = document.querySelector("#infoProveedores");
+        padre.innerHTML = "";
         let hijos = proveedores;
 
         hijos.forEach(hijo => {
@@ -21,11 +22,15 @@ function principal(params) {
             let botonEditar = crearElemento("button", {
                 atributos: {
                     type: "button",
-                    class: "btn btn-sm btn-primary ml-3" // Agregar clase "ml-3" para separación horizontal
+                    class: "btn btn-sm btn-primary ml-3 botonEditar", // Agregar clase "ml-3" para separación horizontal
+                    "data-toggle": "modal",
+                    "data-target": "#editarProveedorModal"
                 },
                 textoContenido: "Editar"
             });
-
+            botonEditar.addEventListener("click", function (params) {
+                editar(hijo);
+            });
             // Agregar la descripción, dirección y el botón al div de descripción y botón
             descripcionYBoton.appendChild(subContainer);
             descripcionYBoton.appendChild(subContainer2);
@@ -40,6 +45,42 @@ function principal(params) {
 
     });
 }
+
+function editar(hijo) {
+    let id = hijo.id;
+    let nombre = hijo.descripcion;
+    let direccion = hijo.direccion;
+    let email = hijo.email;
+    let telefono = hijo.telefono;
+    let observaciones = hijo.observaciones;
+
+    document.querySelector("#descripcion").value = nombre;
+    document.querySelector("#direccion").value = direccion;
+    document.querySelector("#email").value = email;
+    document.querySelector("#telefono").value = telefono;
+    document.querySelector("#observaciones").value = observaciones;
+
+    function guardarCambios() {
+        let id = hijo.id;
+        let nombre = document.querySelector("#descripcion").value;
+        let direccion = document.querySelector("#direccion").value;
+        let email = document.querySelector("#email").value;
+        let telefono = document.querySelector("#telefono").value;
+        let observaciones = document.querySelector("#observaciones").value;
+        datos = [id, nombre, direccion, email, telefono, observaciones];
+
+        actualizarProveedor(datos);
+    }
+
+    // Agrega el evento al botón de guardar cambios solo una vez
+    document.querySelector("#cambioProveedor").addEventListener("click", guardarCambios);
+
+    // Agrega el evento al botón de cancelar para quitar el evento del botón de guardar cambios
+    document.querySelector("#cerrarModal").addEventListener("click", function () {
+        document.querySelector("#cambioProveedor").removeEventListener("click", guardarCambios);
+    });
+}
+
 
 function crearElemento(tagNombre, opciones) {
     let elemento = document.createElement(tagNombre);
