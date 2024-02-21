@@ -285,7 +285,11 @@ button[id^="buscar"] {
   padding: 30px 50px;
   max-width: 100%;
 }
-
+#nuevoProducto{
+  display: flex;
+  flex-direction: column;
+  
+}
 #contenedor-ventanaEmergente {
   z-index: 1002;
   display: flex;

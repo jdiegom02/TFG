@@ -119,7 +119,7 @@ function addPedido($datos)
         $conexion->realizarModificacion($sqlInsertarLineaPedido);
 
         $idSolicitud = $dato[5];
-        $sqlTramitados="UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
+        $sqlTramitados = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
         $conexion->realizarModificacion($sqlTramitados);
     }
 
