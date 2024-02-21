@@ -3,22 +3,7 @@ include_once("../../Modelo/php/BD.php");
 session_start();
 
 if (isset($_POST["datos"])) {
-    $datos = $_POST["datos"];
-    // $correo = $datos[0]; // Obtener el correo del primer elemento
-    print_r($datos);
-    // Iterar sobre los elementos restantes de $datos
-    for ($i = 0; $i < count($datos); $i++) {
-        $solicitud = $datos[$i]; // Obtener la información de la solicitud actual
-        $desc = $solicitud[0]; // Descripción de la solicitud
-        $cantidad = $solicitud[1]; // Cantidad de la solicitud
-        $unidad = $solicitud[2]; // Unidad de la solicitud
-        $observacion = $solicitud[3]; //recoger el comentario
-        echo $observacion;
-        //Recoger dato de usuario (email) desde el session
-        $correo = $_SESSION['email'];
-        // Llamar a la función addSolicitud con los datos actuales
-        addSolicitud($correo, $desc, $unidad, $cantidad, $observacion);
-    }
+    addSolicitud();
 }
 if (isset($_POST["carga"])) {
     mostrarSolicitudes();
@@ -28,18 +13,35 @@ if (isset($_POST["eliminarSolicitud"])) {
     eliminarSolicitud();
 }
 
-function addSolicitud($correo, $desc, $unidad, $cantidad, $observacion)
+if (isset($_POST["addPedido"])) {
+    addPedido($_POST["addPedido"]);
+}
+
+function addSolicitud()
 {
     $datos = $_POST["datos"];
     // $correo = $datos[0]; // Obtener el correo del primer elemento
     print_r($datos);
     // Iterar sobre los elementos restantes de $datos
     $conexion = new BD("bonAppetit", "admin", "1234");
-    $idUsuario = idUsuario($correo, $conexion);
-    $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, observaciones, fk_usuario) 
-        values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, '$observacion', $idUsuario)";
-    echo $sqlInsertar;
-    $conexion->realizarModificacion($sqlInsertar);
+
+    for ($i = 0; $i < count($datos); $i++) {
+        $solicitud = $datos[$i]; // Obtener la información de la solicitud actual
+        $desc = $solicitud[0]; // Descripción de la solicitud
+        $cantidad = $solicitud[1]; // Cantidad de la solicitud
+        $unidad = $solicitud[2]; // Unidad de la solicitud
+        $observacion = $solicitud[3]; //recoger el comentario
+
+        //Recoger dato de usuario (email) desde el session
+        $correo = $_SESSION['email'];
+        $idUsuario = idUsuario($correo, $conexion);
+        $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, observaciones, fk_usuario) 
+            values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, $observacion, $idUsuario)";
+        echo $sqlInsertar;
+        $conexion->realizarModificacion($sqlInsertar);
+        // Llamar a la función addSolicitud con los datos actuales
+    }
+
     unset($conexion);
 }
 
@@ -89,6 +91,7 @@ function mostrarSolicitudes()
     }
     echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     unset($conexion);
+
 }
 
 function eliminarSolicitud()
@@ -102,6 +105,7 @@ function eliminarSolicitud()
 
 function addPedido($datos)
 {
+    print_r($datos);
     $conexion = new BD("bonAppetit", "admin", "1234");
     foreach ($datos as $dato) {
 
