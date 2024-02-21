@@ -132,3 +132,13 @@ body {
 .btn-cambiar-contrasena{
     /* background-color: #afafaf; */
 }
+
+#agregarResiduo{
+    border-radius: 100%;
+    height: 10%;
+    width: 10%;
+}
+
+#residuos {
+    width: 10px;
+}

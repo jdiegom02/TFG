@@ -1,5 +1,6 @@
 window.addEventListener("load", principal, false);
 let usuarioIniciado;
+let contador=0;
 function principal() {
     comprobarSesion(function (valor) {
         if (valor == 0) {
@@ -24,6 +25,9 @@ function principal() {
     document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
     document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
     document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
+    document.getElementById("agregarResiduo").addEventListener("click", manejarsuma);
+    
+    
     $('#modalGestionarUsuarios').on('show.bs.modal', function () {
         cargarUsuarios();
     });
@@ -33,6 +37,7 @@ function manejadorClick(e) {
     console.log(this.id);
     if (this.id === "anadir") {
         $('#modalAgregarProducto').modal('show');
+        cargarResiduos();
     }
     else if (this.id === "revisarPedidos") {
         location.href = 'revisarPedidos.html';
@@ -45,7 +50,6 @@ function manejadorClick(e) {
     }
     else if (this.id === "gestionarUsuarios") {
         $('#modalGestionarUsuarios').modal('show');
-        /*ASIGNAR MANEJADOR AL BOTON AÑADIR USUARIO */
         document.getElementById("btnanadirUsuario").addEventListener("click", manejadorAnadir);
         
     }
@@ -59,6 +63,37 @@ function manejadorAnadir(e)
     $('#modalAgregarUsuario').modal('show');
 }
 
+function manejarsuma(e)
+{
+    e.preventDefault();
+   contador++;
+   agregarNuevoCampoResiduo(contador);
+
+}
+
+function agregarNuevoCampoResiduo(numero) {
+
+   // Crear el nuevo campo de entrada de residuos
+   var nuevoCampoResiduo = crearElemento('div', undefined, { 'class': 'input-group' });
+
+   var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;' });
+
+   var divAppend = crearElemento('div', undefined, { 'class': 'input-group-append' });
+
+   var labelKilos = crearElemento('label', 'Kg', { 'for': 'kilos' });
+
+   var selectDespegable = crearElemento('select', undefined, { 'class': 'form-control despegablesResiduos', 'id': 'despegableResiduos'+ numero });
+
+   divAppend.appendChild(labelKilos);
+   divAppend.appendChild(selectDespegable);
+
+   nuevoCampoResiduo.appendChild(inputResiduo);
+   nuevoCampoResiduo.appendChild(divAppend);
+
+   // Agregar el nuevo campo de entrada de residuos al contenedor
+   document.getElementById('contenedorResiduos').appendChild(nuevoCampoResiduo);
+   cargarResiduos();
+}
 
 
 
@@ -141,12 +176,12 @@ function mostrarMensajeExito() {
     // Eliminar el efecto de difuminado después de 5 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
-    }, 5000);
+    }, 2000);
 
     // Eliminar el mensaje después de 5 segundos
     setTimeout(function () {
         mensajeElemento.remove();
-    }, 3000);
+    }, 2000);
 
     // Permitir al usuario quitar el mensaje haciendo clic en él
     mensajeElemento.addEventListener('click', function () {
@@ -182,12 +217,12 @@ function mostrarMensajeError(mensaje) {
     // Eliminar el efecto de difuminado después de 5 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
-    }, 5000);
+    }, 2000);
 
     // Eliminar el mensaje después de 5 segundos
     setTimeout(function () {
         mensajeElemento.remove();
-    }, 3000);
+    }, 2000);
 }
 
 /* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
@@ -339,15 +374,33 @@ function cargarUsuarios() {
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
 
+/*---------------------------PARA LOS RESIDUOS DE AÑADIR---------------------------------------------------- */
 
 
 
+function cargarResiduos() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/residuos.php", 
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select
+            $('#despegableResiduos').empty();
+            // Agregar las opciones al select
+            $.each(data, function (index, opcion) {
+                $('#despegableResiduos').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+                $('.despegablesResiduos').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
 
 
 
-
-
-
+/*---------------------------PARA LOS RESIDUOS DE AÑADIR-----------------FIN----------------------------------- */
 
 
 
