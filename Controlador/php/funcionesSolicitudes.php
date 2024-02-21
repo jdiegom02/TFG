@@ -104,7 +104,6 @@ function eliminarSolicitud()
 
 function addPedido($datos)
 {
-    print_r($datos);
     $conexion = new BD("bonAppetit", "admin", "1234");
     foreach ($datos as $dato) {
 
