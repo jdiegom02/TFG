@@ -175,7 +175,7 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad)
   //crear comentario
   let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
   popUp.appendChild(comentario)
-  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad })
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", identificador: identificadorProducto,nombre: nombre, cantidad: cantidad, unidad: unidad })
   popUp.appendChild(botonConfirmarProducto)
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
   let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" })
