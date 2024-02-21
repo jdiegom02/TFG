@@ -155,19 +155,16 @@ function mostrarProductos() {
       })
     } else {
       //crear accion en caso de que no exista un producto en la base de datos:
-      let nombre = document.getElementById("search")
-      let carta = crearElemento("div", undefined, { id: "nuevoProducto", class: "col-md-12", style: "border-radius:10px;border:3px #000 solid;width:100%;padding:20px;  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);" });
-      carta.appendChild(crearElemento("h2", "Solicitar nuevo producto: ", { style: "color:green;" }))
-      let divImagen = crearElemento("div", undefined, { id: "contenedor-imagen" })
-      divImagen.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", id: "imagen-producto", style: "width:20%;margin:auto;" }))
-      carta.appendChild(divImagen);
-      carta.appendChild(crearElemento("label", "Nombre del Producto: ", { for: "nuevoProductoNombre" }))
-      carta.appendChild(crearElemento("input", undefined, { value: document.getElementById("searchInput").value, type: "text", class: "form-control", id: "input-nuevoProducto" }))
-      carta.appendChild(crearElemento("label", "Cantidad"));
+      let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-8 col-md-12 col-sm-12" });
+      let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
+      //IMAGEN
+      //TEXTO DE PRODUCTO
+      carta.appendChild(crearElemento("h6", "Nuevo producto", { "class": "card-title" }));
+      carta.appendChild(crearElemento("input", undefined, { id: "nombreProductoNuevo" }))
       //ICONO MENOS MAS E INPUT CANTIDAD
       let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
       let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
-      let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
+      let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidadNuevoProducto", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
       let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
       //asegurarme de que no sea menor que 1 nunca al teclear;
       inputCantidad.addEventListener("change", function () {
@@ -185,17 +182,60 @@ function mostrarProductos() {
           inputCantidad.value--;
         }
       })
-      cantidadDiv.appendChild(iconoMenos)
-      cantidadDiv.appendChild(inputCantidad)
-      cantidadDiv.appendChild(iconoMas)
+      cantidadDiv.appendChild(iconoMenos);
+      cantidadDiv.appendChild(inputCantidad);
+      cantidadDiv.appendChild(iconoMas);
+      //BOTON DE  PRODUCTO
+      let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "botonNuevoProducto" })
+      boton.addEventListener("click", añadirProducto)
       carta.appendChild(cantidadDiv)
-      //   <label for="exampleInputEmail1">Email address</label>
-      //   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      // <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      let botonMas = crearElemento("button", "Pedir Producto", { id: "boton", class: "btn btn-primary", unidad: "nodefinida", identificador: "nodefinida" });
-      botonMas.addEventListener("click", añadirProducto)
-      carta.appendChild(botonMas);
-      divProductos.appendChild(carta)
+      carta.appendChild(crearElemento("h6", "Unidades", { "class": "card-title" }));
+      carta.appendChild(crearElemento("input", undefined, { id: "unidadProductoNuevo" }))
+      carta.appendChild(boton);
+      contenedorCarta.appendChild(carta);
+      divProductos.appendChild(contenedorCarta);
+
+      // let nombre = document.getElementById("search")
+      // let carta = crearElemento("div", undefined, { id: "nuevoProducto", class: "col-md-12", style: "border-radius:10px;border:3px #000 solid;width:100%;padding:20px;  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);" });
+      // carta.appendChild(crearElemento("h2", "Solicitar nuevo producto: ", { style: "color:green;" }))
+      // let divImagen = crearElemento("div", undefined, { id: "contenedor-imagen" })
+      // divImagen.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", id: "imagen-producto", style: "width:20%;margin:auto;" }))
+      // carta.appendChild(divImagen);
+      // carta.appendChild(crearElemento("label", "Nombre del Producto: ", { for: "nuevoProductoNombre" }))
+      // carta.appendChild(crearElemento("input", undefined, { value: document.getElementById("searchInput").value, type: "text", class: "form-control", id: "input-nuevoProducto" }))
+      // carta.appendChild(crearElemento("label", "Cantidad"));
+      // //ICONO MENOS MAS E INPUT CANTIDAD
+      // let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
+      // let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
+      // let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
+      // let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
+      // //asegurarme de que no sea menor que 1 nunca al teclear;
+      // inputCantidad.addEventListener("change", function () {
+      //   let valor = parseInt(this.value);
+      //   if (valor < 1 || isNaN(valor)) {
+      //     this.value = 1;
+      //   }
+      // });
+      // //que los botones funcionen bien
+      // iconoMas.addEventListener("click", function () {
+      //   inputCantidad.value++;
+      // })
+      // iconoMenos.addEventListener("click", function () {
+      //   if (inputCantidad.value > 1) {
+      //     inputCantidad.value--;
+      //   }
+      // })
+      // cantidadDiv.appendChild(iconoMenos)
+      // cantidadDiv.appendChild(inputCantidad)
+      // cantidadDiv.appendChild(iconoMas)
+      // carta.appendChild(cantidadDiv)
+      // //   <label for="exampleInputEmail1">Email address</label>
+      // //   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      // // <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      // let botonMas = crearElemento("button", "Pedir Producto", { id: "boton", class: "btn btn-primary", unidad: "nodefinida", identificador: "nodefinida" });
+      // botonMas.addEventListener("click", añadirProducto)
+      // carta.appendChild(botonMas);
+      // divProductos.appendChild(carta)
     }
   });
 }
@@ -260,10 +300,11 @@ function cancelarProducto(params) {
 }
 function añadirProducto(event) {
   //buscar si existe antes
-  if (document.getElementById("cantidad" + this.getAttribute("identificador")) == undefined) {
-    let inputCantidad = document.getElementById("cantidad")
-    let cantidad = inputCantidad.value
-    
+  if (this.id == "botonProductoNuevo") {
+    let inputCantidad = document.getElementById("cantidadNuevoProducto");
+    let unidad = document.getElementById("unidadNuevoProducto")
+    let nombre = document.getElementById("nombreProductoNuevo")
+    crearPopUpConfirmacion("null", nombre, parseInt(inputCantidad.value), unidad);
   } else {
     if (this.getAttribute("identificador")) {
       let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
@@ -278,7 +319,7 @@ function añadirProducto(event) {
   }
 
 }
-
+//añade los productos en el carrito al session storage
 function añadirCarrito(nombre, unidad, cantidad, observacion) {
   let almacenar = ([nombre, parseInt(cantidad), unidad, observacion])
   if (sessionStorage.getItem(nombreUsuario) != null) {
