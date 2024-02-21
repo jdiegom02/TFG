@@ -1,29 +1,108 @@
-var pedido = [];
+
 var categoriasUnicas = []
+var nombreUsuario;
 addEventListener("DOMContentLoaded", () => {
-  comprobarSesion(function(valor) {
-    if(valor == 0) {
-        location.href = "../html/index.html";
+  comprobarSesion(function (valor) {
+    if (valor == 0) {
+      location.href = "../html/index.html";
     } else {
-      if(valor.esadmin) {
-        document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"administrar", "class":"btn btn-primary", "value":"Administrar"}));
+      if (valor.esadmin) {
+        document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "administrar", "class": "btn btn-primary", "value": "Administrar" }));
         document.querySelector("#administrar").addEventListener("click", () => {
           location.href = "../html/panelAdmin.html";
         });
-
+      }
+      nombreUsuario = valor.nombre;
+      if (!verificarSessionStorage(nombreUsuario)) {
+        sessionStorage.setItem(nombreUsuario, "[]")
       }
       document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
-      document.querySelector("#elementosnav").appendChild(crearElemento("input",undefined, {"type":"button", "id":"cerrarsesion", "class":"btn btn-danger", "value":"Cerrar Sesión"}));
+      document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
       document.querySelector("#cerrarsesion").addEventListener("click", () => {
         cerrarSesion();
       });
-}});
-  mostrarSeleccionableCategorias(); mostrarProductos();
-  document.getElementById("buscar").addEventListener("click", mostrarProductos)
-  document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
-  document.getElementById('pedir').addEventListener("click", pedirTodo);
-});
+    }
+  });
 
+  mostrarSeleccionableCategorias(); mostrarProductos();
+  document.getElementById("categorySelect").addEventListener("change", mostrarProductos)
+  document.getElementById("searchInput").addEventListener("input", mostrarProductos)
+  document.getElementById("buscar").addEventListener("click", mostrarProductos)
+  // document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
+  document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
+  // document.getElementById('pedir').addEventListener("click", pedirTodo);
+});
+function abrirCarrito(event) {
+  let divCarrito = document.getElementById("carritoDerecha");
+  let overlay = document.getElementById("overlay");
+  //actualizar posiciones antes de la transicion
+  overlay.style.display = "block";
+  divCarrito.style.display = "block";
+  document.body.style.overflow = 'hidden'; // Deshabilitar scroll en la página principal
+  divCarrito.innerHTML = "";
+  divCarrito.style.top = 0;
+  divCarrito.style.right = 0;
+  //que aparezca y luego se mueva;
+  //CREAR ELEMENTOS DEL CARRITO:
+  let cabecera = crearElemento("div", undefined, { id: "carrito-cabecera" });
+  let cerrarBoton = crearElemento("button", undefined, { id: "cerrarBoton", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
+  let iconoCerrar = crearElemento("img", undefined, { "src": "../assets/iconoCerrar.svg" });
+  cerrarBoton.appendChild(iconoCerrar)
+  cabecera.appendChild(cerrarBoton);
+  cabecera.appendChild(crearElemento("h2", "Carrito de Compras",))
+  divCarrito.appendChild(cabecera)
+  if (sessionStorage.getItem(nombreUsuario) !== null) {
+    mostrarCarrito();
+    let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn btn-primary", style: "width:100%;" })
+    botonPedir.addEventListener("click", pedirTodo);
+    divCarrito.appendChild(botonPedir);
+  }
+
+  overlay.addEventListener('click', function () {
+    divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+    overlay.style.display = 'none'; // Ocultar overlay
+    document.body.style.overflow = '';
+  });
+  cerrarBoton.addEventListener('click', function () {
+    // Establecer la propiedad right al valor negativo del ancho del div
+    divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+    overlay.style.display = 'none'; // Ocultar overlay
+    document.body.style.overflow = ''; // Deshabilitar scroll en la página principal
+  });
+}
+function mostrarCarrito(params) {
+  let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" });
+  let arrayPedido = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  for (let i = 0; i < arrayPedido.length; i++) {
+    let productoCarrito = crearElemento("div", undefined, { id: "filaPedido" + (i + 1), identificador: i, class: "grid-item-carrito" });
+    //Contenedor imagen
+    let contenedorImagen = crearElemento("div", undefined, { class: "grid-img" })
+    let imagenProducto = crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", class: "img-fluid", style: "width:50px; height:50px;" })
+    contenedorImagen.appendChild(imagenProducto);
+    productoCarrito.appendChild(contenedorImagen);
+    //Contenedor Todo
+    let contenedorTodo = crearElemento("div", undefined, { class: "grid-info" })
+    let divDescripcion = crearElemento("div", undefined, { class: "descripcion" })
+    divDescripcion.appendChild(crearElemento("p", "" + arrayPedido[i][0]));
+    contenedorTodo.appendChild(divDescripcion);
+    let divInformacion = crearElemento("div", undefined, { class: "informacion" })
+    let divCantidades = crearElemento("div", undefined, { class: "cantidades" })
+    divCantidades.appendChild(crearElemento("p", "En carro:" + arrayPedido[i][1]))
+    divCantidades.appendChild(crearElemento("p", " " + arrayPedido[i][2]));
+    let divBoton = crearElemento("div", undefined)
+    let botonBorrar = crearElemento("button", undefined, { id: i + 1, type: "button", class: "", value: "", style: "margin:auto; width:100%; height:100%;background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" })
+    botonBorrar.appendChild(crearElemento("img", undefined, { "src": "../assets/botonRemover1.png" }))
+    botonBorrar.addEventListener("click", borrarFilaPedido);
+    divBoton.appendChild(botonBorrar);
+    divInformacion.appendChild(divCantidades);
+    divInformacion.appendChild(divBoton)
+    contenedorTodo.appendChild(divDescripcion)
+    contenedorTodo.appendChild(divInformacion)
+    productoCarrito.appendChild(contenedorTodo);
+    contenedorProductos.appendChild(productoCarrito)
+  }
+  carritoDerecha.appendChild(contenedorProductos)
+}
 function mostrarProductos() {
   recogerProductos(function (productos) {
     let divProductos = document.querySelector("#productos");
@@ -34,9 +113,9 @@ function mostrarProductos() {
     let i = 1;
     if (resultadosFiltrados.length != 0) {
       resultadosFiltrados.forEach(productofiltrado => {
-        let contenedorCarta = crearElemento("div", undefined, { "class": "col-md-3" });
+        let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-3 col-md-4 col-sm-6" });
         let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
-        //IMAGEN 
+        //IMAGEN
         carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
         //TEXTO DE PRODUCTO
         carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
@@ -75,38 +154,100 @@ function mostrarProductos() {
         i++;
       })
     } else {
-      let carta = crearElemento("div", undefined, {id: "producto" + i });
+      let carta = crearElemento("div", undefined, { id: "producto" + i });
       carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
       carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
       let botonMas = crearElemento("button", undefined, { id: "boton", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
       botonMas.addEventListener("click", añadirProducto)
       botonMas.appendChild(img);
       div.appendChild(botonMas);
+      divProductos.appendChild(div)
     }
   });
 }
-function añadirProducto(params) {
-  let identificadorProducto = this.getAttribute("identificador");
-  let nombre = this.getAttribute("nombre");
-  let unidad = this.getAttribute("unidad");
-  let inputCantidad = document.getElementById("cantidad" + identificadorProducto)
-  let cantidad = inputCantidad.value
-  aparecerVentanaEmergente("Se agrego al carrito:", cantidad + " " + unidad + " de " + nombre);
-  añadirCarrito(nombre, unidad, cantidad)
-  //reiniciar a 1 
+function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad) {
+  console.log("POPUP");
+  let overlay = document.getElementById("overlay")
+  let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" })
+  let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" })
+  popUp.appendChild(crearElemento("h3", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }))
+  popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }))
+  //crear comentario
+  let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
+  popUp.appendChild(comentario)
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", identificador: identificadorProducto,nombre: nombre, cantidad: cantidad, unidad: unidad })
+  popUp.appendChild(botonConfirmarProducto)
+  botonConfirmarProducto.addEventListener("click", confirmarProducto);
+  let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" })
+  popUp.appendChild(botonCancelarProducto)
+  botonCancelarProducto.addEventListener("click", cancelarProducto)
+  contenedorPopUp.appendChild(popUp)
+  document.body.appendChild(contenedorPopUp);
+}
+function confirmarProducto(event) {
+  //recoger todo y mandarlo al carrito
+  // document.getElementById("comentarioPedido").value;
+  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
+  let cantidad = parseInt(inputCantidad.value)
+  let observacion = document.getElementById("comentarioPedido").value;
+  let cantidadAtributo = parseInt(this.getAttribute("cantidad"));
+  console.log(this.getAttribute("nombre"));
+  console.log(cantidadAtributo);
+  let encontrado = false;
+  let posicionEnArray = 0;
+  if (verificarSessionStorage(nombreUsuario)) {
+    let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
+    for (let i = 0; i <= almacenado.length; i++) {
+      if (almacenado[i] == undefined || almacenado[i][0] !== this.getAttribute("nombre")) {
+        console.log("noo encontrado");
+      } else {
+        console.log("encontrado");
+        posicionEnArray = i;
+        encontrado = true;
+      }
+    }
+  }
+  if (!encontrado) {
+    aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
+    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion)
+    //reiniciar a 1 
+  } else {
+    //si se encuentra se actualiza el valor de la session storage
+    let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
+    miArray[posicionEnArray][1] += cantidad
+    miArray[posicionEnArray][3] = observacion;
+    console.log(miArray);
+    sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
+    //SUMARLE A LA CANTIDAD DEL CARRITO
+  }
+  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+}
+function cancelarProducto(params) {
+  //finalmente cerrar
+  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+}
+function añadirProducto(event) {
+  //buscar si existe antes
+  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
+  let cantidad = parseInt(inputCantidad.value)
+  crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
   inputCantidad.value = 1;
 }
-function añadirCarrito(nombre, unidad, cantidad) {
-  pedido.push([nombre, cantidad, unidad]);
-  // reutilizar
-  // let fila = document.getElementById("producto" + this.getAttribute("identificador"));
-  // let divBotones = fila.querySelector("#divBotones")
-  // let botonCheck = crearElemento("button", undefined, { id: "botonCheck", class: "btn botones", identificador: pedido.length });
-  // botonCheck.appendChild(crearElemento("img", undefined, { src: "../assets/botonCheck.svg" }))
-  // divBotones.appendChild(botonCheck)
-  // document.getElementById("cerrarPedido").click();
+
+function añadirCarrito(nombre, unidad, cantidad, observacion) {
+  let almacenar = ([nombre, parseInt(cantidad), unidad, observacion])
+  if (sessionStorage.getItem(nombreUsuario) != null) {
+    let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
+    almacenado.push([nombre, parseInt(cantidad), unidad, observacion])
+    sessionStorage.setItem(nombreUsuario, JSON.stringify(almacenado))
+  } else {
+    let almacenado = almacenar
+    sessionStorage.setItem(nombreUsuario, almacenado)
+  }
 }
 function aparecerVentanaEmergente(titulo, descripcion) {
+  let overlay = document.getElementById("overlay2");
+  overlay.style.display = "block";
   let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
   let ventanaEmergente = crearElemento("div", undefined, { id: "ventanaEmergente" })
   ventanaEmergente.appendChild(crearElemento("h3", titulo, { id: "ventanaEmergente-titulo" }))
@@ -127,54 +268,36 @@ function desaparecerElementoFadeOut(elemento) {
     if (opacidad <= 0.1) {
       clearInterval(intervalo);
       elementoDesaparecer.style.display = "none";
+      let overlay = document.getElementById("overlay2");
+      overlay.style.display = "none";
       elementoDesaparecer.parentNode.removeChild(elementoDesaparecer), 1000
     }
     elementoDesaparecer.style.opacity = opacidad;
     opacidad -= opacidad * 0.1;
   }, 50); // Velocidad de la animación (50 milisegundos)
 }
-function modalCarritoCrearTabla(event) {
-  const theads = ["Producto", "Cantidad", "Unidad", "Quitar Del Carrito"];
-  let modalBody = document.getElementById('modalBody');
-  modalBody.innerHTML = "";
-  if (pedido.length != 0) {
-    let tablaCarrito = crearElemento("table", undefined, { id: "tablaCarrito", class: "table " })
-    let thead = crearElemento("thead", undefined, { id: "theadCarrito", class: "thead-light" })
-    let tbody = crearElemento("tbody", undefined, { id: "tbodyCarrito" })
-    for (let i = 0; i < theads.length; i++) {
-      thead.appendChild(crearElemento("th", theads[i]));
-    }
-    for (let i = 0; i < pedido.length; i++) {
-      let filaPedido = crearElemento("tr", undefined, { id: "filaPedido" + (i + 1), identificador: i });
-      filaPedido.appendChild(crearElemento("td", pedido[i][0]));
-      filaPedido.appendChild(crearElemento("td", pedido[i][1]));
-      filaPedido.appendChild(crearElemento("td", pedido[i][2]));
-      let botonBorrar = crearElemento("button", "Quitar del carrito", { id: i + 1, type: "button", class: "btn btn-danger", value: "Remover", style: "margin:auto; width:80%; height:100%;" })
-      botonBorrar.addEventListener("click", borrarFilaPedido);
-      let tdBorrar = crearElemento("td", undefined);
-      tdBorrar.appendChild(botonBorrar)
-      filaPedido.appendChild(tdBorrar);
-      tbody.appendChild(filaPedido);
-    }
-    tablaCarrito.appendChild(thead);
-    tablaCarrito.appendChild(tbody);
-    modalBody.appendChild(tablaCarrito)
-  } else {
-    modalBody.appendChild(crearElemento("h4", "El carrito se encuentra vacío por ahora...", { style: "color:red; font-style:italic;" }));
-  }
-  let divComentario = crearElemento('div', undefined, { class: 'form-floating' });
-  divComentario.appendChild(crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px', resize: 'none' }));
-  modalBody.appendChild(divComentario);
-}
 function borrarFilaPedido(event) {
-  pedido.splice(this.id - 1, 1);
-  modalCarritoCrearTabla();
+  let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  miArray = eliminarPosicionDelArray(miArray, this.id - 1)
+  sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
+  abrirCarrito();
 }
 function pedirTodo(event) {
-  if (pedido.length == 0) {
+  if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
-    insertarEnSolicitudes(pedido);
+    // let pedidoArray = JSON.parse(sessionStorage.getItem(nombreUsuario))
+    // pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
+    insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
+    sessionStorage.removeItem(nombreUsuario);
+    aparecerVentanaEmergente("Se ha hecho el pedido", "todo biem capo")
+    abrirCarrito();
+    if (!verificarSessionStorage(nombreUsuario)) {
+      sessionStorage.setItem(nombreUsuario, "[]")
+    }
   }
+}
+function verificarSessionStorage(nombreDelKeyDeLaSesion) {
+  return sessionStorage.getItem(nombreDelKeyDeLaSesion) != null;
 }
 //-------HERRAMIENTAS-------
 function filtrarProductos(array) {
@@ -212,6 +335,18 @@ function mostrarSeleccionableCategorias() {
       }
     });
   })
+}
+
+function eliminarPosicionDelArray(array, posicionEnArray) {
+  let arrayTempo = [];
+  if (posicionEnArray < array.length) {
+    for (let i = 0; i < array.length; i++) {
+      if (i != posicionEnArray) {
+        arrayTempo.push(array[i]);
+      }
+    }
+  }
+  return arrayTempo;
 }
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);

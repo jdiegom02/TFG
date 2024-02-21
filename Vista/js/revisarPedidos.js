@@ -4,7 +4,16 @@ function principal(e) {
     cargarPedidosDesdePHP();
     var btnValidarPedidos = document.getElementById('btnValidarPedidos');
     btnValidarPedidos.addEventListener('click', function () {
-        validarPedidosYGenerarPDF();
+        // Obtener todas las filas de la tabla de pedidos
+        let pedidos = [];
+        let filasPedidos = document.querySelectorAll('#tabla-pedidos-body tr');
+        // Iterar sobre cada fila de pedido
+        filasPedidos.forEach(function (fila) {
+            // Obtener el ID del pedido de la fila actual
+            pedidos.push(fila.dataset.idPedido);
+            // Llamar a la función validarPedidosYGenerarPDF con el ID del pedido
+        });
+        validarPedidosYGenerarPDF(pedidos);
     });
     // document.getElementById('guardarCambiosPedido').addEventListener('click', function() {
     //     guardarCambiosPedido();
@@ -34,6 +43,7 @@ function cargarPedidosDesdePHP() {
 }
 
 function mostrarPedidos(pedidos) {
+    // console.log(pedidos);
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
     pedidos.forEach(function (pedido) {
@@ -153,8 +163,29 @@ function eliminarPedido(idPedido) {
     console.log('Eliminar pedido con ID:', idPedido);
 }
 
-function validarPedidosYGenerarPDF() {
+function validarPedidosYGenerarPDF(idPedido) {
     // Aquí puedes recopilar todos los cambios y aplicarlos a la base de datos
+    let checkeds = [];
+    console.log(idPedido);
+    idPedido.forEach(pedido => {
+        let i = 0;
+        let chequeo = document.querySelector(`tr[data-id-pedido="${pedido}"]`).children[0].children[0];
+        if (chequeo.checked) {
+            checkeds.push([
+                chequeo.parentNode.parentNode.children[2].textContent, // Texto de la columna 2
+                chequeo.parentNode.parentNode.children[3].textContent, // Texto de la columna 3
+                chequeo.parentNode.parentNode.children[4].querySelector('select').selectedOptions[0].textContent, // Texto de la columna 4
+                chequeo.parentNode.parentNode.children[5].querySelector('select').selectedOptions[0].textContent, // Texto seleccionado del select de la columna 5
+                chequeo.parentNode.parentNode.children[6].textContent,
+                chequeo.parentNode.parentNode.getAttribute('data-id-pedido')
+            ]);
+             }
+        // console.log(chequeo.parentNode.parentNode.children[2].textContent);
+    });
+    console.log(checkeds);
+    insertarEnPedidos(checkeds);
+
     // Luego, generar el PDF con la información actualizada
     console.log('Validar pedidos y generar PDF');
 }
+
