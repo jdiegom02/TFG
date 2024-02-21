@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisar Pedidos - Panel de Administración</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/revisarPedidos.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+    <script src="../../Controlador/js/funcionesControlador.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Gestión de Proveedores</h1>
+
+        <!-- Lista de proveedores existentes -->
+        <div class="card">
+            <div class="card-header">
+                Proveedores Existentes
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <!-- Ejemplo de proveedor existente -->
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div id="infoProveedores">
+                                <!-- aqui van los de ajax -->
+                            </div>
+                            <!-- Botón para editar el proveedor -->
+                            
+                        </div>
+                    </li>
+                    <!-- Puedes añadir más proveedores existentes aquí -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Modal para editar proveedor -->
+        <div class="modal fade" id="editarProveedorModal" tabindex="-1" role="dialog"
+            aria-labelledby="editarProveedorModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarProveedorModalLabel">Editar Proveedor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefono">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" class="form-control" id="direccion">
+                            </div>
+                            <div class="form-group">
+                                <label for="observaciones">Observaciones</label>
+                                <textarea class="form-control" id="observaciones" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Botón para abrir el modal -->
+        <button type="button" class="btn btn-primary mt-4" data-toggle="modal" data-target="#agregarProveedorModal">
+            Añadir Proveedor
+        </button>
+    </div>
+    <!-- Modal para añadir nuevo proveedor -->
+    <div class="modal fade" id="agregarProveedorModal" tabindex="-1" role="dialog"
+        aria-labelledby="agregarProveedorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarProveedorModalLabel">Añadir Nuevo Proveedor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="nombre">Nombre del Proveedor</label>
+                            <input type="text" class="form-control" id="nombre"
+                                placeholder="Ingrese el nombre del proveedor">
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto">Información de Contacto</label>
+                            <input type="text" class="form-control" id="contacto"
+                                placeholder="Ingrese la información de contacto">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Agregar Proveedor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Bootstrap JS (opcional, si necesitas funcionalidades como el despliegue del menú en móviles) -->
+    <script src="../js/gestionarProveedores.js"></script>
+</body>
+
+</html>

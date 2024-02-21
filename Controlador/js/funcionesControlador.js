@@ -84,3 +84,15 @@ function insertarEnPedidos(datos) {
     cargarPedidosDesdePHP();
   });
 }
+
+function cargarProveedoresDesdePHP(callback){
+  $.ajax({
+    url: "../../Controlador/php/proveedoresCompleto.php",
+    type: 'POST',
+    dataType: 'json',
+    success: function (data) {
+      console.log(data); 
+      callback(data);
+    },
+  });
+}
