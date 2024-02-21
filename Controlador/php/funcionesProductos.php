@@ -1,6 +1,7 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 
+
 /* CAMBIAR A LO QUE SE RECIBA POR JS */
 function addProducto($desc, $unidad, $categoria)
 {
@@ -39,5 +40,34 @@ function ultimoID($conexion)
     return $row['max_id']; // Devolver el valor del ID máximo
 }
 
-addProducto("nuervooo", "Sobre", "Fruteria");
+
+
+if (isset($_POST["datosProducto"])) {
+    $arrayDatos = $_POST["datosProducto"];
+    
+    for ($i = 0; $i < count($arrayDatos); $i++) {
+        $nombre = $arrayDatos[0];
+        $categoria=$arrayDatos[1];
+        $unidad=$arrayDatos[2];
+
+    }
+    for ($z=0; $z <count($arrayDatos[3]) ; $z++) { 
+        $kilosResiduo=$arrayDatos[3][$z];
+        $tipoResiduo=$arrayDatos[4][$z];
+        echo "nombre: ".$nombre." categoria: ".$categoria." unidades ".$unidad.
+        "kilos ".$kilosResiduo." Tipo ".$tipoResiduo."\n";
+        
+    }
+    addProducto($nombre, $unidad, $categoria);
+}
+
+
+
+
+
+
+
+
+
+
 ?>

@@ -34,7 +34,7 @@ function principal() {
 }
 
 function manejadorClick(e) {
-    console.log(this.id);
+    //console.log(this.id);
     if (this.id === "anadir") {
         $('#modalAgregarProducto').modal('show');
         cargarResiduos();
@@ -104,28 +104,62 @@ function insertarProducto(e) {
     var nombreProducto = document.getElementById('nombreProducto').value.trim();
     var categoriaProducto = document.getElementById('categoriaProducto').value;
     var unidadMedida = document.getElementById('unidadMedida').value.trim();
-    var residuos = document.getElementById('residuos').value.trim();
+
+    /*var residuosUnidad = document.getElementById('residuos').value.trim();
+    var residuosTipo = document.getElementById('despegableResiduos').value.trim();*/
+
+         // Crear arrays para almacenar los valores de los residuos
+    var residuosUnidad = [];
+    var residuosTipo = [];
+
+    // Obtener todos los campos de residuos dinámicos
+    var camposResiduos = document.querySelectorAll('.claseResiduos');
+
+    // Iterar sobre los campos de residuos
+    camposResiduos.forEach(function(campo) {
+        // Obtener el valor del campo de residuos de unidad
+        var residuoUnidad = campo.value.trim();
+        if (residuoUnidad !== '') {
+            residuosUnidad.push(residuoUnidad); // Agregar el valor al array de residuos de unidad
+
+            // Obtener el valor del campo de residuos de tipo correspondiente
+            var idNumero = campo.id.replace('residuos', ''); // Obtener el número de identificación del campo
+            var residuoTipo = document.getElementById('despegableResiduos' + idNumero).value.trim(); // Obtener el valor del campo de residuos de tipo
+            residuosTipo.push(residuoTipo); // Agregar el valor al array de residuos de tipo
+        }
+    });
+
+    for (let index = 0; index < residuosUnidad.length; index++) {
+        
+        // console.log(residuosUnidad[index]);
+        // console.log(residuosTipo[index]);
+        
+    }
+
 
     // Verificar los datos de entrada
-    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuos === '') {
+    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuosUnidad[0] === undefined) {
         // Mostrar mensaje de error si algún campo está vacío
         mostrarMensajeError('Por favor, complete todos los campos.');
         return;
     }
 
-    // Si los datos de entrada son correctos, mostrar el mensaje de éxito
-    var producto = {
-        nombre: nombreProducto,
-        categoria: categoriaProducto,
-        unidadMedida: unidadMedida,
-        residuos: residuos
-    };
+    var arrayDatosProducto = [
+        nombreProducto,
+        categoriaProducto,
+        unidadMedida,
+        residuosUnidad,
+        residuosTipo
+    ];
+    
+    // console.log(arrayDatosProducto);
+    // console.log("Prueba "+arrayDatosProducto[3][1]+"-"+arrayDatosProducto[4][1]);
 
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/funcionesProductos.php",
-        data: producto,
+        data: {datosProducto : arrayDatosProducto},
         success: function (response) {
             // Manejar la respuesta del servidor
             console.log(response);
@@ -249,16 +283,6 @@ function cargarOpcionesCategoria() {
     });
 }
 
-// Llamar a la función para cargar las opciones del select al cargar la página
-cargarOpcionesCategoria();
-
-// Agregar evento al botón "Guardar Cambios" del modal
-$('#anadirProducto').click(function () {
-    // Llamar a la función insertarProducto()
-    insertarProducto();
-});
-
-
 function cargarOpcionesUnidadMedida() {
     $.ajax({
         type: "POST",
@@ -282,10 +306,9 @@ function cargarOpcionesUnidadMedida() {
 
 // Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
 cargarOpcionesUnidadMedida();
+cargarOpcionesCategoria();
 
-// Agregar evento al botón "Guardar Cambios" del modal
 $('#anadirProducto').click(function () {
-    // Llamar a la función insertarProducto()
     insertarProducto();
 });
 
