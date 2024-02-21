@@ -36,7 +36,7 @@ function addSolicitud()
         $correo = $_SESSION['email'];
         $idUsuario = idUsuario($correo, $conexion);
         $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, observaciones, fk_usuario) 
-            values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, $observacion, $idUsuario)";
+            values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, '$observacion', $idUsuario)";
         echo $sqlInsertar;
         $conexion->realizarModificacion($sqlInsertar);
         // Llamar a la función addSolicitud con los datos actuales
