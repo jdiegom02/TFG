@@ -154,14 +154,48 @@ function mostrarProductos() {
         i++;
       })
     } else {
-      let carta = crearElemento("div", undefined, { id: "producto" + i });
-      carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
-      carta.appendChild(crearElemento("input", undefined, { "class": "card-title", placeholder: "Nombre del Producto", id: "nuevoProducto" }));
-      let botonMas = crearElemento("button", undefined, { id: "boton", class: "btn botones", nombre: document.getElementById("searchInput").value, unidad: "nodefinida", identificador: "nodefinida" });
+      //crear accion en caso de que no exista un producto en la base de datos:
+      let nombre = document.getElementById("search")
+      let carta = crearElemento("div", undefined, { id: "nuevoProducto", class: "col-md-12", style: "border-radius:10px;border:3px #000 solid;width:100%;padding:20px;  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);" });
+      carta.appendChild(crearElemento("h2", "Solicitar nuevo producto: ", { style: "color:green;" }))
+      let divImagen = crearElemento("div", undefined, { id: "contenedor-imagen" })
+      divImagen.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", id: "imagen-producto", style: "width:20%;margin:auto;" }))
+      carta.appendChild(divImagen);
+      carta.appendChild(crearElemento("label", "Nombre del Producto: ", { for: "nuevoProductoNombre" }))
+      carta.appendChild(crearElemento("input", undefined, { value: document.getElementById("searchInput").value, type: "text", class: "form-control", id: "input-nuevoProducto" }))
+      carta.appendChild(crearElemento("label", "Cantidad"));
+      //ICONO MENOS MAS E INPUT CANTIDAD
+      let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
+      let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
+      let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
+      let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
+      //asegurarme de que no sea menor que 1 nunca al teclear;
+      inputCantidad.addEventListener("change", function () {
+        let valor = parseInt(this.value);
+        if (valor < 1 || isNaN(valor)) {
+          this.value = 1;
+        }
+      });
+      //que los botones funcionen bien
+      iconoMas.addEventListener("click", function () {
+        inputCantidad.value++;
+      })
+      iconoMenos.addEventListener("click", function () {
+        if (inputCantidad.value > 1) {
+          inputCantidad.value--;
+        }
+      })
+      cantidadDiv.appendChild(iconoMenos)
+      cantidadDiv.appendChild(inputCantidad)
+      cantidadDiv.appendChild(iconoMas)
+      carta.appendChild(cantidadDiv)
+      //   <label for="exampleInputEmail1">Email address</label>
+      //   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      // <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      let botonMas = crearElemento("button", "Pedir Producto", { id: "boton", class: "btn btn-primary", unidad: "nodefinida", identificador: "nodefinida" });
       botonMas.addEventListener("click", añadirProducto)
-      botonMas.appendChild(img);
-      div.appendChild(botonMas);
-      divProductos.appendChild(div)
+      carta.appendChild(botonMas);
+      divProductos.appendChild(carta)
     }
   });
 }
@@ -175,7 +209,7 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad)
   //crear comentario
   let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
   popUp.appendChild(comentario)
-  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", identificador: identificadorProducto,nombre: nombre, cantidad: cantidad, unidad: unidad })
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad })
   popUp.appendChild(botonConfirmarProducto)
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
   let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" })
@@ -187,8 +221,6 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad)
 function confirmarProducto(event) {
   //recoger todo y mandarlo al carrito
   // document.getElementById("comentarioPedido").value;
-  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
-  let cantidad = parseInt(inputCantidad.value)
   let observacion = document.getElementById("comentarioPedido").value;
   let cantidadAtributo = parseInt(this.getAttribute("cantidad"));
   console.log(this.getAttribute("nombre"));
@@ -214,7 +246,7 @@ function confirmarProducto(event) {
   } else {
     //si se encuentra se actualiza el valor de la session storage
     let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
-    miArray[posicionEnArray][1] += cantidad
+    miArray[posicionEnArray][1] += cantidadAtributo
     miArray[posicionEnArray][3] = observacion;
     console.log(miArray);
     sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
@@ -228,10 +260,23 @@ function cancelarProducto(params) {
 }
 function añadirProducto(event) {
   //buscar si existe antes
-  let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
-  let cantidad = parseInt(inputCantidad.value)
-  crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
-  inputCantidad.value = 1;
+  if (document.getElementById("cantidad" + this.getAttribute("identificador")) == undefined) {
+    let inputCantidad = document.getElementById("cantidad")
+    let cantidad = inputCantidad.value
+    
+  } else {
+    if (this.getAttribute("identificador")) {
+      let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
+      let cantidad = parseInt(inputCantidad.value)
+      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+      inputCantidad.value = 1;
+    } else {
+      let cantidad = document.getElementById("cantidad")
+      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+      cantidad.value = 1;
+    }
+  }
+
 }
 
 function añadirCarrito(nombre, unidad, cantidad, observacion) {
