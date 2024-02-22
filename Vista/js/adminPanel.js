@@ -36,7 +36,9 @@ function principal() {
 function manejadorClick(e) {
     //console.log(this.id);
     if (this.id === "anadir") {
-        $('#modalAgregarProducto').modal('show');
+        $('#modalGestionarProducto').modal('show');
+        cargarDatosProductos();
+        //$('#modalAgregarProducto').modal('show');
         cargarResiduos();
     }
     else if (this.id === "revisarPedidos") {
@@ -94,6 +96,62 @@ function agregarNuevoCampoResiduo(numero) {
    document.getElementById('contenedorResiduos').appendChild(nuevoCampoResiduo);
    cargarResiduos();
 }
+
+
+
+function cargarDatosProductos() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/productoResiduo.php",
+        dataType: "JSON",
+        success: function (data) {
+            console.log(data);
+            $('.producto').empty();
+            var contador = 1;
+            var contadorr=0;
+            var productoTemporal;
+            $.each(data, function (index, producto) {
+                var productoID = producto.nombre_producto.replace(/\s+/g, '') + contador;
+               
+                var residuosHTML = ""; // Inicializar el HTML de los residuos para este producto
+               
+                
+                $.each(producto.residuos.split(','), function (index, residuo) {
+                    residuosHTML += '<li>' + residuo + '</li>';
+                });
+
+                     
+                    if(productoTemporal !==undefined && (data[contadorr].nombre_producto)==(productoTemporal.nombre_producto))
+                    {
+                        console.log(productoTemporal.nombre_producto);
+                        residuosHTML += '<li>' + productoTemporal.residuos + '</li>';
+                       
+                    }
+                    productoTemporal=producto;
+                var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.nombre_producto + '</span></div>';
+                 productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>'; 
+                productoHTML += '<div class="col-sm-3"><button type="button" class="btn btn-primary btnEditar" data-producto-id="' + productoID + '">Editar</button></div>';
+                productoHTML += '</div>';
+                $('.modal-body').append(productoHTML);
+                contador++;
+                contadorr++;
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+
+
+
+
+
 
 
 

@@ -28,8 +28,8 @@
             </div>
             <div class="col-sm-4" id="anadir">
                 <div class="opcion">
-                    <img src="../img/iconos/mas.png" alt="Añadir Producto">
-                    <p>Añadir Producto</p>
+                    <img src="../img/iconos/gestionP.png" alt="Añadir Producto">
+                    <p>Gestionar Productos</p>
                 </div>
             </div>
             <div class="col-sm-4" id="gestionarResiduos">
@@ -60,6 +60,76 @@
             </div>
         </div>
     </div>
+
+<!----------------- MODAL GESTIONAR PRODUCTO -------------------------->
+<div class="modal fade" id="modalGestionarProducto" tabindex="-1" role="dialog" aria-labelledby="modalGestionarProductoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalGestionarProductoLabel">Gestionar Productos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Encabezado de tabla -->
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Nombre del Producto</strong></div>
+                    <div class="col-sm-3"><strong>Categoría</strong></div>
+                    <div class="col-sm-3"><strong>Unidad de medida</strong></div>
+                    <div class="col-sm-3"><strong>Residuos</strong></div>
+                </div>
+                <!-- Filas de productos -->
+                <div class="producto">
+                    <div class="row mb-3">
+                        <div class="col-sm-3"><span id="nombreProducto1">Producto 1</span></div>
+                        <div class="col-sm-3"><span id="categoriaProducto1">Categoría 1</span></div>
+                        <div class="col-sm-3"><span id="unidadMedida1">Unidad 1</span></div>
+                        <div class="col-sm-3">
+                            <ul id="residuosProducto1">
+                                <li>Residuo 1</li>
+                                <li>Residuo 2</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-primary btnEditar" data-producto-id="1">Editar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="producto">
+                    <div class="row mb-3">
+                        <div class="col-sm-3"><span id="nombreProducto2">Producto 1</span></div>
+                        <div class="col-sm-3"><span id="categoriaProducto2">Categoría 1</span></div>
+                        <div class="col-sm-3"><span id="unidadMedida2">Unidad 1</span></div>
+                        <div class="col-sm-3">
+                            <ul id="residuosProducto2">
+                                <li>Residuo 1</li>
+                                <li>Residuo 2</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-primary btnEditar" data-producto-id="1">Editar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Puedes replicar la estructura anterior para cada producto -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
     <!---------------------------------------------- Modal AÑADIR PRODCUTO----------------------------------------->
     <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog"
         aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
@@ -69,7 +139,6 @@
                     <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto</h5>
                 </div>
                 <div class="modal-body">
-                    <!-- Contenido del formulario de agregar producto aquí -->
                     <form>
                         <div class="form-group">
                             <label for="nombreProducto">Nombre del Producto</label>
@@ -149,7 +218,6 @@
                         </tr>
                     </thead>
                     <tbody id="tablaUsuarios">
-                        <!-- Aquí se cargarán dinámicamente las filas de la tabla -->
                     </tbody>
                 </table>
             </div>
