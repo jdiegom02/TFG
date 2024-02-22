@@ -145,24 +145,23 @@ function pedirTodo(event) {
     }
   }
 }
-// Resto del código omitido por brevedad...
+function añadirNuevoProducto() {
+  let nombreNuevoProducto = document.getElementById("nodefinidaNombre").value
+  let cantidadNuevoProducto = document.getElementById("cantidadnodefinida").value;
+  let unidad = document.getElementById("nodefinidaUnidad").value;
+  crearPopUpConfirmacion("nuevoProducto", nombreNuevoProducto, cantidadNuevoProducto, unidad);
+  cantidadNuevoProducto = 1;
+}
 function añadirProducto(event) {
-  if (this.id == "botonNuevoProducto") {
-    let inputCantidad = document.getElementById("cantidadNuevoProducto");
-    let unidad = document.getElementById("unidadProductoNuevo").value;
-    let nombre = document.getElementById("nombreProductoNuevo").value;
-    crearPopUpConfirmacion("null", nombre, parseInt(inputCantidad.value), unidad);
+  if (this.getAttribute("identificador")) {
+    let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"));
+    let cantidad = parseInt(inputCantidad.value);
+    crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+    inputCantidad.value = 1;
   } else {
-    if (this.getAttribute("identificador")) {
-      let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"));
-      let cantidad = parseInt(inputCantidad.value);
-      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
-      inputCantidad.value = 1;
-    } else {
-      let cantidad = document.getElementById("cantidad");
-      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
-      cantidad.value = 1;
-    }
+    let cantidad = document.getElementById("cantidad");
+    crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+    cantidad.value = 1;
   }
 }
 
@@ -221,13 +220,6 @@ function cancelarProducto(params) {
 }
 
 function añadirCarrito(nombre, unidad, cantidad, observacion) {
-  if (nombre == undefined || unidad == undefined) {
-    nombre = document.getElementById("nodefinidaNombre").value;
-    console.log(document.getElementById("nodefinidaNombre").value)
-    unidad = document.getElementById("nodefinidaUnidad").value
-    console.log(nombre)
-
-  }
   let almacenar = ([nombre, parseInt(cantidad), unidad, observacion]);
   if (sessionStorage.getItem(nombreUsuario) != null) {
     let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
@@ -457,6 +449,9 @@ function crearTarjetaProducto(producto) {
   // UNIDADES DEL PRODUCTO
   if (unidades != undefined) {
     carta.appendChild(crearElemento("h6", unidades, { "class": "card-title", style: "padding:10px" }));
+    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
+    boton.addEventListener("click", añadirProducto); carta.appendChild(boton);
+
   } else {
     carta.appendChild(crearElemento("h6", "Unidad Solicitada:", { "class": "card-title" }))
     let label = crearElemento("label", "Unidad:", { for: identificador });
@@ -465,13 +460,13 @@ function crearTarjetaProducto(producto) {
     // Agregar el label y el input al contenedor de la columna
     carta.appendChild(label);
     carta.appendChild(input);
+    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
+    boton.addEventListener("click", añadirNuevoProducto);
+    carta.appendChild(boton);
+
   }
-
-
   // BOTÓN DE AÑADIR AL CARRITO
-  let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
-  boton.addEventListener("click", añadirProducto);
-  carta.appendChild(boton);
+
 
   contenedorCarta.appendChild(carta);
   return contenedorCarta;
