@@ -109,10 +109,42 @@
     </div>
 </div>
 
+<!----------------- MODAL DE MODIFICAR PRODUCTO --------------------------------------->
+
+<div class="modal fade" id="editarProductoModal" tabindex="-1" role="dialog" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarProductoModalLabel">Editar Producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formularioEditarProducto">
+            <!-- Por ejemplo: -->
+            <div class="form-group">
+              <label for="nombreProducto">Nombre del Producto</label>
+              <input type="text" class="form-control" id="nombreProductoModificar">
+            </div>
+            <div class="form-group">
+              <label for="categoriaProducto">Categoría del Producto</label>
+              <input type="text" class="form-control" id="categoriaProductoModificar">
+            </div>
+            <!-- Agrega más campos según sea necesario -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="guardarCambios2">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
-
+<!-----FIN------------ MODAL DE MODIFICAR PRODUCTO ------------------FIN--------------------->
 
 
 

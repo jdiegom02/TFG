@@ -125,6 +125,7 @@ function cargarDatosProductos() {
                 // Verificar si ya hemos visto este producto
                 if (!productosConResiduos[producto.nombre_producto]) {
                     productosConResiduos[producto.nombre_producto] = {
+                        producto_id: producto.producto_id,
                         categoria: producto.categoria,
                         unidad: producto.unidad,
                         residuos: []  // Inicializar lista de residuos para este producto
@@ -143,24 +144,63 @@ function cargarDatosProductos() {
                 $.each(producto.residuos, function (index, residuo) {
                     residuosHTML += '<li>' + residuo + '</li>';
                 });
-                
+
                 var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
                 productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>';
-                productoHTML += '<div class="col-sm-3"><button type="button" class="btn btn-primary btnEditar" data-producto-id="' + productoID + '">Editar</button></div>';
+                productoHTML += '<div class="col-sm-3"><button type="button" id="' + producto.producto_id + '" class="btn btn-primary btnEditar" data-producto-id="' + producto.producto_id + '">Editar</button></div>';
                 productoHTML += '</div>';
+
 
                 // Agregar producto con sus residuos al contenedor
                 $('#gestionPRO').append(productoHTML);
             });
+            
+            /*Para asignar el evento click al boton EDITAR */
+            $(document).on('click', '.btnEditar', function() {
+                // Obtener el ID del producto a partir del atributo data-producto-id
+                var productoID2 = $(this).data('producto-id');
+
+                console.log($(this).data('producto-id'));
+
+                //console.log(productosConResiduos.Ajos);
+                var producto = null;
+                Object.values(productosConResiduos).forEach(function(prod) {
+                    
+                    if (prod.producto_id == productoID2) {
+                        producto = prod;
+                    }
+                });
+            
+                // Verificar si se encontró el producto
+                if (producto) {
+                    // Llenar los campos del modal con los detalles del producto
+                    $('#nombreProductoModificar').val(producto.nombre_producto);
+                    $('#categoriaProductoModificar').val(producto.categoria);
+            
+                    // Mostrar el modal de edición de producto
+                    $('#editarProductoModal').modal('show');
+                } else {
+                    console.error("Producto no encontrado");
+                }
+            });
+        
+
         },
         error: function (xhr, status, error) {
             console.error(error);
         }
     });
 }
+
+
+function abrirModificarProducto(e)
+{
+    console.log(this.id);
+}
+
 
 function limpiarMemoria() {
     $('#gestionPRO').empty();
