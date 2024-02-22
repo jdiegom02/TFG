@@ -58,11 +58,6 @@ function manejadorAnadir(e)
 {
     $('#modalAgregarUsuario').modal('show');
 }
-
-
-
-
-
 /*Funcion para mandar los productos al php para hacer la inserccion. */
 function insertarProducto(e) {
     // Obtener los valores de los campos de entrada
@@ -313,8 +308,9 @@ function cargarUsuarios() {
                 $('#nombreEditar').val(nombre);
                 $('#emailEditar').val(email);
                 $('#telefonoEditar').val(telefono);
+                $('#guardarCambios').data('idUsuario', idUsuario);
                 $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
-                 //SE ABRE MODAL DE EDITAR
+                //SE ABRE MODAL DE EDITAR
                 $('#modalEditar').modal('show');
 
             });
@@ -324,7 +320,76 @@ function cargarUsuarios() {
                 var fila = $(this).closest('tr'); 
                 var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
                 $('#modalCambiarContrasena .modal-title').text('Cambiar Contraseña de: ' + nombre);
+                $('#guardarPass').data('idUsuario', $(this).data('id'));
                 $('#modalCambiarContrasena').modal('show');
+            });
+
+            $('#guardarCambios').click(function() {
+                if($('#nombreEditar').val().length > 0 && /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test($('#emailEditar').val()) && /^\d{9}$/.test($('#telefonoEditar').val())) {
+                    $.ajax({
+                        type: "POST",
+                        url: "../../Controlador/php/gestionarUsuarios.php",
+                        data: {
+                            id: $(this).data('idUsuario'),
+                            nombre: $('#nombreEditar').val(),
+                            email: $('#emailEditar').val(),
+                            telefono: $('#telefonoEditar').val(),
+                            admin: $('#adminEditar').val(),
+                            activo: $('#activoEditar').val()
+
+                        },
+                      }).done(function (a) {
+                        $('#modalEditar').modal('hide');
+                        cargarUsuarios();
+                    });
+                }
+
+            });
+
+            $('#guardarPass').click(function() {
+                if($('#nuevaContrasena').val() === $('#repetirNuevaContrasena').val()) {
+                    if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/.test($('#nuevaContrasena').val())){
+                        $.ajax({
+                            type: "POST",
+                            url: "../../Controlador/php/gestionarUsuarios.php",
+                            data: {
+                                id: $(this).data('idUsuario'),
+                                password: $('#nuevaContrasena').val()
+                            },
+                          }).done(function (a) {
+                            $('#modalCambiarContrasena').modal('hide');
+                        });
+                    } else {
+                        console.log("La contraseña tiene poca seguridad");
+                    }
+                } else {
+                    console.log("Las contraseñas no coinciden");
+                }
+
+            });
+
+            $('#guardarUsuario').click(function() {
+            
+                if($('#nombreAgregar').val().length > 0 && /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test($('#emailAgregar').val()) && /^\d{9}$/.test($('#telefonoAgregar').val()) && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/.test($('#passwordAgregar').val())){
+                        $.ajax({
+                            type: "POST",
+                            url: "../../Controlador/php/gestionarUsuarios.php",
+                            data: {
+                                nombreA: $('#nombreAgregar').val(),
+                                emailA: $('#emailAgregar').val(),
+                                telefonoA: $('#telefonoAgregar').val(),
+                                adminA: $('#adminAgregar').val(),
+                                activoA: $('#activoAgregar').val(),
+                                passwordA: $('#passwordAgregar').val()
+                            },
+                          }).done(function (a) {
+                            $('#modalAgregarUsuario').modal('hide');
+                            cargarUsuarios();
+                        });
+                } else {
+                    console.log("fallo");
+                }
+
             });
         },
         error: function(xhr, status, error) {
@@ -338,19 +403,6 @@ function cargarUsuarios() {
 
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* fUNCION PARA CREAR ELEMENTO */
 function crearElemento(etiqueta, texto, atributos) {
@@ -366,3 +418,4 @@ function crearElemento(etiqueta, texto, atributos) {
     }
     return elementoNuevo;
 }
+
