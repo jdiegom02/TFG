@@ -44,7 +44,7 @@ function principal(params) {
         });
 
     });
-    document.querySelector("#addProveedor").addEventListener("click", function () {
+    document.querySelector("#confirmarAccion").addEventListener("click", function () {
         console.log("blabla");
         let descripcion = document.querySelector("#addDescripcion").value;
         let direccion = document.querySelector("#addDireccion").value;
@@ -87,7 +87,7 @@ function editar(hijo) {
     }
 
     // Agrega el evento al botón de guardar cambios solo una vez
-    document.querySelector("#cambioProveedor").addEventListener("click", guardarCambios);
+    document.querySelector("#confirmarAccion").addEventListener("click", guardarCambios);
 
     // Agrega el evento al botón de cancelar para quitar el evento del botón de guardar cambios
     document.querySelector("#cerrarModal").addEventListener("click", function () {
