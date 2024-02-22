@@ -1,5 +1,6 @@
 window.addEventListener("load", principal, false);
 let usuarioIniciado;
+let contador=0;
 function principal() {
     comprobarSesion(function (valor) {
         if (valor == 0) {
@@ -24,15 +25,30 @@ function principal() {
     document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
     document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
     document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
+    document.getElementById("agregarResiduo").addEventListener("click", manejarsuma);
+    document.getElementById("abrirModal").addEventListener("click", manejadorClick);
+    
+    
     $('#modalGestionarUsuarios').on('show.bs.modal', function () {
         cargarUsuarios();
     });
+
+    $('#guardarCambios2').click(modificarProducto);
+
 }
 
 function manejadorClick(e) {
-    console.log(this.id);
+    //console.log(this.id);
     if (this.id === "anadir") {
+        $('#modalGestionarProducto').modal('show');
+        limpiarMemoria()
+        cargarDatosProductos();
+        //$('#modalAgregarProducto').modal('show');
+        cargarResiduos();
+    }
+    else if (this.id === "abrirModal") {
         $('#modalAgregarProducto').modal('show');
+        
     }
     else if (this.id === "revisarPedidos") {
         location.href = 'revisarPedidos.html';
@@ -45,7 +61,6 @@ function manejadorClick(e) {
     }
     else if (this.id === "gestionarUsuarios") {
         $('#modalGestionarUsuarios').modal('show');
-        /*ASIGNAR MANEJADOR AL BOTON AÑADIR USUARIO */
         document.getElementById("btnanadirUsuario").addEventListener("click", manejadorAnadir);
         
     }
@@ -59,6 +74,278 @@ function manejadorAnadir(e)
     $('#modalAgregarUsuario').modal('show');
 }
 
+function manejarsuma(e)
+{
+    e.preventDefault();
+   contador++;
+   agregarNuevoCampoResiduo(contador);
+
+}
+
+function agregarNuevoCampoResiduo(numero) {
+
+   // Crear el nuevo campo de entrada de residuos
+   var nuevoCampoResiduo = crearElemento('div', undefined, { 'class': 'input-group' });
+
+   var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;' });
+
+   var divAppend = crearElemento('div', undefined, { 'class': 'input-group-append' });
+
+   var labelKilos = crearElemento('label', 'Kg', { 'for': 'kilos' });
+
+   var selectDespegable = crearElemento('select', undefined, { 'class': 'form-control despegablesResiduos', 'id': 'despegableResiduos'+ numero });
+
+   divAppend.appendChild(labelKilos);
+   divAppend.appendChild(selectDespegable);
+
+   nuevoCampoResiduo.appendChild(inputResiduo);
+   nuevoCampoResiduo.appendChild(divAppend);
+
+   // Agregar el nuevo campo de entrada de residuos al contenedor
+   document.getElementById('contenedorResiduos').appendChild(nuevoCampoResiduo);
+   cargarResiduos();
+}
+
+
+
+function cargarDatosProductos() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/productoResiduo.php",
+        dataType: "JSON",
+        success: function (data) {
+            //console.log(data);
+            $('.producto').empty();
+
+            // Objeto para almacenar productos con sus residuos agrupados
+            var productosConResiduos = {};
+
+            // Iterar sobre los datos y agrupar los residuos por producto
+            $.each(data, function (index, producto) {
+                // Verificar si ya hemos visto este producto
+                if (!productosConResiduos[producto.nombre_producto]) {
+                    productosConResiduos[producto.nombre_producto] = {
+                        nombre_pro : producto.nombre_producto,
+                        producto_id: producto.producto_id,
+                        categoria: producto.categoria,
+                        unidad: producto.unidad,
+                        residuos: []  // Inicializar lista de residuos para este producto
+                    };
+                }
+                // Agregar residuos al producto correspondiente
+                productosConResiduos[producto.nombre_producto].residuos.push(producto.residuos);
+            });
+
+            // Iterar sobre los productos con sus residuos y generar el HTML
+            $.each(productosConResiduos, function (nombre_producto, producto) {
+                var productoID = nombre_producto.replace(/\s+/g, ''); // ID del producto
+
+                // Generar HTML para los residuos
+                var residuosHTML = '';
+                $.each(producto.residuos, function (index, residuo) {
+                    
+                    residuosHTML += '<li>' + residuo + '</li>';
+                });
+                var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
+                productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>';
+                productoHTML += '<div class="col-sm-3"><button type="button" id="' + producto.producto_id + '" class="btn btn-primary btnEditar" data-producto-id="' + producto.producto_id + '">Editar</button></div>';
+                productoHTML += '</div>';
+
+
+                // Agregar producto con sus residuos al contenedor
+                $('#gestionPRO').append(productoHTML);
+            });
+            
+            /*Para asignar el evento click al boton EDITAR */
+            $(document).on('click', '.btnEditar', function() {
+                // Obtener el ID del producto a partir del atributo data-producto-id
+                var productoID2 = $(this).data('producto-id');
+
+              //  console.log($(this).data('producto-id'));
+                //console.log($(this));
+
+                //console.log(productosConResiduos.Ajos);
+                var producto = null;
+                Object.values(productosConResiduos).forEach(function(prod) {
+                    
+                    if (prod.producto_id == productoID2) {
+                        producto = prod;
+                    }
+                });
+            
+                // Verificar si se encontró el producto
+                if (producto) {
+                    $('#productoIDModificar').val(producto.producto_id);
+                    $('#nombreProductoModificar').val(producto.nombre_pro);
+                    $('#categoriaProductoModificar').val(producto.categoria);
+                    $('#unidadProductoModificar').val(producto.unidad);
+
+                    // Limpiar y agregar desplegables de residuos
+                    $('#residuosProductoModificar').empty();
+                    $.each(producto.residuos, function(index, residuo) {
+                        // Crear un nuevo div para el select
+                        var nuevoDivSelect = $('<div class="form-group"></div>');
+                    
+                        // Crear el select y agregarlo al nuevo div
+                        var nuevoResiduoDropdown = '<select class="form-control despegablesResiduosModi" id="residuo_' + producto.producto_id + '_' + index + '">' +
+                                                       '<option value="' + residuo + '">' + residuo + '</option>' +
+                                                   '</select>';
+                        nuevoDivSelect.append(nuevoResiduoDropdown);
+                    
+                        // Agregar el nuevo div al contenedor principal
+                        $('#residuosProductoModificar').append(nuevoDivSelect);
+                        
+                    });
+
+                    // Mostrar el modal de edición de producto
+                    $('#editarProductoModal').modal('show');
+                    cargarResiduosModiPro();
+                } else {
+                    console.error("Producto no encontrado");
+                }
+                // cargarResiduosModiPro();
+            });
+        
+
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+function modificarProducto() {
+    // Obtener los valores de los campos del modal de edición
+    var nombreProducto = $('#nombreProductoModificar').val();
+    var categoriaProducto = $('#categoriaProductoModificar').val();
+    var unidadMedida = $('#unidadProductoModificar').val();
+    
+    // Inicializar un array para almacenar los residuos seleccionados
+    var residuos = [];
+
+    // Recorrer cada select de residuos y obtener los valores seleccionados
+    $('.despegablesResiduosModi').each(function() {
+        var residuoSeleccionado = $(this).val();
+        if (residuoSeleccionado) { // Verificar si se ha seleccionado un residuo
+            residuos.push(residuoSeleccionado);
+        }
+    });
+
+    // Realizar solicitud AJAX para enviar los datos al backend
+    var arrayModificarProducto = [
+        nombreProducto,
+        categoriaProducto,
+        unidadMedida,
+        residuos
+    ];
+
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/modificarProducto.php",
+        data: { modificar : arrayModificarProducto },
+        success: function (response) {
+            // Manejar la respuesta del servidor
+            console.log(response);
+            // Actualizar la interfaz de usuario (por ejemplo, cerrar el modal)
+            $('#editarProductoModal').modal('hide');
+            // Opcional: Recargar la lista de productos
+            cargarDatosProductos();
+        },
+        error: function (xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error(error);
+            // Mostrar mensaje de error al usuario
+            alert("Hubo un error al procesar la solicitud.");
+        }
+    });
+}
+
+
+/*Las llamadas a las fiuncoines para que se rellenen las opciones */
+cargarOpcionesCategoriaModiPro();
+cargarOpcionesUnidadMedidaModiPro();
+/* Estas tres funciones estan mas abajo, pero estan modificadas para el modal de editar productos */
+function cargarOpcionesCategoriaModiPro() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/categorias2.php",
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select del modal de edición
+            $('#categoriaProductoModificar').empty();
+
+            $('#categoriaProductoModificar').append('<option value="">Seleccione una categoría...</option>');
+
+            $.each(data, function (index, categoria) {
+                $('#categoriaProductoModificar').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+function cargarOpcionesUnidadMedidaModiPro() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/unidades.php",
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select del modal de edición
+            $('#unidadProductoModificar').empty();
+            // Agregar la opción por defecto al select del modal de edición
+            $('#unidadProductoModificar').append('<option value="">Seleccione una unidad...</option>');
+            // Iterar sobre los datos recibidos y agregar las opciones al select del modal de edición
+            $.each(data, function (index, unidad) {
+                $('#unidadProductoModificar').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+function cargarResiduosModiPro() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/residuos.php", 
+        dataType: "json",
+        success: function (data) {
+
+            $('.despegablesResiduosModi').empty();
+           
+            $.each(data, function (index, opcion) {
+                $('.despegablesResiduosModi').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+/* Estas tres funciones estan mas abajo, pero estan modificadas para el modal de editar productos  FIN*/
+
+
+
+function abrirModificarProducto(e)
+{
+    console.log(this.id);
+}
+
+
+function limpiarMemoria() {
+    $('#gestionPRO').empty();
+}
+
+
+
+
+
+
 
 
 
@@ -69,28 +356,59 @@ function insertarProducto(e) {
     var nombreProducto = document.getElementById('nombreProducto').value.trim();
     var categoriaProducto = document.getElementById('categoriaProducto').value;
     var unidadMedida = document.getElementById('unidadMedida').value.trim();
-    var residuos = document.getElementById('residuos').value.trim();
+
+    /*var residuosUnidad = document.getElementById('residuos').value.trim();
+    var residuosTipo = document.getElementById('despegableResiduos').value.trim();*/
+
+         // Crear arrays para almacenar los valores de los residuos
+    var residuosUnidad = [];
+    var residuosTipo = [];
+
+    // Obtener todos los campos de residuos dinámicos
+    var camposResiduos = document.querySelectorAll('.claseResiduos');
+
+    // Iterar sobre los campos de residuos
+    camposResiduos.forEach(function(campo) {
+        // Obtener el valor del campo de residuos de unidad
+        var residuoUnidad = campo.value.trim();
+        if (residuoUnidad !== '') {
+            residuosUnidad.push(residuoUnidad); // Agregar el valor al array de residuos de unidad
+
+            // Obtener el valor del campo de residuos de tipo correspondiente
+            var idNumero = campo.id.replace('residuos', ''); // Obtener el número de identificación del campo
+            var residuoTipo = document.getElementById('despegableResiduos' + idNumero).value.trim(); // Obtener el valor del campo de residuos de tipo
+            residuosTipo.push(residuoTipo); // Agregar el valor al array de residuos de tipo
+        }
+    });
+
+    for (let index = 0; index < residuosUnidad.length; index++) {
+        
+        // console.log(residuosUnidad[index]);
+        // console.log(residuosTipo[index]);
+        
+    }
+
 
     // Verificar los datos de entrada
-    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuos === '') {
+    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuosUnidad[0] === undefined) {
         // Mostrar mensaje de error si algún campo está vacío
         mostrarMensajeError('Por favor, complete todos los campos.');
         return;
     }
 
-    // Si los datos de entrada son correctos, mostrar el mensaje de éxito
-    var producto = {
-        nombre: nombreProducto,
-        categoria: categoriaProducto,
-        unidadMedida: unidadMedida,
-        residuos: residuos
-    };
+    var arrayDatosProducto = [
+        nombreProducto,
+        categoriaProducto,
+        unidadMedida,
+        residuosUnidad,
+        residuosTipo
+    ];
 
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/funcionesProductos.php",
-        data: producto,
+        data: {datosProducto : arrayDatosProducto},
         success: function (response) {
             // Manejar la respuesta del servidor
             console.log(response);
@@ -141,12 +459,12 @@ function mostrarMensajeExito() {
     // Eliminar el efecto de difuminado después de 5 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
-    }, 5000);
+    }, 2000);
 
     // Eliminar el mensaje después de 5 segundos
     setTimeout(function () {
         mensajeElemento.remove();
-    }, 3000);
+    }, 2000);
 
     // Permitir al usuario quitar el mensaje haciendo clic en él
     mensajeElemento.addEventListener('click', function () {
@@ -182,12 +500,12 @@ function mostrarMensajeError(mensaje) {
     // Eliminar el efecto de difuminado después de 5 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
-    }, 5000);
+    }, 2000);
 
     // Eliminar el mensaje después de 5 segundos
     setTimeout(function () {
         mensajeElemento.remove();
-    }, 3000);
+    }, 2000);
 }
 
 /* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
@@ -214,16 +532,6 @@ function cargarOpcionesCategoria() {
     });
 }
 
-// Llamar a la función para cargar las opciones del select al cargar la página
-cargarOpcionesCategoria();
-
-// Agregar evento al botón "Guardar Cambios" del modal
-$('#anadirProducto').click(function () {
-    // Llamar a la función insertarProducto()
-    insertarProducto();
-});
-
-
 function cargarOpcionesUnidadMedida() {
     $.ajax({
         type: "POST",
@@ -245,12 +553,10 @@ function cargarOpcionesUnidadMedida() {
     });
 }
 
-// Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
 cargarOpcionesUnidadMedida();
+cargarOpcionesCategoria();
 
-// Agregar evento al botón "Guardar Cambios" del modal
 $('#anadirProducto').click(function () {
-    // Llamar a la función insertarProducto()
     insertarProducto();
 });
 
@@ -313,8 +619,9 @@ function cargarUsuarios() {
                 $('#nombreEditar').val(nombre);
                 $('#emailEditar').val(email);
                 $('#telefonoEditar').val(telefono);
+                $('#guardarCambios').data('idUsuario', idUsuario);
                 $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
-                 //SE ABRE MODAL DE EDITAR
+                //SE ABRE MODAL DE EDITAR
                 $('#modalEditar').modal('show');
 
             });
@@ -324,7 +631,76 @@ function cargarUsuarios() {
                 var fila = $(this).closest('tr'); 
                 var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
                 $('#modalCambiarContrasena .modal-title').text('Cambiar Contraseña de: ' + nombre);
+                $('#guardarPass').data('idUsuario', $(this).data('id'));
                 $('#modalCambiarContrasena').modal('show');
+            });
+
+            $('#guardarCambios').click(function() {
+                if($('#nombreEditar').val().length > 0 && /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test($('#emailEditar').val()) && /^\d{9}$/.test($('#telefonoEditar').val())) {
+                    $.ajax({
+                        type: "POST",
+                        url: "../../Controlador/php/gestionarUsuarios.php",
+                        data: {
+                            id: $(this).data('idUsuario'),
+                            nombre: $('#nombreEditar').val(),
+                            email: $('#emailEditar').val(),
+                            telefono: $('#telefonoEditar').val(),
+                            admin: $('#adminEditar').val(),
+                            activo: $('#activoEditar').val()
+
+                        },
+                      }).done(function (a) {
+                        $('#modalEditar').modal('hide');
+                        cargarUsuarios();
+                    });
+                }
+
+            });
+
+            $('#guardarPass').click(function() {
+                if($('#nuevaContrasena').val() === $('#repetirNuevaContrasena').val()) {
+                    if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/.test($('#nuevaContrasena').val())){
+                        $.ajax({
+                            type: "POST",
+                            url: "../../Controlador/php/gestionarUsuarios.php",
+                            data: {
+                                id: $(this).data('idUsuario'),
+                                password: $('#nuevaContrasena').val()
+                            },
+                          }).done(function (a) {
+                            $('#modalCambiarContrasena').modal('hide');
+                        });
+                    } else {
+                        console.log("La contraseña tiene poca seguridad");
+                    }
+                } else {
+                    console.log("Las contraseñas no coinciden");
+                }
+
+            });
+
+            $('#guardarUsuario').click(function() {
+            
+                if($('#nombreAgregar').val().length > 0 && /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test($('#emailAgregar').val()) && /^\d{9}$/.test($('#telefonoAgregar').val()) && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/.test($('#passwordAgregar').val())){
+                        $.ajax({
+                            type: "POST",
+                            url: "../../Controlador/php/gestionarUsuarios.php",
+                            data: {
+                                nombreA: $('#nombreAgregar').val(),
+                                emailA: $('#emailAgregar').val(),
+                                telefonoA: $('#telefonoAgregar').val(),
+                                adminA: $('#adminAgregar').val(),
+                                activoA: $('#activoAgregar').val(),
+                                passwordA: $('#passwordAgregar').val()
+                            },
+                          }).done(function (a) {
+                            $('#modalAgregarUsuario').modal('hide');
+                            cargarUsuarios();
+                        });
+                } else {
+                    console.log("fallo");
+                }
+
             });
         },
         error: function(xhr, status, error) {
@@ -339,15 +715,33 @@ function cargarUsuarios() {
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
 
+/*---------------------------PARA LOS RESIDUOS DE AÑADIR---------------------------------------------------- */
 
 
 
+function cargarResiduos() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/residuos.php", 
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select
+            $('#despegableResiduos').empty();
+            // Agregar las opciones al select
+            $.each(data, function (index, opcion) {
+                $('#despegableResiduos').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+                $('.despegablesResiduos').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
 
 
 
-
-
-
+/*---------------------------PARA LOS RESIDUOS DE AÑADIR-----------------FIN----------------------------------- */
 
 
 
@@ -366,3 +760,4 @@ function crearElemento(etiqueta, texto, atributos) {
     }
     return elementoNuevo;
 }
+

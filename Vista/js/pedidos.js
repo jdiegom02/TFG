@@ -99,7 +99,7 @@ function mostrarCarrito(params) {
     let productoCarrito = crearElemento("div", undefined, { id: "filaPedido" + (i + 1), identificador: i, class: "grid-item-carrito" });
     //Contenedor imagen
     let contenedorImagen = crearElemento("div", undefined, { class: "grid-img" })
-    let imagenProducto = crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", class: "img-fluid", style: "width:50px; height:50px;" })
+    let imagenProducto = crearElemento("img", undefined, { "src": "../img/iconos/iconos/1654549.png", class: "img-fluid", style: "width:50px; height:50px;" })
     contenedorImagen.appendChild(imagenProducto);
     productoCarrito.appendChild(contenedorImagen);
     //Contenedor Todo
@@ -131,6 +131,7 @@ function borrarFilaPedido(event) {
   sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
   abrirCarrito();
 }
+
 function pedirTodo(event) {
   if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
@@ -181,6 +182,7 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad)
   botonCancelarProducto.addEventListener("click", cancelarProducto);
   contenedorPopUp.appendChild(popUp);
   document.body.appendChild(contenedorPopUp);
+
 }
 
 function confirmarProducto(event) {
@@ -212,13 +214,10 @@ function confirmarProducto(event) {
     aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más");
   }
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
-
 }
-
 function cancelarProducto(params) {
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
 }
-
 function añadirCarrito(nombre, unidad, cantidad, observacion) {
   let almacenar = ([nombre, parseInt(cantidad), unidad, observacion]);
   if (sessionStorage.getItem(nombreUsuario) != null) {
@@ -230,28 +229,6 @@ function añadirCarrito(nombre, unidad, cantidad, observacion) {
     sessionStorage.setItem(nombreUsuario, almacenado);
   }
 }
-//GONZALO
-function aparecerVentanaEmergente(titulo, descripcion) {
-  let overlay = document.getElementById("overlay");
-  let contenedor = crearElemento("div")
-  overlay.style.display = 'block';
-  document.body.appendChild(crearElemento("div", undefined, { id: "ventanaEmergente" }))
-  let ventanaEmergente = document.getElementById("ventanaEmergente");
-  ventanaEmergente.innerHTML = `
-    <div id="popUpEmergente" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
-      <h2>${titulo}</h2>
-      <p>${descripcion}</p>
-      <button id="cerrarVentanaEmergente" class="btn btn-primary">Aceptar</button>
-    </div>
-  `;
-  document.getElementById('cerrarVentanaEmergente').addEventListener('click', () => {
-    overlay.style.display = 'none';
-    ventanaEmergente.style = 'none';
-    ventanaEmergente.parentNode.removeChild(ventanaEmergente)
-    document.getElementById("popUpEmergente").style.display = "none";
-  });
-}
-//
 function aparecerVentanaEmergente(titulo, descripcion) {
   let overlay = document.getElementById("overlay2");
   overlay.style.display = "block";
@@ -290,7 +267,6 @@ function desaparecerElementoFadeOut(elemento) {
 function verificarSessionStorage(nombreUsuario) {
   return sessionStorage.getItem(nombreUsuario) !== null;
 }
-
 function pedirTodo(event) {
   if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
@@ -313,31 +289,6 @@ function cerrarSesion() {
 function verificarSessionStorage(nombreDelKeyDeLaSesion) {
   return sessionStorage.getItem(nombreDelKeyDeLaSesion) != null;
 }
-
-// ------- HERRAMIENTAS -------
-function filtrarProductos(array) {
-  let categoria = document.getElementById("categorySelect").value;
-  let resultadosFiltradosPorNombre;
-  // Primero filtrar por categoría
-  let resultadosFiltradosPorCategoria;
-  if (categoria !== "all") {
-    resultadosFiltradosPorCategoria = array.filter(producto =>
-      producto.getCategoria().toLowerCase().includes(categoria.toLowerCase())
-    );
-  } else {
-    resultadosFiltradosPorCategoria = array;
-  }
-  // Luego, filtrar por nombre si hay una entrada en el campo de búsqueda
-  if (document.getElementById("searchInput").value.trim() !== "") {
-    resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria.filter(producto =>
-      producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.trim().toLowerCase())
-    );
-  } else {
-    resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria;
-  }
-  return resultadosFiltradosPorNombre;
-}
-
 // Obtener las categorías únicas y mostrarlas en el selector de categorías
 function mostrarSeleccionableCategorias() {
   let selectCategoria = document.getElementById("categorySelect");
@@ -361,7 +312,8 @@ function reiniciarBusquedas(event) {
 }
 function mostrarProductos() {
   recogerProductos(function (productos) {
-    let productosFiltrados = filtrarProductos(productos);
+    let productosFiltrados = filtrarProductos(productos); 
+    document.getElementById("nuevosProductos").innerHTML = ""
     let contenedorProductos = document.getElementById("productos");
     contenedorProductos.innerHTML = ""; // Limpiar el contenedor antes de mostrar los productos
 
@@ -376,48 +328,42 @@ function mostrarProductos() {
     }
   });
 }
+
+
 function crearTarjetaProducto(producto) {
-  //asignar segun se recibe nuevoProducto o no
   let grid = "col-xl-3 col-md-4 col-sm-6";
-  let identificador
-  let atributoImagenSrc
-  let titulo
-  let unidades
-  if (arguments.length > 0) {
-    console.log("hay argumentos");
+  let identificador;
+  let atributoImagenSrc;
+  let titulo;
+  let unidades;
+
+  if (producto) {
     grid = "col-xl-3 col-md-4 col-sm-6";
-    //datos del producto
-    identificador = producto.getId()
-    atributoImagenSrc = "../img/iconos/1654549.png";
+    identificador = producto.getId();
+    atributoImagenSrc = obtenerImagenURL(producto.getCategoria());
     titulo = producto.getNombre();
     unidades = producto.getUnidades();
   } else {
-    console.log("0argumentos pipipi")
     grid = "col-xl-10 col-md-10 col-sm-12";
-    //datos del producto
     identificador = "nodefinida";
-    titulo
   }
+
   let contenedorCarta = crearElemento("div", undefined, { "class": grid });
   let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador });
 
-  // IMAGEN
   if (atributoImagenSrc != undefined) {
-    carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+    carta.appendChild(crearElemento("img", undefined, { "src": atributoImagenSrc, "class": "card-img-top", "style": "height:100px;width:100px;margin:auto;" }));
   }
-  // TÍTULO DEL PRODUCTO
+
   if (titulo == undefined) {
     carta.appendChild(crearElemento("h6", "Agrega Nuevo Producto", { "class": "card-title" }));
     let label = crearElemento("label", "Nombre del Producto:", { for: identificador });
-    // Crear el input y darle estilos de Bootstrap
     let input = crearElemento("input", undefined, { id: identificador + "Nombre", class: "form-control", type: "text", style: "width:60%;margin-bottom:50px" });
-    // Agregar el label y el input al contenedor de la columna
     carta.appendChild(label);
     carta.appendChild(input);
   } else {
     carta.appendChild(crearElemento("h6", titulo, { "class": "card-title" }));
   }
-  // SELECCIÓN DE CANTIDAD
 
   let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" });
   let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
@@ -446,33 +392,71 @@ function crearTarjetaProducto(producto) {
   cantidadDiv.appendChild(iconoMas);
   carta.appendChild(cantidadDiv);
 
-  // UNIDADES DEL PRODUCTO
   if (unidades != undefined) {
     carta.appendChild(crearElemento("h6", unidades, { "class": "card-title", style: "padding:10px" }));
     let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
-    boton.addEventListener("click", añadirProducto); carta.appendChild(boton);
-
+    boton.addEventListener("click", añadirProducto);
+    carta.appendChild(boton);
   } else {
     carta.appendChild(crearElemento("h6", "Unidad Solicitada:", { "class": "card-title" }))
     let label = crearElemento("label", "Unidad:", { for: identificador });
-    // Crear el input y darle estilos de Bootstrap
     let input = crearElemento("input", undefined, { id: identificador + "Unidad", class: "form-control", type: "text", style: "width:60%;margin-bottom:50px" });
-    // Agregar el label y el input al contenedor de la columna
     carta.appendChild(label);
     carta.appendChild(input);
     let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
     boton.addEventListener("click", añadirNuevoProducto);
     carta.appendChild(boton);
-
   }
-  // BOTÓN DE AÑADIR AL CARRITO
-
 
   contenedorCarta.appendChild(carta);
   return contenedorCarta;
 }
-// Funciones de utilidad
 
+function obtenerImagenURL(categoria) {
+  const imagenesPorCategoria = {
+    "Fruteria": "../img/iconos/iconoFruta.png",
+    "Carniceria": "../img/iconos/iconoCarne.png",
+    "Pescaderia": "../img/iconos/iconoPescado.png",
+    "Pasteleria": "../img/iconos/iconoPastel.png",
+    "Congelados": "../img/iconos/iconoCongelado.png",
+    "Economato y varios": "../img/iconos/iconoEconomato.png",
+    "Cafeteria y restaurante": "../img/iconos/iconoCafe.png",
+    "Pan": "../img/iconos/iconoPan.png",
+    "Utiles y materiales": "../img/iconos/iconoUtiles.png"
+    // Añadir más categorías y sus correspondientes imágenes según haya
+  };
+
+  // Verificar si la categoría está definida en el objeto
+  if (categoria in imagenesPorCategoria) {
+    return imagenesPorCategoria[categoria]; // Devolver la URL de la imagen
+  } else {
+    // Devolver una imagen por defecto o una URL genérica
+    return "../img/iconos/default.jpg";
+  }
+}
+// ------- HERRAMIENTAS -------
+function filtrarProductos(array) {
+  let categoria = document.getElementById("categorySelect").value;
+  let resultadosFiltradosPorNombre;
+  // Primero filtrar por categoría
+  let resultadosFiltradosPorCategoria;
+  if (categoria !== "all") {
+    resultadosFiltradosPorCategoria = array.filter(producto =>
+      producto.getCategoria().toLowerCase().includes(categoria.toLowerCase())
+    );
+  } else {
+    resultadosFiltradosPorCategoria = array;
+  }
+  // Luego, filtrar por nombre si hay una entrada en el campo de búsqueda
+  if (document.getElementById("searchInput").value.trim() !== "") {
+    resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria.filter(producto =>
+      producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.trim().toLowerCase())
+    );
+  } else {
+    resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria;
+  }
+  return resultadosFiltradosPorNombre;
+}
 function eliminarPosicionDelArray(array, posicionEnArray) {
   let arrayTempo = [];
   if (posicionEnArray < array.length) {

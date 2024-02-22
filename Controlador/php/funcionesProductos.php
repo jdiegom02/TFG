@@ -1,8 +1,9 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 
-/* CAMBIAR A LO QUE SE RECIBA POR JS */
-function addProducto($desc, $unidad, $categoria)
+
+
+function addProducto($desc, $unidad, $categoria,$residuos)
 {
     // Crear una instancia de la clase BD
     $conexion = new BD("bonAppetit", "admin", "1234");
@@ -28,6 +29,26 @@ function addProducto($desc, $unidad, $categoria)
     $sqlProductosCategoria = "INSERT INTO productos_categoria (fk_producto, fk_categoria) VALUES ('$ultimoIDProducto', '$IDCategoria')";
     $conexion->realizarModificacion($sqlProductosCategoria);
 
+
+    // Insertar los residuos asociados al producto en la tabla de residuos
+    
+    foreach ($residuos as $residuo) {
+        $kilosResiduo = $residuo['kilos'];
+        $tipoResiduo = $residuo['tipo'];
+
+        // Consultar el ID del residuo
+        $sqlIDResiduo = "SELECT id FROM residuos WHERE descripcion = '{$tipoResiduo}'";
+        $verIDResiduo = $conexion->realizarConsulta($sqlIDResiduo);
+        $IDResiduo = $verIDResiduo->fetchColumn(); // Obtener el ID del residuo
+
+        //echo " ID del producto : ".$ultimoIDProducto . " Tipo de residuo: " . $tipoResiduo. " Kilos de residuo: "  . $kilosResiduo. " El dato que deberia ser un numero : ".$IDResiduo;
+        $sqlResiduos = "INSERT INTO productos_residuo (fk_producto, fk_residuo,cantidad) VALUES ('$ultimoIDProducto', '$IDResiduo', '$kilosResiduo')";
+        $conexion->realizarModificacion($sqlResiduos);
+    }
+
+
+
+
     // Cerrar la conexión después de realizar la consulta
     unset($conexion);
 }
@@ -39,5 +60,39 @@ function ultimoID($conexion)
     return $row['max_id']; // Devolver el valor del ID máximo
 }
 
-addProducto("nuervooo", "Sobre", "Fruteria");
+
+
+if (isset($_POST["datosProducto"])) {
+  
+    $arrayDatos = $_POST["datosProducto"];
+    
+    $nombre = $arrayDatos[0];
+    $categoria = $arrayDatos[1];
+    $unidad = $arrayDatos[2];
+    $residuos = [];
+
+    // Construir el array de residuos
+    for ($z = 0; $z < count($arrayDatos[3]); $z++) {
+        $residuos[] = array(
+            'kilos' => $arrayDatos[3][$z],
+            'tipo' => $arrayDatos[4][$z]
+        );
+    }
+
+    addProducto($nombre, $unidad, $categoria, $residuos);
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

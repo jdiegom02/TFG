@@ -61,6 +61,19 @@ function cargarPedidos(callback) {
     callback(a);
   });
 }
+function cargarPedidosDesdePHP() {
+  $.ajax({
+      url: '../../Controlador/php/pedidosmostrar.php',
+      type: 'POST',
+      dataType: 'json',
+      success: function (data) {
+          mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
+      },
+      error: function (xhr, status, error) {
+          console.error('Error al cargar los pedidos desde PHP:', error);
+      }
+  });
+}
 function eliminarSolicitud(id) {
   $.ajax({
     type: "POST",
@@ -82,5 +95,47 @@ function insertarEnPedidos(datos) {
   }).done(function (a) {
     console.log(a);
     cargarPedidosDesdePHP();
+  });
+}
+
+function cargarProveedoresDesdePHP(callback) {
+  $.ajax({
+    url: "../../Controlador/php/funcionesProveedores.php",
+    type: 'POST',
+    dataType: 'json',
+    data: { cargaProveedor: "true" },
+    success: function (data) {
+      console.log(data);
+      callback(data);
+    },
+  });
+}
+
+function actualizarProveedor(datos) {
+  $.ajax({
+    url: "../../Controlador/php/funcionesProveedores.php",
+    type: 'POST',
+    data: { actualizarProveedor: datos },
+    success: function (data) {
+      console.log(data);
+      location.reload();
+    },
+  });
+}
+
+function addProveedor(datos) {
+  $.ajax({
+    url: "../../Controlador/php/funcionesProveedores.php",
+    type: 'POST',
+    data: { addProveedor: datos },
+    success: function (data) {
+      console.log(data);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error al añadir los proveedores desde PHP:', error);
+    },
+    complete: function () {
+      location.reload();
+    },
   });
 }
