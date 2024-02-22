@@ -1,5 +1,6 @@
 window.addEventListener("load", principal, false);
 let usuarioIniciado;
+let contador=0;
 function principal() {
     comprobarSesion(function (valor) {
         if (valor == 0) {
@@ -24,15 +25,21 @@ function principal() {
     document.getElementById("anadirProducto").addEventListener("click", insertarProducto);
     document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
     document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
+    document.getElementById("agregarResiduo").addEventListener("click", manejarsuma);
+    
+    
     $('#modalGestionarUsuarios').on('show.bs.modal', function () {
         cargarUsuarios();
     });
 }
 
 function manejadorClick(e) {
-    console.log(this.id);
+    //console.log(this.id);
     if (this.id === "anadir") {
-        $('#modalAgregarProducto').modal('show');
+        $('#modalGestionarProducto').modal('show');
+        cargarDatosProductos();
+        //$('#modalAgregarProducto').modal('show');
+        cargarResiduos();
     }
     else if (this.id === "revisarPedidos") {
         location.href = 'revisarPedidos.html';
@@ -45,7 +52,6 @@ function manejadorClick(e) {
     }
     else if (this.id === "gestionarUsuarios") {
         $('#modalGestionarUsuarios').modal('show');
-        /*ASIGNAR MANEJADOR AL BOTON AÑADIR USUARIO */
         document.getElementById("btnanadirUsuario").addEventListener("click", manejadorAnadir);
         
     }
@@ -58,34 +64,169 @@ function manejadorAnadir(e)
 {
     $('#modalAgregarUsuario').modal('show');
 }
+
+function manejarsuma(e)
+{
+    e.preventDefault();
+   contador++;
+   agregarNuevoCampoResiduo(contador);
+
+}
+
+function agregarNuevoCampoResiduo(numero) {
+
+   // Crear el nuevo campo de entrada de residuos
+   var nuevoCampoResiduo = crearElemento('div', undefined, { 'class': 'input-group' });
+
+   var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;' });
+
+   var divAppend = crearElemento('div', undefined, { 'class': 'input-group-append' });
+
+   var labelKilos = crearElemento('label', 'Kg', { 'for': 'kilos' });
+
+   var selectDespegable = crearElemento('select', undefined, { 'class': 'form-control despegablesResiduos', 'id': 'despegableResiduos'+ numero });
+
+   divAppend.appendChild(labelKilos);
+   divAppend.appendChild(selectDespegable);
+
+   nuevoCampoResiduo.appendChild(inputResiduo);
+   nuevoCampoResiduo.appendChild(divAppend);
+
+   // Agregar el nuevo campo de entrada de residuos al contenedor
+   document.getElementById('contenedorResiduos').appendChild(nuevoCampoResiduo);
+   cargarResiduos();
+}
+
+
+
+function cargarDatosProductos() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/productoResiduo.php",
+        dataType: "JSON",
+        success: function (data) {
+            console.log(data);
+            $('.producto').empty();
+
+            // Objeto para almacenar productos con sus residuos agrupados
+            var productosConResiduos = {};
+
+            // Iterar sobre los datos y agrupar los residuos por producto
+            $.each(data, function (index, producto) {
+                // Verificar si ya hemos visto este producto
+                if (!productosConResiduos[producto.nombre_producto]) {
+                    productosConResiduos[producto.nombre_producto] = {
+                        categoria: producto.categoria,
+                        unidad: producto.unidad,
+                        residuos: []  // Inicializar lista de residuos para este producto
+                    };
+                }
+                // Agregar residuos al producto correspondiente
+                productosConResiduos[producto.nombre_producto].residuos.push(producto.residuos);
+            });
+
+            // Iterar sobre los productos con sus residuos y generar el HTML
+            $.each(productosConResiduos, function (nombre_producto, producto) {
+                var productoID = nombre_producto.replace(/\s+/g, ''); // ID del producto
+
+                // Generar HTML para los residuos
+                var residuosHTML = '';
+                $.each(producto.residuos, function (index, residuo) {
+                    residuosHTML += '<li>' + residuo + '</li>';
+                });
+
+                // Generar HTML para el producto con sus residuos
+                var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
+                productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>';
+                productoHTML += '<div class="col-sm-3"><button type="button" class="btn btn-primary btnEditar" data-producto-id="' + productoID + '">Editar</button></div>';
+                productoHTML += '</div>';
+
+                // Agregar producto con sus residuos al contenedor
+                $('.modal-body').append(productoHTML);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /*Funcion para mandar los productos al php para hacer la inserccion. */
 function insertarProducto(e) {
     // Obtener los valores de los campos de entrada
     var nombreProducto = document.getElementById('nombreProducto').value.trim();
     var categoriaProducto = document.getElementById('categoriaProducto').value;
     var unidadMedida = document.getElementById('unidadMedida').value.trim();
-    var residuos = document.getElementById('residuos').value.trim();
+
+    /*var residuosUnidad = document.getElementById('residuos').value.trim();
+    var residuosTipo = document.getElementById('despegableResiduos').value.trim();*/
+
+         // Crear arrays para almacenar los valores de los residuos
+    var residuosUnidad = [];
+    var residuosTipo = [];
+
+    // Obtener todos los campos de residuos dinámicos
+    var camposResiduos = document.querySelectorAll('.claseResiduos');
+
+    // Iterar sobre los campos de residuos
+    camposResiduos.forEach(function(campo) {
+        // Obtener el valor del campo de residuos de unidad
+        var residuoUnidad = campo.value.trim();
+        if (residuoUnidad !== '') {
+            residuosUnidad.push(residuoUnidad); // Agregar el valor al array de residuos de unidad
+
+            // Obtener el valor del campo de residuos de tipo correspondiente
+            var idNumero = campo.id.replace('residuos', ''); // Obtener el número de identificación del campo
+            var residuoTipo = document.getElementById('despegableResiduos' + idNumero).value.trim(); // Obtener el valor del campo de residuos de tipo
+            residuosTipo.push(residuoTipo); // Agregar el valor al array de residuos de tipo
+        }
+    });
+
+    for (let index = 0; index < residuosUnidad.length; index++) {
+        
+        // console.log(residuosUnidad[index]);
+        // console.log(residuosTipo[index]);
+        
+    }
+
 
     // Verificar los datos de entrada
-    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuos === '') {
+    if (nombreProducto === '' || categoriaProducto === '' || unidadMedida === '' || residuosUnidad[0] === undefined) {
         // Mostrar mensaje de error si algún campo está vacío
         mostrarMensajeError('Por favor, complete todos los campos.');
         return;
     }
 
-    // Si los datos de entrada son correctos, mostrar el mensaje de éxito
-    var producto = {
-        nombre: nombreProducto,
-        categoria: categoriaProducto,
-        unidadMedida: unidadMedida,
-        residuos: residuos
-    };
+    var arrayDatosProducto = [
+        nombreProducto,
+        categoriaProducto,
+        unidadMedida,
+        residuosUnidad,
+        residuosTipo
+    ];
+    
+    // console.log(arrayDatosProducto);
+    // console.log("Prueba "+arrayDatosProducto[3][1]+"-"+arrayDatosProducto[4][1]);
 
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/funcionesProductos.php",
-        data: producto,
+        data: {datosProducto : arrayDatosProducto},
         success: function (response) {
             // Manejar la respuesta del servidor
             console.log(response);
@@ -136,12 +277,12 @@ function mostrarMensajeExito() {
     // Eliminar el efecto de difuminado después de 5 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
-    }, 5000);
+    }, 2000);
 
     // Eliminar el mensaje después de 5 segundos
     setTimeout(function () {
         mensajeElemento.remove();
-    }, 3000);
+    }, 2000);
 
     // Permitir al usuario quitar el mensaje haciendo clic en él
     mensajeElemento.addEventListener('click', function () {
@@ -177,12 +318,12 @@ function mostrarMensajeError(mensaje) {
     // Eliminar el efecto de difuminado después de 5 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
-    }, 5000);
+    }, 2000);
 
     // Eliminar el mensaje después de 5 segundos
     setTimeout(function () {
         mensajeElemento.remove();
-    }, 3000);
+    }, 2000);
 }
 
 /* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL---------------- */
@@ -209,16 +350,6 @@ function cargarOpcionesCategoria() {
     });
 }
 
-// Llamar a la función para cargar las opciones del select al cargar la página
-cargarOpcionesCategoria();
-
-// Agregar evento al botón "Guardar Cambios" del modal
-$('#anadirProducto').click(function () {
-    // Llamar a la función insertarProducto()
-    insertarProducto();
-});
-
-
 function cargarOpcionesUnidadMedida() {
     $.ajax({
         type: "POST",
@@ -242,10 +373,9 @@ function cargarOpcionesUnidadMedida() {
 
 // Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
 cargarOpcionesUnidadMedida();
+cargarOpcionesCategoria();
 
-// Agregar evento al botón "Guardar Cambios" del modal
 $('#anadirProducto').click(function () {
-    // Llamar a la función insertarProducto()
     insertarProducto();
 });
 
@@ -403,6 +533,37 @@ function cargarUsuarios() {
 
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
+
+/*---------------------------PARA LOS RESIDUOS DE AÑADIR---------------------------------------------------- */
+
+
+
+function cargarResiduos() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/residuos.php", 
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select
+            $('#despegableResiduos').empty();
+            // Agregar las opciones al select
+            $.each(data, function (index, opcion) {
+                $('#despegableResiduos').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+                $('.despegablesResiduos').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+
+/*---------------------------PARA LOS RESIDUOS DE AÑADIR-----------------FIN----------------------------------- */
+
+
+
 
 /* fUNCION PARA CREAR ELEMENTO */
 function crearElemento(etiqueta, texto, atributos) {

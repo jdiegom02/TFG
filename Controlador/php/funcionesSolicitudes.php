@@ -30,12 +30,13 @@ function addSolicitud()
         $desc = $solicitud[0]; // Descripción de la solicitud
         $cantidad = $solicitud[1]; // Cantidad de la solicitud
         $unidad = $solicitud[2]; // Unidad de la solicitud
+        $observacion = $solicitud[3]; //recoger el comentario
 
         //Recoger dato de usuario (email) desde el session
         $correo = $_SESSION['email'];
         $idUsuario = idUsuario($correo, $conexion);
-        $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, fk_usuario) 
-            values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, $idUsuario)";
+        $sqlInsertar = "INSERT into solicitudes (fecha, descripcion, unidades, cantidad, observaciones, fk_usuario) 
+            values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), '$desc', '$unidad', $cantidad, '$observacion', $idUsuario)";
         echo $sqlInsertar;
         $conexion->realizarModificacion($sqlInsertar);
         // Llamar a la función addSolicitud con los datos actuales
@@ -104,6 +105,7 @@ function eliminarSolicitud()
 
 function addPedido($datos)
 {
+    print_r($datos);
     $conexion = new BD("bonAppetit", "admin", "1234");
     foreach ($datos as $dato) {
 
@@ -121,7 +123,7 @@ function addPedido($datos)
         $conexion->realizarModificacion($sqlInsertarLineaPedido);
 
         $idSolicitud = $dato[5];
-        $sqlTramitados="UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
+        $sqlTramitados = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
         $conexion->realizarModificacion($sqlTramitados);
     }
 
