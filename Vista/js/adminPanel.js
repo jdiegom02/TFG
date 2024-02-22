@@ -41,6 +41,7 @@ function manejadorClick(e) {
     //console.log(this.id);
     if (this.id === "anadir") {
         $('#modalGestionarProducto').modal('show');
+        limpiarMemoria()
         cargarDatosProductos();
         //$('#modalAgregarProducto').modal('show');
         cargarResiduos();
@@ -162,7 +163,9 @@ function cargarDatosProductos() {
     });
 }
 
-
+function limpiarMemoria() {
+    $('#gestionPRO').empty();
+}
 
 
 
