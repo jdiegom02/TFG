@@ -196,7 +196,6 @@ function confirmarProducto(event) {
   }
   if (!encontrado) {
     aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"), "../assets/checkmark.gif");
-
     console.log(this.getAttribute("imagenRelacionada"))
     añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion, this.getAttribute("imagenRelacionada"));
   } else {
@@ -282,6 +281,7 @@ function pedirTodo(event) {
       sessionStorage.setItem(nombreUsuario, "[]")
     }
   }
+  actualizarContadorCarrito()
 }
 
 function cerrarSesion() {
