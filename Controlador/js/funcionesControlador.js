@@ -122,7 +122,7 @@ function addProveedor(datos) {
       console.error('Error al añadir los proveedores desde PHP:', error);
     },
     complete: function () {
-      // location.reload();
+      location.reload();
     },
   });
 }
