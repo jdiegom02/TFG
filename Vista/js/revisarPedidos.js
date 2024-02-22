@@ -44,7 +44,7 @@ function mostrarPedidos(pedidos) {
             <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
             <td class="unidad-editable"></td>
             <td class="proveedor-editable"></td>
-            <td class="editable observacion-editable" contenteditable>${pedido.observaciones}</td>
+            <td class="editable observacion-editable">${pedido.observaciones}</td>
             <td>${pedido.nombre_usuario}</td>
             <td>
                 <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
