@@ -2,7 +2,7 @@
 include_once("../../Modelo/php/BD.php");
 
 
-/* CAMBIAR A LO QUE SE RECIBA POR JS */
+/* HAY QUE AÑADIR RESIDUOS */
 function addProducto($desc, $unidad, $categoria)
 {
     // Crear una instancia de la clase BD
