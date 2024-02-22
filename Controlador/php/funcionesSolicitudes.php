@@ -108,11 +108,11 @@ function addPedido($datos)
     print_r($datos);
     $conexion = new BD("bonAppetit", "admin", "1234");
     foreach ($datos as $dato) {
-
-        $idUsuario = idUsuarioNombre($dato[4], $conexion);
+        $idUsuario = idUsuarioNombre($dato[5], $conexion);
+        $observaciones=$dato[4];
         $idProveedor = idProveedor($dato[3], $conexion);
         $sqlInsertarPedido = "INSERT into pedidos (fecha, fk_estado, fk_usuario, fk_proveedor, observaciones ) 
-                values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), 1, $idUsuario, $idProveedor, 'observado')";
+                values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), 1, $idUsuario, $idProveedor, '$observaciones')";
         $conexion->realizarModificacion($sqlInsertarPedido);
 
         $nombre = $dato[0];
