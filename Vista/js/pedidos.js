@@ -1,75 +1,97 @@
+let categoriasUnicas = [];
+let nombreUsuario;
 
-var categoriasUnicas = []
-var nombreUsuario;
-addEventListener("DOMContentLoaded", () => {
-  comprobarSesion(function (valor) {
+document.addEventListener("DOMContentLoaded", () => {
+  comprobarSesion((valor) => {
     if (valor == 0) {
       location.href = "../html/index.html";
     } else {
       if (valor.esadmin) {
-        document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "administrar", "class": "btn btn-primary", "value": "Administrar" }));
-        document.querySelector("#administrar").addEventListener("click", () => {
-          location.href = "../html/panelAdmin.html";
-        });
+        crearBotonAdministrar();
       }
       nombreUsuario = valor.nombre;
       if (!verificarSessionStorage(nombreUsuario)) {
-        sessionStorage.setItem(nombreUsuario, "[]")
+        sessionStorage.setItem(nombreUsuario, "[]");
       }
-      document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
-      document.querySelector("#elementosnav").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
-      document.querySelector("#cerrarsesion").addEventListener("click", () => {
-        cerrarSesion();
-      });
+      mostrarDatosUsuario(valor);
     }
   });
 
-  mostrarSeleccionableCategorias(); mostrarProductos();
-  document.getElementById("categorySelect").addEventListener("change", mostrarProductos)
-  document.getElementById("searchInput").addEventListener("input", mostrarProductos)
-  document.getElementById("buscar").addEventListener("click", mostrarProductos)
-  // document.getElementById('carritoCompras').addEventListener("click", modalCarritoCrearTabla);
-  document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
-  // document.getElementById('pedir').addEventListener("click", pedirTodo);
+  agregarEventListeners();
 });
+
+function crearBotonAdministrar() {
+  let botonAdministrar = crearElemento("input", undefined, {
+    type: "button",
+    id: "administrar",
+    class: "btn btn-primary",
+    value: "Administrar"
+  });
+  botonAdministrar.addEventListener("click", () => {
+    location.href = "../html/panelAdmin.html";
+  });
+  document.querySelector("#elementosnav").appendChild(botonAdministrar);
+}
+
+function mostrarDatosUsuario(valor) {
+  document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
+  let botonCerrarSesion = crearElemento("input", undefined, {
+    type: "button",
+    id: "cerrarsesion",
+    class: "btn btn-danger",
+    value: "Cerrar Sesión"
+  });
+  botonCerrarSesion.addEventListener("click", cerrarSesion);
+  document.querySelector("#elementosnav").appendChild(botonCerrarSesion);
+}
+
+function agregarEventListeners() {
+  mostrarSeleccionableCategorias();
+  mostrarProductos();
+  document.getElementById("categorySelect").addEventListener("change", mostrarProductos);
+  document.getElementById("searchInput").addEventListener("input", mostrarProductos);
+  document.getElementById("buscar").addEventListener("click", mostrarProductos);
+  document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
+}
+
 function abrirCarrito(event) {
   let divCarrito = document.getElementById("carritoDerecha");
   let overlay = document.getElementById("overlay");
-  //actualizar posiciones antes de la transicion
   overlay.style.display = "block";
   divCarrito.style.display = "block";
-  document.body.style.overflow = 'hidden'; // Deshabilitar scroll en la página principal
+  document.body.style.overflow = 'hidden';
   divCarrito.innerHTML = "";
   divCarrito.style.top = 0;
   divCarrito.style.right = 0;
-  //que aparezca y luego se mueva;
-  //CREAR ELEMENTOS DEL CARRITO:
+  crearElementosCarrito(divCarrito);
+  overlay.addEventListener('click', cerrarCarrito);
+}
+
+function cerrarCarrito() {
+  let divCarrito = document.getElementById("carritoDerecha");
+  let overlay = document.getElementById("overlay");
+  divCarrito.style.right = -divCarrito.offsetWidth + 'px';
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function crearElementosCarrito(divCarrito) {
   let cabecera = crearElemento("div", undefined, { id: "carrito-cabecera" });
   let cerrarBoton = crearElemento("button", undefined, { id: "cerrarBoton", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
   let iconoCerrar = crearElemento("img", undefined, { "src": "../assets/iconoCerrar.svg" });
-  cerrarBoton.appendChild(iconoCerrar)
+  cerrarBoton.appendChild(iconoCerrar);
+  cerrarBoton.addEventListener("click", cerrarCarrito)
   cabecera.appendChild(cerrarBoton);
-  cabecera.appendChild(crearElemento("h2", "Carrito de Compras",))
-  divCarrito.appendChild(cabecera)
+  cabecera.appendChild(crearElemento("h2", "Carrito de Compras"));
+  divCarrito.appendChild(cabecera);
   if (sessionStorage.getItem(nombreUsuario) !== null) {
-    mostrarCarrito();
-    let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn btn-primary", style: "width:100%;" })
+    mostrarCarrito(divCarrito);
+    let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn btn-primary", style: "width:100%;" });
     botonPedir.addEventListener("click", pedirTodo);
     divCarrito.appendChild(botonPedir);
   }
-
-  overlay.addEventListener('click', function () {
-    divCarrito.style.right = -divCarrito.offsetWidth + 'px';
-    overlay.style.display = 'none'; // Ocultar overlay
-    document.body.style.overflow = '';
-  });
-  cerrarBoton.addEventListener('click', function () {
-    // Establecer la propiedad right al valor negativo del ancho del div
-    divCarrito.style.right = -divCarrito.offsetWidth + 'px';
-    overlay.style.display = 'none'; // Ocultar overlay
-    document.body.style.overflow = ''; // Deshabilitar scroll en la página principal
-  });
 }
+
 function mostrarCarrito(params) {
   let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" });
   let arrayPedido = JSON.parse(sessionStorage.getItem(nombreUsuario));
@@ -103,175 +125,75 @@ function mostrarCarrito(params) {
   }
   carritoDerecha.appendChild(contenedorProductos)
 }
-function mostrarProductos() {
-  recogerProductos(function (productos) {
-    let divProductos = document.querySelector("#productos");
-    divProductos.innerHTML = "";
-    let resultadosFiltrados
-    //filtrar productos devuelve el array filtado pasandole el array;
-    resultadosFiltrados = filtrarProductos(productos);
-    let i = 1;
-    if (resultadosFiltrados.length != 0) {
-      resultadosFiltrados.forEach(productofiltrado => {
-        let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-3 col-md-4 col-sm-6" });
-        let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
-        //IMAGEN
-        carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
-        //TEXTO DE PRODUCTO
-        carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
-        //ICONO MENOS MAS E INPUT CANTIDAD
-        let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
-        let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
-        let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad" + productofiltrado.getId(), min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
-        let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
-        //asegurarme de que no sea menor que 1 nunca al teclear;
-        inputCantidad.addEventListener("change", function () {
-          let valor = parseInt(this.value);
-          if (valor < 1 || isNaN(valor)) {
-            this.value = 1;
-          }
-        });
-        //que los botones funcionen bien
-        iconoMas.addEventListener("click", function () {
-          inputCantidad.value++;
-        })
-        iconoMenos.addEventListener("click", function () {
-          if (inputCantidad.value > 1) {
-            inputCantidad.value--;
-          }
-        })
-        cantidadDiv.appendChild(iconoMenos);
-        cantidadDiv.appendChild(inputCantidad);
-        cantidadDiv.appendChild(iconoMas);
-        //BOTON DE  PRODUCTO
-        let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: productofiltrado.getNombre(), unidad: productofiltrado.getUnidades(), identificador: productofiltrado.getId() })
-        boton.addEventListener("click", añadirProducto)
-        carta.appendChild(cantidadDiv)
-        carta.appendChild(crearElemento("h6", productofiltrado.getUnidades(), { "class": "card-title" }));
-        carta.appendChild(boton);
-        contenedorCarta.appendChild(carta);
-        divProductos.appendChild(contenedorCarta);
-        i++;
-      })
-    } else {
-      //crear accion en caso de que no exista un producto en la base de datos:
-      let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-8 col-md-12 col-sm-12" });
-      let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
-      //IMAGEN
-      //TEXTO DE PRODUCTO
-      carta.appendChild(crearElemento("h6", "Nuevo producto", { "class": "card-title" }));
-      carta.appendChild(crearElemento("input", undefined, { id: "nombreProductoNuevo" }))
-      //ICONO MENOS MAS E INPUT CANTIDAD
-      let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
-      let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
-      let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidadNuevoProducto", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
-      let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
-      //asegurarme de que no sea menor que 1 nunca al teclear;
-      inputCantidad.addEventListener("change", function () {
-        let valor = parseInt(this.value);
-        if (valor < 1 || isNaN(valor)) {
-          this.value = 1;
-        }
-      });
-      //que los botones funcionen bien
-      iconoMas.addEventListener("click", function () {
-        inputCantidad.value++;
-      })
-      iconoMenos.addEventListener("click", function () {
-        if (inputCantidad.value > 1) {
-          inputCantidad.value--;
-        }
-      })
-      cantidadDiv.appendChild(iconoMenos);
-      cantidadDiv.appendChild(inputCantidad);
-      cantidadDiv.appendChild(iconoMas);
-      //BOTON DE  PRODUCTO
-      let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "botonNuevoProducto" })
-      boton.addEventListener("click", añadirProducto)
-      carta.appendChild(cantidadDiv)
-      carta.appendChild(crearElemento("h6", "Unidades", { "class": "card-title" }));
-      carta.appendChild(crearElemento("input", undefined, { id: "unidadProductoNuevo" }))
-      carta.appendChild(boton);
-      contenedorCarta.appendChild(carta);
-      divProductos.appendChild(contenedorCarta);
-
-      // let nombre = document.getElementById("search")
-      // let carta = crearElemento("div", undefined, { id: "nuevoProducto", class: "col-md-12", style: "border-radius:10px;border:3px #000 solid;width:100%;padding:20px;  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);" });
-      // carta.appendChild(crearElemento("h2", "Solicitar nuevo producto: ", { style: "color:green;" }))
-      // let divImagen = crearElemento("div", undefined, { id: "contenedor-imagen" })
-      // divImagen.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", id: "imagen-producto", style: "width:20%;margin:auto;" }))
-      // carta.appendChild(divImagen);
-      // carta.appendChild(crearElemento("label", "Nombre del Producto: ", { for: "nuevoProductoNombre" }))
-      // carta.appendChild(crearElemento("input", undefined, { value: document.getElementById("searchInput").value, type: "text", class: "form-control", id: "input-nuevoProducto" }))
-      // carta.appendChild(crearElemento("label", "Cantidad"));
-      // //ICONO MENOS MAS E INPUT CANTIDAD
-      // let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" })
-      // let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
-      // let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad", min: 1, style: "width:80%; height:50px ;text-align:center", value: 1 })
-      // let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
-      // //asegurarme de que no sea menor que 1 nunca al teclear;
-      // inputCantidad.addEventListener("change", function () {
-      //   let valor = parseInt(this.value);
-      //   if (valor < 1 || isNaN(valor)) {
-      //     this.value = 1;
-      //   }
-      // });
-      // //que los botones funcionen bien
-      // iconoMas.addEventListener("click", function () {
-      //   inputCantidad.value++;
-      // })
-      // iconoMenos.addEventListener("click", function () {
-      //   if (inputCantidad.value > 1) {
-      //     inputCantidad.value--;
-      //   }
-      // })
-      // cantidadDiv.appendChild(iconoMenos)
-      // cantidadDiv.appendChild(inputCantidad)
-      // cantidadDiv.appendChild(iconoMas)
-      // carta.appendChild(cantidadDiv)
-      // //   <label for="exampleInputEmail1">Email address</label>
-      // //   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      // // <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      // let botonMas = crearElemento("button", "Pedir Producto", { id: "boton", class: "btn btn-primary", unidad: "nodefinida", identificador: "nodefinida" });
-      // botonMas.addEventListener("click", añadirProducto)
-      // carta.appendChild(botonMas);
-      // divProductos.appendChild(carta)
-    }
-  });
+function borrarFilaPedido(event) {
+  let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  miArray = eliminarPosicionDelArray(miArray, this.id - 1)
+  sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
+  abrirCarrito();
 }
+function pedirTodo(event) {
+  if (sessionStorage.getItem(nombreUsuario) == null) {
+  } else {
+    // let pedidoArray = JSON.parse(sessionStorage.getItem(nombreUsuario))
+    // pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
+    insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
+    sessionStorage.removeItem(nombreUsuario);
+    aparecerVentanaEmergente("Se ha realizado el pedido", "Si quieres ver los pedidos realizados pulse aqui")
+    abrirCarrito();
+    if (!verificarSessionStorage(nombreUsuario)) {
+      sessionStorage.setItem(nombreUsuario, "[]")
+    }
+  }
+}
+// Resto del código omitido por brevedad...
+function añadirProducto(event) {
+  if (this.id == "botonNuevoProducto") {
+    let inputCantidad = document.getElementById("cantidadNuevoProducto");
+    let unidad = document.getElementById("unidadProductoNuevo").value;
+    let nombre = document.getElementById("nombreProductoNuevo").value;
+    crearPopUpConfirmacion("null", nombre, parseInt(inputCantidad.value), unidad);
+  } else {
+    if (this.getAttribute("identificador")) {
+      let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"));
+      let cantidad = parseInt(inputCantidad.value);
+      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+      inputCantidad.value = 1;
+    } else {
+      let cantidad = document.getElementById("cantidad");
+      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+      cantidad.value = 1;
+    }
+  }
+}
+
 function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad) {
-  console.log("POPUP");
-  let overlay = document.getElementById("overlay")
-  let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" })
-  let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" })
-  popUp.appendChild(crearElemento("h3", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }))
-  popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }))
-  //crear comentario
+  let overlay = document.getElementById("overlay");
+  let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" });
+  let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" });
+  popUp.appendChild(crearElemento("h3", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }));
+  popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }));
   let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
-  popUp.appendChild(comentario)
-  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad })
-  popUp.appendChild(botonConfirmarProducto)
+  popUp.appendChild(comentario);
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad });
+  popUp.appendChild(botonConfirmarProducto);
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
-  let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" })
-  popUp.appendChild(botonCancelarProducto)
-  botonCancelarProducto.addEventListener("click", cancelarProducto)
-  contenedorPopUp.appendChild(popUp)
+  let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" });
+  popUp.appendChild(botonCancelarProducto);
+  botonCancelarProducto.addEventListener("click", cancelarProducto);
+  contenedorPopUp.appendChild(popUp);
   document.body.appendChild(contenedorPopUp);
 }
+
 function confirmarProducto(event) {
-  //recoger todo y mandarlo al carrito
-  // document.getElementById("comentarioPedido").value;
   let observacion = document.getElementById("comentarioPedido").value;
   let cantidadAtributo = parseInt(this.getAttribute("cantidad"));
-  console.log(this.getAttribute("nombre"));
-  console.log(cantidadAtributo);
   let encontrado = false;
   let posicionEnArray = 0;
   if (verificarSessionStorage(nombreUsuario)) {
     let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
     for (let i = 0; i <= almacenado.length; i++) {
       if (almacenado[i] == undefined || almacenado[i][0] !== this.getAttribute("nombre")) {
-        console.log("noo encontrado");
+        console.log("no encontrado");
       } else {
         console.log("encontrado");
         posicionEnArray = i;
@@ -281,66 +203,77 @@ function confirmarProducto(event) {
   }
   if (!encontrado) {
     aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
-    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion)
-    //reiniciar a 1 
+    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion);
   } else {
-    //si se encuentra se actualiza el valor de la session storage
     let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
-    miArray[posicionEnArray][1] += cantidadAtributo
+    miArray[posicionEnArray][1] += cantidadAtributo;
     miArray[posicionEnArray][3] = observacion;
     console.log(miArray);
     sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
-    //SUMARLE A LA CANTIDAD DEL CARRITO
+    aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más");
   }
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
-}
-function cancelarProducto(params) {
-  //finalmente cerrar
-  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
-}
-function añadirProducto(event) {
-  //buscar si existe antes
-  if (this.id == "botonProductoNuevo") {
-    let inputCantidad = document.getElementById("cantidadNuevoProducto");
-    let unidad = document.getElementById("unidadNuevoProducto")
-    let nombre = document.getElementById("nombreProductoNuevo")
-    crearPopUpConfirmacion("null", nombre, parseInt(inputCantidad.value), unidad);
-  } else {
-    if (this.getAttribute("identificador")) {
-      let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"))
-      let cantidad = parseInt(inputCantidad.value)
-      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
-      inputCantidad.value = 1;
-    } else {
-      let cantidad = document.getElementById("cantidad")
-      crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
-      cantidad.value = 1;
-    }
-  }
 
 }
-//añade los productos en el carrito al session storage
+
+function cancelarProducto(params) {
+  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+}
+
 function añadirCarrito(nombre, unidad, cantidad, observacion) {
-  let almacenar = ([nombre, parseInt(cantidad), unidad, observacion])
+  if (nombre == undefined || unidad == undefined) {
+    nombre = document.getElementById("nodefinidaNombre").value;
+    console.log(document.getElementById("nodefinidaNombre").value)
+    unidad = document.getElementById("nodefinidaUnidad").value
+    console.log(nombre)
+
+  }
+  let almacenar = ([nombre, parseInt(cantidad), unidad, observacion]);
   if (sessionStorage.getItem(nombreUsuario) != null) {
     let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
-    almacenado.push([nombre, parseInt(cantidad), unidad, observacion])
-    sessionStorage.setItem(nombreUsuario, JSON.stringify(almacenado))
+    almacenado.push([nombre, parseInt(cantidad), unidad, observacion]);
+    sessionStorage.setItem(nombreUsuario, JSON.stringify(almacenado));
   } else {
-    let almacenado = almacenar
-    sessionStorage.setItem(nombreUsuario, almacenado)
+    let almacenado = almacenar;
+    sessionStorage.setItem(nombreUsuario, almacenado);
   }
 }
+//GONZALO
+function aparecerVentanaEmergente(titulo, descripcion) {
+  let overlay = document.getElementById("overlay");
+  let contenedor = crearElemento("div")
+  overlay.style.display = 'block';
+  document.body.appendChild(crearElemento("div", undefined, { id: "ventanaEmergente" }))
+  let ventanaEmergente = document.getElementById("ventanaEmergente");
+  ventanaEmergente.innerHTML = `
+    <div id="popUpEmergente" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
+      <h2>${titulo}</h2>
+      <p>${descripcion}</p>
+      <button id="cerrarVentanaEmergente" class="btn btn-primary">Aceptar</button>
+    </div>
+  `;
+  document.getElementById('cerrarVentanaEmergente').addEventListener('click', () => {
+    overlay.style.display = 'none';
+    ventanaEmergente.style = 'none';
+    ventanaEmergente.parentNode.removeChild(ventanaEmergente)
+    document.getElementById("popUpEmergente").style.display = "none";
+  });
+}
+//
 function aparecerVentanaEmergente(titulo, descripcion) {
   let overlay = document.getElementById("overlay2");
   overlay.style.display = "block";
   let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
-  let ventanaEmergente = crearElemento("div", undefined, { id: "ventanaEmergente" })
-  ventanaEmergente.appendChild(crearElemento("h3", titulo, { id: "ventanaEmergente-titulo" }))
-  ventanaEmergente.appendChild(crearElemento("h3", descripcion, { id: "ventanaEmergente-descripcion" }))
+  let ventanaEmergente = crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" })
   contenedorVentanaEmergente.appendChild(ventanaEmergente)
   document.body.appendChild(contenedorVentanaEmergente);
-  setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 1000);
+  ventanaEmergente.innerHTML = `
+    <div id="popUpEmergente" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
+      <h2>${titulo}</h2>
+      <p>${descripcion}</p>
+    </div>
+  `;
+  setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 1500);
 }
 function desaparecerElementoFadeOut(elemento) {
   let elementoDesaparecer
@@ -362,12 +295,10 @@ function desaparecerElementoFadeOut(elemento) {
     opacidad -= opacidad * 0.1;
   }, 50); // Velocidad de la animación (50 milisegundos)
 }
-function borrarFilaPedido(event) {
-  let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
-  miArray = eliminarPosicionDelArray(miArray, this.id - 1)
-  sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
-  abrirCarrito();
+function verificarSessionStorage(nombreUsuario) {
+  return sessionStorage.getItem(nombreUsuario) !== null;
 }
+
 function pedirTodo(event) {
   if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
@@ -375,53 +306,177 @@ function pedirTodo(event) {
     // pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
     insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
     sessionStorage.removeItem(nombreUsuario);
-    aparecerVentanaEmergente("Se ha hecho el pedido", "todo biem capo")
+    aparecerVentanaEmergente("Se ha hecho el pedido", "todo bien capo")
     abrirCarrito();
     if (!verificarSessionStorage(nombreUsuario)) {
       sessionStorage.setItem(nombreUsuario, "[]")
     }
   }
 }
+
+function cerrarSesion() {
+  sessionStorage.clear();
+  location.href = "../html/index.html";
+}
 function verificarSessionStorage(nombreDelKeyDeLaSesion) {
   return sessionStorage.getItem(nombreDelKeyDeLaSesion) != null;
 }
-//-------HERRAMIENTAS-------
+
+// ------- HERRAMIENTAS -------
 function filtrarProductos(array) {
-  let categoria = $("#categorySelect").val();
-  let resultadosFiltradosporCategoria
-  //primero filtro por categoria
+  let categoria = document.getElementById("categorySelect").value;
+  let resultadosFiltradosPorNombre;
+  // Primero filtrar por categoría
+  let resultadosFiltradosPorCategoria;
   if (categoria !== "all") {
-    resultadosFiltradosporCategoria = array.filter(producto =>
+    resultadosFiltradosPorCategoria = array.filter(producto =>
       producto.getCategoria().toLowerCase().includes(categoria.toLowerCase())
-    )
-  } else {
-    resultadosFiltradosporCategoria = array
-  }
-  if (document.getElementById("searchInput".replaceAll(/\s+/g, "" === ""))) {
-    resultadosFiltradosPorNombre = resultadosFiltradosporCategoria.filter(producto =>
-      producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.replaceAll(/\s+/g, "").toLowerCase())
     );
+  } else {
+    resultadosFiltradosPorCategoria = array;
+  }
+  // Luego, filtrar por nombre si hay una entrada en el campo de búsqueda
+  if (document.getElementById("searchInput").value.trim() !== "") {
+    resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria.filter(producto =>
+      producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.trim().toLowerCase())
+    );
+  } else {
+    resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria;
   }
   return resultadosFiltradosPorNombre;
 }
-//obtener las categorias unicas:
+
+// Obtener las categorías únicas y mostrarlas en el selector de categorías
 function mostrarSeleccionableCategorias() {
-  let categoriasDisponibles = [];
   let selectCategoria = document.getElementById("categorySelect");
   recogerProductos(function (productos) {
+    let categoriasDisponibles = [];
     productos.forEach(producto => {
-      // Verifica si la categoría del objeto ya existe en el array de categorías únicas
       if (!categoriasDisponibles.includes(producto.getCategoria())) {
-        // Si no existe, añade la categoría al array de categorías únicas
-        categoriasDisponibles.push(producto.getCategoria())
-        categoriasUnicas.push(producto.getCategoria());
+        categoriasDisponibles.push(producto.getCategoria());
         let textoCategoria = producto.getCategoria().charAt(0).toUpperCase() + producto.getCategoria().slice(1);
         let option = crearElemento("option", textoCategoria, { value: producto.getCategoria() });
         selectCategoria.appendChild(option);
       }
     });
-  })
+  });
 }
+
+function reiniciarBusquedas(event) {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("categorySelect").value = "all";
+  mostrarProductos();
+}
+function mostrarProductos() {
+  recogerProductos(function (productos) {
+    let productosFiltrados = filtrarProductos(productos);
+    let contenedorProductos = document.getElementById("productos");
+    contenedorProductos.innerHTML = ""; // Limpiar el contenedor antes de mostrar los productos
+
+    if (productosFiltrados.length > 0) {
+      productosFiltrados.forEach(producto => {
+        contenedorProductos.appendChild(crearTarjetaProducto(producto));
+      });
+    } else {
+      document.getElementById("nuevosProductos").innerHTML = ""; // Limpiar el contenedor antes de mostrar los producto
+      contenedorProductos.innerHTML = "<p>No se encontraron productos</p>";
+      document.getElementById("nuevosProductos").appendChild(crearTarjetaProducto())
+    }
+  });
+}
+function crearTarjetaProducto(producto) {
+  //asignar segun se recibe nuevoProducto o no
+  let grid = "col-xl-3 col-md-4 col-sm-6";
+  let identificador
+  let atributoImagenSrc
+  let titulo
+  let unidades
+  if (arguments.length > 0) {
+    console.log("hay argumentos");
+    grid = "col-xl-3 col-md-4 col-sm-6";
+    //datos del producto
+    identificador = producto.getId()
+    atributoImagenSrc = "../img/iconos/1654549.png";
+    titulo = producto.getNombre();
+    unidades = producto.getUnidades();
+  } else {
+    console.log("0argumentos pipipi")
+    grid = "col-xl-10 col-md-10 col-sm-12";
+    //datos del producto
+    identificador = "nodefinida";
+    titulo
+  }
+  let contenedorCarta = crearElemento("div", undefined, { "class": grid });
+  let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador });
+
+  // IMAGEN
+  if (atributoImagenSrc != undefined) {
+    carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+  }
+  // TÍTULO DEL PRODUCTO
+  if (titulo == undefined) {
+    carta.appendChild(crearElemento("h6", "Agrega Nuevo Producto", { "class": "card-title" }));
+    let label = crearElemento("label", "Nombre del Producto:", { for: identificador });
+    // Crear el input y darle estilos de Bootstrap
+    let input = crearElemento("input", undefined, { id: identificador + "Nombre", class: "form-control", type: "text", style: "width:60%;margin-bottom:50px" });
+    // Agregar el label y el input al contenedor de la columna
+    carta.appendChild(label);
+    carta.appendChild(input);
+  } else {
+    carta.appendChild(crearElemento("h6", titulo, { "class": "card-title" }));
+  }
+  // SELECCIÓN DE CANTIDAD
+
+  let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" });
+  let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
+  let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad" + identificador, min: 1, style: "width:100%; height:100px ;text-align:center", value: 1 });
+  let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
+
+  inputCantidad.addEventListener("change", function () {
+    let valor = parseInt(this.value);
+    if (valor < 1 || isNaN(valor)) {
+      this.value = 1;
+    }
+  });
+
+  iconoMas.addEventListener("click", function () {
+    inputCantidad.value++;
+  });
+
+  iconoMenos.addEventListener("click", function () {
+    if (inputCantidad.value > 1) {
+      inputCantidad.value--;
+    }
+  });
+
+  cantidadDiv.appendChild(iconoMenos);
+  cantidadDiv.appendChild(inputCantidad);
+  cantidadDiv.appendChild(iconoMas);
+  carta.appendChild(cantidadDiv);
+
+  // UNIDADES DEL PRODUCTO
+  if (unidades != undefined) {
+    carta.appendChild(crearElemento("h6", unidades, { "class": "card-title", style: "padding:10px" }));
+  } else {
+    carta.appendChild(crearElemento("h6", "Unidad Solicitada:", { "class": "card-title" }))
+    let label = crearElemento("label", "Unidad:", { for: identificador });
+    // Crear el input y darle estilos de Bootstrap
+    let input = crearElemento("input", undefined, { id: identificador + "Unidad", class: "form-control", type: "text", style: "width:60%;margin-bottom:50px" });
+    // Agregar el label y el input al contenedor de la columna
+    carta.appendChild(label);
+    carta.appendChild(input);
+  }
+
+
+  // BOTÓN DE AÑADIR AL CARRITO
+  let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
+  boton.addEventListener("click", añadirProducto);
+  carta.appendChild(boton);
+
+  contenedorCarta.appendChild(carta);
+  return contenedorCarta;
+}
+// Funciones de utilidad
 
 function eliminarPosicionDelArray(array, posicionEnArray) {
   let arrayTempo = [];
