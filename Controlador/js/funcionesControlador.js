@@ -61,6 +61,19 @@ function cargarPedidos(callback) {
     callback(a);
   });
 }
+function cargarPedidosDesdePHP() {
+  $.ajax({
+      url: '../../Controlador/php/pedidosmostrar.php',
+      type: 'POST',
+      dataType: 'json',
+      success: function (data) {
+          mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
+      },
+      error: function (xhr, status, error) {
+          console.error('Error al cargar los pedidos desde PHP:', error);
+      }
+  });
+}
 function eliminarSolicitud(id) {
   $.ajax({
     type: "POST",
