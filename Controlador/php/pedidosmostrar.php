@@ -3,7 +3,7 @@ include_once("../../Modelo/php/BD.php");
 $conexion = new BD("bonAppetit", "admin", "1234");
 $solicitudes = array();
 // ARMAMOS LA QUERY
-$sql = "SELECT solicitudes.id, solicitudes.descripcion AS nombre_pedido, solicitudes.fecha, solicitudes.cantidad, solicitudes.unidades, usuarios.nombre AS nombre_usuario
+$sql = "SELECT solicitudes.id, solicitudes.descripcion AS nombre_pedido, solicitudes.fecha, solicitudes.cantidad, solicitudes.unidades, usuarios.nombre AS nombre_usuario, solicitudes.observaciones
         FROM solicitudes
         INNER JOIN usuarios  ON solicitudes.fk_usuario = usuarios.id
         WHERE solicitudes.tramitado=0";
@@ -15,7 +15,8 @@ foreach ($resultado as $fila) {
         "nombre_pedido" => $fila["nombre_pedido"],
         "cantidad" => $fila["cantidad"],
         "unidad" => $fila["unidades"],
-        "nombre_usuario" => $fila["nombre_usuario"]
+        "nombre_usuario" => $fila["nombre_usuario"],
+        "observaciones" => $fila["observaciones"]
     );
     array_push($solicitudes, $solicitud);
 }

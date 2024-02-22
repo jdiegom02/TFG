@@ -27,26 +27,14 @@ function principal(e) {
     });
 }
 
-function cargarPedidosDesdePHP() {
-    // Realizar una solicitud AJAX para obtener los datos de los pedidos desde PHP
-    $.ajax({
-        url: '../../Controlador/php/pedidosmostrar.php',
-        type: 'POST',
-        dataType: 'json',
-        success: function (data) {
-            mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
-        },
-        error: function (xhr, status, error) {
-            console.error('Error al cargar los pedidos desde PHP:', error);
-        }
-    });
-}
+
 
 function mostrarPedidos(pedidos) {
     // console.log(pedidos);
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
     pedidos.forEach(function (pedido) {
+        console.log(pedido);
         var row = document.createElement('tr');
         row.dataset.idPedido = pedido.id;
         row.innerHTML = `
@@ -56,6 +44,7 @@ function mostrarPedidos(pedidos) {
             <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
             <td class="unidad-editable"></td>
             <td class="proveedor-editable"></td>
+            <td class="editable observacion-editable" contenteditable>${pedido.observaciones}</td>
             <td>${pedido.nombre_usuario}</td>
             <td>
                 <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
@@ -177,9 +166,10 @@ function validarPedidosYGenerarPDF(idPedido) {
                 chequeo.parentNode.parentNode.children[4].querySelector('select').selectedOptions[0].textContent, // Texto de la columna 4
                 chequeo.parentNode.parentNode.children[5].querySelector('select').selectedOptions[0].textContent, // Texto seleccionado del select de la columna 5
                 chequeo.parentNode.parentNode.children[6].textContent,
+                chequeo.parentNode.parentNode.children[7].textContent,
                 chequeo.parentNode.parentNode.getAttribute('data-id-pedido')
             ]);
-             }
+        }
         // console.log(chequeo.parentNode.parentNode.children[2].textContent);
     });
     console.log(checkeds);
