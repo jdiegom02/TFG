@@ -99,7 +99,8 @@ function mostrarCarrito(params) {
     let productoCarrito = crearElemento("div", undefined, { id: "filaPedido" + (i + 1), identificador: i, class: "grid-item-carrito" });
     //Contenedor imagen
     let contenedorImagen = crearElemento("div", undefined, { class: "grid-img" })
-    let imagenProducto = crearElemento("img", undefined, { "src": "../img/iconos/iconos/1654549.png", class: "img-fluid", style: "width:50px; height:50px;" })
+    console.log(arrayPedido[i][4])
+    let imagenProducto = crearElemento("img", undefined, { "src": arrayPedido[i][4], class: "img-fluid", style: "width:50px; height:50px;" })
     contenedorImagen.appendChild(imagenProducto);
     productoCarrito.appendChild(contenedorImagen);
     //Contenedor Todo
@@ -150,23 +151,23 @@ function añadirNuevoProducto() {
   let nombreNuevoProducto = document.getElementById("nodefinidaNombre").value
   let cantidadNuevoProducto = document.getElementById("cantidadnodefinida").value;
   let unidad = document.getElementById("nodefinidaUnidad").value;
-  crearPopUpConfirmacion("nuevoProducto", nombreNuevoProducto, cantidadNuevoProducto, unidad);
+  crearPopUpConfirmacion("nuevoProducto", nombreNuevoProducto, cantidadNuevoProducto, unidad, "../img/iconos/iconoProductoNuevo.png");
   cantidadNuevoProducto = 1;
 }
 function añadirProducto(event) {
   if (this.getAttribute("identificador")) {
     let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"));
     let cantidad = parseInt(inputCantidad.value);
-    crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+    crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"), this.getAttribute("imagenRelacionada"));
     inputCantidad.value = 1;
   } else {
     let cantidad = document.getElementById("cantidad");
-    crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"));
+    crearPopUpConfirmacion(this.getAttribute("identificador"), this.getAttribute("nombre"), cantidad, this.getAttribute("unidad"), this.getAttribute("imagenRelacionada"));
     cantidad.value = 1;
   }
 }
 
-function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad) {
+function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad, imagenRelacionada) {
   let overlay = document.getElementById("overlay");
   let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" });
   let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" });
@@ -174,7 +175,7 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad)
   popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }));
   let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
   popUp.appendChild(comentario);
-  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad });
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad, imagenRelacionada: imagenRelacionada });
   popUp.appendChild(botonConfirmarProducto);
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
   let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" });
@@ -204,7 +205,8 @@ function confirmarProducto(event) {
   }
   if (!encontrado) {
     aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
-    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion);
+    console.log(this.getAttribute("imagenRelacionada"))
+    añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion, this.getAttribute("imagenRelacionada"));
   } else {
     let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
     miArray[posicionEnArray][1] += cantidadAtributo;
@@ -218,11 +220,11 @@ function confirmarProducto(event) {
 function cancelarProducto(params) {
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
 }
-function añadirCarrito(nombre, unidad, cantidad, observacion) {
-  let almacenar = ([nombre, parseInt(cantidad), unidad, observacion]);
+function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada) {
+  let almacenar = ([nombre, parseInt(cantidad), unidad, observacion, imagenRelacionada]);
   if (sessionStorage.getItem(nombreUsuario) != null) {
     let almacenado = JSON.parse(sessionStorage.getItem(nombreUsuario));
-    almacenado.push([nombre, parseInt(cantidad), unidad, observacion]);
+    almacenado.push([nombre, parseInt(cantidad), unidad, observacion, imagenRelacionada]);
     sessionStorage.setItem(nombreUsuario, JSON.stringify(almacenado));
   } else {
     let almacenado = almacenar;
@@ -312,7 +314,7 @@ function reiniciarBusquedas(event) {
 }
 function mostrarProductos() {
   recogerProductos(function (productos) {
-    let productosFiltrados = filtrarProductos(productos); 
+    let productosFiltrados = filtrarProductos(productos);
     document.getElementById("nuevosProductos").innerHTML = ""
     let contenedorProductos = document.getElementById("productos");
     contenedorProductos.innerHTML = ""; // Limpiar el contenedor antes de mostrar los productos
@@ -392,7 +394,7 @@ function crearTarjetaProducto(producto) {
 
   if (unidades != undefined) {
     carta.appendChild(crearElemento("h6", unidades, { "class": "card-title", style: "padding:10px" }));
-    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
+    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador, imagenRelacionada: atributoImagenSrc });
     boton.addEventListener("click", añadirProducto);
     carta.appendChild(boton);
   } else {
