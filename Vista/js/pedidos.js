@@ -328,8 +328,6 @@ function mostrarProductos() {
     }
   });
 }
-
-
 function crearTarjetaProducto(producto) {
   let grid = "col-xl-3 col-md-4 col-sm-6";
   let identificador;
