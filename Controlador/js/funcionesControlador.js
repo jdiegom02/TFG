@@ -105,6 +105,23 @@ function actualizarProveedor(datos) {
     data: { actualizarProveedor: datos },
     success: function (data) {
       console.log(data);
+      location.reload();
+    },
+  });
+}
+
+function addProveedor(datos) {
+  $.ajax({
+    url: "../../Controlador/php/funcionesProveedores.php",
+    type: 'POST',
+    data: { addProveedor: datos },
+    success: function (data) {
+      console.log(data);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error al añadir los proveedores desde PHP:', error);
+    },
+    complete: function () {
       // location.reload();
     },
   });

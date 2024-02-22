@@ -44,6 +44,19 @@ function principal(params) {
         });
 
     });
+    document.querySelector("#addProveedor").addEventListener("click", function () {
+        console.log("blabla");
+        let descripcion = document.querySelector("#addDescripcion").value;
+        let direccion = document.querySelector("#addDireccion").value;
+        let email = document.querySelector("#addEmail").value;
+        let telefono = document.querySelector("#addTelefono").value;
+        let observaciones = document.querySelector("#addObservaciones").value;
+        if (/^\d{9}$/.test(telefono)) {
+            console.log("bleble");
+            let datos = [descripcion, direccion, email, telefono, observaciones];
+            addProveedor(datos);
+        }
+    });
 }
 
 function editar(hijo) {
@@ -68,8 +81,9 @@ function editar(hijo) {
         let telefono = document.querySelector("#telefono").value;
         let observaciones = document.querySelector("#observaciones").value;
         datos = [id, nombre, direccion, email, telefono, observaciones];
-
-        actualizarProveedor(datos);
+        if (/^\d{9}$/.test(telefono)) {
+            actualizarProveedor(datos);
+        }
     }
 
     // Agrega el evento al botón de guardar cambios solo una vez
