@@ -33,7 +33,7 @@ function principal() {
         cargarUsuarios();
     });
 
-
+    $('#guardarCambios2').click(modificarProducto);
 
 }
 
@@ -125,6 +125,7 @@ function cargarDatosProductos() {
                 // Verificar si ya hemos visto este producto
                 if (!productosConResiduos[producto.nombre_producto]) {
                     productosConResiduos[producto.nombre_producto] = {
+                        nombre_pro : producto.nombre_producto,
                         producto_id: producto.producto_id,
                         categoria: producto.categoria,
                         unidad: producto.unidad,
@@ -142,9 +143,9 @@ function cargarDatosProductos() {
                 // Generar HTML para los residuos
                 var residuosHTML = '';
                 $.each(producto.residuos, function (index, residuo) {
+                    
                     residuosHTML += '<li>' + residuo + '</li>';
                 });
-
                 var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
                 productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
@@ -163,7 +164,8 @@ function cargarDatosProductos() {
                 // Obtener el ID del producto a partir del atributo data-producto-id
                 var productoID2 = $(this).data('producto-id');
 
-                console.log($(this).data('producto-id'));
+              //  console.log($(this).data('producto-id'));
+                //console.log($(this));
 
                 //console.log(productosConResiduos.Ajos);
                 var producto = null;
@@ -176,11 +178,13 @@ function cargarDatosProductos() {
             
                 // Verificar si se encontró el producto
                 if (producto) {
-                    // Llenar los campos del modal con los detalles del producto
-                    $('#nombreProductoModificar').val(producto.nombre_producto);
+                    $('#productoIDModificar').val(producto.producto_id);
+                    $('#nombreProductoModificar').val(producto.nombre_pro);
                     $('#categoriaProductoModificar').val(producto.categoria);
-            
-                    // Mostrar el modal de edición de producto
+                    $('#unidadProductoModificar').val(producto.unidad);
+                    $('#residuosProductoModificar').val(producto.residuos.join(', ')); // Unir los residuos en una cadena separada por comas
+
+                     // Mostrar el modal de edición de producto
                     $('#editarProductoModal').modal('show');
                 } else {
                     console.error("Producto no encontrado");
@@ -194,6 +198,90 @@ function cargarDatosProductos() {
         }
     });
 }
+
+function modificarProducto() {
+    // Obtener los valores de los campos del modal de edición
+    var nombreProducto = $('#nombreProductoModificar').val();
+    var categoriaProducto = $('#categoriaProductoModificar').val();
+    var unidadMedida = $('#unidadProductoModificar').val();
+    var residuos = $('#residuosProductoModificar').val().split(', '); // Convertir la cadena de residuos separados por comas en un array
+
+    // Realizar solicitud AJAX para enviar los datos al backend
+    var arrayModificarProducto = [
+        nombreProducto,
+        categoriaProducto,
+        unidadMedida,
+        residuos
+    ];
+
+
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/modificarProducto.php",
+        data: { modificar : arrayModificarProducto },
+        success: function (response) {
+            // Manejar la respuesta del servidor
+            console.log(response);
+            // Actualizar la interfaz de usuario (por ejemplo, cerrar el modal)
+            $('#editarProductoModal').modal('hide');
+            // Opcional: Recargar la lista de productos
+            cargarDatosProductos();
+        },
+        error: function (xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error(error);
+            // Mostrar mensaje de error al usuario
+            alert("Hubo un error al procesar la solicitud.");
+        }
+    });
+}
+
+/*Las llamadas a las fiuncoines para que se rellenen las opciones */
+cargarOpcionesCategoriaModiPro();
+cargarOpcionesUnidadMedidaModiPro();
+/* Estas dos funciones estan mas abajo, pero estan modificadas para el modal de editar productos */
+function cargarOpcionesCategoriaModiPro() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/categorias2.php",
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select del modal de edición
+            $('#categoriaProductoModificar').empty();
+
+            $('#categoriaProductoModificar').append('<option value="">Seleccione una categoría...</option>');
+
+            $.each(data, function (index, categoria) {
+                $('#categoriaProductoModificar').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+function cargarOpcionesUnidadMedidaModiPro() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/unidades.php",
+        dataType: "json",
+        success: function (data) {
+            // Limpiar el select del modal de edición
+            $('#unidadProductoModificar').empty();
+            // Agregar la opción por defecto al select del modal de edición
+            $('#unidadProductoModificar').append('<option value="">Seleccione una unidad...</option>');
+            // Iterar sobre los datos recibidos y agregar las opciones al select del modal de edición
+            $.each(data, function (index, unidad) {
+                $('#unidadProductoModificar').append('<option value="' + unidad.unidad + '">' + unidad.unidad + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+/* Estas dos funciones estan mas abajo, pero estan modificadas para el modal de editar productos  FIN*/
+
 
 
 function abrirModificarProducto(e)

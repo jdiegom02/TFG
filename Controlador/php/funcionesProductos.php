@@ -2,7 +2,7 @@
 include_once("../../Modelo/php/BD.php");
 
 
-/* HAY QUE AÑADIR RESIDUOS */
+
 function addProducto($desc, $unidad, $categoria,$residuos)
 {
     // Crear una instancia de la clase BD
@@ -82,6 +82,9 @@ if (isset($_POST["datosProducto"])) {
     addProducto($nombre, $unidad, $categoria, $residuos);
     
 }
+
+
+
 
 
 
