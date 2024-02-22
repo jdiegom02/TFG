@@ -72,15 +72,19 @@
                 </button>
             </div>
             <button type="button" class="btn btn-primary" id="abrirModal">Añadir Productos</button>
+            <div class="row mb-3">
+                <div class="col-sm-3"><strong> Nombre del Producto</strong></div>
+                <div class="col-sm-3"><strong>Categoría</strong></div>
+                <div class="col-sm-3"><strong>Unidad de medida</strong></div>
+                <div class="col-sm-3"><strong>Residuos</strong></div>
+            </div>
             <div class="modal-body" id="gestionPRO">
-                <!-- Encabezado de tabla -->
                 <div class="row mb-3">
                     <div class="col-sm-3"><strong>Nombre del Producto</strong></div>
                     <div class="col-sm-3"><strong>Categoría</strong></div>
                     <div class="col-sm-3"><strong>Unidad de medida</strong></div>
                     <div class="col-sm-3"><strong>Residuos</strong></div>
                 </div>
-                <!-- Filas de productos -->
                 <div class="producto">
                     <div class="row mb-3">
                         <div class="col-sm-3"><span id="nombreProducto1">Producto 1</span></div>
@@ -88,22 +92,6 @@
                         <div class="col-sm-3"><span id="unidadMedida1">Unidad 1</span></div>
                         <div class="col-sm-3">
                             <ul id="residuosProducto1">
-                                <li>Residuo 1</li>
-                                <li>Residuo 2</li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="button" class="btn btn-primary btnEditar" data-producto-id="1">Editar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="producto">
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><span id="nombreProducto2">Producto 1</span></div>
-                        <div class="col-sm-3"><span id="categoriaProducto2">Categoría 1</span></div>
-                        <div class="col-sm-3"><span id="unidadMedida2">Unidad 1</span></div>
-                        <div class="col-sm-3">
-                            <ul id="residuosProducto2">
                                 <li>Residuo 1</li>
                                 <li>Residuo 2</li>
                             </ul>

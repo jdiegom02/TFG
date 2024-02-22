@@ -114,7 +114,7 @@ function cargarDatosProductos() {
         url: "../../Controlador/php/productoResiduo.php",
         dataType: "JSON",
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             $('.producto').empty();
 
             // Objeto para almacenar productos con sus residuos agrupados
@@ -143,8 +143,7 @@ function cargarDatosProductos() {
                 $.each(producto.residuos, function (index, residuo) {
                     residuosHTML += '<li>' + residuo + '</li>';
                 });
-
-                // Generar HTML para el producto con sus residuos
+                
                 var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
                 productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
@@ -229,9 +228,6 @@ function insertarProducto(e) {
         residuosUnidad,
         residuosTipo
     ];
-    
-    // console.log(arrayDatosProducto);
-    // console.log("Prueba "+arrayDatosProducto[3][1]+"-"+arrayDatosProducto[4][1]);
 
     // Realizar solicitud AJAX para enviar los datos al backend
     $.ajax({
@@ -382,7 +378,6 @@ function cargarOpcionesUnidadMedida() {
     });
 }
 
-// Llamar a la función para cargar las opciones del select de unidades de medida al cargar la página
 cargarOpcionesUnidadMedida();
 cargarOpcionesCategoria();
 

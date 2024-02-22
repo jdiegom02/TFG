@@ -32,6 +32,7 @@ $resultado = $conexion->realizarConsulta($sql);
 
 foreach ($resultado as $fila) {
     $producto = array(
+         "producto_id" => $fila["producto_id"],
         "nombre_producto" => $fila["producto_nombre"],
         "categoria" => $fila["categoria_nombre"],
         "unidad" => $fila["unidad_nombre"],
