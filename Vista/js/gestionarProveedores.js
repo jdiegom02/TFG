@@ -52,7 +52,6 @@ function principal(params) {
         let telefono = document.querySelector("#addTelefono").value;
         let observaciones = document.querySelector("#addObservaciones").value;
         if (/^\d{9}$/.test(telefono)) {
-            console.log("bleble");
             let datos = [descripcion, direccion, email, telefono, observaciones];
             addProveedor(datos);
         }
