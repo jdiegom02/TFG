@@ -116,7 +116,7 @@ function mostrarProductos() {
         let contenedorCarta = crearElemento("div", undefined, { "class": "col-xl-3 col-md-4 col-sm-6" });
         let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + i });
         //IMAGEN
-        carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top" }));
+        carta.appendChild(crearElemento("img", undefined, { "src": "../img/iconos/1654549.png", "class": "card-img-top","style":"height:100px;width:100px;margin:auto;" }));
         //TEXTO DE PRODUCTO
         carta.appendChild(crearElemento("h6", productofiltrado.getNombre(), { "class": "card-title" }));
         //ICONO MENOS MAS E INPUT CANTIDAD
