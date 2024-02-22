@@ -182,13 +182,31 @@ function cargarDatosProductos() {
                     $('#nombreProductoModificar').val(producto.nombre_pro);
                     $('#categoriaProductoModificar').val(producto.categoria);
                     $('#unidadProductoModificar').val(producto.unidad);
-                    $('#residuosProductoModificar').val(producto.residuos.join(', ')); // Unir los residuos en una cadena separada por comas
 
-                     // Mostrar el modal de edición de producto
+                    // Limpiar y agregar desplegables de residuos
+                    $('#residuosProductoModificar').empty();
+                    $.each(producto.residuos, function(index, residuo) {
+                        // Crear un nuevo div para el select
+                        var nuevoDivSelect = $('<div class="form-group"></div>');
+                    
+                        // Crear el select y agregarlo al nuevo div
+                        var nuevoResiduoDropdown = '<select class="form-control despegablesResiduosModi" id="residuo_' + producto.producto_id + '_' + index + '">' +
+                                                       '<option value="' + residuo + '">' + residuo + '</option>' +
+                                                   '</select>';
+                        nuevoDivSelect.append(nuevoResiduoDropdown);
+                    
+                        // Agregar el nuevo div al contenedor principal
+                        $('#residuosProductoModificar').append(nuevoDivSelect);
+                        
+                    });
+
+                    // Mostrar el modal de edición de producto
                     $('#editarProductoModal').modal('show');
+                    cargarResiduosModiPro();
                 } else {
                     console.error("Producto no encontrado");
                 }
+                // cargarResiduosModiPro();
             });
         
 
@@ -204,7 +222,17 @@ function modificarProducto() {
     var nombreProducto = $('#nombreProductoModificar').val();
     var categoriaProducto = $('#categoriaProductoModificar').val();
     var unidadMedida = $('#unidadProductoModificar').val();
-    var residuos = $('#residuosProductoModificar').val().split(', '); // Convertir la cadena de residuos separados por comas en un array
+    
+    // Inicializar un array para almacenar los residuos seleccionados
+    var residuos = [];
+
+    // Recorrer cada select de residuos y obtener los valores seleccionados
+    $('.despegablesResiduosModi').each(function() {
+        var residuoSeleccionado = $(this).val();
+        if (residuoSeleccionado) { // Verificar si se ha seleccionado un residuo
+            residuos.push(residuoSeleccionado);
+        }
+    });
 
     // Realizar solicitud AJAX para enviar los datos al backend
     var arrayModificarProducto = [
@@ -213,7 +241,6 @@ function modificarProducto() {
         unidadMedida,
         residuos
     ];
-
 
     $.ajax({
         type: "POST",
@@ -236,10 +263,11 @@ function modificarProducto() {
     });
 }
 
+
 /*Las llamadas a las fiuncoines para que se rellenen las opciones */
 cargarOpcionesCategoriaModiPro();
 cargarOpcionesUnidadMedidaModiPro();
-/* Estas dos funciones estan mas abajo, pero estan modificadas para el modal de editar productos */
+/* Estas tres funciones estan mas abajo, pero estan modificadas para el modal de editar productos */
 function cargarOpcionesCategoriaModiPro() {
     $.ajax({
         type: "POST",
@@ -280,7 +308,26 @@ function cargarOpcionesUnidadMedidaModiPro() {
         }
     });
 }
-/* Estas dos funciones estan mas abajo, pero estan modificadas para el modal de editar productos  FIN*/
+function cargarResiduosModiPro() {
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/residuos.php", 
+        dataType: "json",
+        success: function (data) {
+
+            $('.despegablesResiduosModi').empty();
+           
+            $.each(data, function (index, opcion) {
+                $('.despegablesResiduosModi').append('<option value="' + opcion.descripcion + '">' + opcion.descripcion + '</option>');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+/* Estas tres funciones estan mas abajo, pero estan modificadas para el modal de editar productos  FIN*/
 
 
 
