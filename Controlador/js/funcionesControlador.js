@@ -85,14 +85,44 @@ function insertarEnPedidos(datos) {
   });
 }
 
-function cargarProveedoresDesdePHP(callback){
+function cargarProveedoresDesdePHP(callback) {
   $.ajax({
-    url: "../../Controlador/php/proveedoresCompleto.php",
+    url: "../../Controlador/php/funcionesProveedores.php",
     type: 'POST',
     dataType: 'json',
+    data: { cargaProveedor: "true" },
     success: function (data) {
-      console.log(data); 
+      console.log(data);
       callback(data);
+    },
+  });
+}
+
+function actualizarProveedor(datos) {
+  $.ajax({
+    url: "../../Controlador/php/funcionesProveedores.php",
+    type: 'POST',
+    data: { actualizarProveedor: datos },
+    success: function (data) {
+      console.log(data);
+      location.reload();
+    },
+  });
+}
+
+function addProveedor(datos) {
+  $.ajax({
+    url: "../../Controlador/php/funcionesProveedores.php",
+    type: 'POST',
+    data: { addProveedor: datos },
+    success: function (data) {
+      console.log(data);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error al añadir los proveedores desde PHP:', error);
+    },
+    complete: function () {
+      location.reload();
     },
   });
 }
