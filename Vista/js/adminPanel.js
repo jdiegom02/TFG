@@ -107,37 +107,45 @@ function cargarDatosProductos() {
         success: function (data) {
             console.log(data);
             $('.producto').empty();
-            var contador = 1;
-            var contadorr=0;
-            var productoTemporal;
+
+            // Objeto para almacenar productos con sus residuos agrupados
+            var productosConResiduos = {};
+
+            // Iterar sobre los datos y agrupar los residuos por producto
             $.each(data, function (index, producto) {
-                var productoID = producto.nombre_producto.replace(/\s+/g, '') + contador;
-               
-                var residuosHTML = ""; // Inicializar el HTML de los residuos para este producto
-               
-                
-                $.each(producto.residuos.split(','), function (index, residuo) {
+                // Verificar si ya hemos visto este producto
+                if (!productosConResiduos[producto.nombre_producto]) {
+                    productosConResiduos[producto.nombre_producto] = {
+                        categoria: producto.categoria,
+                        unidad: producto.unidad,
+                        residuos: []  // Inicializar lista de residuos para este producto
+                    };
+                }
+                // Agregar residuos al producto correspondiente
+                productosConResiduos[producto.nombre_producto].residuos.push(producto.residuos);
+            });
+
+            // Iterar sobre los productos con sus residuos y generar el HTML
+            $.each(productosConResiduos, function (nombre_producto, producto) {
+                var productoID = nombre_producto.replace(/\s+/g, ''); // ID del producto
+
+                // Generar HTML para los residuos
+                var residuosHTML = '';
+                $.each(producto.residuos, function (index, residuo) {
                     residuosHTML += '<li>' + residuo + '</li>';
                 });
 
-                     
-                    if(productoTemporal !==undefined && (data[contadorr].nombre_producto)==(productoTemporal.nombre_producto))
-                    {
-                        console.log(productoTemporal.nombre_producto);
-                        residuosHTML += '<li>' + productoTemporal.residuos + '</li>';
-                       
-                    }
-                    productoTemporal=producto;
+                // Generar HTML para el producto con sus residuos
                 var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
-                productoHTML += '<div class="col-sm-3"><span>' + producto.nombre_producto + '</span></div>';
-                 productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
-                productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>'; 
+                productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>';
                 productoHTML += '<div class="col-sm-3"><button type="button" class="btn btn-primary btnEditar" data-producto-id="' + productoID + '">Editar</button></div>';
                 productoHTML += '</div>';
+
+                // Agregar producto con sus residuos al contenedor
                 $('.modal-body').append(productoHTML);
-                contador++;
-                contadorr++;
             });
         },
         error: function (xhr, status, error) {
@@ -145,6 +153,7 @@ function cargarDatosProductos() {
         }
     });
 }
+
 
 
 
