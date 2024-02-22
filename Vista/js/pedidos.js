@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!verificarSessionStorage(nombreUsuario)) {
         sessionStorage.setItem(nombreUsuario, "[]");
       }
+      actualizarContadorCarrito();
+
       mostrarDatosUsuario(valor);
     }
   });
@@ -131,22 +133,10 @@ function borrarFilaPedido(event) {
   miArray = eliminarPosicionDelArray(miArray, this.id - 1)
   sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
   abrirCarrito();
+  actualizarContadorCarrito();
+
 }
 
-function pedirTodo(event) {
-  if (sessionStorage.getItem(nombreUsuario) == null) {
-  } else {
-    // let pedidoArray = JSON.parse(sessionStorage.getItem(nombreUsuario))
-    // pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
-    insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
-    sessionStorage.removeItem(nombreUsuario);
-    aparecerVentanaEmergente("Se ha realizado el pedido", "Si quieres ver los pedidos realizados pulse aqui")
-    abrirCarrito();
-    if (!verificarSessionStorage(nombreUsuario)) {
-      sessionStorage.setItem(nombreUsuario, "[]")
-    }
-  }
-}
 function añadirNuevoProducto() {
   let nombreNuevoProducto = document.getElementById("nodefinidaNombre").value
   let cantidadNuevoProducto = document.getElementById("cantidadnodefinida").value;
@@ -202,9 +192,11 @@ function confirmarProducto(event) {
         encontrado = true;
       }
     }
+
   }
   if (!encontrado) {
-    aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"));
+    aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"), "../assets/checkmark.gif");
+
     console.log(this.getAttribute("imagenRelacionada"))
     añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion, this.getAttribute("imagenRelacionada"));
   } else {
@@ -213,9 +205,10 @@ function confirmarProducto(event) {
     miArray[posicionEnArray][3] = observacion;
     console.log(miArray);
     sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
-    aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más");
+    aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más", "../assets/checkmark.gif");
   }
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+  actualizarContadorCarrito()
 }
 function cancelarProducto(params) {
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
@@ -231,7 +224,7 @@ function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada
     sessionStorage.setItem(nombreUsuario, almacenado);
   }
 }
-function aparecerVentanaEmergente(titulo, descripcion) {
+function aparecerVentanaEmergente(titulo, descripcion, imagenMuestra) {
   let overlay = document.getElementById("overlay2");
   overlay.style.display = "block";
   let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
@@ -239,12 +232,19 @@ function aparecerVentanaEmergente(titulo, descripcion) {
   contenedorVentanaEmergente.appendChild(ventanaEmergente)
   document.body.appendChild(contenedorVentanaEmergente);
   ventanaEmergente.innerHTML = `
-    <div id="popUpEmergente" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
-      <h2>${titulo}</h2>
-      <p>${descripcion}</p>
+    <div id="popUpEmergente" style="position: fixed; background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
+      <div id="popUpEmergente-mensajes"> 
+        <h2>${titulo}</h2>
+      </div>
+      <div id="popUpEmergente-descripcion">
+        <p class="text-start fs-1">${descripcion}</p>
+        <div id="popUpEmergente-contenedorimagen">
+          <img id="popUpEmergente-imagen" src="${imagenMuestra}">
+        </div>
+      </div>
     </div>
   `;
-  setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 1500);
+  setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 2000);
 }
 function desaparecerElementoFadeOut(elemento) {
   let elementoDesaparecer
@@ -276,7 +276,7 @@ function pedirTodo(event) {
     // pedidoArray["comentario"] = document.getElementById("comentarioPedido").value;
     insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
     sessionStorage.removeItem(nombreUsuario);
-    aparecerVentanaEmergente("Se ha hecho el pedido", "todo bien capo")
+    aparecerVentanaEmergente("Se ha realizado el pedido", "Contacta con el administrador en caso de problemas", "../assets/checkmark.gif")
     abrirCarrito();
     if (!verificarSessionStorage(nombreUsuario)) {
       sessionStorage.setItem(nombreUsuario, "[]")
@@ -311,8 +311,10 @@ function reiniciarBusquedas(event) {
   document.getElementById("searchInput").value = "";
   document.getElementById("categorySelect").value = "all";
   mostrarProductos();
+
 }
 function mostrarProductos() {
+
   recogerProductos(function (productos) {
     let productosFiltrados = filtrarProductos(productos);
     document.getElementById("nuevosProductos").innerHTML = ""
@@ -434,6 +436,23 @@ function obtenerImagenURL(categoria) {
     return "../img/iconos/default.jpg";
   }
 }
+function obtenerCantidadArticulos() {
+  let arraySesion = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  let cantidad = 0;
+  for (let i = 0; i < arraySesion.length; i++) {
+    cantidad += parseInt(arraySesion[i][1]);
+  }
+  return cantidad;
+}
+
+// Actualizar el contador del carrito
+function actualizarContadorCarrito() {
+  let contador = document.getElementById("contador-carrito");
+  contador.textContent = obtenerCantidadArticulos();
+}
+
+// Ejecutar la función al cargar la página para mostrar la cantidad inicial
+
 // ------- HERRAMIENTAS -------
 function filtrarProductos(array) {
   let categoria = document.getElementById("categorySelect").value;
