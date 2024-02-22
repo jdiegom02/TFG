@@ -144,4 +144,7 @@ body {
 }
 
 
-
+.blur-background {
+    filter: blur(5px); /* Aplica un desenfoque al fondo */
+    pointer-events: none; /* Evita que el fondo reciba eventos de ratón */
+}

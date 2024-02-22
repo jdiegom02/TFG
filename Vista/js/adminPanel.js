@@ -26,11 +26,15 @@ function principal() {
     document.getElementById("gestionarUsuarios").addEventListener("click", manejadorClick);
     document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
     document.getElementById("agregarResiduo").addEventListener("click", manejarsuma);
+    document.getElementById("abrirModal").addEventListener("click", manejadorClick);
     
     
     $('#modalGestionarUsuarios').on('show.bs.modal', function () {
         cargarUsuarios();
     });
+
+
+
 }
 
 function manejadorClick(e) {
@@ -40,6 +44,10 @@ function manejadorClick(e) {
         cargarDatosProductos();
         //$('#modalAgregarProducto').modal('show');
         cargarResiduos();
+    }
+    else if (this.id === "abrirModal") {
+        $('#modalAgregarProducto').modal('show');
+        
     }
     else if (this.id === "revisarPedidos") {
         location.href = 'revisarPedidos.html';
@@ -145,7 +153,7 @@ function cargarDatosProductos() {
                 productoHTML += '</div>';
 
                 // Agregar producto con sus residuos al contenedor
-                $('.modal-body').append(productoHTML);
+                $('#gestionPRO').append(productoHTML);
             });
         },
         error: function (xhr, status, error) {
