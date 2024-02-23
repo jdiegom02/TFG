@@ -54,11 +54,10 @@ function agregarEventListeners() {
   mostrarProductos();
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos);
   document.getElementById("searchInput").addEventListener("input", mostrarProductos);
-  document.getElementById("buscar").addEventListener("click", mostrarProductos);
   document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
   document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
   document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-  document.getElementById("desplegableFunciones").addEventListener("mouseover",desplegarBotonesUsuario)
+  document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
 
 }
 
@@ -114,12 +113,12 @@ function mostrarCarrito(params) {
     //Contenedor Todo
     let contenedorTodo = crearElemento("div", undefined, { class: "grid-info" })
     let divDescripcion = crearElemento("div", undefined, { class: "descripcion" })
-    divDescripcion.appendChild(crearElemento("p", "" + arrayPedido[i][0]));
+    divDescripcion.appendChild(crearElemento("h3", "" + arrayPedido[i][0]));
     contenedorTodo.appendChild(divDescripcion);
     let divInformacion = crearElemento("div", undefined, { class: "informacion" })
     let divCantidades = crearElemento("div", undefined, { class: "cantidades" })
-    divCantidades.appendChild(crearElemento("p", "En carro:" + arrayPedido[i][1]))
-    divCantidades.appendChild(crearElemento("p", " " + arrayPedido[i][2]));
+    divCantidades.appendChild(crearElemento("h5", + arrayPedido[i][1]+ " "+arrayPedido[i][2] +"(s)"))
+    // divCantidades.appendChild(crearElemento("p", " " + arrayPedido[i][2]));
     let divBoton = crearElemento("div", undefined)
     let botonBorrar = crearElemento("button", undefined, { id: i + 1, type: "button", class: "", value: "", style: "margin:auto; width:100%; height:100%;background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" })
     botonBorrar.appendChild(crearElemento("img", undefined, { "src": "../assets/botonRemover1.png" }))
@@ -127,7 +126,7 @@ function mostrarCarrito(params) {
     divBoton.appendChild(botonBorrar);
     divInformacion.appendChild(divCantidades);
     divInformacion.appendChild(divBoton)
-    contenedorTodo.appendChild(divDescripcion)
+    // contenedorTodo.appendChild(divDescripcion)
     contenedorTodo.appendChild(divInformacion)
     productoCarrito.appendChild(contenedorTodo);
     contenedorProductos.appendChild(productoCarrito)
@@ -316,6 +315,31 @@ function mostrarSeleccionableCategorias() {
     });
   });
 }
+//CREAR MODELO DE CARTAS AQUI
+function mostrarSeleccionableCategorias(event) {
+  
+  const container = document.querySelector('#containerCategorias');
+  const cards = document.querySelectorAll('.cartaCategoria');
+  const arrowLeft = document.querySelector('#flecha-izquierda');
+  const arrowRight = document.querySelector('#flecha-derecha');
+  const cardWidth = cards[0].offsetWidth + parseInt(window.getComputedStyle(cards[0]).marginRight);
+  let currentIndex = 0;
+
+  arrowLeft.addEventListener('click', () => {
+    currentIndex = Math.max(currentIndex - 1, 0);
+    updateTransform();
+  });
+
+  arrowRight.addEventListener('click', () => {
+    currentIndex = Math.min(currentIndex + 1, cards.length - 1);
+    updateTransform();
+  });
+
+  function updateTransform() {
+    const offsetX = -currentIndex * cardWidth;
+    container.style.transform = `translateX(${offsetX}px)`;
+  }
+}
 
 function reiniciarBusquedas(event) {
   document.getElementById("searchInput").value = "";
@@ -380,7 +404,7 @@ function crearTarjetaProducto(producto) {
   let cantidadDiv = crearElemento("div", undefined, { class: "container", id: "divCantidad" });
   let iconoMenos = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMenos", "src": "../assets/iconoMenos.png" });
   let inputCantidad = crearElemento("input", undefined, { class: "", type: "number", id: "cantidad" + identificador, min: 1, style: "width:100%; height:100px ;text-align:center", value: 1 });
-  let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.svg" });
+  let iconoMas = crearElemento("img", undefined, { class: "grupoIconos", id: "iconoMas", "src": "../assets/iconoMas.png" });
 
   inputCantidad.addEventListener("change", function () {
     let valor = parseInt(this.value);

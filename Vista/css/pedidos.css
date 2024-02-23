@@ -132,7 +132,8 @@ body {
 
 #carritoDerecha .cantidades {
   display: grid;
-  grid-template-columns: 4fr 2fr;
+  grid-template-columns: 4fr;
+  align-items: center;
   gap: 20px;
 }
 
@@ -208,15 +209,15 @@ td {
   margin: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
 }
 
 /*icono mas y menos*/
 .grupoIconos {
-  height: 50%;
-  margin: auto;
+  width: 40px;
+  margin: 10px 20px;
   display: flex;
   justify-content: center;
   text-align: center;
@@ -225,8 +226,8 @@ td {
 }
 
 .grupoIconos:hover {
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -237,11 +238,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 /*que deje 1 fr al inicio y al final de espacio*/
-.grupoIconos:first-child {
-  grid-column-start: 2;
-}
+
 
 input[id^="cantidad"] {
+  width: 120%;
+  height: 80%;
   border: none;
   margin: auto;
   font-size: 1.5em;
@@ -405,6 +406,90 @@ button[id^="buscar"] {
 #desaparecidoCompletamente {
   opacity: 0;
 
+}
+
+#contenedorBusqueda {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#searchInput {
+  position: absolute;
+  border: 2px solid #a1a1a1;
+  padding: 5px 20px;
+  border-radius: 20px;
+  width: 400px;
+  position: absolute;
+  font-size: large;
+  transition: border-color 1s;
+  outline: none;
+  /* Eliminamos el resplandor predeterminado del foco */
+}
+
+#searchInput:focus {
+  border-color: rgb(61, 61, 61);
+}
+
+#iconobusqueda {
+  position: relative;
+  border-radius: 50%;
+  background-color: rgb(137, 137, 137);
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 200px;
+}
+
+#iconobusqueda img {
+  width: 70%;
+}
+
+#containerCategorias {
+  display: flex;
+  justify-content: space-between;
+  overflow-x: hidden;
+  width: 80%;
+  margin: 0 auto;
+  border: 1px #000 solid;
+}
+
+.cartaCategoria {
+  flex: 0 0 300px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  margin-right: 20px;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.flecha {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#flecha-izquierda {
+  left: 10px;
+}
+
+#flecha-derecha {
+  right: 10px;
 }
 
 /*MEDIA QUERYS*/
