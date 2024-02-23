@@ -10,7 +10,7 @@ $conexion = new BD("bonAppetit", "admin", "1234");
 $residuos = array();
 
 
-$sql = "SELECT pr.id AS residuo_id, pr.fk_producto, pr.fk_residuo, pr.cantidad, pr.fecha, r.descripcion AS residuo_descripcion, p.id AS producto_id, p.descripcion AS producto_descripcion
+$sql = "SELECT pr.id AS residuo_id, pr.fk_producto, pr.fk_residuo, pr.cantidad, pr.fecha, r.descripcion AS residuo_descripcion, p.id AS producto_id, p.descripcion AS producto_descripcion,r.medida AS medida
         FROM productos_residuo pr
         INNER JOIN residuos r ON pr.fk_residuo = r.id
         INNER JOIN productos p ON pr.fk_producto = p.id
@@ -29,7 +29,8 @@ foreach ($resultado as $fila) {
         "fecha" => $fila["fecha"],
         "residuo_descripcion" => $fila["residuo_descripcion"],
         "producto_id" => $fila["producto_id"],
-        "producto_descripcion" => $fila["producto_descripcion"]
+        "producto_descripcion" => $fila["producto_descripcion"],
+        "medida" => $fila["medida"]
     );
     array_push($residuos, $residuo);
 }

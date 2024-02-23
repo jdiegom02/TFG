@@ -248,16 +248,22 @@ function modificarProducto() {
             console.log(response);
             // Actualizar la interfaz de usuario (por ejemplo, cerrar el modal)
             $('#editarProductoModal').modal('hide');
+            
             // Opcional: Recargar la lista de productos
             cargarDatosProductos();
+            /*
+            $('#modalGestionarProducto').modal("show");
+            $('#modalGestionarProducto').on('shown.bs.modal', function () {
+                $(this).find('input:first').focus();
+                console.log("response");
+            });*/
         },
         error: function (xhr, status, error) {
-            // Manejar errores de la solicitud AJAX
             console.error(error);
-            // Mostrar mensaje de error al usuario
             alert("Hubo un error al procesar la solicitud.");
         }
     });
+ 
 }
 
 
@@ -342,11 +348,6 @@ function limpiarMemoria() {
 
 
 
-
-
-
-
-
 /*Funcion para mandar los productos al php para hacer la inserccion. */
 function insertarProducto(e) {
     // Obtener los valores de los campos de entrada
@@ -382,7 +383,6 @@ function insertarProducto(e) {
         
         // console.log(residuosUnidad[index]);
         // console.log(residuosTipo[index]);
-        
     }
 
 
@@ -398,7 +398,7 @@ function insertarProducto(e) {
         categoriaProducto,
         unidadMedida,
         residuosUnidad,
-        residuosTipo
+        residuosTipo,
     ];
 
     // Realizar solicitud AJAX para enviar los datos al backend

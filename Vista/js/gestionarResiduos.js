@@ -39,6 +39,8 @@ function obtenerResiduosDesdeFuenteExternaORIGINAL() {
                 console.log("Cantidad: "+opcion.cantidad);
                 console.log("fecha: "+opcion.fecha);
                 console.log("Descripcion: "+opcion.residuo_descripcion);
+                console.log("Descripcion: "+opcion.medida);
+                
             });
            
         },
