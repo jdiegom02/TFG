@@ -15,37 +15,36 @@
     <div class="container">
     
         <!-- Contenido principal -->
-        <div class="main-content mt-4">
-            <h1 class="text-center">Gestión de residuos</h1>
-            <!-- Lista de pedidos de residuos -->
-            <div class="row mt-4">
-                <div class="col-lg-12">
-                    <h3>Listado de residuos</h3>
-                    <!-- Filtros y búsqueda -->
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <select id="mes" class="form-control form-control-sm">
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <!-- Agrega opciones para todos los meses -->
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
-                            <select id="anio" class="form-control form-control-sm">
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <!-- Agrega opciones para años anteriores y posteriores -->
-                            </select>
-                        </div>
-                    </div>
-                    <!-- Lista de residuos -->
-                    <ul id="lista-residuos" class="list-group">
-                        <!-- Aquí se mostrarán los pedidos de residuos -->
-                    </ul>
-                </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <select id="mes" class="form-control form-control-sm">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <select id="anio" class="form-control form-control-sm">
+
+                </select>
             </div>
         </div>
+
+        <div id="tabla-residuos"></div>
+
+
+        
     </div>
+    <button id="btnGenerarPDF" class="btn btn-primary mt-3">Generar PDF</button>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"

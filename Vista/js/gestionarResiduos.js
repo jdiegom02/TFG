@@ -2,23 +2,45 @@ window.addEventListener("load", principal, false);
 
 function principal() {
 
-    var residuos = obtenerResiduosDesdeFuenteExterna();
+    llenarDesplegableAnios();
+    obtenerResiduosDesdeFuenteExterna();
 
-
-    agregarListaResiduosOrganizada(residuos);
+    document.getElementById("mes").addEventListener("change", obtenerResiduosDesdeFuenteExterna);
+    document.getElementById("anio").addEventListener("change", obtenerResiduosDesdeFuenteExterna);
+    document.getElementById("btnGenerarPDF").addEventListener("click", generarPDF);
 }
 
-function obtenerResiduosDesdeFuenteExterna() {
+function llenarDesplegableAnios() {
+    var selectAnio = document.getElementById("anio");
+    var arrayAnos = ["2023","2024","2025","2026","2027","2028","2029","2030"];
 
+    // Iterar sobre el array de años y crear una opción para cada año
+    arrayAnos.forEach(function(year) {
+        var option = document.createElement("option");
+        option.value = year;
+        option.textContent = year; // Usar textContent para establecer el texto visible de la opción
+        selectAnio.appendChild(option);
+    });
+}
+
+function obtenerResiduosDesdeFuenteExternaORIGINAL() {
     $.ajax({
-        url: 'URL_DE_LA_API_O_ENDPOINT', 
-        type: 'GET',
+        url: '../../Controlador/php/residuosFecha.php', 
+        type: 'POST',
         dataType: 'json',
         success: function(data) {
             
-            var residuos = data.residuos; 
+            $.each(data, function (index, opcion) {
 
-            agregarListaResiduosOrganizada(residuos);
+                console.log("fkProducto: "+opcion.fk_producto);
+                console.log("idProducto: "+opcion.producto_id);
+                console.log("Producto: "+opcion.producto_descripcion);
+                console.log("fkProducto: "+opcion.fk_producto);
+                console.log("Cantidad: "+opcion.cantidad);
+                console.log("fecha: "+opcion.fecha);
+                console.log("Descripcion: "+opcion.residuo_descripcion);
+            });
+           
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -26,36 +48,97 @@ function obtenerResiduosDesdeFuenteExterna() {
     });
 }
 
-function agregarListaResiduosOrganizada(residuos) {
-
-    var residuosOrganizados = organizarResiduosPorTipo(residuos);
-
-
-    var listaResiduosOrganizada = document.createElement("ul");
+function obtenerResiduosDesdeFuenteExterna() {
+    var mesSeleccionado = document.getElementById("mes").value;
+    var anioSeleccionado = document.getElementById("anio").value;
 
 
-    for (var tipo in residuosOrganizados) {
-        var residuosTipoLista = document.createElement("ul");
-        residuosTipoLista.innerHTML = "<strong>" + tipo + "</strong>:";
-        residuosOrganizados[tipo].forEach(function(residuo) {
-            var listItem = document.createElement("li");
-            listItem.textContent = residuo;
-            residuosTipoLista.appendChild(listItem);
-        });
-        listaResiduosOrganizada.appendChild(residuosTipoLista);
+    var parametros = {
+        mes: mesSeleccionado,
+        anio: anioSeleccionado
+    };
+
+    $.ajax({
+        url: '../../Controlador/php/residuosFecha.php', 
+        type: 'POST',
+        dataType: 'json',
+        data: parametros, 
+        success: function(data) {
+            mostrarCantidadResiduosPorTipo(data);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+function mostrarCantidadResiduosPorTipo(data) {
+
+    var cantidadResiduosPorTipo = {};
+
+    data.forEach(function(residuo) {
+        var tipoResiduo = residuo.residuo_descripcion;
+        var cantidad = parseInt(residuo.cantidad);
+
+        if (cantidadResiduosPorTipo[tipoResiduo]) {
+            cantidadResiduosPorTipo[tipoResiduo] += cantidad;
+        } else {
+            cantidadResiduosPorTipo[tipoResiduo] = cantidad;
+        }
+    });
+
+
+    var tabla = '<table class="table"><thead><tr><th>Tipo de Residuo</th><th>Cantidad</th><th>Unidad</th></tr></thead><tbody>';
+
+    for (var tipo in cantidadResiduosPorTipo) {
+        tabla += '<tr><td>' + tipo + '</td><td>' + cantidadResiduosPorTipo[tipo] + '</td><td> Kg </td></tr>';
     }
 
-    document.getElementById("lista-residuos").appendChild(listaResiduosOrganizada);
+    tabla += '</tbody></table>';
+    document.getElementById('tabla-residuos').innerHTML = tabla;
 }
 
 
-function organizarResiduosPorTipo(residuos) {
-    var residuosPorTipo = {};
-    residuos.forEach(function(residuo) {
-        if (!residuosPorTipo[residuo.tipo]) {
-            residuosPorTipo[residuo.tipo] = [];
+
+function generarPDF() {
+    // Obtener el mes y el año seleccionados
+    var mesSeleccionado = document.getElementById("mes").value;
+    var anioSeleccionado = document.getElementById("anio").value;
+
+    var tablaResiduos = document.getElementById("tabla-residuos");
+
+
+    var tablaHTML = tablaResiduos.innerHTML;
+console.log(tablaHTML);
+    // Realizar una solicitud AJAX para generar el PDF
+    $.ajax({
+        url: '../../Controlador/php/generarPDF.php', 
+        type: 'POST',
+        data: { html: tablaHTML, mes: mesSeleccionado, anio: anioSeleccionado }, 
+        success: function(response) {
+
+            /*
+            var blob = new Blob([response], { type: 'application/pdf' });
+
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = mes+'informe_residuos.pdf'; // Nombre de archivo sugerido
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);*/
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
         }
-        residuosPorTipo[residuo.tipo].push(residuo.nombre);
     });
-    return residuosPorTipo;
 }
+
+
+
+
+
