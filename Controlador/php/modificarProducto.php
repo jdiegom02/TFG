@@ -21,11 +21,13 @@ if (isset($_POST["modificar"])) {
     echo $arrayDatos[0]."\n";
     echo $arrayDatos[1]."\n";
     echo $arrayDatos[2]."\n";
-    $nombreNuevo = $arrayDatos[0];
-    $categoriaNuevo = $arrayDatos[1];
-    $unidadNuevo = $arrayDatos[2];
-    for ($i=0; $i <count($arrayDatos[3]) ; $i++) { 
-        echo $arrayDatos[3][$i]."\n";
+    echo $arrayDatos[3]."\n";
+    $idNuevo = $arrayDatos[0];
+    $nombreNuevo = $arrayDatos[1];
+    $categoriaNuevo = $arrayDatos[2];
+    $unidadNuevo = $arrayDatos[3];
+    for ($i=0; $i <count($arrayDatos[4]) ; $i++) { 
+        echo $arrayDatos[4][$i]."\n";
     }
 
     

@@ -164,10 +164,6 @@ function cargarDatosProductos() {
                 // Obtener el ID del producto a partir del atributo data-producto-id
                 var productoID2 = $(this).data('producto-id');
 
-              //  console.log($(this).data('producto-id'));
-                //console.log($(this));
-
-                //console.log(productosConResiduos.Ajos);
                 var producto = null;
                 Object.values(productosConResiduos).forEach(function(prod) {
                     
@@ -206,7 +202,6 @@ function cargarDatosProductos() {
                 } else {
                     console.error("Producto no encontrado");
                 }
-                // cargarResiduosModiPro();
             });
         
 
@@ -219,6 +214,7 @@ function cargarDatosProductos() {
 
 function modificarProducto() {
     // Obtener los valores de los campos del modal de edición
+    var idProducto = $('#productoIDModificar').val();
     var nombreProducto = $('#nombreProductoModificar').val();
     var categoriaProducto = $('#categoriaProductoModificar').val();
     var unidadMedida = $('#unidadProductoModificar').val();
@@ -236,6 +232,7 @@ function modificarProducto() {
 
     // Realizar solicitud AJAX para enviar los datos al backend
     var arrayModificarProducto = [
+        idProducto,
         nombreProducto,
         categoriaProducto,
         unidadMedida,
