@@ -7,6 +7,7 @@
     <title>Gestión de residuos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <script src="../../Vista/js/gestionarResiduos.js"></script>
 </head>
 
 <body>
@@ -52,42 +53,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <!-- Script personalizado para el panel de administración -->
     <script src="../../Controlador/js/funcionesControlador.js"></script>
-    <script>
-        // Script para manejar la carga de residuos según el mes y año seleccionados
-        $(document).ready(function () {
-            cargarResiduos($('#mes').val(), $('#anio').val());
-
-            $('#mes, #anio').change(function () {
-                cargarResiduos($('#mes').val(), $('#anio').val());
-            });
-
-            function cargarResiduos(mes, anio) {
-                $.ajax({
-                    url: '../../Controlador/php/categorias2.php',
-                    method: 'POST',
-                    data: { mes: mes, anio: anio },
-                    success: function (res) {
-                        // Limpiar la lista de residuos
-                        $('#lista-residuos').empty();
-
-                        // Mostrar los datos de los residuos en la lista
-                        $.each(data, function (index, categoria) {
-                            $('#lista-residuos').append(
-                                `<li class="list-group-item">
-                                    <strong>Tipo de residuo:</strong> ${categoria.descripcion}<br>
-                                    <strong>Cantidad total:</strong> ${categoria.descripcion}<br>
-                                    <strong>Cantidad reciclada:</strong> ${categoria.descripcion}
-                                </li>`
-                            );
-                        });
-                    },
-                    error: function (err) {
-                        console.error('Error al cargar residuos:', err);
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 
 </html>
