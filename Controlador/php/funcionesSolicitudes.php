@@ -14,6 +14,7 @@ if (isset($_POST["eliminarSolicitud"])) {
 }
 
 if (isset($_POST["addPedido"])) {
+    print_r($_POST["addPedido"]);
     addPedido($_POST["addPedido"]);
 }
 
@@ -109,7 +110,7 @@ function addPedido($datos)
     $conexion = new BD("bonAppetit", "admin", "1234");
     foreach ($datos as $dato) {
         $idUsuario = idUsuarioNombre($dato[5], $conexion);
-        $observaciones=$dato[4];
+        $observaciones = $dato[4];
         $idProveedor = idProveedor($dato[3], $conexion);
         $sqlInsertarPedido = "INSERT into pedidos (fecha, fk_estado, fk_usuario, fk_proveedor, observaciones ) 
                 values (CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')), 1, $idUsuario, $idProveedor, '$observaciones')";
@@ -122,8 +123,9 @@ function addPedido($datos)
                 values ((select max(id) from pedidos), '$nombre', $cantidad, '$unidad','observados')";
         $conexion->realizarModificacion($sqlInsertarLineaPedido);
 
-        $idSolicitud = $dato[5];
+        $idSolicitud = $dato[6];
         $sqlTramitados = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
+        echo $sqlTramitados;
         $conexion->realizarModificacion($sqlTramitados);
     }
 
