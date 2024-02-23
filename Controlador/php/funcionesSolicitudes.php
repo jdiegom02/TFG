@@ -120,7 +120,7 @@ function addPedido($datos)
         $cantidad = $dato[1];
         $unidad = $dato[2];
         $sqlInsertarLineaPedido = "INSERT into linea_pedido (fk_pedido, descripcion, cantidad, unidades, observaciones ) 
-                values ((select max(id) from pedidos), '$nombre', $cantidad, '$unidad','observados')";
+                values ((select max(id) from pedidos), '$nombre', $cantidad, '$unidad','$observaciones')";
         $conexion->realizarModificacion($sqlInsertarLineaPedido);
 
         $idSolicitud = $dato[6];
