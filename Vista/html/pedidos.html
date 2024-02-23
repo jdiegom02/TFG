@@ -17,48 +17,28 @@
 
 <body>
   <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
-  <header class="navbar navbar-dark bg-ligth">
-    <div class="container-fluid justify-content-end" id="elementosnav">
-      <!-- Icono de carrito de compras -->
-      <!-- <button class=" " data-bs-toggle="modal" data-bs-target="#carritoModal" id="carritoCompras">
-        <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
-        <i class="bi bi-cart"></i>
-      </button> -->
-      <div id="iconoCarrito-container">
-      <button class=" " id="carritoCompras">
-        <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
-        <i class="bi bi-cart"></i>
-      </button>
-      <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
-    </div>
 
-    </div>
-  </header>
-  <!--MODAL DEL CARRITO DE COMPRAS DEL HEADER-->
-  <!--FIN DEL MODAL CARRITO DE COMPRAS-->
-  <!-- <div class="modal fade" id="carritoModal" tabindex="-1" aria-labelledby="carritoModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="carritoModalLabel">
-            Carrito de Compras
-          </h5>
+  <header id="cabeceraPedidos" class="navbar navbar-dark bg-ligth ">
+    <div id="">
+      <div id="divIconoUsuario" class="d-flex align-items-center p-2">
+        <div id="desplegablellamar" class="d-flex align-items-center">
+          <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+          <h3 id="usuarioNombre"></h3>
         </div>
-        <div class="modal-body" id="modalBody"> -->
-  <!-- Contenido del carrito de compras -->
-  <!-- Aquí puedes poner la lista de productos, subtotal, botones de compra, etc. -->
-  <!-- </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            Cerrar Carrito
-          </button>
-          <button type="button" class="btn btn-primary" id="pedir">
-            Realizar Pedido
-          </button>
-        </div>
+
       </div>
     </div>
-  </div> -->
+
+    <div class="container " id="elementosnav">
+      <div id="iconoCarrito-container" class="d-flex">
+        <button class=" " id="carritoCompras">
+          <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
+          <i class="bi bi-cart"></i>
+        </button>
+        <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
+      </div>
+    </div>
+  </header>
   <!--FIN DE CABECERA-->
   <div class="container">
     <h2 class="text-center" id="usuariopedido"></h2>
@@ -85,30 +65,16 @@
       <div class="col " id="informacionProductos">
         <div class="row d-flex justify-content-center" id="productos">
         </div>
-        <div class="row d-flex justify-content-center" id="nuevosProductos" ></div>
+        <div class="row d-flex   justify-content-center" id="nuevosProductos"></div>
       </div>
       <!--MOSTRAR CARRITO A LA DERECHA DE LA PAGINA-->
       <div id="carritoDerecha">
-        <!-- <hr>
-        <div id="carrito-productos" class="grid-carrito">
-          <div class:"divImagen"> <img src="" alt=""></div>
-          <div class:"divInfo">
-            <div class="descripcion">PRODUCTO TAL</div>
-            <div class="informacion">
-              <div class="cantidades">
-                <p>En carro:</p>
-                <p>8 unidades</p>
-              </div>
-              <div class="botonRemove"><input type="button" class="btn btn-danger" name="" id="">REMOVER</div>
-            </div>
-          </div>
-        </div> -->
       </div>
-      <div id="overlay"></div>
-      <div id="overlay2"></div>
-
+      <div id="desplegableFunciones" class="container">
+      </div>
+      <div id="overlay" class="container-fluid justify-content-center align-items-center"></div>
+      <div id="overlay2" class="container-fluid justify-content-center align-items-center"></div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 </body>
 

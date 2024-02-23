@@ -6,7 +6,34 @@ body {
   overflow-x: hidden;
 }
 
-h2 {
+#cabeceraPedidos {
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+  width: 100vw;
+  align-items: center;
+}
+
+#cabeceraPedidos #divIconoUsuario div {
+  cursor: pointer;
+  position: relative;
+}
+
+#cabeceraPedidos #elementosnav {}
+
+/* desplegable usuario */
+#desplegableFunciones {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  left: 20px;
+  top: 70px;
+  flex-direction: column;
+  width: 200px;
+}
+
+#administrar h2 {
   color: #007bff;
 }
 
@@ -304,9 +331,11 @@ button[id^="buscar"] {
   border-radius: 10px;
   background: #ffffff;
   width: 600px;
-  height: 400px;
+  height: 450px;
   padding: 30px 50px;
   max-width: 100%;
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+
 }
 
 #nuevoProducto {
@@ -377,3 +406,5 @@ button[id^="buscar"] {
   opacity: 0;
 
 }
+
+/*MEDIA QUERYS*/

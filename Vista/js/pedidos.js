@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem(nombreUsuario, "[]");
       }
       actualizarContadorCarrito();
-
       mostrarDatosUsuario(valor);
     }
   });
@@ -27,24 +26,27 @@ function crearBotonAdministrar() {
     type: "button",
     id: "administrar",
     class: "btn btn-primary",
-    value: "Administrar"
+    value: "Administrar",
+    style: "width:90%;margin:10px"
   });
   botonAdministrar.addEventListener("click", () => {
     location.href = "../html/panelAdmin.html";
   });
-  document.querySelector("#elementosnav").appendChild(botonAdministrar);
+  document.querySelector("#desplegableFunciones").appendChild(botonAdministrar);
 }
 
 function mostrarDatosUsuario(valor) {
-  document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
+  document.getElementById("usuarioNombre").innerHTML = nombreUsuario
+  // document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
   let botonCerrarSesion = crearElemento("input", undefined, {
     type: "button",
     id: "cerrarsesion",
     class: "btn btn-danger",
-    value: "Cerrar Sesión"
+    value: "Cerrar Sesión",
+    style: "width:90%;margin:10px"
   });
   botonCerrarSesion.addEventListener("click", cerrarSesion);
-  document.querySelector("#elementosnav").appendChild(botonCerrarSesion);
+  document.querySelector("#desplegableFunciones").appendChild(botonCerrarSesion);
 }
 
 function agregarEventListeners() {
@@ -54,6 +56,10 @@ function agregarEventListeners() {
   document.getElementById("searchInput").addEventListener("input", mostrarProductos);
   document.getElementById("buscar").addEventListener("click", mostrarProductos);
   document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
+  document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
+  document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
+  document.getElementById("desplegableFunciones").addEventListener("mouseover",desplegarBotonesUsuario)
+
 }
 
 function abrirCarrito(event) {
@@ -161,10 +167,14 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad,
   let overlay = document.getElementById("overlay");
   let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" });
   let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" });
-  popUp.appendChild(crearElemento("h3", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }));
-  popUp.appendChild(crearElemento("h3", "Nombre: " + nombre + " Cantidad " + cantidad + " Unidad de Medida " + unidad, { id: "popUpConfirmacion-descripcion" }));
-  let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:50px;', resize: 'none' });
-  popUp.appendChild(comentario);
+  popUp.appendChild(crearElemento("h2", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }));
+  popUp.appendChild(crearElemento("h4", "Deseas pedir: " + cantidad + " " + unidad + "(s) de " + nombre, { id: "popUpConfirmacion-descripcion" }));
+  let divComentario = (crearElemento("div", undefined, { class: "form-floating" }))
+  let labelComentario = crearElemento('label', "Comentarios: ", { for: "comentarioPedido", id: 'labelComentarioPedido' });
+  let comentario = crearElemento('textarea', undefined, { class: 'form-control', id: 'comentarioPedido', placeholder: 'Deja tu comentario', style: 'height: 150px; margin-bottom:10%;', resize: 'none' });
+  divComentario.appendChild(labelComentario);
+  divComentario.appendChild(comentario);
+  popUp.appendChild(divComentario);
   let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad, imagenRelacionada: imagenRelacionada });
   popUp.appendChild(botonConfirmarProducto);
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
@@ -195,7 +205,7 @@ function confirmarProducto(event) {
 
   }
   if (!encontrado) {
-    aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"), "../assets/checkmark.gif");
+    // aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"), "../assets/checkmark.gif");
     console.log(this.getAttribute("imagenRelacionada"))
     añadirCarrito(this.getAttribute("nombre"), this.getAttribute("unidad"), cantidadAtributo, observacion, this.getAttribute("imagenRelacionada"));
   } else {
@@ -204,7 +214,7 @@ function confirmarProducto(event) {
     miArray[posicionEnArray][3] = observacion;
     console.log(miArray);
     sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
-    aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más", "../assets/checkmark.gif");
+    // aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más", "../assets/checkmark.gif");
   }
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
   actualizarContadorCarrito()
@@ -226,8 +236,8 @@ function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada
 function aparecerVentanaEmergente(titulo, descripcion, imagenMuestra) {
   let overlay = document.getElementById("overlay2");
   overlay.style.display = "block";
-  let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" }))
-  let ventanaEmergente = crearElemento("div", undefined, { id: "contenedor-ventanaEmergente" })
+  let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente", class: "col-xl-12" }))
+  let ventanaEmergente = crearElemento("div", undefined, { id: "contenedor-ventanaEmergente", class: "col-xl-8" })
   contenedorVentanaEmergente.appendChild(ventanaEmergente)
   document.body.appendChild(contenedorVentanaEmergente);
   ventanaEmergente.innerHTML = `
@@ -450,8 +460,16 @@ function actualizarContadorCarrito() {
   let contador = document.getElementById("contador-carrito");
   contador.textContent = obtenerCantidadArticulos();
 }
-
-// Ejecutar la función al cargar la página para mostrar la cantidad inicial
+function desplegarBotonesUsuario(params) {
+  let contenido = document.getElementById("desplegableFunciones")
+  contenido.style.display = 'block';
+  contenido.addEventListener("mouseleave", cerrarBotonesUsuario)
+  this.addEventListener("mouseleave", cerrarBotonesUsuario)
+}
+function cerrarBotonesUsuario() {
+  let contenido = document.getElementById("desplegableFunciones")
+  contenido.style.display = 'none';
+}
 
 // ------- HERRAMIENTAS -------
 function filtrarProductos(array) {
