@@ -164,10 +164,6 @@ function cargarDatosProductos() {
                 // Obtener el ID del producto a partir del atributo data-producto-id
                 var productoID2 = $(this).data('producto-id');
 
-              //  console.log($(this).data('producto-id'));
-                //console.log($(this));
-
-                //console.log(productosConResiduos.Ajos);
                 var producto = null;
                 Object.values(productosConResiduos).forEach(function(prod) {
                     
@@ -206,7 +202,6 @@ function cargarDatosProductos() {
                 } else {
                     console.error("Producto no encontrado");
                 }
-                // cargarResiduosModiPro();
             });
         
 
@@ -219,6 +214,7 @@ function cargarDatosProductos() {
 
 function modificarProducto() {
     // Obtener los valores de los campos del modal de edición
+    var idProducto = $('#productoIDModificar').val();
     var nombreProducto = $('#nombreProductoModificar').val();
     var categoriaProducto = $('#categoriaProductoModificar').val();
     var unidadMedida = $('#unidadProductoModificar').val();
@@ -236,6 +232,7 @@ function modificarProducto() {
 
     // Realizar solicitud AJAX para enviar los datos al backend
     var arrayModificarProducto = [
+        idProducto,
         nombreProducto,
         categoriaProducto,
         unidadMedida,
@@ -251,16 +248,22 @@ function modificarProducto() {
             console.log(response);
             // Actualizar la interfaz de usuario (por ejemplo, cerrar el modal)
             $('#editarProductoModal').modal('hide');
+            
             // Opcional: Recargar la lista de productos
             cargarDatosProductos();
+            /*
+            $('#modalGestionarProducto').modal("show");
+            $('#modalGestionarProducto').on('shown.bs.modal', function () {
+                $(this).find('input:first').focus();
+                console.log("response");
+            });*/
         },
         error: function (xhr, status, error) {
-            // Manejar errores de la solicitud AJAX
             console.error(error);
-            // Mostrar mensaje de error al usuario
             alert("Hubo un error al procesar la solicitud.");
         }
     });
+ 
 }
 
 
@@ -345,11 +348,6 @@ function limpiarMemoria() {
 
 
 
-
-
-
-
-
 /*Funcion para mandar los productos al php para hacer la inserccion. */
 function insertarProducto(e) {
     // Obtener los valores de los campos de entrada
@@ -385,7 +383,6 @@ function insertarProducto(e) {
         
         // console.log(residuosUnidad[index]);
         // console.log(residuosTipo[index]);
-        
     }
 
 
@@ -401,7 +398,7 @@ function insertarProducto(e) {
         categoriaProducto,
         unidadMedida,
         residuosUnidad,
-        residuosTipo
+        residuosTipo,
     ];
 
     // Realizar solicitud AJAX para enviar los datos al backend
