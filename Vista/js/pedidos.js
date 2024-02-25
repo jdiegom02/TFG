@@ -236,10 +236,8 @@ function aparecerVentanaEmergente(titulo, descripcion, imagenMuestra) {
   let overlay = document.getElementById("overlay2");
   overlay.style.display = "block";
   let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente", class: "col-xl-12" }))
-  let ventanaEmergente = crearElemento("div", undefined, { id: "contenedor-ventanaEmergente", class: "col-xl-8" })
-  contenedorVentanaEmergente.appendChild(ventanaEmergente)
   document.body.appendChild(contenedorVentanaEmergente);
-  ventanaEmergente.innerHTML = `
+  contenedorVentanaEmergente.innerHTML = `
     <div id="popUpEmergente" style="position: fixed; background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
       <div id="popUpEmergente-mensajes"> 
         <h2>${titulo}</h2>
@@ -316,37 +314,37 @@ function mostrarSeleccionableCategorias() {
   });
 }
 //CREAR MODELO DE CARTAS AQUI
-function mostrarSeleccionableCategorias(event) {
+// function mostrarSeleccionableCategorias(event) {
   
-  const container = document.querySelector('#containerCategorias');
-  const cards = document.querySelectorAll('.cartaCategoria');
-  const arrowLeft = document.querySelector('#flecha-izquierda');
-  const arrowRight = document.querySelector('#flecha-derecha');
-  const cardWidth = cards[0].offsetWidth + parseInt(window.getComputedStyle(cards[0]).marginRight);
-  let currentIndex = 0;
+//   const container = document.querySelector('#containerCategorias');
+//   const cards = document.querySelectorAll('.cartaCategoria');
+//   const arrowLeft = document.querySelector('#flecha-izquierda');
+//   const arrowRight = document.querySelector('#flecha-derecha');
+//   const cardWidth = cards[0].offsetWidth + parseInt(window.getComputedStyle(cards[0]).marginRight);
+//   let currentIndex = 0;
 
-  arrowLeft.addEventListener('click', () => {
-    currentIndex = Math.max(currentIndex - 1, 0);
-    updateTransform();
-  });
+//   arrowLeft.addEventListener('click', () => {
+//     currentIndex = Math.max(currentIndex - 1, 0);
+//     updateTransform();
+//   });
 
-  arrowRight.addEventListener('click', () => {
-    currentIndex = Math.min(currentIndex + 1, cards.length - 1);
-    updateTransform();
-  });
+//   arrowRight.addEventListener('click', () => {
+//     currentIndex = Math.min(currentIndex + 1, cards.length - 1);
+//     updateTransform();
+//   });
 
-  function updateTransform() {
-    const offsetX = -currentIndex * cardWidth;
-    container.style.transform = `translateX(${offsetX}px)`;
-  }
-}
+//   function updateTransform() {
+//     const offsetX = -currentIndex * cardWidth;
+//     container.style.transform = `translateX(${offsetX}px)`;
+//   }
+// }
 
-function reiniciarBusquedas(event) {
-  document.getElementById("searchInput").value = "";
-  document.getElementById("categorySelect").value = "all";
-  mostrarProductos();
+// function reiniciarBusquedas(event) {
+//   document.getElementById("searchInput").value = "";
+//   document.getElementById("categorySelect").value = "all";
+//   mostrarProductos();
 
-}
+// }
 function mostrarProductos() {
 
   recogerProductos(function (productos) {
@@ -367,14 +365,14 @@ function mostrarProductos() {
   });
 }
 function crearTarjetaProducto(producto) {
-  let grid = "col-xl-3 col-md-4 col-sm-6";
+  let grid = "col-xl-3 col-md-4 col-sm-4";
   let identificador;
   let atributoImagenSrc;
   let titulo;
   let unidades;
 
   if (producto) {
-    grid = "col-xl-3 col-md-4 col-sm-6";
+    grid = "col-xl-3 col-md-4 col-sm-12";
     identificador = producto.getId();
     atributoImagenSrc = obtenerImagenURL(producto.getCategoria());
     titulo = producto.getNombre();
