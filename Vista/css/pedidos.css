@@ -21,9 +21,14 @@ body {
 #cabeceraPedidos #elementosnav {}
 
 /* desplegable usuario */
-#desplegablellamar{
+#usuarioNombre {
+  font-size: 20px;
+}
+
+#desplegablellamar {
   padding-left: 5%;
 }
+
 #desplegableFunciones {
   display: none;
   position: absolute;
@@ -42,7 +47,7 @@ body {
 }
 
 #iconoCarrito-container {
-  
+
   display: flex;
   margin-top: 15px;
   position: relative;
@@ -70,8 +75,8 @@ body {
   top: 5px;
   left: 25px;
   /* Ajusta según tu diseño */
-  background-color: red;
-  color: black;
+  background-color: gray;
+  color: white;
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -207,7 +212,6 @@ td {
 }
 
 .add {
-  border-radius: 0;
   width: 100%;
 }
 
@@ -262,10 +266,34 @@ button[id^="buscar"] {
 
 .btn-primary {
   border-radius: 0;
+color: #007bff;
+background: #000;
 }
-#carrito-cabecera{
+
+.btn-primary {
+  border: none;
+  color: white;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
+}
+
+/*ANIMACION DEL BOTON LOGIN*/
+.btn-primary:hover {
+  color: white;
+  background: #2b2b2b;
+  /* color de fuente hover */
+}
+
+
+
+
+
+#carrito-cabecera {
   margin-bottom: 40px;
 }
+
 #carritoCompras {
   background: #00000000;
   width: 70px;
@@ -453,15 +481,48 @@ button[id^="buscar"] {
   width: 70%;
 }
 
-#containerCategorias {
+.contenedorCategorySelect {
+  position: relative;
+  padding: 20px;
+}
+
+#categorySelect {
+
+  appearance: none;
+  /* Elimina la apariencia predeterminada del navegador */
+  -webkit-appearance: none;
+  /* Para navegadores basados en WebKit, como Chrome y Safari */
+  -moz-appearance: none;
+  /* Para navegadores basados en Gecko, como Firefox */
+  /* Eliminar el relleno predeterminado */
+  /* Eliminar el margen predeterminado */
+  /* Eliminar el borde predeterminado */
+  /* Eliminar el fondo predeterminado */
+
+  border: none;
+  background-color: #f8f9fa;
+  padding: 5px 10px;
+  position: absolute;
+  width: 240px;
+}
+
+/* 
+#categorySelect #containerCategorias {
   display: flex;
   justify-content: space-between;
   overflow-x: hidden;
   width: 80%;
   margin: 0 auto;
   border: 1px #000 solid;
+} */
+.contenedorCategorySelect img {
+  position: relative;
+  left: 210px;
+  top: 5px;
+  width: 20px;
 }
 
+/* 
 .cartaCategoria {
   flex: 0 0 300px;
   background-color: #f0f0f0;
@@ -493,26 +554,31 @@ button[id^="buscar"] {
 
 #flecha-derecha {
   right: 10px;
-}
-#titulo-pagina{
+} */
+
+#titulo-pagina {
   margin: 0;
-  padding:30px 0px;
-  font-size: 3em;
-  font-family:Arial, Helvetica, sans-serif;
+  padding: 30px 0px;
+  font-size: 2em;
+  font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-  color: #007bff;
+  color: #000;
+  font-weight: 500;
 }
+
 /*MEDIA QUERYS*/
 @media screen and (max-width: 600px) {
+
   /* Aquí puedes definir estilos específicos para pantallas pequeñas */
   /* Por ejemplo, cambiar el fondo a gris */
-  #titulo-pagina{
-   font-size: 4em;
+  #titulo-pagina {
+    font-size: 4em;
   }
+
   #contenedorBusqueda {
     position: relative;
     width: 100%;
-    height: 140px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -549,14 +615,17 @@ button[id^="buscar"] {
   #iconobusqueda img {
     width: 70%;
   }
-  #divIconoUsuario{
+
+  #divIconoUsuario {
     border-bottom: 2px #00000070 solid;
   }
+
   #iconoCarrito-container {
     display: flex;
     margin-top: 15px;
     position: relative;
   }
+
   #carritoDerecha {
     padding: 0;
     position: fixed;
@@ -574,7 +643,7 @@ button[id^="buscar"] {
     border-radius: 10px;
     background: #ffffff;
     width: 100vw;
-    height: 80vh;
+    height: 50vh;
     padding: 5px 20px;
     max-width: 100%;
     box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
