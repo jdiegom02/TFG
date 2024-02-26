@@ -1,0 +1,39 @@
+/*BARRA DE BUSQUEDA*/
+#contenedorBusqueda {
+    position: relative;
+}
+
+#searchInput {
+    border: 2px solid #a1a1a1;
+    padding: 5px 20px;
+    border-radius: 20px;
+    width: 400px;
+    height: 40px;
+    position: absolute;
+    font-size: large;
+    transition: border-color 2s;
+    outline: none;
+    /* Eliminamos el resplandor predeterminado del foco */
+}
+
+#searchInput:focus {
+    border-color: rgb(255, 66, 66);
+}
+
+
+#iconobusqueda {
+    position: absolute;
+    border-radius: 50%;
+    background-color: red;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -5px;
+    left: 380px;
+}
+
+#iconobusqueda img {
+    width: 70%;
+}
