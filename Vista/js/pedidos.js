@@ -97,7 +97,7 @@ function crearElementosCarrito(divCarrito) {
     botonPedir.addEventListener("click", pedirTodo);
     divCarrito.appendChild(botonPedir);
   } else {
-    divCarrito.appendChild(crearElemento("h3", "El carrito se encuentra vacío", { style: "color:blue;margin-top:50px;padding:0px 15px" }));
+    divCarrito.appendChild(crearElemento("h3", "El carrito se encuentra vacío", { style: "color:black;margin-top:50px;padding:0px 15px" }));
     divCarrito.appendChild(crearElemento("p", "Añade productos para hacer tu pedido", { style: "color:ligthgrey;padding:0px 30px" }))
 
   }
