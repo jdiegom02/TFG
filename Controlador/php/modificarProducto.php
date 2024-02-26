@@ -29,9 +29,12 @@ else if($datoCorrecto===0)
         $resultado_categoria = $conexion->realizarConsulta($query_categoria);
         $categoriaId = $resultado_categoria->fetchColumn();
 
-    /*SOLO SE MODIFICA EL NOMBRE, HAY QUE MODIFICAR LA CATEGORIA, LAS UNIDADES Y LOS RESIDUOS*/
-    $query_modificacion = "UPDATE productos SET descripcion = '$desc', fk_unidades = (SELECT id FROM unidades WHERE unidad = '$unidad'), observaciones = 'Nuevas observaciones' WHERE id = $id";
+    
+        $query_modificacion = "UPDATE productos SET descripcion = '$desc', fk_unidades = (SELECT id FROM unidades WHERE unidad = '$unidad'), observaciones = 'Nuevas observaciones' WHERE id = $id";
             $conexion->realizarConsulta($query_modificacion);
+
+        $query_modificacion2 = "UPDATE productos_categoria SET fk_categoria = '$categoriaId' WHERE fk_producto = '$id'";
+        $conexion->realizarConsulta($query_modificacion2);
 
 
             $query_eliminar_residuos = "DELETE FROM productos_residuo WHERE fk_producto = $id";
