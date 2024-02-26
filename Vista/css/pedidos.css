@@ -6,13 +6,46 @@ body {
   overflow-x: hidden;
 }
 
-h2 {
+#cabeceraPedidos {
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+  width: 100vw;
+  align-items: center;
+}
+
+#cabeceraPedidos #divIconoUsuario div {
+  cursor: pointer;
+  position: relative;
+}
+
+#cabeceraPedidos #elementosnav {}
+
+/* desplegable usuario */
+#desplegablellamar{
+
+}
+#desplegableFunciones {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  left: 20px;
+  top: 90px;
+  flex-direction: column;
+  width: 200px;
+}
+
+#administrar h2 {
   color: #007bff;
 }
 
 #iconoCarrito-container {
+  
+  display: flex;
+  margin-top: 15px;
   position: relative;
-  display: inline-block;
+  display: block;
 }
 
 #carrito-cabecera {
@@ -34,7 +67,7 @@ h2 {
 #contador-carrito {
   position: absolute;
   top: 5px;
-  left: 15px;
+  left: 25px;
   /* Ajusta según tu diseño */
   background-color: red;
   color: black;
@@ -59,24 +92,23 @@ h2 {
 }
 
 #overlay2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: none;
-  z-index: 999;
+  background-color: #00000056;
+  z-index: 2000;
 }
 
 #carritoDerecha {
   position: fixed;
   top: 0;
-  right: -400px;
-  width: 400px;
+  right: -420px;
+  width: 420px;
   background-color: white;
   height: 100vh;
   z-index: 1000;
-  transition: right 0.3s ease;
+  transition: right 0.4s ease;
 }
 
 /* ELEMENTOS DEL CARRITO */
@@ -87,7 +119,7 @@ h2 {
   grid-template-columns: 400px;
   grid-auto-rows: 150px;
   row-gap: 20px;
-  height: 70vh;
+  height: 80vh;
   overflow: auto;
 }
 
@@ -105,7 +137,8 @@ h2 {
 
 #carritoDerecha .cantidades {
   display: grid;
-  grid-template-columns: 4fr 2fr;
+  grid-template-columns: 4fr;
+  align-items: center;
   gap: 20px;
 }
 
@@ -181,25 +214,20 @@ td {
   margin: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
 }
 
 /*icono mas y menos*/
 .grupoIconos {
-  height: 50%;
   margin: auto;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  gap: 20px;
+  width: 58%;
   cursor: pointer;
 }
 
 .grupoIconos:hover {
-  width: 45px;
-  height: 45px;
+  width: 65%;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -210,11 +238,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 /*que deje 1 fr al inicio y al final de espacio*/
-.grupoIconos:first-child {
-  grid-column-start: 2;
-}
+
 
 input[id^="cantidad"] {
+  width: 120%;
+  height: 80%;
   border: none;
   margin: auto;
   font-size: 1.5em;
@@ -234,7 +262,9 @@ button[id^="buscar"] {
 .btn-primary {
   border-radius: 0;
 }
-
+#carrito-cabecera{
+  margin-bottom: 40px;
+}
 #carritoCompras {
   background: #00000000;
   width: 70px;
@@ -246,7 +276,7 @@ button[id^="buscar"] {
 
 #carritoCompras:hover {
   background: #fff;
-  border: 2px #000000 solid;
+  border: 2px #00000056 solid;
 }
 
 #carritoCompras img {
@@ -304,9 +334,11 @@ button[id^="buscar"] {
   border-radius: 10px;
   background: #ffffff;
   width: 600px;
-  height: 400px;
+  height: 450px;
   padding: 30px 50px;
   max-width: 100%;
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+
 }
 
 #nuevoProducto {
@@ -376,4 +408,175 @@ button[id^="buscar"] {
 #desaparecidoCompletamente {
   opacity: 0;
 
+}
+
+#contenedorBusqueda {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#searchInput {
+  position: absolute;
+  border: 3px solid #a1a1a1;
+  padding: 5px 20px;
+  border-radius: 20px;
+  width: 380px;
+  position: absolute;
+  font-size: large;
+  transition: border-color 1s;
+  outline: none;
+}
+
+#searchInput:focus {
+  border-color: rgb(61, 61, 61);
+}
+
+#iconobusqueda {
+
+  position: relative;
+  border-radius: 50%;
+  background-color: rgb(137, 137, 137);
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 200px;
+}
+
+#iconobusqueda img {
+  width: 70%;
+}
+
+#containerCategorias {
+  display: flex;
+  justify-content: space-between;
+  overflow-x: hidden;
+  width: 80%;
+  margin: 0 auto;
+  border: 1px #000 solid;
+}
+
+.cartaCategoria {
+  flex: 0 0 300px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  margin-right: 20px;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.flecha {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#flecha-izquierda {
+  left: 10px;
+}
+
+#flecha-derecha {
+  right: 10px;
+}
+#titulo-pagina{
+  margin: 0;
+  padding:30px 0px;
+  font-size: 3em;
+  font-family:Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #007bff;
+}
+/*MEDIA QUERYS*/
+@media screen and (max-width: 600px) {
+  /* Aquí puedes definir estilos específicos para pantallas pequeñas */
+  /* Por ejemplo, cambiar el fondo a gris */
+  #titulo-pagina{
+   font-size: 4em;
+  }
+  #contenedorBusqueda {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #searchInput {
+    position: absolute;
+    border: 3px solid #a1a1a1;
+    padding: 5px 20px;
+    border-radius: 20px;
+    width: 300px;
+    position: absolute;
+    font-size: large;
+    transition: border-color 1s;
+    outline: none;
+  }
+
+  #searchInput:focus {
+    border-color: rgb(61, 61, 61);
+  }
+
+  #iconobusqueda {
+    position: relative;
+    border-radius: 50%;
+    background-color: rgb(163, 163, 163);
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 120px;
+  }
+
+  #iconobusqueda img {
+    width: 70%;
+  }
+  #divIconoUsuario{
+    border-bottom: 2px #00000070 solid;
+  }
+  #iconoCarrito-container {
+    display: flex;
+    margin-top: 15px;
+    position: relative;
+  }
+  #carritoDerecha {
+    padding: 0;
+    position: fixed;
+    top: 0;
+    right: -100vw;
+    width: 100vw;
+    background-color: white;
+    height: 100vh;
+    z-index: 1000;
+    transition: right 0.4s ease;
+  }
+
+  #popUpConfirmacion {
+    z-index: 1000;
+    border-radius: 10px;
+    background: #ffffff;
+    width: 100vw;
+    height: 80vh;
+    padding: 5px 20px;
+    max-width: 100%;
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+
+  }
 }
