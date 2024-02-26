@@ -244,12 +244,10 @@ function modificarProducto() {
         url: "../../Controlador/php/modificarProducto.php",
         data: { modificar : arrayModificarProducto },
         success: function (response) {
-            // Manejar la respuesta del servidor
             console.log(response);
-            // Actualizar la interfaz de usuario (por ejemplo, cerrar el modal)
+            // Actualizar la interfaz de usuario , cerrar el modal
             $('#editarProductoModal').modal('hide');
             
-            // Opcional: Recargar la lista de productos
             cargarDatosProductos();
             /*
             $('#modalGestionarProducto').modal("show");

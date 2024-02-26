@@ -7,7 +7,7 @@ function modificarProducto($id, $desc, $categoria, $unidad, $residuos)
     // Crear una instancia de la clase BD
     $conexion = new BD("bonAppetit", "admin", "1234");
 
-    // Verificar si hay solicitudes tramitadas para el producto
+
     $query = "SELECT COUNT(*) AS num_solicitudes_tramitadas
               FROM solicitudes s
               JOIN productos p ON s.descripcion = p.descripcion
