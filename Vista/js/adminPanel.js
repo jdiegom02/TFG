@@ -611,8 +611,25 @@ function cargarUsuarios() {
                 var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
                 var email = fila.find('td:eq(1)').text(); // Obtener el texto del segundo td (columna) de la fila
                 var telefono = fila.find('td:eq(2)').text(); // Obtener el texto del tercer td (columna) de la fila
+                var admin = fila.find('td:eq(3)').text(); // Obtener el estado de administrador del usuario
+
                 $('#nombreEditar').val(nombre);
                 $('#emailEditar').val(email);
+                if (admin === 'Sí') {
+                    $('#primero').val("Sí");
+                    $('#primero').text("Sí");
+                    
+                    $('#segundo').val("No");
+                    $('#segundo').text("No");
+
+                } else {
+                    $('#primero').val("No");
+                    $('#primero').text("No");
+
+                    $('#segundo').val("Sí");
+                    $('#segundo').text("Sí");
+                }
+                console.log($('#adminEditar').val());
                 $('#telefonoEditar').val(telefono);
                 $('#guardarCambios').data('idUsuario', idUsuario);
                 $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
