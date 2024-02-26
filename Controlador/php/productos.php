@@ -4,7 +4,7 @@ $productos = array();
 $conexion = new BD("bonAppetit", "admin", "1234");
 //ARMAMOS LA QUERY
 $sql = "SELECT 
-            p.id AS id,p.descripcion AS producto_descripcion,u.unidad AS unidad,c.descripcion AS categoria 
+            distinct (p.descripcion) AS producto_descripcion, p.id AS id, u.unidad AS unidad,c.descripcion AS categoria 
         FROM productos p
         JOIN 
             unidades u ON p.fk_unidades = u.id
