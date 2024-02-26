@@ -45,21 +45,20 @@ function principal(params) {
 
     });
     document.querySelector("#confirmarAccion").addEventListener("click", function () {
-        console.log("blabla");
         let descripcion = document.querySelector("#addDescripcion").value;
         let direccion = document.querySelector("#addDireccion").value;
         let email = document.querySelector("#addEmail").value;
         let telefono = document.querySelector("#addTelefono").value;
         let observaciones = document.querySelector("#addObservaciones").value;
-        if (/^\d{9}$/.test(telefono)) {
+        if (descripcion.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(direccion)) {
             let datos = [descripcion, direccion, email, telefono, observaciones];
             addProveedor(datos);
         }
     });
+    
 }
 
 function editar(hijo) {
-    let id = hijo.id;
     let nombre = hijo.descripcion;
     let direccion = hijo.direccion;
     let email = hijo.email;
@@ -74,16 +73,18 @@ function editar(hijo) {
 
     function guardarCambios() {
         let id = hijo.id;
-        let nombre = document.querySelector("#descripcion").value;
-        let direccion = document.querySelector("#direccion").value;
-        let email = document.querySelector("#email").value;
-        let telefono = document.querySelector("#telefono").value;
-        let observaciones = document.querySelector("#observaciones").value;
-        datos = [id, nombre, direccion, email, telefono, observaciones];
-        if (/^\d{9}$/.test(telefono)) {
+        let nombre = document.querySelector("#descripcion").value || "";
+        let direccion = document.querySelector("#direccion").value || "";
+        let email = document.querySelector("#email").value || "";
+        let telefono = document.querySelector("#telefono").value || "";
+        let observaciones = document.querySelector("#observaciones").value || "";
+        let datos = [id, nombre, direccion, email, telefono, observaciones];
+        if (nombre.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(direccion)) {
+            console.log(datos);
             actualizarProveedor(datos);
         }
     }
+    
 
     // Agrega el evento al botón de guardar cambios solo una vez
     document.querySelector("#confirmarAccion").addEventListener("click", guardarCambios);
