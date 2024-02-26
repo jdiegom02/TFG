@@ -109,6 +109,7 @@ function agregarNuevoCampoResiduo(numero) {
 
 
 function cargarDatosProductos() {
+    let sumatorio=0;
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/productoResiduo.php",
@@ -174,6 +175,7 @@ function cargarDatosProductos() {
             
                 // Verificar si se encontró el producto
                 if (producto) {
+                    sumatorio++;
                     $('#productoIDModificar').val(producto.producto_id);
                     $('#nombreProductoModificar').val(producto.nombre_pro);
                     $('#categoriaProductoModificar').val(producto.categoria);
@@ -190,7 +192,7 @@ function cargarDatosProductos() {
                                                        '<option value="' + residuo + '">' + residuo + '</option>' +
                                                    '</select>';
                         nuevoDivSelect.append(nuevoResiduoDropdown);
-                    
+                                       
                         // Agregar el nuevo div al contenedor principal
                         $('#residuosProductoModificar').append(nuevoDivSelect);
                         
@@ -353,8 +355,6 @@ function insertarProducto(e) {
     var categoriaProducto = document.getElementById('categoriaProducto').value;
     var unidadMedida = document.getElementById('unidadMedida').value.trim();
 
-    /*var residuosUnidad = document.getElementById('residuos').value.trim();
-    var residuosTipo = document.getElementById('despegableResiduos').value.trim();*/
 
          // Crear arrays para almacenar los valores de los residuos
     var residuosUnidad = [];
