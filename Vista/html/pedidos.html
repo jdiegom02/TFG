@@ -18,33 +18,28 @@
 <body>
   <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
 
-  <header id="cabeceraPedidos" class="navbar navbar-dark bg-ligth ">
-    <div id="">
-      <div id="divIconoUsuario" class="d-flex align-items-center p-2">
-        <div id="desplegablellamar" class="d-flex align-items-center">
-          <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-          <h3 id="usuarioNombre"></h3>
-        </div>
-
+    <div id="divIconoUsuario" class="row">
+      <div id="desplegablellamar" class="col-xxl-2 col-xl-1 col-sm-3 col-xs-3 d-flex align-items-center">
+        <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+        <h3 id="usuarioNombre"></h3>
       </div>
-    </div>
-
-    <div class="container " id="elementosnav">
-      <div id="iconoCarrito-container" class="d-flex">
+      <div class="col-xxl-8 col-xl-10 col-sm-6 col-xs-3">
+        <h2 id="titulo-pagina" class="">Pedir Productos</h2>
+      </div>
+      <div id="iconoCarrito-container" class="d-flex col-xxl-2 col-xl-1 col-sm-3 col-xs-3">
         <button class=" " id="carritoCompras">
           <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
           <i class="bi bi-cart"></i>
+          <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
         </button>
-        <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
       </div>
     </div>
-  </header>
   <!--FIN DE CABECERA-->
   <!-- Menú desplegable y campo de búsqueda -->
   <div class="">
     <div class=" ">
       <form id="filterForm">
-        <div class="d-flex flex-column align-items-center input-group">
+        <div class="">
           <!-- <input type="button" class="flecha" id="flecha-izquierda" value="&#8249;">
           <div id="containerCategorias">
             <div class="cartaCategoria">Carta 1</div>
@@ -70,7 +65,7 @@
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col " id="informacionProductos">
         <div class="d-flex justify-content-end">
-          <div class="col-xl-3 m-5">
+          <div class="col-xl-3 col-lg-4 col-md-5 m-5">
             <select class="custom-select" id="categorySelect">
               <option value="all">Todas</option>
             </select>
