@@ -22,7 +22,7 @@ body {
 
 /* desplegable usuario */
 #desplegablellamar{
-
+  padding-left: 5%;
 }
 #desplegableFunciones {
   display: none;
@@ -30,6 +30,7 @@ body {
   background: #fff;
   border: 1px solid #ccc;
   padding: 10px;
+  margin-left: 3%;
   left: 20px;
   top: 90px;
   flex-direction: column;
