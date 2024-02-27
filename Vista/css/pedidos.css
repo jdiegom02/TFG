@@ -51,7 +51,25 @@ body {
   display: flex;
   margin-top: 15px;
   position: relative;
-  display: block;
+  align-items: center;
+}
+
+#botonDarkMode {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  width: 60px;
+  height: 60px;
+
+}
+
+#botonDarkMode img {
+  width: 100%;
 }
 
 #carrito-cabecera {
@@ -266,8 +284,8 @@ button[id^="buscar"] {
 
 .btn-primary {
   border-radius: 0;
-color: #007bff;
-background: #000;
+  color: #007bff;
+  background: #000;
 }
 
 .btn-primary {
@@ -285,10 +303,6 @@ background: #000;
   background: #2b2b2b;
   /* color de fuente hover */
 }
-
-
-
-
 
 #carrito-cabecera {
   margin-bottom: 40px;

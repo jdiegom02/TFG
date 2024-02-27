@@ -733,8 +733,10 @@ function cargarResiduos() {
         }
     });
 }
-
-
+/* FUNCIONES DE VISUALIZACION */
+function name(params) {
+    
+}
 
 /*---------------------------PARA LOS RESIDUOS DE AÑADIR-----------------FIN----------------------------------- */
 

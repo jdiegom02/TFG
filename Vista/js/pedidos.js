@@ -13,11 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!verificarSessionStorage(nombreUsuario)) {
         sessionStorage.setItem(nombreUsuario, "[]");
       }
+      if  (!localStorage.getItem("darkModeActive")) {
+        localStorage.setItem("darkModeActive", "off");
+      }
       actualizarContadorCarrito();
       mostrarDatosUsuario(valor);
     }
   });
-
+  actualizarModoOscuro();
+  
   agregarEventListeners();
 });
 
@@ -50,6 +54,7 @@ function mostrarDatosUsuario(valor) {
 }
 
 function agregarEventListeners() {
+  botonDarkMode.addEventListener("click", activarDesactivarModoOscuro);
   mostrarSeleccionableCategorias();
   mostrarProductos();
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos);
@@ -354,9 +359,9 @@ function crearTarjetaProducto(producto) {
   }
 
   if (titulo == undefined) {
-    carta.appendChild(crearElemento("h3", "Agrega Nuevo Producto", { "class": "card-title" ,style:"margin:20px;" }));
+    carta.appendChild(crearElemento("h3", "Agrega Nuevo Producto", { "class": "card-title", style: "margin:20px;" }));
     let label = crearElemento("label", "Nombre del Producto:", { for: identificador });
-    let input = crearElemento("input", undefined, { id: identificador + "Nombre", class: "form-control", type: "text", style:"width:60%;margin-bottom:20px" });
+    let input = crearElemento("input", undefined, { id: identificador + "Nombre", class: "form-control", type: "text", style: "width:60%;margin-bottom:20px" });
     carta.appendChild(label);
     carta.appendChild(input);
   } else {
@@ -429,8 +434,10 @@ function obtenerImagenURL(categoria) {
   } else {
     // Devolver una imagen por defecto o una URL genérica
     return "../img/iconos/default.jpg";
-  }
+  } 
 }
+
+
 function obtenerCantidadArticulos() {
   let arraySesion = JSON.parse(sessionStorage.getItem(nombreUsuario));
   let cantidad = 0;
