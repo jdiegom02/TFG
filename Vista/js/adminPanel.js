@@ -249,11 +249,6 @@ function cargarResiduosPorProducto(productoID) {
 
 function eliminarResiduo(producto_residuo) {
     
-    var ids = producto_residuo.split('-');
-    var id_producto = ids[0];
-    var residuoNombre = ids[1];
-   // console.log("Producto id: "+id_producto);
-    //console.log("Nombre residuo: "+residuoNombre);
 
     $.ajax({
 
@@ -262,8 +257,8 @@ function eliminarResiduo(producto_residuo) {
         dataType: "JSON",
         data: { productoID: producto_residuo },
         success: function (response) {
-            //console.log(response);
-            
+            console.log("Hay que hacer una manera de refrescar los datos.");
+
         },
         error: function (xhr, status, error) {
             console.error(error); 
