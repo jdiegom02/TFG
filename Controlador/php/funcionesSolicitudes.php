@@ -125,8 +125,19 @@ function addPedido($datos)
 
         $idSolicitud = $dato[6];
         $sqlTramitados = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
-        echo $sqlTramitados;
         $conexion->realizarModificacion($sqlTramitados);
+
+    
+        $resultado = $conexion->realizarConsulta("SELECT residuos.descripcion, productos_residuo.cantidad as cantidad, residuos.descripcion from linea_pedido join productos on linea_pedido.descripcion = productos.descripcion
+        join productos_residuo on productos.id = productos_residuo.fk_producto join residuos on 
+        productos_residuo.fk_residuo = residuos.id where linea_pedido.descripcion = '$nombre' group by productos_residuo.fk_producto;");
+
+      
+        while ($registro = $resultado->fetch()) {
+            $cantidadTotal = $registro[1] * $cantidad;
+            $resultado2 = $conexion->realizarModificacion("INSERT into residuos_generados(descripcion, unidades, cantidad, fecha_creacion) values ('$registro[0]', 'Kg', $cantidadTotal, CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')))");
+            echo $resultado2;
+        }
     }
     unset($conexion);
 }
