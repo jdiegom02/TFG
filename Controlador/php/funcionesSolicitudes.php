@@ -135,8 +135,7 @@ function addPedido($datos)
       
         while ($registro = $resultado->fetch()) {
             $cantidadTotal = $registro[1] * $cantidad;
-            $resultado2 = $conexion->realizarModificacion("INSERT into residuos_generados(descripcion, unidades, cantidad, fecha_creacion) values ('$registro[0]', 'Kg', $cantidadTotal, CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')))");
-            echo $resultado2;
+            $conexion->realizarModificacion("INSERT into residuos_generados(descripcion, unidades, cantidad, fecha_creacion) values ('$registro[0]', 'Kg', $cantidadTotal, CONCAT(YEAR(NOW()), '-', LPAD(MONTH(NOW()), 2, '0'), '-', LPAD(DAY(NOW()), 2, '0')))");
         }
     }
     unset($conexion);
