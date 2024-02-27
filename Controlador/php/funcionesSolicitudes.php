@@ -128,6 +128,5 @@ function addPedido($datos)
         echo $sqlTramitados;
         $conexion->realizarModificacion($sqlTramitados);
     }
-
     unset($conexion);
 }

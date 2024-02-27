@@ -1,99 +1,77 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 
-
-function modificarProducto($id, $desc, $categoria, $unidad, $residuos)
+function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
 {
     // Crear una instancia de la clase BD
     $conexion = new BD("bonAppetit", "admin", "1234");
+    echo $id;
+    echo $desc;
+    print_r($categorias);
+    echo ($unidad);
+    print_r($residuos);
+    try {
+        $conexion->comenzarTransaccion();
 
+        // Consulta para verificar si hay solicitudes tramitadas para el producto
+        $query = "SELECT COUNT(*) AS num_solicitudes_tramitadas
+                  FROM solicitudes s
+                  JOIN productos p ON s.descripcion = p.descripcion
+                  WHERE p.id = $id
+                  AND s.tramitado = 1";
+        $resultado = $conexion->realizarConsulta($query);
+        echo $datoCorrecto = $resultado->fetchColumn();
 
-    $query = "SELECT COUNT(*) AS num_solicitudes_tramitadas
-              FROM solicitudes s
-              JOIN productos p ON s.descripcion = p.descripcion
-              WHERE p.id = $id
-              AND s.tramitado = 1";
-    $resultado = $conexion->realizarConsulta($query);
-    
-$datoCorrecto = $resultado ->fetch();
-$datoCorrecto= $datoCorrecto[0];
-
-if($datoCorrecto!==0)
-{
-    echo "No se puede modificar el producto porque hay solicitudes tramitadas para este producto.";
-}
-else if($datoCorrecto===0)
-{
-
-    $query_categoria = "SELECT id FROM categorias WHERE descripcion = '$categoria'";
-        $resultado_categoria = $conexion->realizarConsulta($query_categoria);
-        $categoriaId = $resultado_categoria->fetchColumn();
-
-    
-        $query_modificacion = "UPDATE productos SET descripcion = '$desc', fk_unidades = (SELECT id FROM unidades WHERE unidad = '$unidad'), observaciones = 'Nuevas observaciones' WHERE id = $id";
+        if ($datoCorrecto === 0) {
+            // Consulta para modificar el producto
+            $query_modificacion = "UPDATE productos SET descripcion = '$desc', fk_unidades = (SELECT id FROM unidades WHERE unidad = '$unidad'), observaciones = 'Nuevas observaciones' WHERE id = $id";
+            echo $query_modificacion;
             $conexion->realizarConsulta($query_modificacion);
 
-        $query_modificacion2 = "UPDATE productos_categoria SET fk_categoria = '$categoriaId' WHERE fk_producto = '$id'";
-        $conexion->realizarConsulta($query_modificacion2);
+            // Consulta para eliminar las categorías asociadas al producto
+            $query_eliminar_categorias = "DELETE FROM productos_categoria WHERE fk_producto = $id";
+            $conexion->realizarConsulta($query_eliminar_categorias);
 
+            // Consulta para insertar las nuevas categorías asociadas al producto
+            foreach ($categorias as $categoria) {
+                $categoriaId = $conexion->realizarConsulta("SELECT id FROM categorias WHERE descripcion = '$categoria'")->fetchColumn();
+                $conexion->realizarConsulta("INSERT INTO productos_categoria (fk_producto, fk_categoria) VALUES ($id, $categoriaId)");
+            }
 
+            // Consulta para eliminar los residuos asociados al producto
             $query_eliminar_residuos = "DELETE FROM productos_residuo WHERE fk_producto = $id";
             $conexion->realizarConsulta($query_eliminar_residuos);
 
+            // Consulta para insertar los nuevos residuos asociados al producto
             foreach ($residuos as $residuo) {
                 $query_insertar_residuo = "INSERT INTO productos_residuo (fk_producto, fk_residuo) VALUES ($id, (SELECT id FROM residuos WHERE descripcion = '$residuo'))";
                 $conexion->realizarConsulta($query_insertar_residuo);
             }
 
+            // Confirmar la transacción
+            $conexion->completarTransaccion();
             echo "El producto ha sido modificado exitosamente.";
+        }
+    } catch (Exception $e) {
+        // Revertir la transacción en caso de error
+        $conexion->revertirTransaccion();
+        echo $e->getMessage();
+    } finally {
+        // Cerrar la conexión después de realizar la consulta
+        unset($conexion);
+    }
 }
-
-
-
-
-    // Cerrar la conexión después de realizar la consulta
-    unset($conexion);
-}
-
-
 
 if (isset($_POST["modificar"])) {
-  
     $arrayDatos = $_POST["modificar"];
-    print_r($arrayDatos);
-    echo $arrayDatos["idProducto"]."\n";
-    echo $arrayDatos["nombreProducto"]."\n";
-    echo $arrayDatos["unidadesProducto"]."\n";
-    echo $arrayDatos["categorias"][0]."\n";
-    echo $arrayDatos["residuos"][0]."\n";
 
-
+    // Obtener datos del formulario
     $idNuevo = $arrayDatos["idProducto"];
     $nombreNuevo = $arrayDatos["nombreProducto"];
     $unidadNuevo = $arrayDatos["unidadesProducto"];
-    // $categoriaNuevo = $arrayDatos[2];
-    
-    for ($i=0; $i <count($arrayDatos["categorias"]) ; $i++) { 
-        echo $arrayDatos["categorias"][$i]."\n";
-    }
-    for ($i=0; $i <count($arrayDatos["residuos"]) ; $i++) { 
-        echo $arrayDatos["residuos"][$i]."\n";
-    }
+    $categoriasNuevas = $arrayDatos["categorias"]; // Se espera un array de categorías
+    $residuosNuevos = $arrayDatos["residuos"];
 
-
-   /* modificarProducto($idNuevo, $nombreNuevo, $categoriaNuevo, $unidadNuevo, $residuosNuevos);*/
+    // Llamar a la función para modificar el producto
+    modificarProducto($idNuevo, $nombreNuevo, $categoriasNuevas, $unidadNuevo, $residuosNuevos);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>
