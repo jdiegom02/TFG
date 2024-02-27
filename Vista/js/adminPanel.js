@@ -28,6 +28,12 @@ function principal() {
     document.getElementById("agregarResiduo").addEventListener("click", manejarsuma);
     document.getElementById("abrirModal").addEventListener("click", manejadorClick);
     
+    document.getElementById("crearCategoria").addEventListener("click", manejadoranadirCategoria);
+    document.getElementById("crearUnidad").addEventListener("click", manejadoranadirUnidad);
+
+    document.getElementById("anadirCategoriaGuardar").addEventListener("click", anadirCategoria);
+    document.getElementById("anadirUnidadGuardar").addEventListener("click", anadirUnidad);
+    
     
     $('#modalGestionarUsuarios').on('show.bs.modal', function () {
         cargarUsuarios();
@@ -43,11 +49,11 @@ function manejadorClick(e) {
         $('#modalGestionarProducto').modal('show');
         limpiarMemoria()
         cargarDatosProductos();
-        //$('#modalAgregarProducto').modal('show');
         cargarResiduos();
     }
     else if (this.id === "abrirModal") {
         $('#modalAgregarProducto').modal('show');
+        
         
     }
     else if (this.id === "revisarPedidos") {
@@ -67,6 +73,18 @@ function manejadorClick(e) {
     else if (this.id === "gestionarProveedores") {
         location.href = 'gestionarProveedores.html';
     }
+}
+
+
+
+function manejadoranadirUnidad(e)
+{
+    $('#modalAnadirUnidad').modal('show');
+}
+
+function manejadoranadirCategoria(e)
+{
+    $('#modalAnadirCategoria').modal('show');
 }
 
 function manejadorAnadir(e)
@@ -746,6 +764,75 @@ function cargarResiduos() {
 
 
 /*---------------------------PARA LOS RESIDUOS DE AÑADIR-----------------FIN----------------------------------- */
+
+
+
+
+function anadirCategoria(e)
+{
+    
+    let categoriaNueva = document.getElementById("nuevaCategoria").value;
+    let observacionesCat = document.getElementById("observacionCategoria").value;
+    var datosCategoria = {
+        categoriasNueva: categoriaNueva,
+        observaciones: observacionesCat
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/anadirCategoria.php",
+        data: { anadirCategoria : datosCategoria },
+        success: function (response) {
+            console.log(response);
+            // Actualizar la interfaz de usuario, cerrar el modal
+            $('#modalAnadirCategoria').modal('hide');
+            
+            cargarDatosProductos();
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+            alert("Hubo un error al procesar la solicitud.");
+        }
+    });
+}
+
+
+function anadirUnidad(e)
+{
+    let unidadNueva = document.getElementById("nuevaUnidad").value;
+    let observacionesUni = document.getElementById("observacionesUnidad").value;
+    var datosUnidad = {
+        unidadNueva: unidadNueva,
+        observaciones: observacionesUni
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/anadirUnidad.php",
+        data: { anadirUnidad : datosUnidad },
+        success: function (response) {
+            console.log(response);
+            // Actualizar la interfaz de usuario, cerrar el modal
+            $('#modalAnadirUnidad').modal('hide');
+            
+            cargarDatosProductos();
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+            alert("Hubo un error al procesar la solicitud.");
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

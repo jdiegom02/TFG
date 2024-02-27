@@ -71,6 +71,8 @@ if (isset($_POST["modificar"])) {
     $idNuevo = $arrayDatos["idProducto"];
     $nombreNuevo = $arrayDatos["nombreProducto"];
     $unidadNuevo = $arrayDatos["unidadesProducto"];
+    $categoriasNuevo = $arrayDatos["categorias"];
+    $residuosNuevo = $arrayDatos["residuos"];
     // $categoriaNuevo = $arrayDatos[2];
     
     for ($i=0; $i <count($arrayDatos["categorias"]) ; $i++) { 

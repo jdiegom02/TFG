@@ -187,7 +187,7 @@
                                     <!-- Aquí se cargarán las opciones de categoría -->
                                 </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button">Nueva Categoría</button>
+                                    <button id="crearCategoria" class="btn btn-outline-secondary" type="button">Nueva Categoría</button>
                                 </div>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
                                     <!-- Aquí se cargarán las opciones de unidad de medida -->
                                 </select>
                                 <div class="input-group-append">
-                                    <button id="nuevo" class="btn btn-outline-secondary" type="button">   Nueva Unidad   </button>
+                                    <button id="crearUnidad" data-toggle="modal" data-target="modalAnadirUnidad" class="btn btn-outline-secondary" type="button">   Nueva Unidad   </button>
                                 </div>
                             </div>
                         </div>
@@ -269,32 +269,32 @@
 <!-- Nuevo Modal "Cambiar Contraseña" -->
 <div class="modal fade" id="modalCambiarContrasena" tabindex="-1" role="dialog"
 aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="formCambiarContrasena">
-                <div class="form-group">
-                    <label for="nuevaContrasena">Nueva Contraseña</label>
-                    <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
-                </div>
-                <div class="form-group">
-                    <label for="repetirNuevaContrasena">Repetir Nueva Contraseña</label>
-                    <input type="password" class="form-control" id="repetirNuevaContrasena" name="repetirNuevaContrasena">
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formCambiarContrasena">
+                    <div class="form-group">
+                        <label for="nuevaContrasena">Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
+                    </div>
+                    <div class="form-group">
+                        <label for="repetirNuevaContrasena">Repetir Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="repetirNuevaContrasena" name="repetirNuevaContrasena">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
+            </div>
         </div>
     </div>
-</div>
 </div>
 <!-- Fin del Nuevo Modal "Cambiar Contraseña" -->
 
@@ -417,9 +417,70 @@ aria-labelledby="modalEditar" aria-hidden="true">
 <!-- Fin del Nuevo Modal "Añadir Usuario"  -->
 
 
+<!-- MODAL AÑADIR CATEGORIA NUEVA -->
+<div class="modal fade" id="modalAnadirCategoria" tabindex="-1" role="dialog"
+aria-labelledby="modalAnadirCategoriaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAnadirCategoriaLabel">Añadir Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formAnadirCategoria">
+                    <div class="form-group">
+                        <label for="nuevaContrasena">Nueva Categoria</label>
+                        <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria">
+                    </div>
+                    <div class="form-group">
+                        <label for="repetirNuevaContrasena">Observaciones</label>
+                        <input type="text" class="form-control" id="observacionCategoria" name="observacionCategoria">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="anadirCategoriaGuardar">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- MODAL AÑADIR CATEGORIA NUEVA  FIN-->
 
-
+<!-- MODAL AÑADIR UNIDAD MEDIDA NUEVA -->
+<div class="modal fade" id="modalAnadirUnidad" tabindex="-1" role="dialog"
+aria-labelledby="modalAnadirUnidadLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAnadirUnidadLabel">Añadir Unidad</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formAnadirUnidad">
+                    <div class="form-group">
+                        <label for="nuevaContrasena">Nueva Unidad</label>
+                        <input type="text" class="form-control" id="nuevaUnidad" name="nuevaUnidad">
+                    </div>
+                    <div class="form-group">
+                        <label for="repetirNuevaContrasena">Observaciones</label>
+                        <input type="text" class="form-control" id="observacionesUnidad" name="observacionesUnidad">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="anadirUnidadGuardar">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL AÑADIR UNIDAD MEDIDA NUEVA  FIN-->
 
 
 
