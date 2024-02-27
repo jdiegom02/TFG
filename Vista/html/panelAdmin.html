@@ -163,6 +163,7 @@
                             </table>
                         </div>
                     </div>
+                    <!-- <button type="button" class="btn btn-secondary" id="anadirResiduoAUnProducto">Añadir residuo</button> -->
                 </form>
             </div>
             <div class="modal-footer">
@@ -504,8 +505,44 @@ aria-labelledby="modalEditar" aria-hidden="true">
     </div>
 
 
+    <!-- MODAL AÑADIR RESIDUO NUEVO A UN PRODUCTO -->
+
+    <div class="modal fade" id="modalanadirResiduoAProducto" tabindex="-1" role="dialog"
+            aria-labelledby="modalanadirResiduoAProductoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalanadirResiduoAProductoLabel">Nuevo Residuo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formanadirResiduoAProducto">
+                            <div class="form-group">
+                                <label for="nuevoResiduo">Nuevo Residuo</label>
+                                <select class="form-control despegablesResiduosModi" id="nuevoResiduo" name="nuevoResiduo">
+                                    <option value="">Selecciona un residuo...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidadResiduo">Cantidad del residuo</label>
+                                <input type="number" class="form-control" id="cantidadResiduo"
+                                    name="cantidadResiduo">
+                            </div>
+                            <input type="hidden" id="idProductoModal" name="idProductoModal">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="guardarAnadirResiduoAProducto">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
+    <!-- MODAL AÑADIR RESIDUO NUEVO A UN PRODUCTO  FIN-->
 
 
     <!-- Scripts -->
