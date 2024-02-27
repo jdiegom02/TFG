@@ -914,20 +914,22 @@ function manejadorAnadirResiduoAPRoducto(e)
 {
     let idproducto = $(this).data('producto-id'); // Ahora necesito enviar este dato de id a la consulta de php
     $('#modalanadirResiduoAProducto').modal('show');
+    $('#idProductoModal').val(idproducto);
     cargarResiduosModiPro();
 }
 
 
 function manejadorResiduoInsertarBase(e)
 {
+    let productoID = $('#idProductoModal').val(); // Obtener el ID del producto del campo oculto
     let nuevoResiduo = $('#nuevoResiduo').val();
-    let cantidad = $('#cantidadResiduo').val();;
-    var idProd = $(this).data('producto-id');
+    let cantidad = $('#cantidadResiduo').val();
   
-    console.log(idProd);
+    //console.log(idProd);
 
     let residuoNuevo = {
         nuevoResiduo : nuevoResiduo ,
+        idProducto : productoID,
         cantidad : cantidad
     }
 
