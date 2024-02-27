@@ -162,6 +162,8 @@ function cargarDatosProductos() {
             $(document).on('click', '.btnEditar', function () {
                 var productoID2 = $(this).data('producto-id');
 
+                cargarResiduosPorProducto(productoID2);
+
                 var producto = data.find(prod => prod.producto_id == productoID2);
 
                 if (producto) {
@@ -170,15 +172,21 @@ function cargarDatosProductos() {
                     $('#nombreProductoModificar').val(producto.nombre_producto);
                     $('#unidadProductoModificar').val(producto.unidad);
 
-                    $('#residuosProductoModificar').empty();
-                    $.each(producto.residuos, function (index, residuo) {
-                        var nuevoDivSelect = $('<div class="form-group"></div>');
-                        var nuevoResiduoDropdown = '<select class="form-control despegablesResiduosModi" id="residuo_' + producto.producto_id + '_' + index + '">' +
-                            '<option value="' + residuo + '">' + residuo + '</option>' +
-                            '</select>';
-                        nuevoDivSelect.append(nuevoResiduoDropdown);
-                        $('#residuosProductoModificar').append(nuevoDivSelect);
+                    $('#tablaResiduos tbody').empty();
+                   /* $.each(producto.residuos, function (index, residuo) {
+                        var newRow = '<tr>' +
+                            '<td>' + residuo.cantidad + '</td>' +
+                            '<td>' + residuo.unidad + '</td>' +
+                            '<td>' + residuo.tipo + '</td>' +
+                            '<td><button type="button" class="btn btn-danger eliminar-residuo">Eliminar</button></td>' +
+                            '</tr>';
+
+                        $('#tablaResiduos tbody').append(newRow);
                     });
+
+                    $(document).on('click', '.eliminar-residuo', function () {
+                        $(this).closest('.residuo-row').remove();
+                    });*/
 
                     $('#categoriaProductoModificar').empty();
                     $.each(producto.categorias, function (index, categoria) {
@@ -204,6 +212,63 @@ function cargarDatosProductos() {
         }
     });
 }
+
+function cargarResiduosPorProducto(productoID) {
+    // Realizar solicitud AJAX para obtener los residuos del producto
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/productoResiduosparatabla.php",
+        dataType: "JSON",
+        data: { producto_id: productoID },
+        success: function (data) {
+            $('#tablaResiduos tbody').empty();
+
+            $.each(data.residuos, function (index, residuo) {
+                var newRow = '<tr>' +
+                    '<td>' + residuo.cantidad + '</td>' +
+                    '<td>' + "Kilogramos" + '</td>' +
+                    '<td>' + residuo.nombre_residuo + '</td>' +
+                    '<td><button type="button" class="btn btn-danger eliminar-residuo" data-residuo-id='+productoID+"-"+residuo.nombre_residuo+'>Eliminar</button></td>' +
+                    '</tr>';
+
+                $('#tablaResiduos tbody').append(newRow);
+            });
+
+            $('.eliminar-residuo').click(function () {
+                var producto_residuo = $(this).data('residuo-id');
+                
+                eliminarResiduo(producto_residuo);
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+function eliminarResiduo(producto_residuo) {
+    
+
+    $.ajax({
+
+        type: "POST",
+        url: "../../Controlador/php/eliminarResiduo.php",
+        dataType: "JSON",
+        data: { productoID: producto_residuo },
+        success: function (response) {
+            console.log("Hay que hacer una manera de refrescar los datos.");
+
+        },
+        error: function (xhr, status, error) {
+            console.error(error); 
+        }
+    });
+
+}
+
+
+
 
 
 function modificarProducto() {
