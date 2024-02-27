@@ -33,6 +33,9 @@ function principal() {
 
     document.getElementById("anadirCategoriaGuardar").addEventListener("click", anadirCategoria);
     document.getElementById("anadirUnidadGuardar").addEventListener("click", anadirUnidad);
+
+    //document.getElementById("anadirResiduoAUnProducto").addEventListener("click", manejadorAnadirResiduoAPRoducto);
+    document.getElementById("guardarAnadirResiduoAProducto").addEventListener("click", manejadorResiduoInsertarBase);
     
     
     $('#modalGestionarUsuarios').on('show.bs.modal', function () {
@@ -201,7 +204,13 @@ function cargarDatosProductos() {
 
                     $('#editarProductoModal').modal('show');
                     cargarResiduosModiPro();
-                    
+                    $('#formularioEditarProducto').append(crearElemento("button", "Añadir residuo", {
+                        "type": "button",
+                        "class": "btn btn-secondary",
+                        "data-producto-id" :" "+producto.producto_id+" ",
+                        "id": "anadirResiduoAUnProducto"
+                    }));
+                    document.getElementById("anadirResiduoAUnProducto").addEventListener("click", manejadorAnadirResiduoAPRoducto);
                 } else {
                     console.error("Producto no encontrado");
                 }
@@ -258,6 +267,8 @@ function eliminarResiduo(producto_residuo) {
         data: { productoID: producto_residuo },
         success: function (response) {
             console.log("Hay que hacer una manera de refrescar los datos.");
+            console.log("Si ahora le das a guardar, no se guarda la eliminacion.");
+            console.log("Si ahora le das a cerrar, si que se guarda la eliminacion.");
 
         },
         error: function (xhr, status, error) {
@@ -287,13 +298,19 @@ function modificarProducto() {
         }
     });
 
-    // Recorrer cada select de residuos y obtener los valores seleccionados
-    $('.despegablesResiduosModi').each(function() {
-        var residuoSeleccionado = $(this).val();
-        if (residuoSeleccionado) { // Verificar si se ha seleccionado un residuo
-            residuos.push(residuoSeleccionado);
-        }
+ 
+    // Recorrer cada fila de la tabla de residuos y obtener los valores de residuos
+    $('#tablaResiduos tbody tr').each(function() {
+        var cantidad = $(this).find('td:eq(0)').text();
+        var nombre_residuo = $(this).find('td:eq(2)').text();
+        var residuo = {
+            cantidad: cantidad,
+            nombre_residuo: nombre_residuo
+        };
+        residuos.push(residuo);
     });
+
+
 
     // Realizar solicitud AJAX para enviar los datos al backend
     var arrayModificarProducto = {
@@ -303,14 +320,13 @@ function modificarProducto() {
         categorias: categorias,
         residuos: residuos
     };
-
    
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/modificarProducto.php",
         data: { modificar : arrayModificarProducto },
         success: function (response) {
-            console.log(response);
+           // console.log(response);
             // Actualizar la interfaz de usuario, cerrar el modal
             $('#editarProductoModal').modal('hide');
             
@@ -894,9 +910,40 @@ function anadirUnidad(e)
 
 
 
+function manejadorAnadirResiduoAPRoducto(e)
+{
+    let idproducto = $(this).data('producto-id'); // Ahora necesito enviar este dato de id a la consulta de php
+    $('#modalanadirResiduoAProducto').modal('show');
+    cargarResiduosModiPro();
+}
 
 
+function manejadorResiduoInsertarBase(e)
+{
+    let nuevoResiduo = $('#nuevoResiduo').val();
+    let cantidad = $('#cantidadResiduo').val();;
+    var idProd = $(this).data('producto-id');
+  
+    console.log(idProd);
 
+    let residuoNuevo = {
+        nuevoResiduo : nuevoResiduo ,
+        cantidad : cantidad
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "../../Controlador/php/anadirResiduo.php",
+        data: { anadirResiduo : residuoNuevo },
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+            alert("Hubo un error al procesar la solicitud.");
+        }
+    });
+}
 
 
 
