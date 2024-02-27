@@ -299,19 +299,19 @@ function pedirTodo(event) {
 }
 function agregarCheck() {
   recogerProductos(function (productos) {
-    let productosFiltrados = filtrarProductos(productos);
     productos.forEach(producto => {
       let carta = document.getElementById("producto" + producto.getId())
-
+      let iconoCheckMark = crearElemento("img", undefined, { class: "iconoCheckMark", src: "../img/iconos/verificar.png" })
+      let contenedorCheckMark = crearElemento("div", undefined, { class: "contenedorCheckMark" })
       if (verificarProductoEnSesionStorage(producto.getNombre())) {
-        let iconoCheckMark = crearElemento("img", undefined, { id: "iconoCheckMark", src: "../img/iconos/verificar.png" })
-        let contenedorCheckMark = crearElemento("div", undefined, { id: "contenedorCheckMark" })
-        contenedorCheckMark.appendChild(iconoCheckMark)
-        carta.appendChild(contenedorCheckMark)
+        if (carta.querySelector('div.contenedorCheckMark') !== null) {
+        } else {
+          contenedorCheckMark.appendChild(iconoCheckMark)
+          carta.appendChild(contenedorCheckMark)
+        }
       }
     });
   });
-
 }
 function cerrarSesion() {
   sessionStorage.clear();
@@ -372,8 +372,8 @@ function crearTarjetaProducto(producto) {
     identificador = "nodefinida";
   }
 
-  let contenedorCarta = crearElemento("div", undefined, { "class": grid });
-  let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador });
+  let contenedorCarta = crearElemento("div", undefined, { "class": grid + " contenedor-card"});
+  let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador,style:"" });
   if (atributoImagenSrc != undefined) {
     carta.appendChild(crearElemento("img", undefined, { "src": atributoImagenSrc, "class": "card-img-top", "style": "height:auto;width:40%;margin:auto;" }));
   }
