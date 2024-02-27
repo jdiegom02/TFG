@@ -379,9 +379,9 @@ function crearTarjetaProducto(producto) {
   }
 
   if (titulo == undefined) {
-    carta.appendChild(crearElemento("h3", "Agrega Nuevo Producto", { "class": "card-title", style: "margin:20px;" }));
+    carta.appendChild(crearElemento("h3", "Pide un nuevo Producto", { "class": "card-title", style: "margin:20px;" }));
     let label = crearElemento("label", "Nombre del Producto:", { for: identificador });
-    let input = crearElemento("input", undefined, { id: identificador + "Nombre", class: "form-control", type: "text", style: "width:60%;margin-bottom:20px" });
+    let input = crearElemento("input", undefined, { id: identificador + "Nombre", class: "form-control", type: "text", style: "width:60%;margin:auto;margin-bottom:10px;" });
     carta.appendChild(label);
     carta.appendChild(input);
   } else {
@@ -422,7 +422,7 @@ function crearTarjetaProducto(producto) {
     carta.appendChild(boton);
   } else {
     let label = crearElemento("label", "Unidad:", { for: identificador });
-    let input = crearElemento("input", undefined, { id: identificador + "Unidad", class: "form-control", type: "text", style: "width:60%;margin-bottom:50px" });
+    let input = crearElemento("input", undefined, { id: identificador + "Unidad", class: "form-control", type: "text", style: "width:60%;margin:auto;margin-bottom:50px" });
     carta.appendChild(label);
     carta.appendChild(input);
     let boton = crearElemento("button", "Añadir al carrito", { "class": "btn add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
