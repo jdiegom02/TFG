@@ -60,24 +60,28 @@ else if($datoCorrecto===0)
 if (isset($_POST["modificar"])) {
   
     $arrayDatos = $_POST["modificar"];
+    print_r($arrayDatos);
+    echo $arrayDatos["idProducto"]."\n";
+    echo $arrayDatos["nombreProducto"]."\n";
+    echo $arrayDatos["unidadesProducto"]."\n";
+    echo $arrayDatos["categorias"][0]."\n";
+    echo $arrayDatos["residuos"][0]."\n";
+
+
+    $idNuevo = $arrayDatos["idProducto"];
+    $nombreNuevo = $arrayDatos["nombreProducto"];
+    $unidadNuevo = $arrayDatos["unidadesProducto"];
+    // $categoriaNuevo = $arrayDatos[2];
     
-    echo $arrayDatos[0]."\n";
-    echo $arrayDatos[1]."\n";
-    echo $arrayDatos[2]."\n";
-    echo $arrayDatos[3]."\n";
-    $idNuevo = $arrayDatos[0];
-    $nombreNuevo = $arrayDatos[1];
-    $categoriaNuevo = $arrayDatos[2];
-    $unidadNuevo = $arrayDatos[3];
-    for ($i=0; $i <count($arrayDatos[4]) ; $i++) { 
-        echo $arrayDatos[4][$i]."\n";
+    for ($i=0; $i <count($arrayDatos["categorias"]) ; $i++) { 
+        echo $arrayDatos["categorias"][$i]."\n";
     }
-    $idNuevo = $arrayDatos[0];
-    $nombreNuevo = $arrayDatos[1];
-    $categoriaNuevo = $arrayDatos[2];
-    $unidadNuevo = $arrayDatos[3];
-    $residuosNuevos = $arrayDatos[4];
-    modificarProducto($idNuevo, $nombreNuevo, $categoriaNuevo, $unidadNuevo, $residuosNuevos);
+    for ($i=0; $i <count($arrayDatos["residuos"]) ; $i++) { 
+        echo $arrayDatos["residuos"][$i]."\n";
+    }
+
+
+   /* modificarProducto($idNuevo, $nombreNuevo, $categoriaNuevo, $unidadNuevo, $residuosNuevos);*/
 }
 
 

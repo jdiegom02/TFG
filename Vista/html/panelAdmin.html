@@ -131,8 +131,9 @@
                     </div>
                     <!-- Categoría del Producto -->
                     <div class="form-group">
-                        <label for="categoriaProductoModificar">Categoría del Producto</label>
-                        <select class="form-control" id="categoriaProductoModificar"></select>
+                        <label for="categoriaProductoModificar">Categorías del Producto</label>
+                        <div id="categoriaProductoModificar"></div>
+                        <!-- <select class="form-control" id="categoriaProductoModificar"></select> -->
                     </div>
                     <!-- Unidad de medida -->
                     <div class="form-group">
@@ -326,8 +327,8 @@ aria-labelledby="modalEditar" aria-hidden="true">
                 <div class="form-group">
                     <label for="admin">Admin</label>
                     <select class="form-control" id="adminEditar" name="admin">
-                        <option value="si">Sí</option>
-                        <option value="no">No</option>
+                        <option id="primero" value="si"></option>
+                        <option id="segundo" value="no"></option>
                     </select>
                 </div>
                 <div class="form-group">

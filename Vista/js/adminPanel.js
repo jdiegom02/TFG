@@ -109,104 +109,77 @@ function agregarNuevoCampoResiduo(numero) {
 
 
 function cargarDatosProductos() {
-    let sumatorio=0;
+    let sumatorio = 0;
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/productoResiduo.php",
         dataType: "JSON",
         success: function (data) {
-            //console.log(data);
             $('.producto').empty();
 
-            // Objeto para almacenar productos con sus residuos agrupados
-            var productosConResiduos = {};
-
-            // Iterar sobre los datos y agrupar los residuos por producto
             $.each(data, function (index, producto) {
-                // Verificar si ya hemos visto este producto
-                if (!productosConResiduos[producto.nombre_producto]) {
-                    productosConResiduos[producto.nombre_producto] = {
-                        nombre_pro : producto.nombre_producto,
-                        producto_id: producto.producto_id,
-                        categoria: producto.categoria,
-                        unidad: producto.unidad,
-                        residuos: []  // Inicializar lista de residuos para este producto
-                    };
-                }
-                // Agregar residuos al producto correspondiente
-                productosConResiduos[producto.nombre_producto].residuos.push(producto.residuos);
-            });
+                var productoID = producto.producto_id
 
-            // Iterar sobre los productos con sus residuos y generar el HTML
-            $.each(productosConResiduos, function (nombre_producto, producto) {
-                var productoID = nombre_producto.replace(/\s+/g, ''); // ID del producto
+                var categoriasHTML = '';
+                $.each(producto.categorias, function (index, categoria) {
+                    categoriasHTML += '<li>' + categoria + '</li>';
+                });
 
-                // Generar HTML para los residuos
                 var residuosHTML = '';
                 $.each(producto.residuos, function (index, residuo) {
-                    
                     residuosHTML += '<li>' + residuo + '</li>';
                 });
+
                 var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
-                productoHTML += '<div class="col-sm-3"><span>' + nombre_producto + '</span></div>';
-                productoHTML += '<div class="col-sm-3"><span>' + producto.categoria + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><span>' + producto.nombre_producto + '</span></div>';
+                productoHTML += '<div class="col-sm-3"><ul>' + categoriasHTML + '</ul></div>';
                 productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
                 productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>';
                 productoHTML += '<div class="col-sm-3"><button type="button" id="' + producto.producto_id + '" class="btn btn-primary btnEditar" data-producto-id="' + producto.producto_id + '">Editar</button></div>';
                 productoHTML += '</div>';
 
-
-                // Agregar producto con sus residuos al contenedor
                 $('#gestionPRO').append(productoHTML);
             });
-            
-            /*Para asignar el evento click al boton EDITAR */
-            $(document).on('click', '.btnEditar', function() {
-                // Obtener el ID del producto a partir del atributo data-producto-id
+
+            $(document).on('click', '.btnEditar', function () {
                 var productoID2 = $(this).data('producto-id');
 
-                var producto = null;
-                Object.values(productosConResiduos).forEach(function(prod) {
-                    
-                    if (prod.producto_id == productoID2) {
-                        producto = prod;
-                    }
-                });
-            
-                // Verificar si se encontró el producto
+                var producto = data.find(prod => prod.producto_id == productoID2);
+
                 if (producto) {
                     sumatorio++;
                     $('#productoIDModificar').val(producto.producto_id);
-                    $('#nombreProductoModificar').val(producto.nombre_pro);
-                    $('#categoriaProductoModificar').val(producto.categoria);
+                    $('#nombreProductoModificar').val(producto.nombre_producto);
                     $('#unidadProductoModificar').val(producto.unidad);
 
-                    // Limpiar y agregar desplegables de residuos
                     $('#residuosProductoModificar').empty();
-                    $.each(producto.residuos, function(index, residuo) {
-                        // Crear un nuevo div para el select
+                    $.each(producto.residuos, function (index, residuo) {
                         var nuevoDivSelect = $('<div class="form-group"></div>');
-                    
-                        // Crear el select y agregarlo al nuevo div
                         var nuevoResiduoDropdown = '<select class="form-control despegablesResiduosModi" id="residuo_' + producto.producto_id + '_' + index + '">' +
-                                                       '<option value="' + residuo + '">' + residuo + '</option>' +
-                                                   '</select>';
+                            '<option value="' + residuo + '">' + residuo + '</option>' +
+                            '</select>';
                         nuevoDivSelect.append(nuevoResiduoDropdown);
-                                       
-                        // Agregar el nuevo div al contenedor principal
                         $('#residuosProductoModificar').append(nuevoDivSelect);
-                        
                     });
 
-                    // Mostrar el modal de edición de producto
+                    $('#categoriaProductoModificar').empty();
+                    $.each(producto.categorias, function (index, categoria) {
+                        var nuevoDivSelect = $('<div class="form-group"></div>');
+                        var nuevoCategoriaDropdown = '<select class="form-control categoriaProductoModi" id="categoria_' + producto.producto_id + '_' + index + '">' +
+                            '<option value="' + categoria + '">' + categoria + '</option>' +
+                            '</select>';
+                        nuevoDivSelect.append(nuevoCategoriaDropdown);
+                        $('#categoriaProductoModificar').append(nuevoDivSelect);
+                        cargarOpcionesCategoriaModiPro(producto.categorias);
+                    });
+
                     $('#editarProductoModal').modal('show');
                     cargarResiduosModiPro();
+                    
                 } else {
                     console.error("Producto no encontrado");
                 }
             });
-        
-
         },
         error: function (xhr, status, error) {
             console.error(error);
@@ -214,15 +187,22 @@ function cargarDatosProductos() {
     });
 }
 
+
 function modificarProducto() {
     // Obtener los valores de los campos del modal de edición
     var idProducto = $('#productoIDModificar').val();
     var nombreProducto = $('#nombreProductoModificar').val();
-    var categoriaProducto = $('#categoriaProductoModificar').val();
-    var unidadMedida = $('#unidadProductoModificar').val();
-    
-    // Inicializar un array para almacenar los residuos seleccionados
+    var unidadesProducto = $('#unidadProductoModificar').val();
+    // Inicializar un array para almacenar las categorías y los residuos seleccionados
+    var categorias = [];
     var residuos = [];
+
+    // Recorrer cada checkbox de categorías y obtener los valores seleccionados
+    $('#categoriaProductoModificar input[type="checkbox"]').each(function() {
+        if ($(this).is(':checked')) { // Verificar si el checkbox está marcado
+            categorias.push($(this).val());
+        }
+    });
 
     // Recorrer cada select de residuos y obtener los valores seleccionados
     $('.despegablesResiduosModi').each(function() {
@@ -233,57 +213,66 @@ function modificarProducto() {
     });
 
     // Realizar solicitud AJAX para enviar los datos al backend
-    var arrayModificarProducto = [
-        idProducto,
-        nombreProducto,
-        categoriaProducto,
-        unidadMedida,
-        residuos
-    ];
+    var arrayModificarProducto = {
+        idProducto: idProducto,
+        nombreProducto: nombreProducto,
+        unidadesProducto: unidadesProducto,
+        categorias: categorias,
+        residuos: residuos
+    };
 
+   
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/modificarProducto.php",
         data: { modificar : arrayModificarProducto },
         success: function (response) {
             console.log(response);
-            // Actualizar la interfaz de usuario , cerrar el modal
+            // Actualizar la interfaz de usuario, cerrar el modal
             $('#editarProductoModal').modal('hide');
             
             cargarDatosProductos();
-            /*
-            $('#modalGestionarProducto').modal("show");
-            $('#modalGestionarProducto').on('shown.bs.modal', function () {
-                $(this).find('input:first').focus();
-                console.log("response");
-            });*/
         },
         error: function (xhr, status, error) {
             console.error(error);
             alert("Hubo un error al procesar la solicitud.");
         }
     });
- 
 }
 
 
+
 /*Las llamadas a las fiuncoines para que se rellenen las opciones */
-cargarOpcionesCategoriaModiPro();
 cargarOpcionesUnidadMedidaModiPro();
 /* Estas tres funciones estan mas abajo, pero estan modificadas para el modal de editar productos */
-function cargarOpcionesCategoriaModiPro() {
+function cargarOpcionesCategoriaModiPro(categoriasSeleccionadas) {
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/categorias2.php",
         dataType: "json",
         success: function (data) {
-            // Limpiar el select del modal de edición
+            // Limpiar el contenedor de categorías
             $('#categoriaProductoModificar').empty();
-
-            $('#categoriaProductoModificar').append('<option value="">Seleccione una categoría...</option>');
-
+            
+            // Iterar sobre los datos y agregar casillas de verificación
             $.each(data, function (index, categoria) {
-                $('#categoriaProductoModificar').append('<option value="' + categoria.descripcion + '">' + categoria.descripcion + '</option>');
+                // Crear el input checkbox
+                var checkbox = $('<input>').attr({
+                    type: 'checkbox',
+                    id: 'categoria_' + index, // Asignar un ID único a cada checkbox
+                    value: categoria.descripcion // Asignar el valor de la categoría
+                });
+                
+                // Crear una etiqueta para el checkbox
+                var label = $('<label>').attr('for', 'categoria_' + index).text(categoria.descripcion);
+                
+                // Verificar si la categoría está seleccionada
+                if (categoriasSeleccionadas.includes(categoria.descripcion)) {
+                    checkbox.prop('checked', true); // Marcar la casilla de verificación
+                }
+                
+                // Agregar el checkbox y la etiqueta al contenedor
+                $('#categoriaProductoModificar').append(checkbox).append(label).append('<br>');
             });
         },
         error: function (xhr, status, error) {
@@ -291,6 +280,10 @@ function cargarOpcionesCategoriaModiPro() {
         }
     });
 }
+
+
+
+
 function cargarOpcionesUnidadMedidaModiPro() {
     $.ajax({
         type: "POST",
@@ -299,7 +292,6 @@ function cargarOpcionesUnidadMedidaModiPro() {
         success: function (data) {
             // Limpiar el select del modal de edición
             $('#unidadProductoModificar').empty();
-            // Agregar la opción por defecto al select del modal de edición
             $('#unidadProductoModificar').append('<option value="">Seleccione una unidad...</option>');
             // Iterar sobre los datos recibidos y agregar las opciones al select del modal de edición
             $.each(data, function (index, unidad) {
@@ -611,8 +603,25 @@ function cargarUsuarios() {
                 var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
                 var email = fila.find('td:eq(1)').text(); // Obtener el texto del segundo td (columna) de la fila
                 var telefono = fila.find('td:eq(2)').text(); // Obtener el texto del tercer td (columna) de la fila
+                var admin = fila.find('td:eq(3)').text(); // Obtener el estado de administrador del usuario
+
                 $('#nombreEditar').val(nombre);
                 $('#emailEditar').val(email);
+                if (admin === 'Sí') {
+                    $('#primero').val("Sí");
+                    $('#primero').text("Sí");
+                    
+                    $('#segundo').val("No");
+                    $('#segundo').text("No");
+
+                } else {
+                    $('#primero').val("No");
+                    $('#primero').text("No");
+
+                    $('#segundo').val("Sí");
+                    $('#segundo').text("Sí");
+                }
+                console.log($('#adminEditar').val());
                 $('#telefonoEditar').val(telefono);
                 $('#guardarCambios').data('idUsuario', idUsuario);
                 $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
