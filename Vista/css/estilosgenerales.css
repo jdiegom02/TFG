@@ -3,12 +3,39 @@ body {
   filter: invert(100%);
   background-color: #333;
 }
+
 /*REINVERTIR PARA ELIMINAR EFECTO SI SE QUIERE*/
-.modal{
+.modal {
   filter: invert(100%);
 
 }
+
 .modal-content {
   background: #222222;
   color: white;
+}
+.btn-danger{
+  filter: invert(100%);
+  background-color: #9f1d30;
+}
+.btn-primary{
+  background-color: grey;
+}
+#administrar {
+  filter: invert(100%);
+  border: 1px #4e4e4e solid;
+  background-color: #333;
+}
+#iconobusqueda{
+  filter: invert(100%);
+  border: 2px solid #a1a1a1;
+
+  background-color: rgb(253, 253, 253);
+}
+#contenedor-ventanaEmergente{
+
+}
+#popUpEmergente-imagen{
+  filter: invert(100%);
+
 }

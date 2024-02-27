@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!verificarSessionStorage(nombreUsuario)) {
         sessionStorage.setItem(nombreUsuario, "[]");
       }
-      if  (!localStorage.getItem("darkModeActive")) {
+      if (!localStorage.getItem("darkModeActive")) {
         localStorage.setItem("darkModeActive", "off");
       }
       actualizarContadorCarrito();
@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   actualizarModoOscuro();
-  
   agregarEventListeners();
 });
 
@@ -29,7 +28,7 @@ function crearBotonAdministrar() {
   let botonAdministrar = crearElemento("input", undefined, {
     type: "button",
     id: "administrar",
-    class: "btn btn-primary",
+    class: "btn",
     value: "Administrar",
     style: "width:90%;margin:10px"
   });
@@ -88,6 +87,7 @@ function cerrarCarrito() {
 }
 
 function crearElementosCarrito(divCarrito) {
+  let contenedorCarrito = crearElemento("div", undefined, { id: "contenidoCarrito" })
   let cabecera = crearElemento("div", undefined, { id: "carrito-cabecera" });
   let cerrarBoton = crearElemento("button", undefined, { id: "cerrarBoton", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
   let iconoCerrar = crearElemento("img", undefined, { "src": "../assets/iconoCerrar.svg" });
@@ -95,20 +95,22 @@ function crearElementosCarrito(divCarrito) {
   cerrarBoton.addEventListener("click", cerrarCarrito)
   cabecera.appendChild(cerrarBoton);
   cabecera.appendChild(crearElemento("h2", "Carrito de Compras"));
-  divCarrito.appendChild(cabecera);
+  contenedorCarrito.appendChild(cabecera);
+  divCarrito.appendChild(contenedorCarrito);
   if (JSON.parse(sessionStorage.getItem(nombreUsuario)).length != 0) {
-    mostrarCarrito(divCarrito);
-    let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn btn-primary", style: "width:100%;" });
+    mostrarCarrito(contenedorCarrito);
+    let botonPedir = crearElemento("button", "Pedir Productos", { id: "pedir", class: "btn", style: "width:100%;" });
     botonPedir.addEventListener("click", pedirTodo);
-    divCarrito.appendChild(botonPedir);
+    contenedorCarrito.appendChild(botonPedir);
+    divCarrito.appendChild(contenedorCarrito);
   } else {
-    divCarrito.appendChild(crearElemento("h3", "El carrito se encuentra vacío", { style: "color:black;margin-top:50px;padding:0px 15px" }));
-    divCarrito.appendChild(crearElemento("p", "Añade productos para hacer tu pedido", { style: "color:ligthgrey;padding:0px 30px" }))
-
+    contenedorCarrito.appendChild(crearElemento("h3", "El carrito se encuentra vacío", { style: "color:black;margin-top:50px;padding:0px 15px" }));
+    contenedorCarrito.appendChild(crearElemento("p", "Añade productos para hacer tu pedido", { style: "color:ligthgrey;padding:0px 30px" }))
+    divCarrito.appendChild(contenedorCarrito);
   }
 }
 
-function mostrarCarrito(params) {
+function mostrarCarrito(contenedor) {
   let contenedorProductos = crearElemento("div", undefined, { id: "carrito-productos", class: "grid-carrito" });
   let arrayPedido = JSON.parse(sessionStorage.getItem(nombreUsuario));
   for (let i = 0; i < arrayPedido.length; i++) {
@@ -139,7 +141,7 @@ function mostrarCarrito(params) {
     productoCarrito.appendChild(contenedorTodo);
     contenedorProductos.appendChild(productoCarrito)
   }
-  carritoDerecha.appendChild(contenedorProductos)
+  contenedor.appendChild(contenedorProductos)
 }
 function borrarFilaPedido(event) {
   let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
@@ -182,7 +184,7 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad,
   divComentario.appendChild(labelComentario);
   divComentario.appendChild(comentario);
   popUp.appendChild(divComentario);
-  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", nombre: nombre, cantidad: cantidad, unidad: unidad, imagenRelacionada: imagenRelacionada });
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", identificador: identificadorProducto, nombre: nombre, cantidad: cantidad, unidad: unidad, imagenRelacionada: imagenRelacionada });
   popUp.appendChild(botonConfirmarProducto);
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
   let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" });
@@ -190,11 +192,12 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad,
   botonCancelarProducto.addEventListener("click", cancelarProducto);
   contenedorPopUp.appendChild(popUp);
   document.body.appendChild(contenedorPopUp);
-
 }
 
 function confirmarProducto(event) {
+  console.log(event.target)
   let observacion = document.getElementById("comentarioPedido").value;
+  let identificador = event.target.getAttribute("identificador")
   let cantidadAtributo = parseInt(this.getAttribute("cantidad"));
   let encontrado = false;
   let posicionEnArray = 0;
@@ -207,7 +210,6 @@ function confirmarProducto(event) {
         encontrado = true;
       }
     }
-
   }
   if (!encontrado) {
     // aparecerVentanaEmergente("Se agrego al carrito:", cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre"), "../assets/checkmark.gif");
@@ -221,6 +223,8 @@ function confirmarProducto(event) {
   }
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
   actualizarContadorCarrito()
+  agregarCheck()
+
 }
 function cancelarProducto(params) {
   document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
@@ -290,9 +294,25 @@ function pedirTodo(event) {
       sessionStorage.setItem(nombreUsuario, "[]");
     }
   }
+  mostrarProductos()
   actualizarContadorCarrito();
 }
+function agregarCheck() {
+  recogerProductos(function (productos) {
+    let productosFiltrados = filtrarProductos(productos);
+    productos.forEach(producto => {
+      let carta = document.getElementById("producto" + producto.getId())
 
+      if (verificarProductoEnSesionStorage(producto.getNombre())) {
+        let iconoCheckMark = crearElemento("img", undefined, { id: "iconoCheckMark", src: "../img/iconos/verificar.png" })
+        let contenedorCheckMark = crearElemento("div", undefined, { id: "contenedorCheckMark" })
+        contenedorCheckMark.appendChild(iconoCheckMark)
+        carta.appendChild(contenedorCheckMark)
+      }
+    });
+  });
+
+}
 function cerrarSesion() {
   sessionStorage.clear();
   location.href = "../html/index.html";
@@ -321,7 +341,6 @@ function mostrarProductos() {
     document.getElementById("nuevosProductos").innerHTML = ""
     let contenedorProductos = document.getElementById("productos");
     contenedorProductos.innerHTML = ""; // Limpiar el contenedor antes de mostrar los productos
-
     if (productosFiltrados.length > 0) {
       productosFiltrados.forEach(producto => {
         contenedorProductos.appendChild(crearTarjetaProducto(producto));
@@ -332,6 +351,8 @@ function mostrarProductos() {
       document.getElementById("nuevosProductos").appendChild(crearTarjetaProducto())
     }
   });
+  agregarCheck()
+
 }
 function crearTarjetaProducto(producto) {
   let grid = "col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-4 col-xs-12";
@@ -353,7 +374,6 @@ function crearTarjetaProducto(producto) {
 
   let contenedorCarta = crearElemento("div", undefined, { "class": grid });
   let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador });
-
   if (atributoImagenSrc != undefined) {
     carta.appendChild(crearElemento("img", undefined, { "src": atributoImagenSrc, "class": "card-img-top", "style": "height:auto;width:40%;margin:auto;" }));
   }
@@ -397,7 +417,7 @@ function crearTarjetaProducto(producto) {
 
   if (unidades != undefined) {
     carta.appendChild(crearElemento("h6", unidades, { "class": "card-title", style: "padding:10px" }));
-    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador, imagenRelacionada: atributoImagenSrc });
+    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador, imagenRelacionada: atributoImagenSrc });
     boton.addEventListener("click", añadirProducto);
     carta.appendChild(boton);
   } else {
@@ -405,7 +425,7 @@ function crearTarjetaProducto(producto) {
     let input = crearElemento("input", undefined, { id: identificador + "Unidad", class: "form-control", type: "text", style: "width:60%;margin-bottom:50px" });
     carta.appendChild(label);
     carta.appendChild(input);
-    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn btn-primary add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
+    let boton = crearElemento("button", "Añadir al carrito", { "class": "btn add", "value": " al carro", id: "boton", nombre: titulo, unidad: unidades, identificador: identificador });
     boton.addEventListener("click", añadirNuevoProducto);
     carta.appendChild(boton);
   }
@@ -434,7 +454,7 @@ function obtenerImagenURL(categoria) {
   } else {
     // Devolver una imagen por defecto o una URL genérica
     return "../img/iconos/default.jpg";
-  } 
+  }
 }
 
 
@@ -496,6 +516,22 @@ function eliminarPosicionDelArray(array, posicionEnArray) {
     }
   }
   return arrayTempo;
+}
+function verificarProductoEnSesionStorage(nombreDelProducto) {
+  // Obtener el array de sessionStorage
+  var arrayPrincipal = JSON.parse(sessionStorage.getItem(nombreUsuario));
+  // Verificar si el arrayPrincipal existe y es un array
+  if (Array.isArray(arrayPrincipal)) {
+    // Iterar sobre cada subarray dentro del arrayPrincipal
+    for (var i = 0; i < arrayPrincipal.length; i++) {
+      // Verificar si el argumento está en la primera posición del subarray actual
+      if (arrayPrincipal[i][0] === nombreDelProducto) {
+        return true; // El argumento está presente
+      }
+    }
+  }
+
+  return false; // El argumento no está presente
 }
 function crearElemento(etiqueta, texto, atributos) {
   let elementoNuevo = document.createElement(etiqueta);

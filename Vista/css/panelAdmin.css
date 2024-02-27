@@ -1,11 +1,23 @@
 body {
     background-color: #f8f9fa;
     font-family: "Open Sans";
-}
-/**/
 
+
+}
+
+/**/
+.contenido {
+    height: 100vh;
+    
+}
+#opcionesAdmin{
+    position: absolute;
+    top: 50%; /* Colocar el 50% desde la parte superior del contenedor */
+    left: 50%; /* Colocar el 50% desde el lado izquierdo del contenedor */
+    transform: translate(-50%, -50%);}
 .container {
     margin-top: 20px;
+
 }
 
 .opcion {

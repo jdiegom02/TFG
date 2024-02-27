@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,473 +15,491 @@
 </head>
 
 <body>
-    <div class="container">
-        <nav id="cerrar"></nav>
-        <h1 class="mt-5 mb-4" id="usuario"></h1>
-
-        <!-- Opciones del panel de administración -->
-        <div class="row justify-content-center">
-            <div class="col-sm-4" id="realizarPedido">
-                <div class="opcion">
-                    <img src="../img/iconos/carrito.png" alt="Realizar Pedido">
-                    <p>Realizar Pedido</p>
+    <div class="contenido">
+        <div id="cabecera">
+            <div class="container">
+                <nav id="cerrar"></nav>
+                <h1 class="" id="usuario"></h1>
+            </div>
+        </div>
+        <div class="container" id="opcionesAdmin">
+            <!-- Opciones del panel de administración -->
+            <div class="row justify-content-center">
+                <div class="col-sm-4" id="realizarPedido">
+                    <div class="opcion">
+                        <img src="../img/iconos/carrito.png" alt="Realizar Pedido">
+                        <p>Realizar Pedido</p>
+                    </div>
+                </div>
+                <div class="col-sm-4" id="anadir">
+                    <div class="opcion">
+                        <img src="../img/iconos/gestionP.png" alt="Añadir Producto">
+                        <p>Gestionar Productos</p>
+                    </div>
+                </div>
+                <div class="col-sm-4" id="gestionarResiduos">
+                    <div class="opcion">
+                        <img src="../img/iconos/residuos.png" alt="Gestionar Residuos">
+                        <p>Gestionar Residuos</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-4" id="anadir">
-                <div class="opcion">
-                    <img src="../img/iconos/gestionP.png" alt="Añadir Producto">
-                    <p>Gestionar Productos</p>
+            <div class="row justify-content-center">
+                <div class="col-sm-4" id="gestionarUsuarios">
+                    <div class="opcion">
+                        <img src="../img/iconos/usuarios.png" alt="Gestionar Usuarios">
+                        <p>Gestionar Usuarios</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-4" id="gestionarResiduos">
-                <div class="opcion">
-                    <img src="../img/iconos/residuos.png" alt="Gestionar Residuos">
-                    <p>Gestionar Residuos</p>
+                <div class="col-sm-4">
+                    <div class="opcion" id="revisarPedidos">
+                        <img src="../img/iconos/pedidos.png" alt="Revisar Pedidos">
+                        <p>Revisar Pedidos</p>
+                    </div>
+                </div>
+                <div class="col-sm-4" id="gestionarProveedores">
+                    <div class="opcion">
+                        <img src="../img/iconos/proveedores.png" alt="Gestionar Proveedores">
+                        <p>Gestionar Proveedores</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-sm-4" id="gestionarUsuarios">
-                <div class="opcion">
-                    <img src="../img/iconos/usuarios.png" alt="Gestionar Usuarios">
-                    <p>Gestionar Usuarios</p>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="opcion"  id="revisarPedidos">
-                    <img src="../img/iconos/pedidos.png" alt="Revisar Pedidos">
-                    <p>Revisar Pedidos</p>
-                </div>
-            </div>
-            <div class="col-sm-4" id="gestionarProveedores">
-                <div class="opcion">
-                    <img src="../img/iconos/proveedores.png" alt="Gestionar Proveedores">
-                    <p>Gestionar Proveedores</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
-<!----------------- MODAL GESTIONAR PRODUCTO -------------------------->
-<div class="modal fade" id="modalGestionarProducto" tabindex="-1" role="dialog" aria-labelledby="modalGestionarProductoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalGestionarProductoLabel">Gestionar Productos</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <button type="button" class="btn btn-primary" id="abrirModal">Añadir Productos</button>
-            <div class="row mb-3">
-                <div class="col-sm-3"><strong> Nombre del Producto</strong></div>
-                <div class="col-sm-3"><strong>Categoría</strong></div>
-                <div class="col-sm-3"><strong>Unidad de medida</strong></div>
-                <div class="col-sm-3"><strong>Residuos</strong></div>
-            </div>
-            <div class="modal-body" id="gestionPRO">
-                <div class="row mb-3">
-                    <div class="col-sm-3"><strong>Nombre del Producto</strong></div>
-                    <div class="col-sm-3"><strong>Categoría</strong></div>
-                    <div class="col-sm-3"><strong>Unidad de medida</strong></div>
-                    <div class="col-sm-3"><strong>Residuos</strong></div>
-                </div>
-                <div class="producto">
+        <!----------------- MODAL GESTIONAR PRODUCTO -------------------------->
+        <div class="modal fade" id="modalGestionarProducto" tabindex="-1" role="dialog"
+            aria-labelledby="modalGestionarProductoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalGestionarProductoLabel">Gestionar Productos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="abrirModal">Añadir Productos</button>
                     <div class="row mb-3">
-                        <div class="col-sm-3"><span id="nombreProducto1">Producto 1</span></div>
-                        <div class="col-sm-3"><span id="categoriaProducto1">Categoría 1</span></div>
-                        <div class="col-sm-3"><span id="unidadMedida1">Unidad 1</span></div>
-                        <div class="col-sm-3">
-                            <ul id="residuosProducto1">
-                                <li>Residuo 1</li>
-                                <li>Residuo 2</li>
-                            </ul>
+                        <div class="col-sm-3"><strong> Nombre del Producto</strong></div>
+                        <div class="col-sm-3"><strong>Categoría</strong></div>
+                        <div class="col-sm-3"><strong>Unidad de medida</strong></div>
+                        <div class="col-sm-3"><strong>Residuos</strong></div>
+                    </div>
+                    <div class="modal-body" id="gestionPRO">
+                        <div class="row mb-3">
+                            <div class="col-sm-3"><strong>Nombre del Producto</strong></div>
+                            <div class="col-sm-3"><strong>Categoría</strong></div>
+                            <div class="col-sm-3"><strong>Unidad de medida</strong></div>
+                            <div class="col-sm-3"><strong>Residuos</strong></div>
                         </div>
-                        <div class="col-sm-3">
-                            <button type="button" class="btn btn-primary btnEditar" data-producto-id="1">Editar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!----------------- MODAL DE MODIFICAR PRODUCTO --------------------------------------->
-
-<div class="modal fade" id="editarProductoModal" tabindex="-1" role="dialog" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editarProductoModalLabel">Editar Producto</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formularioEditarProducto">
-                    <!-- ID del producto -->
-                    <input type="text" class="form-control" id="productoIDModificar" hidden>
-                    <!-- Nombre del Producto -->
-                    <div class="form-group">
-                        <label for="nombreProductoModificar">Nombre del Producto</label>
-                        <input type="text" class="form-control" id="nombreProductoModificar">
-                    </div>
-                    <!-- Categoría del Producto -->
-                    <div class="form-group">
-                        <label for="categoriaProductoModificar">Categorías del Producto</label>
-                        <div id="categoriaProductoModificar"></div>
-                        <!-- <select class="form-control" id="categoriaProductoModificar"></select> -->
-                    </div>
-                    <!-- Unidad de medida -->
-                    <div class="form-group">
-                        <label for="unidadProductoModificar">Unidad de medida</label>
-                        <select class="form-control" id="unidadProductoModificar"></select>
-                    </div>
-                    <!-- Residuos -->
-                    <div class="form-group">
-                        <label for="residuosProductoModificar">Residuos</label>
-                        <div id="residuosProductoModificar">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="guardarCambios2">Guardar Cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<!-----FIN------------ MODAL DE MODIFICAR PRODUCTO ------------------FIN--------------------->
-
-
-
-
-
-    <!---------------------------------------------- Modal AÑADIR PRODCUTO----------------------------------------->
-    <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog"
-        aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto</h5>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="nombreProducto">Nombre del Producto</label>
-                            <input type="text" class="form-control" id="nombreProducto">
-                        </div>
-                        <div class="form-group">
-                            <label for="categoriaProducto">Categoría del Producto</label>
-                            <div class="input-group">
-                                <select class="custom-select" id="categoriaProducto">
-                                    <option value="">Seleccione una categoría...</option>
-                                    <!-- Aquí se cargarán las opciones de categoría -->
-                                </select>
-                                <div class="input-group-append">
-                                    <button id="crearCategoria" class="btn btn-outline-secondary" type="button">Nueva Categoría</button>
+                        <div class="producto">
+                            <div class="row mb-3">
+                                <div class="col-sm-3"><span id="nombreProducto1">Producto 1</span></div>
+                                <div class="col-sm-3"><span id="categoriaProducto1">Categoría 1</span></div>
+                                <div class="col-sm-3"><span id="unidadMedida1">Unidad 1</span></div>
+                                <div class="col-sm-3">
+                                    <ul id="residuosProducto1">
+                                        <li>Residuo 1</li>
+                                        <li>Residuo 2</li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary btnEditar"
+                                        data-producto-id="1">Editar</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="unidadMedida">Unidad de medida del Producto</label>
-                            <div class="input-group">
-                                <select class="custom-select" id="unidadMedida">
-                                    <option value="">Seleccione una unidad...</option>
-                                    <!-- Aquí se cargarán las opciones de unidad de medida -->
-                                </select>
-                                <div class="input-group-append">
-                                    <button id="crearUnidad" data-toggle="modal" data-target="modalAnadirUnidad" class="btn btn-outline-secondary" type="button">   Nueva Unidad   </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!----------------- MODAL DE MODIFICAR PRODUCTO --------------------------------------->
+
+        <div class="modal fade" id="editarProductoModal" tabindex="-1" role="dialog"
+            aria-labelledby="editarProductoModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarProductoModalLabel">Editar Producto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formularioEditarProducto">
+                            <!-- ID del producto -->
+                            <input type="text" class="form-control" id="productoIDModificar" hidden>
+                            <!-- Nombre del Producto -->
+                            <div class="form-group">
+                                <label for="nombreProductoModificar">Nombre del Producto</label>
+                                <input type="text" class="form-control" id="nombreProductoModificar">
+                            </div>
+                            <!-- Categoría del Producto -->
+                            <div class="form-group">
+                                <label for="categoriaProductoModificar">Categorías del Producto</label>
+                                <div id="categoriaProductoModificar"></div>
+                                <!-- <select class="form-control" id="categoriaProductoModificar"></select> -->
+                            </div>
+                            <!-- Unidad de medida -->
+                            <div class="form-group">
+                                <label for="unidadProductoModificar">Unidad de medida</label>
+                                <select class="form-control" id="unidadProductoModificar"></select>
+                            </div>
+                            <!-- Residuos -->
+                            <div class="form-group">
+                                <label for="residuosProductoModificar">Residuos</label>
+                                <div id="residuosProductoModificar">
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group" id="contenedorResiduos">
-                            <label for="residuos">Residuos del Producto</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control input-sm claseResiduos" id="residuos" placeholder="Residuos  1" style="max-width: 100px;">
-                                <div class="input-group-append">
-                                    <label for="kilos">Kg</label>
-                                    <select id="despegableResiduos" class="form-control despegablesResiduos">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="guardarCambios2">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-----FIN------------ MODAL DE MODIFICAR PRODUCTO ------------------FIN--------------------->
+
+
+
+
+
+        <!---------------------------------------------- Modal AÑADIR PRODCUTO----------------------------------------->
+        <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog"
+            aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="nombreProducto">Nombre del Producto</label>
+                                <input type="text" class="form-control" id="nombreProducto">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoriaProducto">Categoría del Producto</label>
+                                <div class="input-group">
+                                    <select class="custom-select" id="categoriaProducto">
+                                        <option value="">Seleccione una categoría...</option>
+                                        <!-- Aquí se cargarán las opciones de categoría -->
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button id="crearCategoria" class="btn btn-outline-secondary"
+                                            type="button">Nueva Categoría</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="unidadMedida">Unidad de medida del Producto</label>
+                                <div class="input-group">
+                                    <select class="custom-select" id="unidadMedida">
+                                        <option value="">Seleccione una unidad...</option>
+                                        <!-- Aquí se cargarán las opciones de unidad de medida -->
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button id="crearUnidad" data-toggle="modal" data-target="modalAnadirUnidad"
+                                            class="btn btn-outline-secondary" type="button"> Nueva Unidad </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="contenedorResiduos">
+                                <label for="residuos">Residuos del Producto</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control input-sm claseResiduos" id="residuos"
+                                        placeholder="Residuos  1" style="max-width: 100px;">
+                                    <div class="input-group-append">
+                                        <label for="kilos">Kg</label>
+                                        <select id="despegableResiduos" class="form-control despegablesResiduos">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="agregarResiduo" type="button" class="btn rounded-circle">
+                                <img src="../../Vista/img/iconos/masp.png" alt="Agregar residuo">
+                            </button>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cerrarProducto"
+                            data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="anadirProducto">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---------------------------------------------- Modal AÑADIR PRODCUTO-------FIN---------------------------------->
+        <!-- Modal Gestionar Usuarios -->
+        <div class="modal fade" id="modalGestionarUsuarios" tabindex="-1" role="dialog"
+            aria-labelledby="modalGestionarUsuariosLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalGestionarUsuariosLabel">Gestionar Usuarios</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table-responsive table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Admin</th>
+                                    <th>Activo</th>
+                                    <th>Acciones</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaUsuarios">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnanadirUsuario" class="btn btn-info">Añadir Usuario</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Guardar Cambios</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Modal Gestionar Usuarios -->
+
+        <!-- Nuevo Modal "Cambiar Contraseña" -->
+        <div class="modal fade" id="modalCambiarContrasena" tabindex="-1" role="dialog"
+            aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formCambiarContrasena">
+                            <div class="form-group">
+                                <label for="nuevaContrasena">Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
+                            </div>
+                            <div class="form-group">
+                                <label for="repetirNuevaContrasena">Repetir Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="repetirNuevaContrasena"
+                                    name="repetirNuevaContrasena">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin del Nuevo Modal "Cambiar Contraseña" -->
+
+
+        <!-- Nuevo Modal "Editar" -->
+        <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="modalEditar"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditar">Editar Usuario </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditar">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombreEditar" name="nombreEditar">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="emailEditar" name="emailEditar">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefonoEditar" name="telefono">
+                            </div>
+                            <div class="form-group">
+                                <label for="admin">Admin</label>
+                                <select class="form-control" id="adminEditar" name="admin">
+                                    <option id="primero" value="si"></option>
+                                    <option id="segundo" value="no"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="activo">Activo</label>
+                                <select class="form-control" id="activoEditar" name="activo">
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin del Nuevo Modal "Editar" -->
+
+
+
+        <!-- Nuevo Modal "Añadir Usuario"  -->
+        <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" role="dialog"
+            aria-labelledby="modalAgregarUsuario" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAgregarUsuario">Añadir Usuario</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAgregarUsuario" class="form-horizontal">
+                            <div class="form-group row">
+                                <label for="nombreAgregar" class="col-sm-2 col-form-label">Nombre</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nombreAgregar" name="nombreAgregar">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="emailAgregar" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="emailAgregar" name="emailAgregar">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="telefonoAgregar" class="col-sm-2 col-form-label">Teléfono</label>
+                                <div class="col-sm-10">
+                                    <input type="tel" class="form-control" id="telefonoAgregar" name="telefonoAgregar">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="passwordAgregar" class="col-sm-2 col-form-label">Contraseña</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="passwordAgregar"
+                                        name="passwordAgregar">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="adminAgregar" class="col-sm-2 col-form-label">Admin</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="adminAgregar" name="adminAgregar">
+                                        <option value="si">Sí</option>
+                                        <option value="no">No</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <button id="agregarResiduo" type="button" class="btn rounded-circle">
-                            <img src="../../Vista/img/iconos/masp.png" alt="Agregar residuo">
+                            <div class="form-group row">
+                                <label for="activoAgregar" class="col-sm-2 col-form-label">Activo</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="activoAgregar" name="activoAgregar">
+                                        <option value="si">Sí</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="guardarUsuario">Añadir Usuario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin del Nuevo Modal "Añadir Usuario"  -->
+
+
+        <!-- MODAL AÑADIR CATEGORIA NUEVA -->
+        <div class="modal fade" id="modalAnadirCategoria" tabindex="-1" role="dialog"
+            aria-labelledby="modalAnadirCategoriaLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAnadirCategoriaLabel">Añadir Categoria</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                        
-                    </form>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAnadirCategoria">
+                            <div class="form-group">
+                                <label for="nuevaContrasena">Nueva Categoria</label>
+                                <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria">
+                            </div>
+                            <div class="form-group">
+                                <label for="repetirNuevaContrasena">Observaciones</label>
+                                <input type="text" class="form-control" id="observacionCategoria"
+                                    name="observacionCategoria">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="anadirCategoriaGuardar">Guardar
+                            Cambios</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cerrarProducto" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="anadirProducto">Guardar Cambios</button>
+            </div>
+        </div>
+
+        <!-- MODAL AÑADIR CATEGORIA NUEVA  FIN-->
+
+        <!-- MODAL AÑADIR UNIDAD MEDIDA NUEVA -->
+        <div class="modal fade" id="modalAnadirUnidad" tabindex="-1" role="dialog"
+            aria-labelledby="modalAnadirUnidadLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAnadirUnidadLabel">Añadir Unidad</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAnadirUnidad">
+                            <div class="form-group">
+                                <label for="nuevaContrasena">Nueva Unidad</label>
+                                <input type="text" class="form-control" id="nuevaUnidad" name="nuevaUnidad">
+                            </div>
+                            <div class="form-group">
+                                <label for="repetirNuevaContrasena">Observaciones</label>
+                                <input type="text" class="form-control" id="observacionesUnidad"
+                                    name="observacionesUnidad">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="anadirUnidadGuardar">Guardar Cambios</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- MODAL AÑADIR UNIDAD MEDIDA NUEVA  FIN-->
     </div>
-<!---------------------------------------------- Modal AÑADIR PRODCUTO-------FIN---------------------------------->
- <!-- Modal Gestionar Usuarios -->
- <div class="modal fade" id="modalGestionarUsuarios" tabindex="-1" role="dialog"
-    aria-labelledby="modalGestionarUsuariosLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalGestionarUsuariosLabel">Gestionar Usuarios</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table-responsive table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Admin</th>
-                            <th>Activo</th>
-                            <th>Acciones</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaUsuarios">
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btnanadirUsuario" class="btn btn-info">Añadir Usuario</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Guardar Cambios</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Fin Modal Gestionar Usuarios -->
-
-<!-- Nuevo Modal "Cambiar Contraseña" -->
-<div class="modal fade" id="modalCambiarContrasena" tabindex="-1" role="dialog"
-aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formCambiarContrasena">
-                    <div class="form-group">
-                        <label for="nuevaContrasena">Nueva Contraseña</label>
-                        <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
-                    </div>
-                    <div class="form-group">
-                        <label for="repetirNuevaContrasena">Repetir Nueva Contraseña</label>
-                        <input type="password" class="form-control" id="repetirNuevaContrasena" name="repetirNuevaContrasena">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Fin del Nuevo Modal "Cambiar Contraseña" -->
-
-
-<!-- Nuevo Modal "Editar" -->
-<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog"
-aria-labelledby="modalEditar" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="modalEditar">Editar Usuario </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="formEditar">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombreEditar" name="nombreEditar">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="emailEditar" name="emailEditar">
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono</label>
-                    <input type="tel" class="form-control" id="telefonoEditar" name="telefono">
-                </div>
-                <div class="form-group">
-                    <label for="admin">Admin</label>
-                    <select class="form-control" id="adminEditar" name="admin">
-                        <option id="primero" value="si"></option>
-                        <option id="segundo" value="no"></option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="activo">Activo</label>
-                    <select class="form-control" id="activoEditar" name="activo">
-                        <option value="si">Sí</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
-        </div>
-    </div>
-</div>
-</div>
-<!-- Fin del Nuevo Modal "Editar" -->
-
-
-
-<!-- Nuevo Modal "Añadir Usuario"  -->
-<div class="modal fade" id="modalAgregarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalAgregarUsuario" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAgregarUsuario">Añadir Usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formAgregarUsuario" class="form-horizontal">
-                    <div class="form-group row">
-                        <label for="nombreAgregar" class="col-sm-2 col-form-label">Nombre</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="nombreAgregar" name="nombreAgregar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="emailAgregar" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="emailAgregar" name="emailAgregar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="telefonoAgregar" class="col-sm-2 col-form-label">Teléfono</label>
-                        <div class="col-sm-10">
-                            <input type="tel" class="form-control" id="telefonoAgregar" name="telefonoAgregar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="passwordAgregar" class="col-sm-2 col-form-label">Contraseña</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="passwordAgregar" name="passwordAgregar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="adminAgregar" class="col-sm-2 col-form-label">Admin</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" id="adminAgregar" name="adminAgregar">
-                                <option value="si">Sí</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="activoAgregar" class="col-sm-2 col-form-label">Activo</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" id="activoAgregar" name="activoAgregar">
-                                <option value="si">Sí</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="guardarUsuario">Añadir Usuario</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Fin del Nuevo Modal "Añadir Usuario"  -->
-
-
-<!-- MODAL AÑADIR CATEGORIA NUEVA -->
-<div class="modal fade" id="modalAnadirCategoria" tabindex="-1" role="dialog"
-aria-labelledby="modalAnadirCategoriaLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAnadirCategoriaLabel">Añadir Categoria</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formAnadirCategoria">
-                    <div class="form-group">
-                        <label for="nuevaContrasena">Nueva Categoria</label>
-                        <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria">
-                    </div>
-                    <div class="form-group">
-                        <label for="repetirNuevaContrasena">Observaciones</label>
-                        <input type="text" class="form-control" id="observacionCategoria" name="observacionCategoria">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="anadirCategoriaGuardar">Guardar Cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL AÑADIR CATEGORIA NUEVA  FIN-->
-
-<!-- MODAL AÑADIR UNIDAD MEDIDA NUEVA -->
-<div class="modal fade" id="modalAnadirUnidad" tabindex="-1" role="dialog"
-aria-labelledby="modalAnadirUnidadLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAnadirUnidadLabel">Añadir Unidad</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formAnadirUnidad">
-                    <div class="form-group">
-                        <label for="nuevaContrasena">Nueva Unidad</label>
-                        <input type="text" class="form-control" id="nuevaUnidad" name="nuevaUnidad">
-                    </div>
-                    <div class="form-group">
-                        <label for="repetirNuevaContrasena">Observaciones</label>
-                        <input type="text" class="form-control" id="observacionesUnidad" name="observacionesUnidad">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="anadirUnidadGuardar">Guardar Cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- MODAL AÑADIR UNIDAD MEDIDA NUEVA  FIN-->
 
 
 
