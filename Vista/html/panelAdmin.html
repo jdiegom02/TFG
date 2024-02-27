@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -161,7 +161,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary" id="guardarCambios2">Guardar Cambios</button>
             </div>
         </div>
@@ -233,7 +233,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cerrarProducto" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" id="cerrarProducto" data-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="anadirProducto">Guardar Cambios</button>
                 </div>
             </div>
@@ -269,8 +269,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btnanadirUsuario" class="btn btn-info">Añadir Usuario</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Guardar Cambios</button>
+                <button type="button" id="btnanadirUsuario" class="btn btn-primary">Añadir Usuario</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -281,6 +280,7 @@
 <!-- Nuevo Modal "Cambiar Contraseña" -->
 <div class="modal fade" id="modalCambiarContrasena" tabindex="-1" role="dialog"
 aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
+<<<<<<< HEAD
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -305,6 +305,31 @@ aria-labelledby="modalCambiarContrasenaLabel" aria-hidden="true">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
             </div>
+=======
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="formCambiarContrasena">
+                <div class="form-group">
+                    <label for="nuevaContrasena">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
+                </div>
+                <div class="form-group">
+                    <label for="repetirNuevaContrasena">Repetir Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="repetirNuevaContrasena" name="repetirNuevaContrasena">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
+>>>>>>> 699ca66 (residuos)
         </div>
     </div>
 </div>
@@ -353,7 +378,7 @@ aria-labelledby="modalEditar" aria-hidden="true">
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
         </div>
     </div>
@@ -420,7 +445,7 @@ aria-labelledby="modalEditar" aria-hidden="true">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="guardarUsuario">Añadir Usuario</button>
             </div>
         </div>
