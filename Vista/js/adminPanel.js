@@ -915,7 +915,7 @@ function anadirUnidad(e) {
 
 
 function manejadorAnadirResiduoAPRoducto(e) {
-    let idproducto = $(this).data('producto-id'); // Ahora necesito enviar este dato de id a la consulta de php
+    let idproducto = $(this).data('producto-id'); 
     $('#modalanadirResiduoAProducto').modal('show');
     $('#idProductoModal').val(idproducto);
     cargarResiduosModiPro();
@@ -923,10 +923,9 @@ function manejadorAnadirResiduoAPRoducto(e) {
 
 
 function manejadorResiduoInsertarBase(e) {
-    let productoID = $('#idProductoModal').val(); // Obtener el ID del producto del campo oculto
+    let productoID = $('#idProductoModal').val(); 
     let nuevoResiduo = $('#nuevoResiduo').val();
     let cantidad = $('#cantidadResiduo').val();
-
 
     if (cantidad > 0) {
         let residuoNuevo = {

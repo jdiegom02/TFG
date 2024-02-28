@@ -9,7 +9,7 @@
             $id = $_POST["id"];
             $admin;
             $activo;
-            if($_POST["admin"] == "si") {
+            if($_POST["admin"] == "Sí") {
                 $admin = 1;
             } else {
                 $admin = 0;
