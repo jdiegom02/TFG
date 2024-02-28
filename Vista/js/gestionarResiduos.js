@@ -29,18 +29,10 @@ function obtenerResiduosDesdeFuenteExternaORIGINAL() {
         type: 'POST',
         dataType: 'json',
         success: function (data) {
-
             $.each(data, function (index, opcion) {
-
-                console.log("fkProducto: " + opcion.fk_producto);
-                console.log("idProducto: " + opcion.producto_id);
-                console.log("Producto: " + opcion.producto_descripcion);
-                console.log("fkProducto: " + opcion.fk_producto);
-                console.log("Cantidad: " + opcion.cantidad);
-                console.log("fecha: " + opcion.fecha);
-                console.log("Descripcion: " + opcion.residuo_descripcion);
-                console.log("Descripcion: " + opcion.medida);
-
+                console.log("fkProducto: " + opcion.descripcion);
+                console.log("idProducto: " + opcion.cantidad);
+                console.log("Producto: " + opcion.unidad);
             });
 
         },
@@ -80,7 +72,7 @@ function mostrarCantidadResiduosPorTipo(data) {
     var cantidadResiduosPorTipo = {};
 
     data.forEach(function (residuo) {
-        var tipoResiduo = residuo.residuo_descripcion;
+        var tipoResiduo = residuo.descripcion;
         var cantidad = parseInt(residuo.cantidad);
 
         if (cantidadResiduosPorTipo[tipoResiduo]) {

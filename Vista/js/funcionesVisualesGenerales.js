@@ -1,7 +1,7 @@
 //COSAS QUE SE EJECUTARAN EN TODAS LAS PAGINAS
 document.addEventListener("DOMContentLoaded", () => {
     actualizarModoOscuro();
-    document.getElementById("botonDarkMode").addEventListener("click",activarDesactivarModoOscuro);
+    //document.getElementById("botonDarkMode").addEventListener("click",activarDesactivarModoOscuro);
     document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
     document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
     document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
