@@ -40,7 +40,8 @@ if (isset($_POST["anadirResiduo"])) {
     $residuoNuevo =$array["nuevoResiduo"];
     $cantidad =$array["cantidad"];
     $idProducto =$array["idProducto"];
-    anadirResiduo($residuoNuevo, $cantidad,$idProducto);
+    echo $idProducto;
+   // anadirResiduo($residuoNuevo, $cantidad,$idProducto);
   
 }
 
