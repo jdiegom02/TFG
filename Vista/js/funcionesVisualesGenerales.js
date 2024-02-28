@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
     actualizarModoOscuro();
+
 });
 /* DESPLEGABLE DE USUARIO */
 function mostrarDatosUsuario(valor) {

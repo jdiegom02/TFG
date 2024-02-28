@@ -34,6 +34,20 @@ h1 {
     width: 200px; /* Ancho fijo para el botón */
 }
 
+#btnRealizarPedidos{
+    font-weight: bold; /* Texto en negrita */
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* Hacer que el botón ocupe todo el ancho disponible */
+    width: 200px; /* Ancho fijo para el botón */
+}
+
+#contenedorBotones{
+    width: 100%;
+    display: flex; /* Utilizar flexbox */
+    justify-content: space-around; /* Distribuir los elementos horizontalmente con espacio alrededor */
+}
 
     .pedido-container {
         display: flex;

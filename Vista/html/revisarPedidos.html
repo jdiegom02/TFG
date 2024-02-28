@@ -70,8 +70,50 @@
         </div>
     </div>
 
-    <!-- Agregar un botón para validar los pedidos con clase "btn-primary" de Bootstrap -->
-    <button id="btnValidarPedidos" class="btn btn-primary btn-lg btn-block mt-4">Validar Pedidos</button>
+<!-- MODAL DEL PEDIDO SEMANAL -->
+
+<div class="modal fade" id="modalPedidoSemanal" tabindex="-1" role="dialog"
+            aria-labelledby="modalPedidoSemanalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalPedidoSemanalLabel">PedidoSemanal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAnadirCategoria">
+                            <div class="form-group">
+                                <label for="nuevaContrasena">Hay que mostrar los datos de los pedidos</label>
+                                <input type="text" class="form-control" id="nuevaCategoria" name="nuevaCategoria">
+                            </div>
+                            <div class="form-group">
+                                <label for="repetirNuevaContrasena">Seguramente una tabla dinamica</label>
+                                <input type="text" class="form-control" id="observacionCategoria"
+                                    name="observacionCategoria">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="anadirCategoriaGuardar">Imprimir Semanal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- MODAL DEL PEDIDO SEMANAL FINAL-->
+
+
+
+
+   
+    <div id="contenedorBotones">
+        <button id="btnValidarPedidos" class="btn btn-primary btn-lg btn-block mt-4">Validar Pedidos</button>
+        <button id="btnRealizarPedidos" class="btn btn-info btn-lg btn-block mt-4">Pedido Semanal</button>
+    </div>
+
 
     <!-- Scripts -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
