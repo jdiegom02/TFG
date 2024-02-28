@@ -12,10 +12,10 @@ function principal() {
 
 function llenarDesplegableAnios() {
     var selectAnio = document.getElementById("anio");
-    var arrayAnos = ["2023","2024","2025","2026","2027","2028","2029","2030"];
+    var arrayAnos = ["2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"];
 
     // Iterar sobre el array de años y crear una opción para cada año
-    arrayAnos.forEach(function(year) {
+    arrayAnos.forEach(function (year) {
         var option = document.createElement("option");
         option.value = year;
         option.textContent = year; // Usar textContent para establecer el texto visible de la opción
@@ -25,26 +25,26 @@ function llenarDesplegableAnios() {
 
 function obtenerResiduosDesdeFuenteExternaORIGINAL() {
     $.ajax({
-        url: '../../Controlador/php/residuosFecha.php', 
+        url: '../../Controlador/php/residuosFecha.php',
         type: 'POST',
         dataType: 'json',
-        success: function(data) {
-            
+        success: function (data) {
+
             $.each(data, function (index, opcion) {
 
-                console.log("fkProducto: "+opcion.fk_producto);
-                console.log("idProducto: "+opcion.producto_id);
-                console.log("Producto: "+opcion.producto_descripcion);
-                console.log("fkProducto: "+opcion.fk_producto);
-                console.log("Cantidad: "+opcion.cantidad);
-                console.log("fecha: "+opcion.fecha);
-                console.log("Descripcion: "+opcion.residuo_descripcion);
-                console.log("Descripcion: "+opcion.medida);
-                
+                console.log("fkProducto: " + opcion.fk_producto);
+                console.log("idProducto: " + opcion.producto_id);
+                console.log("Producto: " + opcion.producto_descripcion);
+                console.log("fkProducto: " + opcion.fk_producto);
+                console.log("Cantidad: " + opcion.cantidad);
+                console.log("fecha: " + opcion.fecha);
+                console.log("Descripcion: " + opcion.residuo_descripcion);
+                console.log("Descripcion: " + opcion.medida);
+
             });
-           
+
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
@@ -61,14 +61,14 @@ function obtenerResiduosDesdeFuenteExterna() {
     };
 
     $.ajax({
-        url: '../../Controlador/php/residuosFecha.php', 
+        url: '../../Controlador/php/residuosFecha.php',
         type: 'POST',
         dataType: 'json',
-        data: parametros, 
-        success: function(data) {
+        data: parametros,
+        success: function (data) {
             mostrarCantidadResiduosPorTipo(data);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
@@ -79,7 +79,7 @@ function mostrarCantidadResiduosPorTipo(data) {
 
     var cantidadResiduosPorTipo = {};
 
-    data.forEach(function(residuo) {
+    data.forEach(function (residuo) {
         var tipoResiduo = residuo.residuo_descripcion;
         var cantidad = parseInt(residuo.cantidad);
 
@@ -105,36 +105,57 @@ function mostrarCantidadResiduosPorTipo(data) {
 
 function generarPDF() {
     // Obtener el mes y el año seleccionados
-    var mesSeleccionado = document.getElementById("mes").value;
+    var mesSeleccionado = document.getElementById("mes").value.padStart(2, '0');
     var anioSeleccionado = document.getElementById("anio").value;
-
-    var tablaResiduos = document.getElementById("tabla-residuos");
-
-
-    var tablaHTML = tablaResiduos.innerHTML;
-console.log(tablaHTML);
+    var mesSeleccionadoNombre = document.getElementById(mesSeleccionado).innerText;
     // Realizar una solicitud AJAX para generar el PDF
+    console.log(anioSeleccionado);
     $.ajax({
-        url: '../../Controlador/php/generarPDF.php', 
+        url: '../../Controlador/php/generarPDF.php',
         type: 'POST',
-        data: { html: tablaHTML, mes: mesSeleccionado, anio: anioSeleccionado }, 
-        success: function(response) {
+        data: { mes: mesSeleccionado, anio: anioSeleccionado },
+        dataType: 'json',
+        success: function (response) {
 
-            /*
-            var blob = new Blob([response], { type: 'application/pdf' });
+            // Asignar jsPDF a window.jsPDF
+            window.jsPDF = window.jspdf.jsPDF;
 
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = mes+'informe_residuos.pdf'; // Nombre de archivo sugerido
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(function() {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);*/
+            // Crear instancia de jsPDF
+            const doc = new window.jsPDF();
+
+            // Definir el título del PDF
+            doc.setFontSize(22);
+            var tituloPDF = 'Residuos generados ' + mesSeleccionadoNombre + ' de ' + anioSeleccionado;
+            doc.text(tituloPDF, 105, 20, { align: 'center' });
+
+            // Agregar subtítulo
+            doc.setFontSize(16);
+            doc.text('', 105, 30, { align: 'center' });
+
+            // Definir posición inicial para la lista
+            var y = 45;
+
+            // Agregar elementos a la lista
+            doc.setFontSize(12);
+            let claves = Object.keys(response);
+            doc.text("Residuo", 10, y);
+            doc.text("Cantidad", 175, y,);
+            y += 10;
+            let cont = 0;
+            claves.forEach(residuo => {
+                doc.line(10, y, 200, y);
+                y += 10;
+                doc.text(residuo, 10, y);
+                doc.text(response[residuo].toString() + " Kg", 190, y, { align: 'right' });
+                y += 10;
+                cont++;
+            });
+            doc.line(10, y, 200, y);
+
+            // Guardar el PDF
+            doc.save('residuos.pdf');
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
