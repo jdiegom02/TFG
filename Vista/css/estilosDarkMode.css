@@ -4,7 +4,6 @@ body {
   background-color: #333;
   overflow-x: hidden;
   width: 100vw;
-
 }
 
 /*REINVERTIR PARA ELIMINAR EFECTO SI SE QUIERE*/
@@ -12,14 +11,13 @@ body {
   filter: invert(100%);
 }
 
-.modal-content {
-  background: #222222;
-  color: white;
-}
-
 .btn-danger {
   filter: invert(100%);
-  background-color: #9f1d30;
+  background-color: hsl(351, 69%, 37%);
+}
+.modal-content .btn-danger {
+  filter: invert(100%);
+  background-color: hsl(351, 69%, 37%);
 }
 
 .btn-primary {
@@ -35,7 +33,6 @@ body {
 #iconobusqueda {
   filter: invert(100%);
   border: 2px solid #a1a1a1;
-
   background-color: rgb(253, 253, 253);
 }
 
@@ -44,8 +41,23 @@ body {
 #popUpEmergente-imagen {
   filter: invert(100%);
 }
+
 /* ESTILO DE CARTA DE PRODUCTO NUEVO EN PEDIDOS.HTML*/
 #productonodefinida input {
   border: 1px #14141480 solid;
   margin-bottom: 10px;
+}
+
+#modalGestionarProducto .modal-content {
+  background: #222222;
+  color: white;
+}
+
+#modalGestionarUsuarios .modal-content {
+  background: #222222;
+
+}
+
+#modalGestionarUsuarios .modal-content td, #modalGestionarUsuarios .modal-content h5,#modalGestionarUsuarios .modal-content th{
+  color: white;
 }

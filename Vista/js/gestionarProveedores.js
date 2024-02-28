@@ -1,12 +1,29 @@
 document.addEventListener("DOMContentLoaded", principal);
 
 function principal(params) {
+    comprobarSesion(function (valor) {
+        if (valor == 0) {
+            location.href = "../html/index.html";
+        } else {
+            if (valor.esadmin) {
+                document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
+                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
+                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
+                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
+                usuarioIniciado = valor.nombre;
+                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
+                mostrarDatosUsuario(valor.nombre)
+            } else {
+                location.href = "../html/pedidos.html";
+            }
+        }
+    });
     cargarProveedoresDesdePHP(function (proveedores) {
         let tabla = document.createElement("table");
         tabla.classList.add("table"); // Add Bootstrap table class if using Bootstrap
         tabla.classList.add("table-responsive"); // Add Bootstrap table class if using Bootstrap
 
-    
+
         // Crear encabezado de tabla
         let encabezado = tabla.createTHead();
         let filaEncabezado = encabezado.insertRow();
@@ -19,18 +36,18 @@ function principal(params) {
         filaEncabezado.appendChild(thDescripcion);
         filaEncabezado.appendChild(thDireccion);
         filaEncabezado.appendChild(thEditar);
-    
+
         let cuerpoTabla = tabla.createTBody();
-    
+
         proveedores.forEach(proveedor => {
             let fila = cuerpoTabla.insertRow();
-    
+
             let descripcionCell = fila.insertCell();
             descripcionCell.textContent = proveedor.descripcion;
-    
+
             let direccionCell = fila.insertCell();
             direccionCell.textContent = proveedor.direccion;
-    
+
             let editarCell = fila.insertCell();
             let botonEditar = document.createElement("button");
             botonEditar.type = "button";
@@ -41,10 +58,10 @@ function principal(params) {
             botonEditar.addEventListener("click", function () {
                 editar(proveedor);
             });
-    
+
             editarCell.appendChild(botonEditar);
         });
-    
+
         // Agregar la tabla al contenedor en el DOM
         let padre = document.querySelector("#infoProveedores");
         padre.innerHTML = "";
@@ -61,7 +78,7 @@ function principal(params) {
             addProveedor(datos);
         }
     });
-    
+
 }
 
 function editar(hijo) {
@@ -90,7 +107,7 @@ function editar(hijo) {
             actualizarProveedor(datos);
         }
     }
-    
+
 
     // Agrega el evento al botón de guardar cambios solo una vez
     document.querySelector("#confirmarAccion").addEventListener("click", guardarCambios);
