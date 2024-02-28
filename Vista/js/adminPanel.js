@@ -363,7 +363,8 @@ function cargarOpcionesCategoriaModiPro(categoriasSeleccionadas) {
                 // Crear el input checkbox
                 var checkbox = $('<input>').attr({
                     type: 'checkbox',
-                    id: 'categoria_' + index, // Asignar un ID único a cada checkbox
+                    id: 'categoria_' + index,
+                    class: 'categoriasCheck', // Asignar un ID único a cada checkbox
                     value: categoria.descripcion // Asignar el valor de la categoría
                 });
                 
