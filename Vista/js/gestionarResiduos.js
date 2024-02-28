@@ -7,7 +7,7 @@ function principal() {
 
     document.getElementById("mes").addEventListener("change", obtenerResiduosDesdeFuenteExterna);
     document.getElementById("anio").addEventListener("change", obtenerResiduosDesdeFuenteExterna);
-    document.getElementById("btnGenerarPDF").addEventListener("click", generarPDF);
+    document.getElementById("btnGenerarPDF").addEventListener("click", generarPDFResiduos);
 }
 
 function llenarDesplegableAnios() {
@@ -95,67 +95,7 @@ function mostrarCantidadResiduosPorTipo(data) {
 
 
 
-function generarPDF() {
-    // Obtener el mes y el año seleccionados
-    var mesSeleccionado = document.getElementById("mes").value.padStart(2, '0');
-    var anioSeleccionado = document.getElementById("anio").value;
-    var mesSeleccionadoNombre = document.getElementById(mesSeleccionado).innerText;
-    // Realizar una solicitud AJAX para generar el PDF
-    console.log(anioSeleccionado);
-    $.ajax({
-        url: '../../Controlador/php/generarPDF.php',
-        type: 'POST',
-        data: { mes: mesSeleccionado, anio: anioSeleccionado },
-        dataType: 'json',
-        success: function (response) {
 
-            // Asignar jsPDF a window.jsPDF
-            window.jsPDF = window.jspdf.jsPDF;
-
-            // Crear instancia de jsPDF
-            const doc = new window.jsPDF();
-
-            // Definir el título del PDF
-            doc.setFontSize(22);
-            doc.setFont("helvetica", "bold");
-            var tituloPDF = 'Residuos generados ' + mesSeleccionadoNombre + ' de ' + anioSeleccionado;
-            doc.text(tituloPDF, 105, 20, { align: 'center' });
-
-            // Agregar subtítulo
-            doc.setFontSize(16);
-            doc.text('', 105, 30, { align: 'center' });
-
-            // Definir posición inicial para la lista
-            var y = 45;
-
-            // Agregar elementos a la lista
-            doc.setFontSize(14);
-            let claves = Object.keys(response);
-            doc.text("Residuo", 10, y);
-            doc.text("Cantidad", 175, y,);
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "normal");
-
-            y += 10;
-            let cont = 0;
-            claves.forEach(residuo => {
-                doc.line(10, y, 200, y);
-                y += 10;
-                doc.text(residuo, 10, y);
-                doc.text(response[residuo].toString() + " Kg", 190, y, { align: 'right' });
-                y += 10;
-                cont++;
-            });
-            doc.line(10, y, 200, y);
-
-            // Guardar el PDF
-            doc.save('residuos.pdf');
-        },
-        error: function (xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
 
 
 
