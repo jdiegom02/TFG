@@ -44,7 +44,9 @@ function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
 
             // Consulta para insertar los nuevos residuos asociados al producto
             foreach ($residuos as $residuo) {
-                $query_insertar_residuo = "INSERT INTO productos_residuo (fk_producto, fk_residuo) VALUES ($id, (SELECT id FROM residuos WHERE descripcion = '$residuo'))";
+                $cantidad = $residuo['cantidad'];
+                $nombre_residuo = $residuo['nombre_residuo'];
+                $query_insertar_residuo = "INSERT INTO productos_residuo (fk_producto, fk_residuo, cantidad) VALUES ($id, (SELECT id FROM residuos WHERE descripcion = '$nombre_residuo'), $cantidad)";
                 $conexion->realizarConsulta($query_insertar_residuo);
             }
 
@@ -69,8 +71,10 @@ if (isset($_POST["modificar"])) {
     $idNuevo = $arrayDatos["idProducto"];
     $nombreNuevo = $arrayDatos["nombreProducto"];
     $unidadNuevo = $arrayDatos["unidadesProducto"];
-    $categoriasNuevas = $arrayDatos["categorias"]; // Se espera un array de categorías
+    $categoriasNuevas = $arrayDatos["categorias"]; 
     $residuosNuevos = $arrayDatos["residuos"];
+
+
 
     // Llamar a la función para modificar el producto
     modificarProducto($idNuevo, $nombreNuevo, $categoriasNuevas, $unidadNuevo, $residuosNuevos);
