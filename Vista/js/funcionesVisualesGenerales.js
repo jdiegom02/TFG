@@ -95,7 +95,6 @@ function activarDesactivarModoOscuro(event) {
     if (localStorage.getItem("darkModeActive") == "off") {
         localStorage.setItem("darkModeActive", "on")
         actualizarModoOscuro();
-
     } else {
         localStorage.setItem("darkModeActive", "off")
         actualizarModoOscuro();

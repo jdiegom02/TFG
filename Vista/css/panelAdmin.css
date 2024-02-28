@@ -8,16 +8,14 @@ body {
 /**/
 .contenido {
     height: 100vh;
-    
 }
-#opcionesAdmin{
-    position: absolute;
-    top: 50%; /* Colocar el 50% desde la parte superior del contenedor */
-    left: 50%; /* Colocar el 50% desde el lado izquierdo del contenedor */
-    transform: translate(-50%, -50%);}
+
+#opcionesAdmin {
+   margin-top: 100px;
+}
+
 .container {
     margin-top: 20px;
-
 }
 
 .opcion {
