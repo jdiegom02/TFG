@@ -125,6 +125,7 @@ function generarPDF() {
 
             // Definir el título del PDF
             doc.setFontSize(22);
+            doc.setFont("helvetica", "bold");
             var tituloPDF = 'Residuos generados ' + mesSeleccionadoNombre + ' de ' + anioSeleccionado;
             doc.text(tituloPDF, 105, 20, { align: 'center' });
 
@@ -136,10 +137,13 @@ function generarPDF() {
             var y = 45;
 
             // Agregar elementos a la lista
-            doc.setFontSize(12);
+            doc.setFontSize(14);
             let claves = Object.keys(response);
             doc.text("Residuo", 10, y);
             doc.text("Cantidad", 175, y,);
+            doc.setFontSize(12);
+            doc.setFont("Helvetica", "normal");
+
             y += 10;
             let cont = 0;
             claves.forEach(residuo => {
