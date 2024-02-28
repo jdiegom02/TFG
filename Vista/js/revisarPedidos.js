@@ -1,6 +1,7 @@
 window.addEventListener("load", principal, false);
 
 function principal(e) {
+    document.getElementById("btnRealizarPedidos").addEventListener("click", abrirModal)
     cargarPedidosDesdePHP();
     var btnValidarPedidos = document.getElementById('btnValidarPedidos');
     btnValidarPedidos.addEventListener('click', function () {
@@ -178,4 +179,11 @@ function validarPedidosYGenerarPDF(idPedido) {
     // Luego, generar el PDF con la información actualizada
     console.log('Validar pedidos y generar PDF');
 }
+
+function abrirModal(e)
+{
+    $('#modalPedidoSemanal').modal('show');
+}
+
+
 
