@@ -105,21 +105,18 @@ function mostrarCantidadResiduosPorTipo(data) {
 
 function generarPDF() {
     // Obtener el mes y el año seleccionados
-    var mesSeleccionado = document.getElementById("mes").value;
+    var mesSeleccionado = document.getElementById("mes").value.padStart(2, '0');
     var anioSeleccionado = document.getElementById("anio").value;
-
-    var tablaResiduos = document.getElementById("tabla-residuos");
-
-
-    var tablaHTML = tablaResiduos.innerHTML;
-    console.log(tablaHTML);
+    var mesSeleccionadoNombre = document.getElementById(mesSeleccionado).innerText;
     // Realizar una solicitud AJAX para generar el PDF
+    console.log(anioSeleccionado);
     $.ajax({
         url: '../../Controlador/php/generarPDF.php',
         type: 'POST',
+        data: { mes: mesSeleccionado, anio: anioSeleccionado },
+        dataType: 'json',
         success: function (response) {
-            console.log("irue");
-            console.log(response);
+
             // Asignar jsPDF a window.jsPDF
             window.jsPDF = window.jspdf.jsPDF;
 
@@ -128,27 +125,33 @@ function generarPDF() {
 
             // Definir el título del PDF
             doc.setFontSize(22);
-            doc.text('Residuos generados', 105, 20, { align: 'center' });
+            var tituloPDF = 'Residuos generados ' + mesSeleccionadoNombre + ' de ' + anioSeleccionado;
+            doc.text(tituloPDF, 105, 20, { align: 'center' });
 
             // Agregar subtítulo
             doc.setFontSize(16);
-            doc.text('Semana del mes', 105, 30, { align: 'center' });
+            doc.text('', 105, 30, { align: 'center' });
 
             // Definir posición inicial para la lista
             var y = 45;
 
             // Agregar elementos a la lista
             doc.setFontSize(12);
-            doc.text('Residuo 1:', 10, y);
-            doc.text('Cantidad 1', 190, y, { align: 'right' });
-
+            let claves = Object.keys(response);
+            doc.text("Residuo", 10, y);
+            doc.text("Cantidad", 175, y,);
             y += 10;
-            doc.text('Residuo 2:', 10, y);
-            doc.text('Cantidad 2', 190, y, { align: 'right' });
+            let cont = 0;
+            claves.forEach(residuo => {
+                doc.line(10, y, 200, y);
+                y += 10;
+                doc.text(residuo, 10, y);
+                doc.text(response[residuo].toString() + " Kg", 190, y, { align: 'right' });
+                y += 10;
+                cont++;
+            });
+            doc.line(10, y, 200, y);
 
-            y += 10;
-            doc.text('Residuo 3:', 10, y);
-            doc.text('Cantidad 3', 190, y, { align: 'right' });
             // Guardar el PDF
             doc.save('residuos.pdf');
         },
