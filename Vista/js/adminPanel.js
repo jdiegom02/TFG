@@ -1,6 +1,7 @@
 window.addEventListener("load", principal, false);
 let usuarioIniciado;
 let contador=0;
+let cargarBoton = false;
 function principal() {
     comprobarSesion(function (valor) {
         if (valor == 0) {
@@ -204,13 +205,18 @@ function cargarDatosProductos() {
 
                     $('#editarProductoModal').modal('show');
                     cargarResiduosModiPro();
-                    $('#formularioEditarProducto').append(crearElemento("button", "Añadir residuo", {
-                        "type": "button",
-                        "class": "btn btn-secondary",
-                        "data-producto-id" :" "+producto.producto_id+" ",
-                        "id": "anadirResiduoAUnProducto"
-                    }));
-                    document.getElementById("anadirResiduoAUnProducto").addEventListener("click", manejadorAnadirResiduoAPRoducto);
+                    if(!cargarBoton)
+                    {
+                        cargarBoton = true;
+                        $('#formularioEditarProducto').append(crearElemento("button", "Añadir residuo", {
+                            "type": "button",
+                            "class": "btn btn-secondary",
+                            "data-producto-id" :" "+producto.producto_id+" ",
+                            "id": "anadirResiduoAUnProducto"
+                        }));
+                        document.getElementById("anadirResiduoAUnProducto").addEventListener("click", manejadorAnadirResiduoAPRoducto);
+                    }else { }
+                    
                 } else {
                     console.error("Producto no encontrado");
                 }
@@ -245,7 +251,7 @@ function cargarResiduosPorProducto(productoID) {
 
             $('.eliminar-residuo').click(function () {
                 var producto_residuo = $(this).data('residuo-id');
-                
+                $(this).closest('tr').remove();
                 eliminarResiduo(producto_residuo);
             });
 
@@ -266,9 +272,6 @@ function eliminarResiduo(producto_residuo) {
         dataType: "JSON",
         data: { productoID: producto_residuo },
         success: function (response) {
-            console.log("Hay que hacer una manera de refrescar los datos.");
-            console.log("Si ahora le das a guardar, no se guarda la eliminacion.");
-            console.log("Si ahora le das a cerrar, si que se guarda la eliminacion.");
 
         },
         error: function (xhr, status, error) {
@@ -337,6 +340,8 @@ function modificarProducto() {
             alert("Hubo un error al procesar la solicitud.");
         }
     });
+    $('#modalGestionarProducto').modal('hide');
+    $('#modalGestionarProducto').modal('show');
 }
 
 
@@ -507,6 +512,7 @@ function insertarProducto(e) {
             document.getElementById('residuos').value = '';
             // Cerrar el modal
             $('#modalAgregarProducto').modal('hide');
+            $('#modalGestionarProducto').modal('hide');
         },
         error: function (xhr, status, error) {
             // Manejar errores de la solicitud AJAX
@@ -925,26 +931,39 @@ function manejadorResiduoInsertarBase(e)
     let nuevoResiduo = $('#nuevoResiduo').val();
     let cantidad = $('#cantidadResiduo').val();
   
-    //console.log(idProd);
-
-    let residuoNuevo = {
-        nuevoResiduo : nuevoResiduo ,
-        idProducto : productoID,
-        cantidad : cantidad
+    
+    if(cantidad > 0)
+    {
+        let residuoNuevo = {
+            nuevoResiduo : nuevoResiduo ,
+            idProducto : productoID,
+            cantidad : cantidad
+        }
+    
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/anadirResiduo.php",
+            data: { anadirResiduo : residuoNuevo },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert("Hubo un error al procesar la solicitud.");
+            }
+        });
+    
+        $('#modalanadirResiduoAProducto').modal('hide');
+        $('#editarProductoModal').modal('hide');
+        $('#modalGestionarProducto').modal('hide');
+        $('#modalGestionarProducto').modal('show');
+    }
+    else{ 
+        console.log("Añadir mensaje de error, que meta cantidad");
+    
     }
 
-    $.ajax({
-        type: "POST",
-        url: "../../Controlador/php/anadirResiduo.php",
-        data: { anadirResiduo : residuoNuevo },
-        success: function (response) {
-            console.log(response);
-        },
-        error: function (xhr, status, error) {
-            console.error(error);
-            alert("Hubo un error al procesar la solicitud.");
-        }
-    });
+    
 }
 
 
