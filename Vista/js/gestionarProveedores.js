@@ -2,47 +2,53 @@ document.addEventListener("DOMContentLoaded", principal);
 
 function principal(params) {
     cargarProveedoresDesdePHP(function (proveedores) {
+        let tabla = document.createElement("table");
+        tabla.classList.add("table"); // Add Bootstrap table class if using Bootstrap
+        tabla.classList.add("table-responsive"); // Add Bootstrap table class if using Bootstrap
+
+    
+        // Crear encabezado de tabla
+        let encabezado = tabla.createTHead();
+        let filaEncabezado = encabezado.insertRow();
+        let thDescripcion = document.createElement("th");
+        thDescripcion.textContent = "Descripción";
+        let thDireccion = document.createElement("th");
+        thDireccion.textContent = "Dirección";
+        let thEditar = document.createElement("th");
+        thEditar.textContent = "Editar";
+        filaEncabezado.appendChild(thDescripcion);
+        filaEncabezado.appendChild(thDireccion);
+        filaEncabezado.appendChild(thEditar);
+    
+        let cuerpoTabla = tabla.createTBody();
+    
+        proveedores.forEach(proveedor => {
+            let fila = cuerpoTabla.insertRow();
+    
+            let descripcionCell = fila.insertCell();
+            descripcionCell.textContent = proveedor.descripcion;
+    
+            let direccionCell = fila.insertCell();
+            direccionCell.textContent = proveedor.direccion;
+    
+            let editarCell = fila.insertCell();
+            let botonEditar = document.createElement("button");
+            botonEditar.type = "button";
+            botonEditar.classList.add("btn", "btn-sm", "btn-primary", "ml-3", "botonEditar");
+            botonEditar.textContent = "Editar";
+            botonEditar.setAttribute("data-toggle", "modal");
+            botonEditar.setAttribute("data-target", "#editarProveedorModal");
+            botonEditar.addEventListener("click", function () {
+                editar(proveedor);
+            });
+    
+            editarCell.appendChild(botonEditar);
+        });
+    
+        // Agregar la tabla al contenedor en el DOM
         let padre = document.querySelector("#infoProveedores");
         padre.innerHTML = "";
-        let hijos = proveedores;
-
-        hijos.forEach(hijo => {
-            // Crear un elemento div para el row
-            let container = crearElemento("div", { atributos: { class: "row mb-3" } }); // Agregar clase "mb-3" para separación vertical
-
-            // Crear un elemento div para la descripción y el botón
-            let descripcionYBoton = crearElemento("div", { atributos: { class: "d-flex justify-content-between w-100" } });
-
-            // Crear el elemento p para la descripción
-            let subContainer = crearElemento("p", { textoContenido: hijo.descripcion });
-
-            let subContainer2 = crearElemento("p", { textoContenido: hijo.direccion });
-
-            // Crear el botón "Editar" utilizando la función crearElemento
-            let botonEditar = crearElemento("button", {
-                atributos: {
-                    type: "button",
-                    class: "btn btn-sm btn-primary ml-3 botonEditar", // Agregar clase "ml-3" para separación horizontal
-                    "data-toggle": "modal",
-                    "data-target": "#editarProveedorModal"
-                },
-                textoContenido: "Editar"
-            });
-            botonEditar.addEventListener("click", function (params) {
-                editar(hijo);
-            });
-            // Agregar la descripción, dirección y el botón al div de descripción y botón
-            descripcionYBoton.appendChild(subContainer);
-            descripcionYBoton.appendChild(subContainer2);
-            descripcionYBoton.appendChild(botonEditar);
-
-            // Agregar el div de descripción y botón al contenedor (al final)
-            container.appendChild(descripcionYBoton);
-
-            // Agregar el contenedor al padre
-            padre.appendChild(container);
-        });
-
+        padre.appendChild(tabla);
     });
     document.querySelector("#confirmarAccion").addEventListener("click", function () {
         let descripcion = document.querySelector("#addDescripcion").value;

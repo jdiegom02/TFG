@@ -1,31 +1,15 @@
 <?php
 
-// Incluir la librería dompdf
-require_once '../../dompdf/autoload.inc.php';
+include_once("../../Modelo/php/BD.php");
+session_start();
+$datos=[];
+$mes=$_POST["mes"];
+$anio=$_POST["anio"];
+$conexion = new BD("bonAppetit", "admin", "1234");
+$resultado = $conexion->realizarConsulta("SELECT descripcion, cantidad from residuos_generados where fecha_creacion between '$anio-$mes-01' and LAST_DAY('$anio-$mes-01');");
 
-// Verificar si se recibió un HTML válido
-if (isset($_POST['html'])) {
-    // Obtener el HTML enviado desde el cliente
-    $html = $_POST['html'];
-
-    // Crear una instancia de dompdf
-    $dompdf = new Dompdf();
-
-    // Cargar el HTML en dompdf
-    $dompdf->loadHtml($html);
-
-    // Renderizar el HTML como PDF
-    $dompdf->render();
-
-    // Obtener el nombre del archivo para el PDF (opcional)
-    $filename = isset($_POST['mes']) ? $_POST['mes'] : 'informe_residuos.pdf';
-
-    // Enviar el PDF al cliente para descargar
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
-    echo $dompdf->output();
-    exit();
-} else {
-    echo "Error: No se recibió HTML válido para generar el PDF.";
+while ($registro = $resultado->fetch()) {
+    $datos[$registro[0]] = $registro[1];
 }
+echo json_encode($datos, JSON_UNESCAPED_UNICODE);
 ?>
