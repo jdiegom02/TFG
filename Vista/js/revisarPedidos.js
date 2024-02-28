@@ -177,6 +177,59 @@ function validarPedidosYGenerarPDF(idPedido) {
     insertarEnPedidos(checkeds);
 
     // Luego, generar el PDF con la información actualizada
+    // $.ajax({
+    //     url: '../../Controlador/php/generarPDF.php',
+    //     type: 'POST',
+    //     data: {  },
+    //     dataType: 'json',
+    //     success: function (response) {
+
+    //         // Asignar jsPDF a window.jsPDF
+    //         window.jsPDF = window.jspdf.jsPDF;
+
+    //         // Crear instancia de jsPDF
+    //         const doc = new window.jsPDF();
+
+    //         // Definir el título del PDF
+    //         doc.setFontSize(22);
+    //         doc.setFont("helvetica", "bold");
+    //         var tituloPDF = 'Residuos generados ' + mesSeleccionadoNombre + ' de ' + anioSeleccionado;
+    //         doc.text(tituloPDF, 105, 20, { align: 'center' });
+
+    //         // Agregar subtítulo
+    //         doc.setFontSize(16);
+    //         doc.text('', 105, 30, { align: 'center' });
+
+    //         // Definir posición inicial para la lista
+    //         var y = 45;
+
+    //         // Agregar elementos a la lista
+    //         doc.setFontSize(14);
+    //         let claves = Object.keys(response);
+    //         doc.text("Residuo", 10, y);
+    //         doc.text("Cantidad", 175, y,);
+    //         doc.setFontSize(12);
+    //         doc.setFont("Helvetica", "normal");
+
+    //         y += 10;
+    //         let cont = 0;
+    //         claves.forEach(residuo => {
+    //             doc.line(10, y, 200, y);
+    //             y += 10;
+    //             doc.text(residuo, 10, y);
+    //             doc.text(response[residuo].toString() + " Kg", 190, y, { align: 'right' });
+    //             y += 10;
+    //             cont++;
+    //         });
+    //         doc.line(10, y, 200, y);
+
+    //         // Guardar el PDF
+    //         doc.save('residuos.pdf');
+    //     },
+    //     error: function (xhr, status, error) {
+    //         console.error(error);
+    //     }
+    // });
     console.log('Validar pedidos y generar PDF');
 }
 
