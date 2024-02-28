@@ -13,6 +13,7 @@ function principal() {
                 document.querySelector("#cerrarsesion").addEventListener("click", () => {
                     cerrarSesion();
                 });
+                mostrarDatosUsuario(valor)
             } else {
                 location.href = "../html/pedidos.html";
             }

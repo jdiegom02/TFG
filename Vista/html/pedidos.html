@@ -9,36 +9,45 @@
   <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
-    <script src="../../Controlador/js/class/Producto.js"></script>
-    <script src="../../Controlador/js/funcionesControlador.js"></script>
-    <script src="../js/funcionesVisualesGenerales.js"></script>
-    <script src="../js/pedidos.js"></script>
-    <link rel="stylesheet" href="../css/pedidos.css" />
+  <script src="../../Controlador/js/class/Producto.js"></script>
+  <script src="../../Controlador/js/funcionesControlador.js"></script>
+  <script src="../js/funcionesVisualesGenerales.js"></script>
+  <script src="../js/pedidos.js"></script>
+  <link rel="stylesheet" href="../css/estilosgenerales.css">
+  <link rel="stylesheet" href="../css/pedidos.css" />
 </head>
 
 <body>
   <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
-
-  <div id="divIconoUsuario" class="row">
-    <div id="desplegablellamar" class="col-xxl-2 col-xl-2 col-sm-3 col-xs-3 d-flex align-items-center">
-      <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-      <h3 id="usuarioNombre"></h3>
-    </div>
-    <div class="col-xxl-8 col-xl-8 col-sm-6 col-xs-3">
-      <h3 id="titulo-pagina" class="">Pedir Productos</h3>
-    </div>
-    <div id="iconoCarrito-container" class="row d-flex col-xxl-2 col-xl-2 col-sm-3 col-xs-3">
-      <div class="darkMode-container col-sm-6">
-        <button class="darkMode-button" id="botonDarkMode">
-          <img src="../img/iconos/darkModeSun.svg" alt="">
-        </button>
+  <div class="container-fluid">
+    <div id="cabecera" class="row align-items-center">
+      <div id="datosUsuario" class="col-xxl-3 col-xl-3 col-sm-3 col-xs-3 ">
+        <div id="desplegablellamar" class=" align-items-center">
+          <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+          <h3 id="usuarioNombre"></h3>
+        </div>
       </div>
-      <div class="col-sm-6">
-        <button class=" " id="carritoCompras">
-          <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
-          <i class="bi bi-cart"></i>
-          <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
-        </button>
+
+      <div id="titulo" class="col-xxl-6 col-xl-6 col-lg-6">
+        <h3 id="titulo-pagina" class="">Pedir Productos</h3>
+      </div>
+
+      <div id="funcionesCabecera col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-xs-3">
+        <div id="iconoCarrito-container" class=" ">
+          <div class="darkMode-container">
+            <button class="darkMode-button" id="botonDarkMode">
+              <img src="../img/iconos/darkModeSun.svg" alt="">
+            </button>
+          </div>
+
+          <div class="col-xl-3">
+            <button class="" id="carritoCompras">
+              <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
+              <i class="bi bi-cart"></i>
+              <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

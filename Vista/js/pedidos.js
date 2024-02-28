@@ -38,20 +38,6 @@ function crearBotonAdministrar() {
   document.querySelector("#desplegableFunciones").appendChild(botonAdministrar);
 }
 
-function mostrarDatosUsuario(valor) {
-  document.getElementById("usuarioNombre").innerHTML = nombreUsuario
-  // document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
-  let botonCerrarSesion = crearElemento("input", undefined, {
-    type: "button",
-    id: "cerrarsesion",
-    class: "btn btn-danger",
-    value: "Cerrar Sesión",
-    style: "width:90%;margin:10px"
-  });
-  botonCerrarSesion.addEventListener("click", cerrarSesion);
-  document.querySelector("#desplegableFunciones").appendChild(botonCerrarSesion);
-}
-
 function agregarEventListeners() {
   botonDarkMode.addEventListener("click", activarDesactivarModoOscuro);
   mostrarSeleccionableCategorias();
@@ -62,7 +48,6 @@ function agregarEventListeners() {
   document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
   document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
   document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
-
 }
 
 function abrirCarrito(event) {
@@ -288,7 +273,12 @@ function pedirTodo(event) {
   } else {
     insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
     sessionStorage.setItem(nombreUsuario, "[]");
-    aparecerVentanaEmergente("Se ha realizado el pedido", "Contacta con el administrador en caso de problemas", "../assets/checkmark.gif")
+    if (localStorage.getItem("darkModeActive") == "off") {
+      console.log("off")
+      aparecerVentanaEmergente("Se ha realizado el pedido", "Contacta con el administrador en caso de problemas", "../assets/checkmark.gif")
+    } else {
+      aparecerVentanaEmergente("Se ha realizado el pedido", "Contacta con el administrador en caso de problemas", "../assets/checkmarkDarkMode.gif")
+    }
     abrirCarrito();
     if (!verificarSessionStorage(nombreUsuario)) {
       sessionStorage.setItem(nombreUsuario, "[]");
@@ -372,8 +362,8 @@ function crearTarjetaProducto(producto) {
     identificador = "nodefinida";
   }
 
-  let contenedorCarta = crearElemento("div", undefined, { "class": grid + " contenedor-card"});
-  let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador,style:"" });
+  let contenedorCarta = crearElemento("div", undefined, { "class": grid + " contenedor-card" });
+  let carta = crearElemento("div", undefined, { "class": "card", id: "producto" + identificador, style: "" });
   if (atributoImagenSrc != undefined) {
     carta.appendChild(crearElemento("img", undefined, { "src": atributoImagenSrc, "class": "card-img-top", "style": "height:auto;width:40%;margin:auto;" }));
   }
@@ -472,16 +462,7 @@ function actualizarContadorCarrito() {
   let contador = document.getElementById("contador-carrito");
   contador.textContent = obtenerCantidadArticulos();
 }
-function desplegarBotonesUsuario(params) {
-  let contenido = document.getElementById("desplegableFunciones")
-  contenido.style.display = 'block';
-  contenido.addEventListener("mouseleave", cerrarBotonesUsuario)
-  this.addEventListener("mouseleave", cerrarBotonesUsuario)
-}
-function cerrarBotonesUsuario() {
-  let contenido = document.getElementById("desplegableFunciones")
-  contenido.style.display = 'none';
-}
+
 
 // ------- HERRAMIENTAS -------
 function filtrarProductos(array) {
@@ -532,17 +513,4 @@ function verificarProductoEnSesionStorage(nombreDelProducto) {
   }
 
   return false; // El argumento no está presente
-}
-function crearElemento(etiqueta, texto, atributos) {
-  let elementoNuevo = document.createElement(etiqueta);
-  if (texto !== undefined) {
-    let contenidoTexto = document.createTextNode(texto);
-    elementoNuevo.appendChild(contenidoTexto);
-  }
-  if (atributos !== undefined) {
-    for (let clave in atributos) {
-      elementoNuevo.setAttribute(clave, atributos[clave]);
-    }
-  }
-  return elementoNuevo;
 }
