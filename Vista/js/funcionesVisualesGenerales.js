@@ -1,16 +1,42 @@
 //COSAS QUE SE EJECUTARAN EN TODAS LAS PAGINAS
 document.addEventListener("DOMContentLoaded", () => {
+    /*REVISAR INICIO DE SESION BASE */
+
+    comprobarSesion(function (valor) {
+        if (valor == 0) {
+            location.href = "../html/index.html";
+        } else {
+            if (valor.esadmin) {
+
+                document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
+                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
+                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
+                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
+                usuarioIniciado = valor.nombre;
+                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
+                mostrarDatosUsuario(usuarioIniciado)
+            } else {
+                location.href = "../html/pedidos.html";
+            }
+        }
+    });
     actualizarModoOscuro();
-    document.getElementById("botonDarkMode").addEventListener("click",activarDesactivarModoOscuro);
-    document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-    document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-    document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
-  
 });
 /* DESPLEGABLE DE USUARIO */
 function mostrarDatosUsuario(valor) {
-    document.getElementById("usuarioNombre").innerHTML = nombreUsuario
+    document.getElementById("usuarioNombre").innerHTML = valor;
+    document.querySelector("#desplegableFunciones").innerHTML = ""
     // document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
+    let docActual = window.location.href;
+
+    // Obtener el nombre del archivo de la URL
+    let nombreArchivo = docActual.substring(docActual.lastIndexOf("/") + 1);
+    document.querySelector("#desplegableFunciones").innerHTML="";
+    if (nombreArchivo == "pedidos.html") {
+        crearBotonAdministrar()
+    } else {
+        crearBotonRegresar();
+    }
     let botonCerrarSesion = crearElemento("input", undefined, {
         type: "button",
         id: "cerrarsesion",
@@ -20,6 +46,33 @@ function mostrarDatosUsuario(valor) {
     });
     botonCerrarSesion.addEventListener("click", cerrarSesion);
     document.querySelector("#desplegableFunciones").appendChild(botonCerrarSesion);
+}
+function crearBotonAdministrar() {
+    let botonAdministrar = crearElemento("input", undefined, {
+        type: "button",
+        id: "administrar",
+        class: "btn",
+        value: "Administrar",
+        style: "width:90%;margin:10px"
+    });
+    botonAdministrar.addEventListener("click", () => {
+        location.href = "../html/panelAdmin.html";
+    });
+    document.querySelector("#desplegableFunciones").appendChild(botonAdministrar);
+}
+function crearBotonRegresar() {
+    let botonRegresar = crearElemento("input", undefined, {
+        type: "button",
+        id: "regresar",
+        class: "btn btn",
+        value: "Regresar",
+        style: "width:90%;margin:10px"
+    });
+    botonRegresar.addEventListener("click", () => {
+        location.href = "../html/panelAdmin.html";
+    });
+    document.querySelector("#desplegableFunciones").appendChild(botonRegresar);
+
 }
 function desplegarBotonesUsuario(params) {
     let contenido = document.getElementById("desplegableFunciones")

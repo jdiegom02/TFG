@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       location.href = "../html/index.html";
     } else {
       if (valor.esadmin) {
-        crearBotonAdministrar();
+        mostrarDatosUsuario(valor.nombre);
       }
       nombreUsuario = valor.nombre;
       if (!verificarSessionStorage(nombreUsuario)) {
@@ -17,26 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("darkModeActive", "off");
       }
       actualizarContadorCarrito();
-      mostrarDatosUsuario(valor);
     }
   });
   actualizarModoOscuro();
   agregarEventListeners();
 });
-
-function crearBotonAdministrar() {
-  let botonAdministrar = crearElemento("input", undefined, {
-    type: "button",
-    id: "administrar",
-    class: "btn",
-    value: "Administrar",
-    style: "width:90%;margin:10px"
-  });
-  botonAdministrar.addEventListener("click", () => {
-    location.href = "../html/panelAdmin.html";
-  });
-  document.querySelector("#desplegableFunciones").appendChild(botonAdministrar);
-}
 
 function agregarEventListeners() {
   botonDarkMode.addEventListener("click", activarDesactivarModoOscuro);
