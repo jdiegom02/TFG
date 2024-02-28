@@ -117,9 +117,9 @@ function generarPDF() {
     $.ajax({
         url: '../../Controlador/php/generarPDF.php',
         type: 'POST',
-        data: { html: tablaHTML, mes: mesSeleccionado, anio: anioSeleccionado },
         success: function (response) {
-
+            console.log("irue");
+            console.log(response);
             // Asignar jsPDF a window.jsPDF
             window.jsPDF = window.jspdf.jsPDF;
 
