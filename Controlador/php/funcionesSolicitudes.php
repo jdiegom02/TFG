@@ -128,9 +128,9 @@ function addPedido($datos)
         $conexion->realizarModificacion($sqlTramitados);
 
     
-        $resultado = $conexion->realizarConsulta("SELECT residuos.descripcion, productos_residuo.cantidad as cantidad from linea_pedido join productos on linea_pedido.descripcion = productos.descripcion
+        $resultado = $conexion->realizarConsulta("SELECT distinct residuos.descripcion, productos_residuo.cantidad as cantidad from linea_pedido join productos on linea_pedido.descripcion = productos.descripcion
         join productos_residuo on productos.id = productos_residuo.fk_producto join residuos on 
-        productos_residuo.fk_residuo = residuos.id where linea_pedido.descripcion = '$nombre' group by productos_residuo.fk_producto;");
+        productos_residuo.fk_residuo = residuos.id where linea_pedido.descripcion = '$nombre';");
 
       
         while ($registro = $resultado->fetch()) {
