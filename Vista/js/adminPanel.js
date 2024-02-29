@@ -110,7 +110,7 @@ function agregarNuevoCampoResiduo(numero) {
     // Crear el nuevo campo de entrada de residuos
     var nuevoCampoResiduo = crearElemento('div', undefined, { 'class': 'input-group' });
 
-    var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;' });
+    var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;', 'min': '0' });
 
     var divAppend = crearElemento('div', undefined, { 'class': 'input-group-append' });
 
@@ -329,8 +329,16 @@ function modificarProducto() {
         url: "../../Controlador/php/modificarProducto.php",
         data: { modificar: arrayModificarProducto },
         success: function (response) {
-            // console.log(response);
-            // Actualizar la interfaz de usuario, cerrar el modal
+            console.log(response);
+
+            if(response ==="1")
+            {
+                $('#noSePuedeModificar').modal('show');
+                setTimeout(function() {
+                    $('#noSePuedeModificar').modal('hide');
+                }, 2500); 
+            }else {console.log("si"); }
+            
             $('#editarProductoModal').modal('hide');
 
             cargarDatosProductos();
@@ -503,6 +511,7 @@ function insertarProducto(e) {
         success: function (response) {
             // Manejar la respuesta del servidor
             console.log(response);
+
             // Mostrar mensaje de éxito
             mostrarMensajeExito();
             // Limpiar los campos del formulario después de la inserción exitosa
@@ -647,10 +656,6 @@ function cargarOpcionesUnidadMedida() {
 
 cargarOpcionesUnidadMedida();
 cargarOpcionesCategoria();
-
-$('#anadirProducto').click(function () {
-    insertarProducto();
-});
 
 /* --------------- PARA CARGAR LAS OPCIONES DE LA CATEGORIA Y UNIDADES DE MEDIDA EN EL MODAL-------FIN--------- */
 

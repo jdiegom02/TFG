@@ -70,15 +70,19 @@ function principal(params) {
         padre.appendChild(tabla);
     });
     document.querySelector("#confirmarAccion").addEventListener("click", function () {
+        
         let descripcion = document.querySelector("#addDescripcion").value;
         let direccion = document.querySelector("#addDireccion").value;
         let email = document.querySelector("#addEmail").value;
         let telefono = document.querySelector("#addTelefono").value;
         let observaciones = document.querySelector("#addObservaciones").value;
-        if (descripcion.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(direccion)) {
+    
+        if (descripcion.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             let datos = [descripcion, direccion, email, telefono, observaciones];
+            console.log(datos);
             addProveedor(datos);
         }
+        else { console.log("no entro");}
     });
 
 }
@@ -104,7 +108,7 @@ function editar(hijo) {
         let telefono = document.querySelector("#telefono").value || "";
         let observaciones = document.querySelector("#observaciones").value || "";
         let datos = [id, nombre, direccion, email, telefono, observaciones];
-        if (nombre.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(direccion)) {
+        if (nombre.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             console.log(datos);
             actualizarProveedor(datos);
         }

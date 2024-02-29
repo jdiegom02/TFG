@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 usuarioIniciado = valor.nombre;
                 document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
             } else {
+                //location.href = "../html/pedidos.html";
             }
             mostrarDatosUsuario(valor.nombre, valor.esadmin)
         }
