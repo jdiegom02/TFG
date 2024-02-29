@@ -65,6 +65,7 @@ body {
 
 .filaProducto:hover {
     transform: scale(1.1);
+    background-color: #eaeaea;
     /* Ajusta el valor para acercar más o menos los elementos */
 
 }
