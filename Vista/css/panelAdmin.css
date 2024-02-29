@@ -155,7 +155,11 @@ body {
     border: none;
     border-radius: 0;
 }
-
+#categoriaProductoModificar{
+    display: grid;
+    grid-template-columns: 1fr 6fr; /* El primer elemento ocupa 1 parte y el segundo 6 partes */
+    grid-gap: 10px; /* Espacio entre elementos */
+}
 #categoriaProductoModificar input {
     width: 100%;
 }
