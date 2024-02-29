@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       location.href = "../html/index.html";
     } else {
       if (valor.esadmin) {
-        mostrarDatosUsuario(valor.nombre);
+        mostrarDatosUsuario(valor.nombre,valor.esadmin);
       }
       nombreUsuario = valor.nombre;
       if (!verificarSessionStorage(nombreUsuario)) {
@@ -119,7 +119,7 @@ function borrarFilaPedido(event) {
   sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
   abrirCarrito();
   actualizarContadorCarrito();
-
+  mostrarProductos()
 }
 
 function añadirNuevoProducto() {

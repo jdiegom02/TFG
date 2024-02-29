@@ -18,7 +18,7 @@ function principal() {
                     cerrarSesion();
                 });
                 console.log(valor.nombre)
-                mostrarDatosUsuario(usuarioIniciado)
+                mostrarDatosUsuario(valor.nombre,valor.esadmin)
             } else {
                 location.href = "../html/pedidos.html";
             }
