@@ -177,7 +177,7 @@ function validarPedidosYGenerarPDF(idPedido) {
     insertarEnPedidos(checkeds);
 
     // Luego, generar el PDF con la información actualizada
-    generarPDFPedidos();
+    // generarPDFPedidos(); GENERAR PDF BIEN CAMBIAR A DONDE TIENE QUE ESTAR
 
 
 
