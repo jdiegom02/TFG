@@ -526,7 +526,7 @@ function insertarProducto(e) {
             setTimeout(function () {
                 //Recargar la pagina para actucalizar los productos
                 location.reload();
-            }, 2000);
+            }, 1900);
             
         },
         error: function (xhr, status, error) {
@@ -563,12 +563,12 @@ function mostrarMensajeExito() {
     var contenedorPrincipal = document.querySelector('.container');
     contenedorPrincipal.style.filter = 'blur(5px)';
 
-    // Eliminar el efecto de difuminado después de 5 segundos
+    // Eliminar el efecto de difuminado después de 2 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
     }, 2000);
 
-    // Eliminar el mensaje después de 5 segundos
+    // Eliminar el mensaje después de 2 segundos
     setTimeout(function () {
         mensajeElemento.remove();
     }, 2000);
