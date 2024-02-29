@@ -115,3 +115,8 @@ body {
         width: 50px;
     }
 }
+
+.botonNegro{
+    background-color: #000;
+    color: #fff;
+}
