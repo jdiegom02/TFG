@@ -54,8 +54,8 @@ body {
     row-gap: 20px;
 }
 
-
 .filaProducto {
+    min-height: 80px;
     width: 100%;
     border: 2px gray solid;
     background-color: white;
@@ -63,20 +63,26 @@ body {
     transition: transform 0.3s ease;
 }
 
+.filaProducto div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
 .filaProducto:hover {
-    transform: scale(1.1);
+    transform: scale(1.07);
     background-color: #eaeaea;
     /* Ajusta el valor para acercar más o menos los elementos */
 
 }
 
 #gestionPRO div {
-
     text-align: center;
     width: 100%;
+    min-height: 80px;
     display: grid;
     grid-template-columns: 5fr 2fr 2fr 3fr 2fr;
-    grid-template-rows: 70px;
     justify-content: center;
 }
 
@@ -94,7 +100,7 @@ body {
 }
 
 /*MODAL EDITAR PRODUCTO */
-#editarProductoModal {}
+#editarProductoModal .modal-content {}
 
 .container {
     margin-top: 20px;
@@ -300,7 +306,7 @@ button:active {
     /* Reduce ligeramente el tamaño al hacer clic */
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1000px) {
 
     /*GESTIONAR PRODUCTOS MODAL*/
     #gestionPRO div,
@@ -316,9 +322,15 @@ button:active {
         /* Botón en su propia fila */
         grid-template-rows: auto auto auto;
         /* Altura automática para las filas */
-        grid-template-columns: auto auto;
+        grid-template-columns: 1fr 1fr;
         /* Ancho automático para las columnas */
         /* Espacio entre los elementos */
+        gap: 5px;
+    }
+
+    #gestionPRO div div {
+
+        box-shadow: 0 4px 8px rgba(5, 5, 5, 0.4);
     }
 
     .btnEditar {
@@ -330,13 +342,16 @@ button:active {
 
     /*FIN GESTIONAR PRODUCTOS MODAL*/
     /*GESTIONAR USUARIOS MODAL*/
-    #modalGestionarUsuarios .modal-body{
+    #modalGestionarUsuarios .modal-body {
         width: 100%;
         overflow-x: auto
     }
+
     #modalGestionarUsuarios .table {
         width: 100%;
     }
 
     /*FINAL GESTIONAR USUARIOS MODAL*/
 }
+
+@media screen and (max-width: 600px) {}

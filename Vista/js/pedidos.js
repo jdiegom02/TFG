@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       location.href = "../html/index.html";
     } else {
       if (valor.esadmin) {
-        mostrarDatosUsuario(valor.nombre,valor.esadmin);
+        mostrarDatosUsuario(valor.nombre, valor.esadmin);
       }
       nombreUsuario = valor.nombre;
       if (!verificarSessionStorage(nombreUsuario)) {
@@ -119,7 +119,7 @@ function borrarFilaPedido(event) {
   sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray))
   abrirCarrito();
   actualizarContadorCarrito();
-  mostrarProductos()
+  mostrarProductos();
 }
 
 function añadirNuevoProducto() {
@@ -154,11 +154,13 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad,
   divComentario.appendChild(labelComentario);
   divComentario.appendChild(comentario);
   popUp.appendChild(divComentario);
-  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn btn-success", identificador: identificadorProducto, nombre: nombre, cantidad: cantidad, unidad: unidad, imagenRelacionada: imagenRelacionada });
-  popUp.appendChild(botonConfirmarProducto);
+  let divBotones = crearElemento("div", undefined, { id: "divBotonesPopUp" })
+  let botonConfirmarProducto = crearElemento("button", "Confirmar Producto", { id: "confirmarProducto", class: "btn", identificador: identificadorProducto, nombre: nombre, cantidad: cantidad, unidad: unidad, imagenRelacionada: imagenRelacionada });
+  divBotones.appendChild(botonConfirmarProducto);
   botonConfirmarProducto.addEventListener("click", confirmarProducto);
   let botonCancelarProducto = crearElemento("button", "Cancelar", { id: "cancelarProducto", class: "btn btn-danger" });
-  popUp.appendChild(botonCancelarProducto);
+  divBotones.appendChild(botonCancelarProducto);
+  popUp.appendChild(divBotones);
   botonCancelarProducto.addEventListener("click", cancelarProducto);
   contenedorPopUp.appendChild(popUp);
   document.body.appendChild(contenedorPopUp);

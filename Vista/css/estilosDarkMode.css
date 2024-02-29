@@ -50,8 +50,8 @@ body {
 }
 
 #modalGestionarProducto .modal-content {
-  background: #222222;
-  color: black;
+  background: #333;
+  color: white;
 }
 
 /*MODAL GESTIONAR USUARIOS*/
@@ -60,11 +60,9 @@ body {
   color: white
 }
 
-#modalGestionarUsuarios .modal-content h5
-{
-color: white;
+#modalGestionarUsuarios .modal-content h5 {
+  color: white;
 }
-
 #modalGestionarUsuarios .table {
   background-color: white;
 }
@@ -74,15 +72,17 @@ color: white;
 .close {
   filter: invert(100%);
 }
-#cabecerasTabla{
+
+#cabecerasTabla {
   color: #fff;
 }
+
 #modalGestionarProducto h3 {
   color: #fff;
 }
 
 #abrirModal {
-  background-color: #fff;
+  background-color: #a1a1a1;
   color: #000;
   border: 2px solid rgb(27, 27, 27);
   border-radius: 0px;
@@ -91,23 +91,37 @@ color: white;
   font-size: 20px;
   letter-spacing: 1px;
   cursor: pointer;
-  box-shadow: inset 0 0 0 0 #ff0000;
+  box-shadow: inset 0 0 0 0 #380000;
   -webkit-transition: ease-out 0.4s;
   -moz-transition: ease-out 0.4s;
   transition: ease-out 0.4s;
 }
+
+.show {}
 
 #abrirModal:hover {
   box-shadow: inset 0 0 0 50px #000000;
   color: rgb(255, 255, 255);
 }
 
+#editarProductoModal .modal-content {
+  background: #333;
+  color: white;
+}
+
+#editarProductoModal .modal-content th {
+  background: #333;
+  color: white;
+}
+
 .filaProducto {
-  color: #000;
+  background-color: #000;
+  color: #fff;
 }
 
 .filaProducto:hover {
-  box-shadow: 0 4px 8px rgba(243, 0, 0, 0.5);
+  background-color: #000000;
+  box-shadow: 0 8px 12px rgba(255, 255, 255, 0.5);
 
 }
 

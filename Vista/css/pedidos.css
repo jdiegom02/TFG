@@ -317,7 +317,26 @@ button[id^="buscar"] {
   padding: 30px 50px;
   max-width: 100%;
   box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+}
 
+#divBotonesPopUp {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 10px;
+}
+#popUpConfirmacion button {
+  background: #000;
+  color: #f8f9fa;
+}
+#popUpConfirmacion #cancelarProducto{
+  background: #d61919;
+  color: white;
+
+}
+button:active {
+  transform: scale(0.95);
+  /* Reduce ligeramente el tamaño al hacer clic */
 }
 
 #nuevoProducto {
@@ -466,6 +485,9 @@ button[id^="buscar"] {
 
 
 /*MEDIA QUERYS*/
+@media screen and (max-width: 1000px) {}
+
+
 @media screen and (max-width: 600px) {
 
   /* Aquí puedes definir estilos específicos para pantallas pequeñas */
