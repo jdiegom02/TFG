@@ -95,20 +95,11 @@ body {
     background-color: #d9d9d9;
 }
 
-#modalGestionarUsuarios #btnanadirUsuario {}
 
 /* MODAL GESIONAR PRODUCTOS*/
 #modalGestionarProducto .añadirProductosButton {
-    background-color: #f8f9fa;
 }
-
-#modalGestionarProducto .btn {
-    background-color: #d9d9d9;
-}
-
 #modalGestionarProducto .btn-editar-usuario {
     border: 1px #838383 solid;
-    background-color: #d9d9d9;
 }
 
-#modalGestionarProducto #btnanadirUsuario {}

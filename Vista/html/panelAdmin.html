@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/panelAdmin.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../../Controlador/js/funcionesControlador.js"></script>
-    
+
 </head>
 
 <body>
@@ -96,27 +96,29 @@
         <!----------------- MODAL GESTIONAR PRODUCTO -------------------------->
         <div class="modal fade" id="modalGestionarProducto" tabindex="-1" role="dialog"
             aria-labelledby="modalGestionarProductoLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalGestionarProductoLabel">Gestionar Productos</h5>
+                        <h3 class="modal-title" id="modalGestionarProductoLabel">Gestionar Productos</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <button type="button" class="btn añadirProductosButton" id="abrirModal">Añadir Productos</button>
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><strong> Nombre del Producto</strong></div>
-                        <div class="col-sm-3"><strong>Categoría</strong></div>
-                        <div class="col-sm-3"><strong>Unidad de medida</strong></div>
-                        <div class="col-sm-3"><strong>Residuos</strong></div>
-                    </div>
-                    <div class="modal-body" id="gestionPRO">
-                        <div class="row mb-3">
-                            <div class="col-sm-3"><strong>Nombre del Producto</strong></div>
-                            <div class="col-sm-3"><strong>Categoría</strong></div>
-                            <div class="col-sm-3"><strong>Unidad de medida</strong></div>
-                            <div class="col-sm-3"><strong>Residuos</strong></div>
+
+                    <div class="modal-body" id="gestionarProductoBody">
+                        <div class="" id="cabecerasTabla">
+                            <div class=""><strong> Nombre del Producto</strong></div>
+                            <div class=""><strong>Categoría</strong></div>
+                            <div class=""><strong>Unidad de medida</strong></div>
+                            <div class=""><strong>Residuos</strong></div>
+                            <div class=""><strong>Editar</strong></div>
+                        </div>
+                        <div id="gestionPRO">
+
+                        </div>
+                        <div class="">
+
                         </div>
                         <div class="producto">
                             <div class="row mb-3">
@@ -130,7 +132,7 @@
                                     </ul>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary btnEditar"
+                                    <button type="button" class="btn "
                                         data-producto-id="1">Editar</button>
                                 </div>
                             </div>
@@ -292,7 +294,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table class="table-responsive table">
+                        <table class=" table">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -309,8 +311,8 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnanadirUsuario" class="btn btn-primary">Añadir Usuario</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        <button type="button" id="btnanadirUsuario" class="btn">Añadir Usuario</button>
+                        <button type="button" class="btn" id="btncerrarUsuario" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -585,7 +587,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Script personalizado para el panel de administración -->
     <script src="../js/funcionesVisualesGenerales.js"></script>
     <script src="../js/adminPanel.js"></script>

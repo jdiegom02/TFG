@@ -153,12 +153,12 @@ function cargarDatosProductos() {
                     residuosHTML += '<li>' + residuo + '</li>';
                 });
 
-                var productoHTML = '<div class="row mb-3" id="' + productoID + '" style="border: 1px solid black;">';
-                productoHTML += '<div class="col-sm-3"><span>' + producto.nombre_producto + '</span></div>';
-                productoHTML += '<div class="col-sm-3"><ul>' + categoriasHTML + '</ul></div>';
-                productoHTML += '<div class="col-sm-3"><span>' + producto.unidad + '</span></div>';
-                productoHTML += '<div class="col-sm-3"><ul>' + residuosHTML + '</ul></div>';
-                productoHTML += '<div class="col-sm-3"><button type="button" id="' + producto.producto_id + '" class="btn btnEditar" data-producto-id="' + producto.producto_id + '">Editar</button></div>';
+                var productoHTML = '<div class="filaProducto" id="' + productoID + '" style="border: 1px solid black;">';
+                productoHTML += '<div class=""><span>' + producto.nombre_producto + '</span></div>';
+                productoHTML += '<div class=""><ul>' + categoriasHTML + '</ul></div>';
+                productoHTML += '<div class=""><span>' + producto.unidad + '</span></div>';
+                productoHTML += '<div class=""><ul>' + residuosHTML + '</ul></div>';
+                productoHTML += '<div class=""><button type="button" id="' + producto.producto_id + '" class="btn btnEditar" data-producto-id="' + producto.producto_id + '">Editar</button></div>';
                 productoHTML += '</div>';
 
                 $('#gestionPRO').append(productoHTML);
@@ -915,7 +915,7 @@ function anadirUnidad(e) {
 
 
 function manejadorAnadirResiduoAPRoducto(e) {
-    let idproducto = $(this).data('producto-id'); 
+    let idproducto = $(this).data('producto-id');
     $('#modalanadirResiduoAProducto').modal('show');
     $('#idProductoModal').val(idproducto);
     cargarResiduosModiPro();
@@ -923,7 +923,7 @@ function manejadorAnadirResiduoAPRoducto(e) {
 
 
 function manejadorResiduoInsertarBase(e) {
-    let productoID = $('#idProductoModal').val(); 
+    let productoID = $('#idProductoModal').val();
     let nuevoResiduo = $('#nuevoResiduo').val();
     let cantidad = $('#cantidadResiduo').val();
 

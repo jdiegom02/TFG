@@ -5,14 +5,94 @@ body {
 
 }
 
-/**/
+/*TABLAS*/
 .contenido {
     height: 100vh;
 }
 
-#opcionesAdmin {
-   margin-top: 100px;
+.modal-content {}
+
+
+#abrirModal {
+    background-color: #000;
+    color: #FFF;
+    border: 2px solid rgb(65, 65, 65);
+    border-radius: 0px;
+    padding: 10px 20px;
+    display: inline-block;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #ffffff;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
 }
+
+#abrirModal:hover {
+    box-shadow: inset 0 0 0 50px #ffffff;
+    color: black;
+}
+
+#cabecerasTabla {
+    text-align: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 5fr 2fr 2fr 3fr 2fr;
+    grid-template-rows: 70px;
+    justify-content: center;
+}
+
+
+#opcionesAdmin {
+    margin-top: 100px;
+}
+
+#gestionPRO {
+    display: grid;
+    row-gap: 20px;
+}
+
+
+.filaProducto {
+    width: 100%;
+    border: 2px gray solid;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.filaProducto:hover {
+    transform: scale(1.1);
+    /* Ajusta el valor para acercar más o menos los elementos */
+
+}
+
+#gestionPRO div {
+
+    text-align: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 5fr 2fr 2fr 3fr 2fr;
+    grid-template-rows: 70px;
+    justify-content: center;
+}
+
+#gestionPRO button {
+    background-color: #474747;
+    color: #fff;
+}
+
+#gestionPRO div div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: start;
+    padding: 10px;
+}
+
+/*MODAL EDITAR PRODUCTO */
+#editarProductoModal {}
 
 .container {
     margin-top: 20px;
@@ -53,7 +133,6 @@ body {
     transition: transform 3s ease-out;
 }
 
-
 .opcion img {
     max-width: 100px;
     margin-bottom: 10px;
@@ -83,7 +162,7 @@ body {
 }
 
 .modal-body {
-    padding: 30px;
+    padding: 20px;
 }
 
 .form-group label {
@@ -97,7 +176,6 @@ body {
 .input-group-append button {
     border-radius: 5px;
 }
-
 
 .btn-outline-secondary {
     color: #6c757d;
@@ -155,4 +233,87 @@ body {
     /* Aplica un desenfoque al fondo */
     pointer-events: none;
     /* Evita que el fondo reciba eventos de ratón */
+}
+
+/*MODAL GESTIONAR USUARIOS*/
+#modalGestionarUsuarios #btnanadirUsuario {
+    background-color: #007BFF;
+    color: white;
+}
+
+#modalGestionarUsuarios #btncerrarUsuario {
+    background-color: rgb(207, 39, 39);
+    color: #ffffff;
+}
+#modalGestionarUsuarios .table {
+    width: 100%;
+}
+
+#modalGestionarUsuarios .table th,
+#modalGestionarUsuarios .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+#modalGestionarUsuarios .table th {
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+/* Estilo para los botones de editar */
+#modalGestionarUsuarios .botonEditar {
+    margin-left: 10px;
+}
+
+#modalGestionarUsuarios tbody tr {
+    transition: transform 0.3s ease;
+    /* Agrega una transición suave para el efecto */
+    background-color: white;
+    padding: 10px;
+}
+
+#modalGestionarUsuarios tbody tr:hover {
+    transform: scale(1.04);
+    /* Escala el tr al 110% de su tamaño original */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* xOffset yOffset blurRadius color */
+
+}
+/*FIN MODAL GESTIONAR USUARIOS*/
+button:active {
+    transform: scale(0.95);
+    /* Reduce ligeramente el tamaño al hacer clic */
+}
+
+@media screen and (max-width: 600px) {
+
+    #gestionPRO div,
+    #cabecerasTabla {
+        text-align: center;
+        width: 100%;
+        display: grid;
+        grid-template-areas:
+            "item1 item2"
+            "item3 item4"
+            "button button";
+        /* Botón en su propia fila */
+        grid-template-rows: auto auto auto;
+        /* Altura automática para las filas */
+        grid-template-columns: auto auto;
+        /* Ancho automático para las columnas */
+        /* Espacio entre los elementos */
+    }
+
+    .btnEditar {
+        grid-area: button;
+        /* Área definida para el botón */
+        width: 100%;
+        background: #000;
+
+
+    }
+
+    #cabecerasTabla {}
+
 }

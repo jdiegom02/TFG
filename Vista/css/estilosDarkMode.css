@@ -15,6 +15,7 @@ body {
   filter: invert(100%);
   background-color: hsl(351, 69%, 37%);
 }
+
 .modal-content .btn-danger {
   filter: invert(100%);
   background-color: hsl(351, 69%, 37%);
@@ -55,9 +56,54 @@ body {
 
 #modalGestionarUsuarios .modal-content {
   background: #222222;
-
+  color: white
 }
 
-#modalGestionarUsuarios .modal-content td, #modalGestionarUsuarios .modal-content h5,#modalGestionarUsuarios .modal-content th{
+#modalGestionarUsuarios .modal-content td,
+#modalGestionarUsuarios .modal-content h5,
+#modalGestionarUsuarios .modal-content th {
   color: white;
+}
+
+/*MODAL GESTIONAR PRODUCTOS*/
+.close {
+  filter: invert(100%);
+}
+
+#modalGestionarProducto h3 {
+  color: #fff;
+}
+
+#abrirModal {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid rgb(27, 27, 27);
+  border-radius: 0px;
+  padding: 10px 20px;
+  display: inline-block;
+  font-size: 20px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #000000;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+}
+
+#abrirModal:hover {
+  box-shadow: inset 0 0 0 50px #000000;
+  color: rgb(255, 255, 255);
+}
+.filaProducto{
+  color: #000;
+}
+.filaProducto button{
+  background-color: #a1a1a1;
+}
+.filaProducto button:active {
+  background-color: #686868;
+}
+/*FIN MODAL GESTIONAR PRODUCTOS*/
+button:active {
+  transform: scale(0.95); /* Reduce ligeramente el tamaño al hacer clic */
 }

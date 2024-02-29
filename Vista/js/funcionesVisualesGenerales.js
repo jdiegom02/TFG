@@ -37,6 +37,7 @@ function mostrarDatosUsuario(valor) {
         crearBotonAdministrar()
     } else {
         crearBotonRegresar();
+        document.getElementById("titulo-pagina").innerHTML="Panel de Administracion"
     }
     let botonCerrarSesion = crearElemento("input", undefined, {
         type: "button",

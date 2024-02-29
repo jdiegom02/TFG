@@ -6,23 +6,25 @@ function principal(params) {
             location.href = "../html/index.html";
         } else {
             if (valor.esadmin) {
+
                 document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
                 document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
                 document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
                 document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
                 usuarioIniciado = valor.nombre;
                 document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
-                mostrarDatosUsuario(valor.nombre)
+                mostrarDatosUsuario(usuarioIniciado)
             } else {
                 location.href = "../html/pedidos.html";
             }
         }
     });
+    actualizarModoOscuro();
+
     cargarProveedoresDesdePHP(function (proveedores) {
         let tabla = document.createElement("table");
         tabla.classList.add("table"); // Add Bootstrap table class if using Bootstrap
-        tabla.classList.add("table-responsive"); // Add Bootstrap table class if using Bootstrap
-
+        // tabla.classList.add("table-responsive"); // Add Bootstrap table class if using Bootstrap
 
         // Crear encabezado de tabla
         let encabezado = tabla.createTHead();

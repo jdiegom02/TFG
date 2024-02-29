@@ -1,6 +1,25 @@
 window.addEventListener("load", principal, false);
 
 function principal() {
+    comprobarSesion(function (valor) {
+        if (valor == 0) {
+            location.href = "../html/index.html";
+        } else {
+            if (valor.esadmin) {
+
+                document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
+                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
+                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
+                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
+                usuarioIniciado = valor.nombre;
+                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
+                mostrarDatosUsuario(usuarioIniciado)
+            } else {
+                location.href = "../html/pedidos.html";
+            }
+        }
+    });
+    actualizarModoOscuro();
 
     llenarDesplegableAnios();
     obtenerResiduosDesdeFuenteExterna();
