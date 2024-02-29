@@ -125,17 +125,16 @@ function editar(hijo) {
 }
 
 
-function crearElemento(tagNombre, opciones) {
-    let elemento = document.createElement(tagNombre);
-    if (opciones && opciones.atributos && typeof opciones.atributos === "object") {
-        for (let clave in opciones.atributos) {
-            elemento.setAttribute(clave, opciones.atributos[clave]);
+function crearElemento(etiqueta, texto, atributos) {
+    let elementoNuevo = document.createElement(etiqueta);
+    if (texto !== undefined) {
+        let contenidoTexto = document.createTextNode(texto);
+        elementoNuevo.appendChild(contenidoTexto);
+    }
+    if (atributos !== undefined) {
+        for (let clave in atributos) {
+            elementoNuevo.setAttribute(clave, atributos[clave]);
         }
     }
-
-    if (opciones && opciones.textoContenido) {
-        elemento.textContent = opciones.textoContenido;
-    }
-
-    return elemento;
+    return elementoNuevo;
 }
