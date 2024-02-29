@@ -53,7 +53,7 @@ function principal(params) {
             let editarCell = fila.insertCell();
             let botonEditar = document.createElement("button");
             botonEditar.type = "button";
-            botonEditar.classList.add("btn", "btn-sm", "btn-primary", "ml-3", "botonEditar");
+            botonEditar.classList.add("btn", "btn-sm", "ml-3", "botonEditar","botonNegro");
             botonEditar.textContent = "Editar";
             botonEditar.setAttribute("data-toggle", "modal");
             botonEditar.setAttribute("data-target", "#editarProveedorModal");

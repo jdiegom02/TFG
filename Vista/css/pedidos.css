@@ -67,9 +67,9 @@ body {
 }
 
 #contador-carrito {
-  position: absolute;
-  top: 5px;
-  left: 25px;
+  position: relative;
+  top: -52px;
+  left: -5px;
   /* Ajusta según tu diseño */
   background-color: gray;
   color: white;
@@ -82,13 +82,17 @@ body {
   font-size: 14px;
 }
 
+#funcionesCabecera {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #carritoCompras {
   background: #00000000;
-  width: 70px;
-  height: 70px;
   border-radius: 7px;
   border: none;
-  margin: 0px 10px;
+  margin-top: 20px;
 }
 
 #carritoCompras:hover {
@@ -325,15 +329,18 @@ button[id^="buscar"] {
   justify-content: end;
   gap: 10px;
 }
+
 #popUpConfirmacion button {
   background: #000;
   color: #f8f9fa;
 }
-#popUpConfirmacion #cancelarProducto{
+
+#popUpConfirmacion #cancelarProducto {
   background: #d61919;
   color: white;
 
 }
+
 button:active {
   transform: scale(0.95);
   /* Reduce ligeramente el tamaño al hacer clic */
@@ -543,7 +550,8 @@ button:active {
 
   #iconoCarrito-container {
     display: flex;
-    margin-top: 15px;
+    justify-content: center;
+    align-items: center;
     position: relative;
   }
 

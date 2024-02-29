@@ -102,6 +102,27 @@ body {
 /*MODAL EDITAR PRODUCTO */
 #editarProductoModal .modal-content {}
 
+#editarProductoModal .modal-content input {
+    outline: none;
+    background: rgb(0, 0, 0, 0.20);
+    border: none;
+    border-radius: 0;
+font-weight: bold;}
+
+#editarProductoModal .modal-content select {
+    outline: none;
+    background: rgb(0, 0, 0, 0.20);
+    border: none;
+    border-radius: 0;
+}
+
+#categoriaProductoModificar input{  
+
+}
+#editarProductoModal button{
+    
+}
+
 .container {
     margin-top: 20px;
 }
@@ -243,10 +264,6 @@ body {
 }
 
 /*MODAL GESTIONAR USUARIOS*/
-#modalGestionarUsuarios #btnanadirUsuario {
-    background-color: #007BFF;
-    color: white;
-}
 
 #modalGestionarUsuarios #btncerrarUsuario {
     background-color: rgb(207, 39, 39);
@@ -358,28 +375,38 @@ button:active {
 /*MODAL DE NO SE PUEDE MODIFICAR EL PRODUCTO*/
 #noSePuedeModificar .modal-content {
     background-color: rgb(209, 98, 98);
-    color: white; /* Cambiar el color del texto para que sea legible en el fondo rojo */
+    color: white;
+    /* Cambiar el color del texto para que sea legible en el fondo rojo */
     text-align: center;
-    border-radius: 10px; /* Redondear las esquinas del modal */
+    border-radius: 10px;
+    /* Redondear las esquinas del modal */
 
 }
 
 #noSePuedeModificar .modal-header {
-    border-bottom: none; /* Eliminar el borde inferior del encabezado */
+    border-bottom: none;
+    /* Eliminar el borde inferior del encabezado */
 }
 
 #noSePuedeModificar .modal-footer {
-    border-top: none; /* Eliminar el borde superior del pie del modal */
+    border-top: none;
+    /* Eliminar el borde superior del pie del modal */
 }
 
 #noSePuedeModificar .modal-footer .btn-secondary {
-    color: white; /* Cambiar el color del botón "Cerrar" para que sea legible en el fondo rojo */
-    background-color: #6c757d; /* Color de fondo del botón "Cerrar" */
-    border-color: #6c757d; /* Color del borde del botón "Cerrar" */
+    color: white;
+    /* Cambiar el color del botón "Cerrar" para que sea legible en el fondo rojo */
+    background-color: #6c757d;
+    /* Color de fondo del botón "Cerrar" */
+    border-color: #6c757d;
+    /* Color del borde del botón "Cerrar" */
 }
+
 #noSePuedeModificar .modal-dialog {
-    max-width: 60%; /* Ajustar el ancho máximo del modal */
-    margin: 1.75rem auto; /* Centrar el modal horizontalmente y darle un poco de margen superior e inferior */
+    max-width: 60%;
+    /* Ajustar el ancho máximo del modal */
+    margin: 1.75rem auto;
+    /* Centrar el modal horizontalmente y darle un poco de margen superior e inferior */
 }
 
 

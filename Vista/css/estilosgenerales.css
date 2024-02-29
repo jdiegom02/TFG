@@ -13,6 +13,16 @@ body {
     max-width: 100%;
 }
 
+#cabecera {
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+}
+
+#cabecera {
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+}
+
 #desplegablellamar {
     display: flex;
     align-items: center;
@@ -86,20 +96,22 @@ body {
 }
 
 /*MODAL GESTIONAR USUARIOS*/
-#modalGestionarUsuarios .btn {
-    background-color: #d9d9d9;
-}
 
-#modalGestionarUsuarios .btn-editar-usuario {
-    border: 1px #838383 solid;
-    background-color: #d9d9d9;
-}
+
 
 
 /* MODAL GESIONAR PRODUCTOS*/
-#modalGestionarProducto .añadirProductosButton {
-}
+#modalGestionarProducto .añadirProductosButton {}
+
 #modalGestionarProducto .btn-editar-usuario {
     border: 1px #838383 solid;
 }
 
+@media screen and (max-width: 600px) {
+    #cabecera h3{
+        font-size: 18px;
+    }
+    #cabecera img{
+        width: 50px;
+    }
+}

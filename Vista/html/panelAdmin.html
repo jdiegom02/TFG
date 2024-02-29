@@ -17,35 +17,34 @@
 <body>
 
     <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
-    <div class="container-fluid">
-        <div id="cabecera" class="row align-items-center">
-            <div id="datosUsuario" class="col-xxl-3 col-xl-3 col-sm-3 col-xs-3 ">
-                <div id="desplegablellamar" class=" align-items-center">
-                    <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-                    <h3 id="usuarioNombre"></h3>
-                </div>
-            </div>
-
-            <div id="titulo" class="col-xxl-6 col-xl-6 col-lg-6">
-                <h3 id="titulo-pagina" class="">Pedir Productos</h3>
-            </div>
-
-            <div id="funcionesCabecera col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-xs-3">
-                <div id="iconoCarrito-container" class=" ">
-                    <div class="darkMode-container">
-                        <button class="darkMode-button" id="botonDarkMode">
-                            <img src="../img/iconos/darkModeSun.svg" alt="">
-                        </button>
-                    </div>
-
-                    <div class="col-xl-3">
-
-                    </div>
-                </div>
-            </div>
+  <div class="container-fluid">
+    <div id="cabecera" class=" align-items-center">
+      <div id="datosUsuario" class=" ">
+        <div id="desplegablellamar" class=" align-items-center">
+          <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+          <h3 id="usuarioNombre"></h3>
         </div>
+      </div>
+
+      <div id="titulo" class="">
+        <h3 id="titulo-pagina" class="">Pedir Productos</h3>
+      </div>
+
+      <div id="funcionesCabecera ">
+        <div id="iconoCarrito-container" class=" ">
+          <div class="darkMode-container">
+            <button class="darkMode-button" id="botonDarkMode">
+              <img src="../img/iconos/darkModeSun.svg" alt="">
+            </button>
+          </div>
+
+          <div class="">
+          </div>
+        </div>
+      </div>
     </div>
-    <!--FIN DE CABECERA-->
+  </div>
+  <!--FIN DE CABECERA-->
     <div id="desplegableFunciones" class="container">
     </div>
     <div class="contenido">
@@ -132,7 +131,7 @@
                                     </ul>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button type="button" class="btn "
+                                    <button type="button" class="btn botonNegro"
                                         data-producto-id="1">Editar</button>
                                 </div>
                             </div>
@@ -200,7 +199,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" id="guardarCambios2">Guardar Cambios</button>
+                        <button type="button" class="btn botonNegro" id="guardarCambios2">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -276,7 +275,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" id="cerrarProducto"
                             data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" id="anadirProducto">Guardar Cambios</button>
+                        <button type="button" class="btn botonNegro" id="anadirProducto">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -311,8 +310,8 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnanadirUsuario" class="btn">Añadir Usuario</button>
-                        <button type="button" class="btn" id="btncerrarUsuario" data-dismiss="modal">Cerrar</button>
+                        <button type="button" id="btnanadirUsuario" class="btn botonNegro">Añadir Usuario</button>
+                        <button type="button" class="btn btn-danger" id="btncerrarUsuario" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -328,7 +327,7 @@
                         <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button>   
                     </div>
                     <div class="modal-body">
                         <form id="formCambiarContrasena">
@@ -344,8 +343,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="guardarPass">Guardar Cambios</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonNegro" id="guardarPass">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -396,7 +395,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+                        <button type="button" class="btn botonNegro" id="guardarCambios">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -465,7 +464,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="guardarUsuario">Añadir Usuario</button>
+                        <button type="button" class="btn botonNegro" id="guardarUsuario">Añadir Usuario</button>
                     </div>
                 </div>
             </div>
@@ -498,8 +497,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="anadirCategoriaGuardar">Guardar
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonNegro" id="anadirCategoriaGuardar">Guardar
                             Cambios</button>
                     </div>
                 </div>
@@ -533,8 +532,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="anadirUnidadGuardar">Guardar Cambios</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonNegro" id="anadirUnidadGuardar">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -571,8 +570,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="guardarAnadirResiduoAProducto">Guardar
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn botonNegro" id="guardarAnadirResiduoAProducto">Guardar
                         Cambios</button>
                 </div>
             </div>

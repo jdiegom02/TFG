@@ -58,11 +58,10 @@
 
 /*FIN MODAL EDITAR PROVEEDOR*/
 .card {
-    margin-top: 20px;
 }
 
 .card-header {
-    background-color: #007bff;
+    background-color: #000000;
     color: #fff;
     font-size: large;
 }

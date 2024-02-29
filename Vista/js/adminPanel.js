@@ -18,7 +18,7 @@ function principal() {
                     cerrarSesion();
                 });
                 console.log(valor.nombre)
-                mostrarDatosUsuario(valor.nombre,valor.esadmin)
+                mostrarDatosUsuario(valor.nombre, valor.esadmin)
             } else {
                 location.href = "../html/pedidos.html";
             }
@@ -331,14 +331,13 @@ function modificarProducto() {
         success: function (response) {
             console.log(response);
 
-            if(response ==="1")
-            {
+            if (response === "1") {
                 $('#noSePuedeModificar').modal('show');
-                setTimeout(function() {
+                setTimeout(function () {
                     $('#noSePuedeModificar').modal('hide');
-                }, 2500); 
-            }else {console.log("si"); }
-            
+                }, 2500);
+            } else { console.log("si"); }
+
             $('#editarProductoModal').modal('hide');
 
             cargarDatosProductos();
@@ -694,10 +693,10 @@ function cargarUsuarios() {
                         '<td>' + esAdmin + '</td>' +
                         '<td>' + activo + '</td>' +
                         '<td>' +
-                        '<button type="button" class="btn btn-editar-usuario" id="' + usuario.id + '" data-id="' + usuario.id + '">Editar</button>' +
+                        '<button type="button" class="btn btn-editar-usuario botonNegro" id="' + usuario.id + '" data-id="' + usuario.id + '">Editar</button>' +
                         '</td>' +
                         '<td>' +
-                        '<button type="button" class="btn btn-cambiar-contrasena ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
+                        '<button type="button" class="btn btn-cambiar-contrasena botonNegro ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
                         '</td>' +
                         '</tr>';
                 }
