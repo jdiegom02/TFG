@@ -259,7 +259,7 @@
                                 <label for="residuos">Residuos del Producto</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control input-sm claseResiduos" id="residuos"
-                                        placeholder="Residuos  1" style="max-width: 100px;">
+                                        placeholder="Residuos  1" style="max-width: 100px;" min="0">
                                     <div class="input-group-append">
                                         <label for="kilos">Kg</label>
                                         <select id="despegableResiduos" class="form-control despegablesResiduos">
@@ -565,7 +565,7 @@
                         </div>
                         <div class="form-group">
                             <label for="cantidadResiduo">Cantidad del residuo</label>
-                            <input type="number" class="form-control" id="cantidadResiduo" name="cantidadResiduo">
+                            <input type="number" class="form-control" id="cantidadResiduo" name="cantidadResiduo" min="0">
                         </div>
                         <input type="hidden" id="idProductoModal" name="idProductoModal">
                     </form>
@@ -581,6 +581,22 @@
     <div id="desplegableFunciones" class="container">
     </div>
     <!-- MODAL AÑADIR RESIDUO NUEVO A UN PRODUCTO  FIN-->
+
+
+<!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR -->
+
+<div class="modal fade" id="noSePuedeModificar" tabindex="-1" role="dialog"
+            aria-labelledby="noSePuedeModificarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <h1>NO SE PUEDE MODIFICAR</h1>
+                    <h2>EL PRODUCTO ESTA ASOCIADO A UN PEDIDO ANTERIOR</h2>
+                </div>
+            </div>
+</div>
+
+<!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR FIN-->
+
 
 
     <!-- Scripts -->

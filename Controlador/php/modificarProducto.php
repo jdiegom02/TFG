@@ -5,11 +5,11 @@ function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
 {
     // Crear una instancia de la clase BD
     $conexion = new BD("bonAppetit", "admin", "1234");
-    echo $id;
+    /*echo $id;
     echo $desc;
     print_r($categorias);
     echo ($unidad);
-    print_r($residuos);
+    print_r($residuos);*/
     try {
         $conexion->comenzarTransaccion();
 
@@ -20,8 +20,9 @@ function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
                   WHERE p.id = $id
                   AND s.tramitado = 1";
         $resultado = $conexion->realizarConsulta($query);
-        echo $datoCorrecto = $resultado->fetchColumn();
+        $datoCorrecto = $resultado->fetchColumn();
 
+   
         if ($datoCorrecto === 0) {
             // Consulta para modificar el producto
             $query_modificacion = "UPDATE productos SET descripcion = '$desc', fk_unidades = (SELECT id FROM unidades WHERE unidad = '$unidad'), observaciones = 'Nuevas observaciones' WHERE id = $id";
@@ -53,6 +54,10 @@ function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
             // Confirmar la transacción
             $conexion->completarTransaccion();
             echo "El producto ha sido modificado exitosamente.";
+        }
+        else{ //echo " El producto tiebe asociado un pedido tramitado, no se puede modificar";
+
+            echo $datoCorrecto;
         }
     } catch (Exception $e) {
         // Revertir la transacción en caso de error

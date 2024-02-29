@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
                 mostrarDatosUsuario(usuarioIniciado)
             } else {
-                location.href = "../html/pedidos.html";
+                //location.href = "../html/pedidos.html";
             }
         }
     });
