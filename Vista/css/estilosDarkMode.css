@@ -116,10 +116,14 @@ body {
 
 /*MODAL AGREGAR PRODUCTO*/
 #modalAgregarProducto .modal-content {
-  filter: invert(100%);
   background: #333;
 }
-
+#modalAgregarProducto .modal-title {
+  color: #fff;
+}
+#modalAgregarProducto img{
+  filter: invert(100%);
+}
 #modalAgregarProducto .modal-content input {}
 
 /*FINAL MODAL AGREGAR PRODUCTO*/
@@ -138,8 +142,8 @@ body {
 
 .botonNegro {
   filter: invert(100%);
-  background: #696969;
-
+  background: #595959;
+  border: 1px black solid;
 }
 
 #editarProductoModal .modal-content input {
