@@ -89,15 +89,12 @@
 
 tbody tr {
     transition: transform 0.3s ease;
-    /* Agrega una transición suave para el efecto */
     background-color: white;
     padding: 10px;
 }
 
 tbody tr:hover {
     transform: scale(1.04);
-    /* Escala el tr al 110% de su tamaño original */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* xOffset yOffset blurRadius color */
 
 }

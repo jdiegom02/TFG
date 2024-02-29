@@ -2,6 +2,7 @@
 body {
     font-family: "Open Sans";
 }
+
 h1 {
     text-align: center;
 }
@@ -21,52 +22,235 @@ h1 {
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
-    display: block; /* Hacer que el botón ocupe todo el ancho disponible */
+    display: block;
+    /* Hacer que el botón ocupe todo el ancho disponible */
 }
 
 /* Estilos para el botón de validar pedidos */
 #btnValidarPedidos {
-    font-weight: bold; /* Texto en negrita */
+    font-weight: bold;
+    /* Texto en negrita */
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    display: block; /* Hacer que el botón ocupe todo el ancho disponible */
-    width: 200px; /* Ancho fijo para el botón */
+    display: block;
+    /* Hacer que el botón ocupe todo el ancho disponible */
+    width: 200px;
+    /* Ancho fijo para el botón */
 }
 
-#btnRealizarPedidos{
-    font-weight: bold; /* Texto en negrita */
+#btnRealizarPedidos {
+    font-weight: bold;
+    /* Texto en negrita */
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    display: block; /* Hacer que el botón ocupe todo el ancho disponible */
-    width: 200px; /* Ancho fijo para el botón */
+    display: block;
+    /* Hacer que el botón ocupe todo el ancho disponible */
+    width: 200px;
+    /* Ancho fijo para el botón */
 }
 
-#contenedorBotones{
+#contenedorBotones {
     width: 100%;
-    display: flex; /* Utilizar flexbox */
-    justify-content: space-around; /* Distribuir los elementos horizontalmente con espacio alrededor */
+    display: flex;
+    /* Utilizar flexbox */
+    justify-content: space-around;
+    /* Distribuir los elementos horizontalmente con espacio alrededor */
 }
 
-    .pedido-container {
-        display: flex;
+.pedido-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.pedido-container>div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+@media (min-width: 768px) {
+    .pedido-container>div {
         flex-direction: column;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
     }
-
-    .pedido-container > div {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-    }
-
-    @media (min-width: 768px) {
-        .pedido-container > div {
-            flex-direction: column;
-        }
-    }
+}
 
 
+#contenedorTablaProveedores {
+    width: 100%;
+}
+
+#añadirProductosButton {
+    height: 100px;
+}
+
+#infoProveedores {
+    width: 100%;
+}
+
+/*MODAL EDITAR PROVEEDOR*/
+.modal-content {
+    border-radius: 10px;
+}
+
+/* Estilo del encabezado del modal */
+.modal-header {
+    background-color: #007bff;
+    /* Color de fondo */
+    color: #fff;
+    /* Color del texto */
+    border-bottom: none;
+    /* Elimina el borde inferior */
+    border-radius: 10px 10px 0 0;
+    /* Ajusta la esquina superior */
+}
+
+/* Estilo del título del modal */
+.modal-title {
+    font-weight: bold;
+    /* Texto en negrita */
+}
+
+/* Estilo del cuerpo del modal */
+.modal-body {
+    padding: 20px;
+    /* Añade espacio interno */
+}
+
+/* Estilo del pie del modal */
+.modal-footer {
+    border-top: none;
+    /* Elimina el borde superior */
+    border-radius: 0 0 10px 10px;
+    /* Ajusta la esquina inferior */
+}
+
+/* Estilo para los botones del pie del modal */
+.modal-footer button {
+    margin-left: 10px;
+    /* Espacio entre botones */
+}
+
+/* Estilo para el botón Cancelar */
+.btn-danger {
+    background-color: #dc3545;
+    /* Color de fondo */
+    border-color: #dc3545;
+    /* Color del borde */
+}
+
+/* Estilo para el botón Guardar Cambios */
+.btn-primary {
+    background-color: #007bff;
+    /* Color de fondo */
+    border-color: #007bff;
+    /* Color del borde */
+}
+
+/*FIN MODAL EDITAR PROVEEDOR*/
+.card {}
+
+.card-header {
+    background-color: #000000;
+    color: #fff;
+    font-size: large;
+}
+
+.table {
+    width: 100%;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table th {
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+/* Estilo para los botones de editar */
+.botonEditar {
+    margin-left: 10px;
+}
+
+.form-check-input {
+    margin: 0;
+}
+
+tbody tr {
+    transition: transform 0.3s ease;
+    background-color: white;
+    padding: 10px;
+}
+
+tbody tr:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+}
+
+.checkboxEstilizado {
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    /* Espacio para el checkbox */
+    margin-right: 15px;
+    /* Espacio entre los checkboxes */
+    cursor: pointer;
+    font-size: 18px;
+    /* Tamaño de la fuente */
+    line-height: 24px;
+    /* Altura de línea */
+}
+
+/* Estilo para el input del checkbox oculto */
+.checkboxEstilizado input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 8px;
+    top: 5px;
+    width: 8px;
+    height: 12px;
+    border: solid #ffffff;
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg);
+}
+
+.checkboxEstilizado input:checked~.checkmark:after {
+    display: block;
+}
+
+.checkboxEstilizado:hover input~.checkmark {
+    background-color: #f4f4f4;
+}
+
+.checkboxEstilizado input:checked~.checkmark {
+    background-color: #000000;
+    /* Cambiar a un color verde cuando está marcado */
+}

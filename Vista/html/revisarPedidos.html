@@ -2,116 +2,116 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisar Pedidos - Panel de Administración</title>
-    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/estilosgenerales.css">
-    <link rel="stylesheet" href="../css/revisarPedidos.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="../../Controlador/js/funcionesControlador.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisar Pedidos - Panel de Administración</title>
+  <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/estilosgenerales.css">
+  <link rel="stylesheet" href="../css/revisarPedidos.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="../../Controlador/js/funcionesControlador.js"></script>
 </head>
 
 <body>
-    <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
-    <div class="container-fluid">
-        <div id="cabecera" class=" align-items-center">
-          <div id="datosUsuario" class=" ">
-            <div id="desplegablellamar" class=" align-items-center">
-              <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-              <h3 id="usuarioNombre"></h3>
-            </div>
+  <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
+  <div class="container-fluid">
+    <div id="cabecera" class=" align-items-center">
+      <div id="datosUsuario" class=" ">
+        <div id="desplegablellamar" class=" align-items-center">
+          <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+          <h3 id="usuarioNombre"></h3>
+        </div>
+      </div>
+
+      <div id="titulo" class="">
+        <h3 id="titulo-pagina" class="">Pedir Productos</h3>
+      </div>
+
+      <div id="funcionesCabecera ">
+        <div id="iconoCarrito-container" class=" ">
+          <div class="darkMode-container">
+            <button class="darkMode-button" id="botonDarkMode">
+              <img src="../img/iconos/darkModeSun.svg" alt="">
+            </button>
           </div>
-    
-          <div id="titulo" class="">
-            <h3 id="titulo-pagina" class="">Pedir Productos</h3>
-          </div>
-    
-          <div id="funcionesCabecera ">
-            <div id="iconoCarrito-container" class=" ">
-              <div class="darkMode-container">
-                <button class="darkMode-button" id="botonDarkMode">
-                  <img src="../img/iconos/darkModeSun.svg" alt="">
-                </button>
-              </div>
-    
-              <div class="">
-              </div>
-            </div>
+
+          <div class="">
           </div>
         </div>
       </div>
-      <!--FIN DE CABECERA-->
-    <div id="desplegableFunciones" class="container">
     </div>
-    <div class="container">
-        <h1 class="mt-5 mb-4">Revisar Pedidos</h1>
-        <div id="lista-pedidos" class="mt-4">
-            <table class="table-responsive table">
-                <thead>
-                    <tr>
-                        <th scope="col">Verificado</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Nombre del Producto</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Unidad</th>
-                        <th scope="col">Proveedor</th>
-                        <th scope="col">Observaciones</th>
-                        <th scope="col">Usuario</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-pedidos-body">
-                    <!-- Aquí se cargarán los pedidos dinámicamente -->
-                </tbody>
-            </table>
+  </div>
+  <!--FIN DE CABECERA-->
+  <div id="desplegableFunciones" class="container">
+  </div>
+  <div class="container">
+    <h1 class="mt-5 mb-4">Revisar Pedidos</h1>
+    <div id="lista-pedidos" class="mt-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Verificado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Nombre del Producto</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Unidad</th>
+            <th scope="col">Proveedor</th>
+            <th scope="col">Observaciones</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-pedidos-body">
+          <!-- Aquí se cargarán los pedidos dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MODAL DEL PEDIDO SEMANAL -->
+
+  <div class="modal fade" id="modalPedidoSemanal" tabindex="-1" role="dialog" aria-labelledby="modalPedidoSemanalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalPedidoSemanalLabel">PedidoSemanal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-    </div>
-
-<!-- MODAL DEL PEDIDO SEMANAL -->
-
-<div class="modal fade" id="modalPedidoSemanal" tabindex="-1" role="dialog"
-            aria-labelledby="modalPedidoSemanalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalPedidoSemanalLabel">PedidoSemanal</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="tablaPedidos"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn botonNegro" id="imprimirSemanal">Imprimir Semanal</button>
-                    </div>
-                </div>
-            </div>
+        <div class="modal-body">
+          <div id="tablaPedidos"></div>
         </div>
-
-<!-- MODAL DEL PEDIDO SEMANAL FINAL-->
-
-
-
-
-   
-    <div id="contenedorBotones">
-        <button id="btnValidarPedidos" class="btn botonNegro btn-lg btn-block mt-4">Validar Pedidos</button>
-        <button id="btnRealizarPedidos" class="btn botonNegro btn-lg btn-block mt-4">Pedido Semanal</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn botonNegro" id="imprimirSemanal">Imprimir Semanal</button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- MODAL DEL PEDIDO SEMANAL FINAL-->
 
 
-    <!-- Scripts -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <!-- Script personalizado para el panel de administración -->
-    <script src="../js/funcionesVisualesGenerales.js"></script>
 
-    <script src="../js/revisarPedidos.js"></script>
+
+
+  <div id="contenedorBotones">
+    <button id="btnValidarPedidos" class="btn botonNegro btn-lg btn-block mt-4">Validar Pedidos</button>
+    <button id="btnRealizarPedidos" class="btn botonNegro btn-lg btn-block mt-4">Pedido Semanal</button>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <!-- Script personalizado para el panel de administración -->
+  <script src="../js/funcionesVisualesGenerales.js"></script>
+
+  <script src="../js/revisarPedidos.js"></script>
 </body>
 
 </html>
