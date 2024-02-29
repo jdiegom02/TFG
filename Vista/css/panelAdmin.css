@@ -409,5 +409,8 @@ button:active {
     /* Centrar el modal horizontalmente y darle un poco de margen superior e inferior */
 }
 
-
+.botonNegro{
+    background-color: #000;
+    color: #fff;
+}
 /*MODAL DE NO SE PUEDE MODIFICAR EL PRODUCTO FIN*/
