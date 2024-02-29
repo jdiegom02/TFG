@@ -7,37 +7,39 @@ document.addEventListener("DOMContentLoaded", () => {
             location.href = "../html/index.html";
         } else {
             if (valor.esadmin) {
-
                 document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
                 document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
                 document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
                 document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
                 usuarioIniciado = valor.nombre;
                 document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
-                mostrarDatosUsuario(usuarioIniciado)
             } else {
                 //location.href = "../html/pedidos.html";
             }
+            mostrarDatosUsuario(valor.nombre, valor.esadmin)
         }
     });
     actualizarModoOscuro();
 
 });
 /* DESPLEGABLE DE USUARIO */
-function mostrarDatosUsuario(valor) {
-    document.getElementById("usuarioNombre").innerHTML = valor;
+function mostrarDatosUsuario(nombre, administrador) {
+    document.getElementById("usuarioNombre").innerHTML = nombre;
     document.querySelector("#desplegableFunciones").innerHTML = ""
     // document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
     let docActual = window.location.href;
 
     // Obtener el nombre del archivo de la URL
     let nombreArchivo = docActual.substring(docActual.lastIndexOf("/") + 1);
-    document.querySelector("#desplegableFunciones").innerHTML="";
+    document.querySelector("#desplegableFunciones").innerHTML = "";
     if (nombreArchivo == "pedidos.html") {
-        crearBotonAdministrar()
+        console.log(administrador)
+        if (administrador) {
+            crearBotonAdministrar(administrador)
+        }
     } else {
         crearBotonRegresar();
-        document.getElementById("titulo-pagina").innerHTML="Panel de Administracion"
+        document.getElementById("titulo-pagina").innerHTML = "Panel de Administracion"
     }
     let botonCerrarSesion = crearElemento("input", undefined, {
         type: "button",
@@ -49,7 +51,8 @@ function mostrarDatosUsuario(valor) {
     botonCerrarSesion.addEventListener("click", cerrarSesion);
     document.querySelector("#desplegableFunciones").appendChild(botonCerrarSesion);
 }
-function crearBotonAdministrar() {
+function crearBotonAdministrar(admin) {
+    console.log(admin)
     let botonAdministrar = crearElemento("input", undefined, {
         type: "button",
         id: "administrar",

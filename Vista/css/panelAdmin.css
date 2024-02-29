@@ -211,7 +211,6 @@ body {
 
 /* BOTON CAMBIAR CONTRASEÑA*/
 #tablaUsuarios td:last-child {
-    width: 20%;
     /* Ajustar según sea necesario */
 }
 
@@ -247,8 +246,10 @@ body {
     background-color: rgb(207, 39, 39);
     color: #ffffff;
 }
+
 #modalGestionarUsuarios .table {
     width: 100%;
+    font-size: 1.2em;
 }
 
 #modalGestionarUsuarios .table th,
@@ -282,7 +283,18 @@ body {
     /* xOffset yOffset blurRadius color */
 
 }
+
 /*FIN MODAL GESTIONAR USUARIOS*/
+
+/* MODAL EDITAR USUARIO*/
+#modalEditar {}
+
+#modalEditar .table {
+    font-size: 3em;
+}
+
+
+/*MODAL EDITAR USUARIO*/
 button:active {
     transform: scale(0.95);
     /* Reduce ligeramente el tamaño al hacer clic */
@@ -290,9 +302,10 @@ button:active {
 
 @media screen and (max-width: 600px) {
 
+    /*GESTIONAR PRODUCTOS MODAL*/
     #gestionPRO div,
     #cabecerasTabla {
-    
+
         text-align: center;
         width: 100%;
         display: grid;
@@ -313,10 +326,17 @@ button:active {
         /* Área definida para el botón */
         width: 100%;
         background: #000;
-
-
     }
 
-    #cabecerasTabla {}
+    /*FIN GESTIONAR PRODUCTOS MODAL*/
+    /*GESTIONAR USUARIOS MODAL*/
+    #modalGestionarUsuarios .modal-body{
+        width: 100%;
+        overflow-x: auto
+    }
+    #modalGestionarUsuarios .table {
+        width: 100%;
+    }
 
+    /*FINAL GESTIONAR USUARIOS MODAL*/
 }
