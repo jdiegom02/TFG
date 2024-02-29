@@ -35,6 +35,7 @@ body {
 }
 
 #cabecerasTabla {
+    font-size: large;
     text-align: center;
     width: 100%;
     display: grid;
@@ -290,6 +291,7 @@ button:active {
 
     #gestionPRO div,
     #cabecerasTabla {
+    
         text-align: center;
         width: 100%;
         display: grid;

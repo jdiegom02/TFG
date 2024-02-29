@@ -51,25 +51,32 @@ body {
 
 #modalGestionarProducto .modal-content {
   background: #222222;
-  color: white;
+  color: black;
 }
 
+/*MODAL GESTIONAR USUARIOS*/
 #modalGestionarUsuarios .modal-content {
   background: #222222;
   color: white
 }
 
-#modalGestionarUsuarios .modal-content td,
-#modalGestionarUsuarios .modal-content h5,
-#modalGestionarUsuarios .modal-content th {
-  color: white;
+#modalGestionarUsuarios .modal-content h5
+{
+color: white;
 }
 
+#modalGestionarUsuarios .table {
+  background-color: white;
+}
+
+/*FIN MODAL GESTIONAR USUARIOS*/
 /*MODAL GESTIONAR PRODUCTOS*/
 .close {
   filter: invert(100%);
 }
-
+#cabecerasTabla{
+  color: #fff;
+}
 #modalGestionarProducto h3 {
   color: #fff;
 }
@@ -84,7 +91,7 @@ body {
   font-size: 20px;
   letter-spacing: 1px;
   cursor: pointer;
-  box-shadow: inset 0 0 0 0 #000000;
+  box-shadow: inset 0 0 0 0 #ff0000;
   -webkit-transition: ease-out 0.4s;
   -moz-transition: ease-out 0.4s;
   transition: ease-out 0.4s;
@@ -94,16 +101,27 @@ body {
   box-shadow: inset 0 0 0 50px #000000;
   color: rgb(255, 255, 255);
 }
-.filaProducto{
+
+.filaProducto {
   color: #000;
 }
-.filaProducto button{
+
+.filaProducto:hover {
+  box-shadow: 0 4px 8px rgba(243, 0, 0, 0.5);
+
+}
+
+.filaProducto button {
   background-color: #a1a1a1;
 }
+
 .filaProducto button:active {
   background-color: #686868;
 }
+
 /*FIN MODAL GESTIONAR PRODUCTOS*/
+
 button:active {
-  transform: scale(0.95); /* Reduce ligeramente el tamaño al hacer clic */
+  transform: scale(0.95);
+  /* Reduce ligeramente el tamaño al hacer clic */
 }
