@@ -166,7 +166,7 @@ function cargarDatosProductos() {
 
             $(document).on('click', '.btnEditar', function () {
                 var productoID2 = $(this).data('producto-id');
-
+            console.log(productoID2);
                 cargarResiduosPorProducto(productoID2);
 
                 var producto = data.find(prod => prod.producto_id == productoID2);
@@ -521,6 +521,12 @@ function insertarProducto(e) {
             // Cerrar el modal
             $('#modalAgregarProducto').modal('hide');
             $('#modalGestionarProducto').modal('hide');
+           
+            setTimeout(function () {
+                //Recargar la pagina para actucalizar los productos
+                location.reload();
+            }, 1900);
+            
         },
         error: function (xhr, status, error) {
             // Manejar errores de la solicitud AJAX
@@ -556,12 +562,12 @@ function mostrarMensajeExito() {
     var contenedorPrincipal = document.querySelector('.container');
     contenedorPrincipal.style.filter = 'blur(5px)';
 
-    // Eliminar el efecto de difuminado después de 5 segundos
+    // Eliminar el efecto de difuminado después de 2 segundos
     setTimeout(function () {
         contenedorPrincipal.style.filter = 'none';
     }, 2000);
 
-    // Eliminar el mensaje después de 5 segundos
+    // Eliminar el mensaje después de 2 segundos
     setTimeout(function () {
         mensajeElemento.remove();
     }, 2000);
