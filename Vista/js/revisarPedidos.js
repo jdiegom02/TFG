@@ -26,6 +26,14 @@ function principal(e) {
             guardarCambiosEnCelda(this, index);
         });
     });
+
+
+    var btnImprimirSemanal = document.getElementById('imprimirSemanal');
+    btnImprimirSemanal.addEventListener('click', function () {
+
+        generarPDFPedidos();
+
+    });
 }
 
 
@@ -187,7 +195,63 @@ function validarPedidosYGenerarPDF(idPedido) {
 
 function abrirModal(e) {
     $('#modalPedidoSemanal').modal('show');
+    mostrarPedidosValidados();
 }
+
+
+function mostrarPedidosValidados() {
+    $.ajax({
+        url: '../../Controlador/php/pedidoMostrarTramitados.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            construirTablaPedidos(data);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al obtener los pedidos:', error);
+        }
+    });
+}
+
+function construirTablaPedidos(pedidos) {
+    // Obtener el div donde se colocará la tabla
+    var tablaDiv = $('#tablaPedidos');
+    // Limpiar el contenido anterior del div
+    tablaDiv.empty();
+
+    // Construir la tabla
+    var tabla = '<table class="table">';
+    tabla += '<thead>';
+    tabla += '<tr><th>Proveedor</th><th>Producto</th><th>Cantidad</th><th>Unidad de Medida</th></tr>';
+    tabla += '</thead>';
+    tabla += '<tbody>';
+
+    // Recorrer los datos de los pedidos y construir filas
+    $.each(pedidos, function(proveedor, productos) {
+        $.each(productos, function(index, producto) {
+            tabla += '<tr>';
+            tabla += '<td>' + proveedor + '</td>';
+            tabla += '<td>' + producto.descripcion + '</td>';
+            tabla += '<td>' + producto.cantidad + '</td>';
+            tabla += '<td>' + producto.unidad + '</td>';
+            tabla += '</tr>';
+        });
+    });
+
+    tabla += '</tbody>';
+    tabla += '</table>';
+
+    tablaDiv.html(tabla);
+
+    //$('#modalPedidoSemanal').modal('show');
+}
+
+
+
+
+
+
+
 
 
 
