@@ -17,19 +17,21 @@ foreach ($resultado as $fila1) {
     AND WEEK(pedidos.fecha) = WEEK(NOW()) 
     GROUP BY linea_pedido.descripcion, linea_pedido.unidades;";
     $resultado = $conexion->realizarConsulta($sqlFull);
-    $pedidos[$proveedor] = []; // Inicializar un array vacío para cada proveedor
+    $pedidosProveedor = []; // Crear un arreglo para los pedidos del proveedor actual
     foreach ($resultado as $fila2) {
-        $pedidos[$proveedor][] = [
+        $pedidosProveedor[] = [
             "descripcion" => $fila2[0],
             "cantidad" => $fila2[1],
             "proveedor" => $fila2[2],
             "unidad" => $fila2[3],
         ];
     }
+    // Agregar pedidos al arreglo solo si no está vacío
+    if (!empty($pedidosProveedor)) {
+        $pedidos[$proveedor] = $pedidosProveedor;
+    }
 }
-// print_r($pedidos);
-
 // Devolvemos codificada la colección de las pedidos
-echo json_encode($pedidos);
+echo json_encode($pedidos, JSON_UNESCAPED_UNICODE);
 unset($conexion);
 ?>
