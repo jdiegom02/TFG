@@ -2,7 +2,6 @@
 body {
   filter: invert(100%);
   background-color: #333;
-  overflow-x: hidden;
   width: 100vw;
 }
 
@@ -10,6 +9,8 @@ body {
 .modal {
   filter: invert(100%);
 }
+
+#contenedor-popUpConfirmacion {}
 
 .btn-danger {
   filter: invert(100%);
@@ -32,12 +33,10 @@ body {
 }
 
 #iconobusqueda {
-  filter: invert(100%);
   border: 2px solid #a1a1a1;
   background-color: rgb(253, 253, 253);
 }
 
-#contenedor-ventanaEmergente {}
 
 #popUpEmergente-imagen {
   filter: invert(100%);
@@ -121,9 +120,7 @@ body {
   background: #333;
 }
 
-#modalAgregarProducto .modal-content input {
-  
-}
+#modalAgregarProducto .modal-content input {}
 
 /*FINAL MODAL AGREGAR PRODUCTO*/
 /*MODAL EDITAR PRODUCTO */
@@ -131,8 +128,9 @@ body {
   box-shadow: 0 8px 12px rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
-.modal-header .modal-title{
-}
+
+.modal-header .modal-title {}
+
 .card-header {
   filter: invert(100%);
   background: #696969;
@@ -192,7 +190,8 @@ button:active {
   transform: scale(0.95);
   /* Reduce ligeramente el tamaño al hacer clic */
 }
-.modal-content{
+
+.modal-content {
   background: #333;
   color: white;
 }

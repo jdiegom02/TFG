@@ -112,17 +112,13 @@ function agregarNuevoCampoResiduo(numero) {
 
     var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;', 'min': '0' });
 
-    var divAppend = crearElemento('div', undefined, { 'class': 'input-group-append' });
-
     var labelKilos = crearElemento('label', 'Kg', { 'for': 'kilos' });
 
     var selectDespegable = crearElemento('select', undefined, { 'class': 'form-control despegablesResiduos', 'id': 'despegableResiduos' + numero });
 
-    divAppend.appendChild(labelKilos);
-    divAppend.appendChild(selectDespegable);
-
     nuevoCampoResiduo.appendChild(inputResiduo);
-    nuevoCampoResiduo.appendChild(divAppend);
+    nuevoCampoResiduo.appendChild(labelKilos);
+    nuevoCampoResiduo.appendChild(selectDespegable);
 
     // Agregar el nuevo campo de entrada de residuos al contenedor
     document.getElementById('contenedorResiduos').appendChild(nuevoCampoResiduo);
@@ -166,7 +162,7 @@ function cargarDatosProductos() {
 
             $(document).on('click', '.btnEditar', function () {
                 var productoID2 = $(this).data('producto-id');
-            console.log(productoID2);
+                console.log(productoID2);
                 cargarResiduosPorProducto(productoID2);
 
                 var producto = data.find(prod => prod.producto_id == productoID2);
@@ -521,12 +517,12 @@ function insertarProducto(e) {
             // Cerrar el modal
             $('#modalAgregarProducto').modal('hide');
             $('#modalGestionarProducto').modal('hide');
-           
+
             setTimeout(function () {
                 //Recargar la pagina para actucalizar los productos
                 location.reload();
             }, 1900);
-            
+
         },
         error: function (xhr, status, error) {
             // Manejar errores de la solicitud AJAX

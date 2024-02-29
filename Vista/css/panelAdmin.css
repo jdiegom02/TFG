@@ -99,6 +99,45 @@ body {
     padding: 10px;
 }
 
+/*MODAL AGREGAR PRODUCTO */
+#modalAgregarProducto {}
+#modalAgregarProducto .input-group{
+    display: grid;
+    grid-template-columns: 7fr 2fr;
+    grid-template-rows: auto;
+
+}
+#modalAgregarProducto #contenedorResiduos .input-group {
+    display: grid;
+    grid-template-columns: 4fr 1fr 4fr ;
+    grid-template-rows: repeat(5,100%);
+    column-gap: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+#categoriaProducto{
+    width: 100%;
+}
+#modalAgregarProducto select{
+    width: 100%;
+}
+#modalAgregarProducto input {
+    width: 100%;
+    height: 100%;
+    background: #e3e3e3;
+    border: 0;
+    border-radius: 0;
+}
+
+#modalAgregarProducto select{height: 100%;
+    background: #e3e3e3;
+    border: 0;
+    border-radius: 0;}
+#modalAgregarProducto option{height: 100%;
+    background: #e3e3e3;
+    border: 0;
+    border-radius: 0;}
+
 /*MODAL EDITAR PRODUCTO */
 #editarProductoModal .modal-content {}
 
@@ -117,7 +156,9 @@ body {
     border-radius: 0;
 }
 
-#categoriaProductoModificar input {}
+#categoriaProductoModificar input {
+    width: 100%;
+}
 
 #editarProductoModal button {}
 
@@ -197,11 +238,9 @@ body {
 }
 
 .custom-select {
-    border-radius: 5px;
 }
 
-.input-group-append button {
-    border-radius: 5px;
+.input-group-append button {        
 }
 
 .btn-outline-secondary {
@@ -215,9 +254,7 @@ body {
     border-color: #6c757d;
 }
 
-.input-group-append button {
-    padding: 10px 20px;
-}
+.input-group-append button {}
 
 /*MODAL*/
 
@@ -319,6 +356,17 @@ body {
 button:active {
     transform: scale(0.95);
     /* Reduce ligeramente el tamaño al hacer clic */
+}
+
+.btnEditar {
+    background: #252525;
+    color: white;
+    width: 100%;
+}
+
+.btnEditar:hover {
+    background: #2b2b2b;
+    color: white;
 }
 
 @media screen and (max-width: 1000px) {

@@ -17,34 +17,34 @@
 <body>
 
     <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
-  <div class="container-fluid">
-    <div id="cabecera" class=" align-items-center">
-      <div id="datosUsuario" class=" ">
-        <div id="desplegablellamar" class=" align-items-center">
-          <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-          <h3 id="usuarioNombre"></h3>
+    <div class="container-fluid">
+        <div id="cabecera" class=" align-items-center">
+            <div id="datosUsuario" class=" ">
+                <div id="desplegablellamar" class=" align-items-center">
+                    <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+                    <h3 id="usuarioNombre"></h3>
+                </div>
+            </div>
+
+            <div id="titulo" class="">
+                <h3 id="titulo-pagina" class="">Pedir Productos</h3>
+            </div>
+
+            <div id="funcionesCabecera ">
+                <div id="iconoCarrito-container" class=" ">
+                    <div class="darkMode-container">
+                        <button class="darkMode-button" id="botonDarkMode">
+                            <img src="../img/iconos/darkModeSun.svg" alt="">
+                        </button>
+                    </div>
+
+                    <div class="">
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div id="titulo" class="">
-        <h3 id="titulo-pagina" class="">Pedir Productos</h3>
-      </div>
-
-      <div id="funcionesCabecera ">
-        <div id="iconoCarrito-container" class=" ">
-          <div class="darkMode-container">
-            <button class="darkMode-button" id="botonDarkMode">
-              <img src="../img/iconos/darkModeSun.svg" alt="">
-            </button>
-          </div>
-
-          <div class="">
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <!--FIN DE CABECERA-->
+    <!--FIN DE CABECERA-->
     <div id="desplegableFunciones" class="container">
     </div>
     <div class="contenido">
@@ -99,9 +99,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title" id="modalGestionarProductoLabel">Gestionar Productos</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                     </div>
                     <button type="button" class="btn añadirProductosButton" id="abrirModal">Añadir Productos</button>
 
@@ -131,8 +131,7 @@
                                     </ul>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button type="button" class="btn botonNegro"
-                                        data-producto-id="1">Editar</button>
+                                    <button type="button" class="btn botonNegro" data-producto-id="1">Editar</button>
                                 </div>
                             </div>
                         </div>
@@ -236,8 +235,8 @@
                                         <!-- Aquí se cargarán las opciones de categoría -->
                                     </select>
                                     <div class="input-group-append">
-                                        <button id="crearCategoria" class="btn btn-outline-secondary"
-                                            type="button">Nueva Categoría</button>
+                                        <button id="crearCategoria" class="btn btnEditar" type="button">Nueva
+                                            Categoría</button>
                                     </div>
                                 </div>
                             </div>
@@ -250,7 +249,7 @@
                                     </select>
                                     <div class="input-group-append">
                                         <button id="crearUnidad" data-toggle="modal" data-target="modalAnadirUnidad"
-                                            class="btn btn-outline-secondary" type="button"> Nueva Unidad </button>
+                                            class="btn btnEditar type=" button"> Nueva Unidad </button>
                                     </div>
                                 </div>
                             </div>
@@ -259,11 +258,10 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control input-sm claseResiduos" id="residuos"
                                         placeholder="Residuos  1" style="max-width: 100px;" min="0">
-                                    <div class="input-group-append">
-                                        <label for="kilos">Kg</label>
-                                        <select id="despegableResiduos" class="form-control despegablesResiduos">
-                                        </select>
-                                    </div>
+                                    <label for="kilos">Kg</label>
+                                    <select id="despegableResiduos" class="form-control despegablesResiduos">
+                                    </select>
+                                    
                                 </div>
                             </div>
                             <button id="agregarResiduo" type="button" class="btn rounded-circle">
@@ -311,7 +309,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="btnanadirUsuario" class="btn botonNegro">Añadir Usuario</button>
-                        <button type="button" class="btn btn-danger" id="btncerrarUsuario" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-danger" id="btncerrarUsuario"
+                            data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -327,7 +326,7 @@
                         <h5 class="modal-title" id="modalCambiarContrasenaLabel">Cambiar Contraseña</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>   
+                        </button>
                     </div>
                     <div class="modal-body">
                         <form id="formCambiarContrasena">
@@ -564,7 +563,8 @@
                         </div>
                         <div class="form-group">
                             <label for="cantidadResiduo">Cantidad del residuo</label>
-                            <input type="number" class="form-control" id="cantidadResiduo" name="cantidadResiduo" min="0">
+                            <input type="number" class="form-control" id="cantidadResiduo" name="cantidadResiduo"
+                                min="0">
                         </div>
                         <input type="hidden" id="idProductoModal" name="idProductoModal">
                     </form>
@@ -582,24 +582,25 @@
     <!-- MODAL AÑADIR RESIDUO NUEVO A UN PRODUCTO  FIN-->
 
 
-<!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR -->
-<div class="modal fade" id="noSePuedeModificar" tabindex="-1" role="dialog" aria-labelledby="noSePuedeModificarLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Aviso</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h1>NO SE PUEDE MODIFICAR</h1>
-                <h2>El producto está asociado a un pedido anterior.</h2>
+    <!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR -->
+    <div class="modal fade" id="noSePuedeModificar" tabindex="-1" role="dialog"
+        aria-labelledby="noSePuedeModificarLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aviso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h1>NO SE PUEDE MODIFICAR</h1>
+                    <h2>El producto está asociado a un pedido anterior.</h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR FIN-->
+    <!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR FIN-->
 
 
     <!-- Scripts -->

@@ -37,8 +37,9 @@ function agregarEventListeners() {
 
 function abrirCarrito(event) {
   let divCarrito = document.getElementById("carritoDerecha");
-  let overlay = document.getElementById("overlay");
-  overlay.style.display = "block";
+  let overlay = document.getElementById("overlayCarrito")
+  console.log(overlay)
+  overlay.style.display="block";
   divCarrito.style.display = "block";
   document.body.style.overflow = 'hidden';
   divCarrito.innerHTML = "";
@@ -50,7 +51,7 @@ function abrirCarrito(event) {
 
 function cerrarCarrito() {
   let divCarrito = document.getElementById("carritoDerecha");
-  let overlay = document.getElementById("overlay");
+  let overlay = document.getElementById("overlayCarrito")
   divCarrito.style.right = -divCarrito.offsetWidth + 'px';
   overlay.style.display = 'none';
   document.body.style.overflow = '';
@@ -143,9 +144,11 @@ function añadirProducto(event) {
 }
 
 function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad, imagenRelacionada) {
-  let overlay = document.getElementById("overlay");
-  let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion" });
-  let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion" });
+  let overlay = crearElemento("div", undefined, { id: "overlay1" })
+  document.body.style.overflow = "hidden";
+  let scrollPixel = window.pageYOffset !== undefined ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+  let contenedorPopUp = crearElemento("div", undefined, { id: "contenedor-popUpConfirmacion", style: "position:absolute;top:" + scrollPixel + "px;" });
+  let popUp = crearElemento("div", undefined, { id: "popUpConfirmacion", style: "" });
   popUp.appendChild(crearElemento("h2", "Datos del Pedido", { id: "popUpConfirmacion-titulo" }));
   popUp.appendChild(crearElemento("h4", "Deseas pedir: " + cantidad + " " + unidad + "(s) de " + nombre, { id: "popUpConfirmacion-descripcion" }));
   let divComentario = (crearElemento("div", undefined, { class: "form-floating" }))
@@ -164,10 +167,11 @@ function crearPopUpConfirmacion(identificadorProducto, nombre, cantidad, unidad,
   botonCancelarProducto.addEventListener("click", cancelarProducto);
   contenedorPopUp.appendChild(popUp);
   document.body.appendChild(contenedorPopUp);
+  document.body.appendChild(overlay);
 }
 
 function confirmarProducto(event) {
-  console.log(event.target)
+  document.body.style.overflow = "auto";
   let observacion = document.getElementById("comentarioPedido").value;
   let identificador = event.target.getAttribute("identificador")
   let cantidadAtributo = parseInt(this.getAttribute("cantidad"));
@@ -193,13 +197,14 @@ function confirmarProducto(event) {
     sessionStorage.setItem(nombreUsuario, JSON.stringify(miArray));
     // aparecerVentanaEmergente("Se actualizó el carrito:", "Pediste " + cantidadAtributo + " " + this.getAttribute("unidad") + " de " + this.getAttribute("nombre") + " más", "../assets/checkmark.gif");
   }
-  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+  document.getElementById("contenedor-popUpConfirmacion").parentNode.removeChild(document.getElementById("contenedor-popUpConfirmacion"));
   actualizarContadorCarrito()
   agregarCheck()
 
 }
-function cancelarProducto(params) {
-  document.getElementById('contenedor-popUpConfirmacion').parentNode.removeChild(document.getElementById('contenedor-popUpConfirmacion'));
+function cancelarProducto(event) {
+  document.body.style.overflow = "auto";
+  document.getElementById("contenedor-popUpConfirmacion").parentNode.removeChild(document.getElementById("contenedor-popUpConfirmacion"));
 }
 function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada) {
   let almacenar = ([nombre, parseInt(cantidad), unidad, observacion, imagenRelacionada]);
@@ -213,7 +218,7 @@ function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada
   }
 }
 function aparecerVentanaEmergente(titulo, descripcion, imagenMuestra) {
-  let overlay = document.getElementById("overlay2");
+  let overlay = document.getElementById("overlayVentanaEmergente");
   overlay.style.display = "block";
   let contenedorVentanaEmergente = (crearElemento("div", undefined, { id: "contenedor-ventanaEmergente", class: "col-xl-12" }))
   document.body.appendChild(contenedorVentanaEmergente);
@@ -244,7 +249,7 @@ function desaparecerElementoFadeOut(elemento) {
     if (opacidad <= 0.1) {
       clearInterval(intervalo);
       elementoDesaparecer.style.display = "none";
-      let overlay = document.getElementById("overlay2");
+      let overlay = document.getElementById("overlayVentanaEmergente");
       overlay.style.display = "none";
       elementoDesaparecer.parentNode.removeChild(elementoDesaparecer), 1000
     }
