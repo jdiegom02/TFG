@@ -336,7 +336,7 @@ function modificarProducto() {
                 $('#noSePuedeModificar').modal('show');
                 setTimeout(function() {
                     $('#noSePuedeModificar').modal('hide');
-                }, 1500); 
+                }, 2500); 
             }else {console.log("si"); }
             
             $('#editarProductoModal').modal('hide');
