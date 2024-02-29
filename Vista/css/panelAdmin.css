@@ -107,7 +107,8 @@ body {
     background: rgb(0, 0, 0, 0.20);
     border: none;
     border-radius: 0;
-font-weight: bold;}
+    font-weight: bold;
+}
 
 #editarProductoModal .modal-content select {
     outline: none;
@@ -116,12 +117,9 @@ font-weight: bold;}
     border-radius: 0;
 }
 
-#categoriaProductoModificar input{  
+#categoriaProductoModificar input {}
 
-}
-#editarProductoModal button{
-    
-}
+#editarProductoModal button {}
 
 .container {
     margin-top: 20px;
@@ -409,5 +407,14 @@ button:active {
     /* Centrar el modal horizontalmente y darle un poco de margen superior e inferior */
 }
 
+.botonNegro {
+    background: #000;
+    color: white;
+}
+
+.botonNegro:hover {
+    background: #2e2e2e;
+    color: white;
+}
 
 /*MODAL DE NO SE PUEDE MODIFICAR EL PRODUCTO FIN*/

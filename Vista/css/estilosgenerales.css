@@ -78,6 +78,16 @@ body {
     align-items: center;
 }
 
+.botonNegro {
+    background: #000;
+    color: white;
+}
+
+.botonNegro:hover {
+    background: #2e2e2e;
+    color: white;
+}
+
 #botonDarkMode {
     background: none;
     border: none;
@@ -108,10 +118,11 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-    #cabecera h3{
+    #cabecera h3 {
         font-size: 18px;
     }
-    #cabecera img{
+
+    #cabecera img {
         width: 50px;
     }
 }
