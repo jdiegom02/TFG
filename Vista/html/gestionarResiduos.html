@@ -2,18 +2,19 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de residuos</title>
-    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <!--script src="../js/funcionesVisualesGenerales.js"></script-->
-    <link rel="stylesheet" href="../css/estilosgenerales.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de residuos</title>
+  <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <!--script src="../js/funcionesVisualesGenerales.js"></script-->
+  <link rel="stylesheet" href="../css/estilosgenerales.css">
+  <link rel="stylesheet" href="../css/gestionarResiduos.css">
 </head>
 
 <body>
-      <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
+  <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
   <div class="container-fluid">
     <div id="cabecera" class=" align-items-center">
       <div id="datosUsuario" class=" ">
@@ -42,50 +43,54 @@
     </div>
   </div>
   <!--FIN DE CABECERA-->
-    <div id="desplegableFunciones" class="container">
+  <div id="desplegableFunciones" class="container">
+  </div>
+  <div class="container">
+
+    <!-- Contenido principal -->
+    <div class="form-group row">
+      <div class="col-sm-6">
+        <label for="mes">Mes: </label>
+        <select id="mes" class="form-control form-control-sm">
+          <option id="01" value="1">Enero</option>
+          <option id="02" value="2">Febrero</option>
+          <option id="03" value="3">Marzo</option>
+          <option id="04" value="4">Abril</option>
+          <option id="05" value="5">Mayo</option>
+          <option id="06" value="6">Junio</option>
+          <option id="07" value="7">Julio</option>
+          <option id="08" value="8">Agosto</option>
+          <option id="09" value="9">Septiembre</option>
+          <option id="10" value="10">Octubre</option>
+          <option id="11" value="11">Noviembre</option>
+          <option id="12" value="12">Diciembre</option>
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <label for="anio">Año: </label>
+        <select id="anio" class="form-control form-control-sm">
+
+        </select>
+      </div>
     </div>
-    <div class="container">
 
-        <!-- Contenido principal -->
-        <div class="form-group row">
-            <div class="col-sm-6">
-                <select id="mes" class="form-control form-control-sm">
-                    <option id="01" value="1">Enero</option>
-                    <option id="02" value="2">Febrero</option>
-                    <option id="03" value="3">Marzo</option>
-                    <option id="04" value="4">Abril</option>
-                    <option id="05" value="5">Mayo</option>
-                    <option id="06" value="6">Junio</option>
-                    <option id="07" value="7">Julio</option>
-                    <option id="08" value="8">Agosto</option>
-                    <option id="09" value="9">Septiembre</option>
-                    <option id="10" value="10">Octubre</option>
-                    <option id="11" value="11">Noviembre</option>
-                    <option id="12" value="12">Diciembre</option>
-                </select>
-            </div>
-            <div class="col-sm-6">
-                <select id="anio" class="form-control form-control-sm">
-
-                </select>
-            </div>
-        </div>
-
-        <div id="tabla-residuos"></div>
+    <div id="tabla-residuos"></div>
 
 
 
-    </div>
-    <button id="btnGenerarPDF" class="btn botonNegro mt-3">Generar PDF</button>
+  </div>
+  <div class="container d-flex justify-content-center">
+    <button id="btnGenerarPDF" class="btn botonNegro mt-3 col-sm-5">Generar PDF</button>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <!-- Script personalizado para el panel de administración -->
-    <script src="../../Controlador/js/funcionesControlador.js"></script>
-    <script src="../js/funcionesVisualesGenerales.js"></script>
-    <script src="../../Vista/js/gestionarResiduos.js"></script>
+  </div>
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <!-- Script personalizado para el panel de administración -->
+  <script src="../../Controlador/js/funcionesControlador.js"></script>
+  <script src="../js/funcionesVisualesGenerales.js"></script>
+  <script src="../../Vista/js/gestionarResiduos.js"></script>
 
 </body>
 

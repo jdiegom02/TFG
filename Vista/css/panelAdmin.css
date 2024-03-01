@@ -100,27 +100,34 @@ body {
 }
 
 /*MODAL AGREGAR PRODUCTO */
-#modalAgregarProducto {}
-#modalAgregarProducto .input-group{
+#modalAgregarProducto .modal-header h5 {
+    color: #000;
+}
+
+#modalAgregarProducto .input-group {
     display: grid;
     grid-template-columns: 7fr 2fr;
     grid-template-rows: auto;
 
 }
+
 #modalAgregarProducto #contenedorResiduos .input-group {
     display: grid;
-    grid-template-columns: 4fr 1fr 4fr ;
-    grid-template-rows: repeat(5,100%);
+    grid-template-columns: 4fr 1fr 4fr;
+    grid-template-rows: repeat(5, 100%);
     column-gap: 20px;
     margin-bottom: 10px;
     font-size: 20px;
 }
-#categoriaProducto{
+
+#categoriaProducto {
     width: 100%;
 }
-#modalAgregarProducto select{
+
+#modalAgregarProducto select {
     width: 100%;
 }
+
 #modalAgregarProducto input {
     width: 100%;
     height: 100%;
@@ -129,14 +136,19 @@ body {
     border-radius: 0;
 }
 
-#modalAgregarProducto select{height: 100%;
+#modalAgregarProducto select {
+    height: 100%;
     background: #e3e3e3;
     border: 0;
-    border-radius: 0;}
-#modalAgregarProducto option{height: 100%;
+    border-radius: 0;
+}
+
+#modalAgregarProducto option {
+    height: 100%;
     background: #e3e3e3;
     border: 0;
-    border-radius: 0;}
+    border-radius: 0;
+}
 
 /*MODAL EDITAR PRODUCTO */
 #editarProductoModal .modal-content {}
@@ -155,14 +167,23 @@ body {
     border: none;
     border-radius: 0;
 }
-#categoriaProductoModificar{
+
+#editarProductoModal .modal-header h5 {
+    color: #fff;
+}
+
+.modal-header h5 {
+    color: #fff;
+}
+
+/* #categoriaProductoModificar{
     display: grid;
-    grid-template-columns: 1fr 6fr; /* El primer elemento ocupa 1 parte y el segundo 6 partes */
-    grid-gap: 10px; /* Espacio entre elementos */
+    grid-template-columns: 1fr 6fr; 
+    grid-gap: 10px; 
 }
 #categoriaProductoModificar input {
     width: 100%;
-}
+} */
 
 #editarProductoModal button {}
 
@@ -241,11 +262,9 @@ body {
     font-weight: bold;
 }
 
-.custom-select {
-}
+.custom-select {}
 
-.input-group-append button {        
-}
+.input-group-append button {}
 
 .btn-outline-secondary {
     color: #6c757d;
@@ -349,7 +368,9 @@ body {
 /*FIN MODAL GESTIONAR USUARIOS*/
 
 /* MODAL EDITAR USUARIO*/
-#modalEditar {}
+.modal-header h5 {
+    color: #000;
+}
 
 #modalEditar .table {
     font-size: 3em;

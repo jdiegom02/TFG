@@ -14,11 +14,9 @@
 .modal-content {
     border-radius: 10px;
 }
-
 /* Estilo del encabezado del modal */
-.modal-header {
-    background-color: #007bff; /* Color de fondo */
-    color: #fff; /* Color del texto */
+#gestionarProveedores .modal-header {
+    color: #000000; /* Corgb(255, 255, 255) texto */
     border-bottom: none; /* Elimina el borde inferior */
     border-radius: 10px 10px 0 0; /* Ajusta la esquina superior */
 }
