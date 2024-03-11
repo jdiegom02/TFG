@@ -56,13 +56,16 @@ function mostrarPedidos(pedidos) {
             <td class="editable observacion-editable">${pedido.observaciones}</td>
             <td>${pedido.nombre_usuario}</td>
             <td>
-                <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
+                <button class="btn btn-danger eliminar" id=pedido${pedido.id}>Eliminar</button>
             </td>
         `;
         tablaPedidosBody.appendChild(row);
         cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
         cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
         document.querySelector("#pedido" + pedido.id).addEventListener('click', function () {
+            $('#confirmacionEliminar').modal('show');
+        });
+        document.querySelector("#eliminarPedido").addEventListener("click", function () {
             eliminarSolicitud(pedido.id);
         });
     });
@@ -158,6 +161,7 @@ function guardarCambiosEnCelda(cell, columna) {
 
 function eliminarPedido(idPedido) {
     // Aquí puedes implementar la lógica para eliminar el pedido con el ID proporcionado
+    $('#modalEliminar').modal('show');
     console.log('Eliminar pedido con ID:', idPedido);
 }
 
@@ -204,10 +208,10 @@ function mostrarPedidosValidados() {
         url: '../../Controlador/php/pedidoMostrarTramitados.php',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             construirTablaPedidos(data);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error al obtener los pedidos:', error);
         }
     });
@@ -227,8 +231,8 @@ function construirTablaPedidos(pedidos) {
     tabla += '<tbody>';
 
     // Recorrer los datos de los pedidos y construir filas
-    $.each(pedidos, function(proveedor, productos) {
-        $.each(productos, function(index, producto) {
+    $.each(pedidos, function (proveedor, productos) {
+        $.each(productos, function (index, producto) {
             tabla += '<tr>';
             tabla += '<td>' + proveedor + '</td>';
             tabla += '<td>' + producto.descripcion + '</td>';
