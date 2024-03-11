@@ -46,7 +46,7 @@ function mostrarPedidos(pedidos) {
         var row = document.createElement('tr');
         row.dataset.idPedido = pedido.id;
         row.innerHTML = `
-            <td><input type="checkbox" class="form-check-input"></td>
+            <td class="pl-5"><input type="checkbox" class="form-check-input"></td>
             <td>${pedido.fecha}</td>
             <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
             <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
