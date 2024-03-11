@@ -39,11 +39,10 @@ function principal(e) {
 
 
 function mostrarPedidos(pedidos) {
-    // console.log(pedidos);
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
+
     pedidos.forEach(function (pedido) {
-        console.log(pedido);
         var row = document.createElement('tr');
         row.dataset.idPedido = pedido.id;
         row.innerHTML = `
@@ -56,20 +55,26 @@ function mostrarPedidos(pedidos) {
             <td class="editable observacion-editable">${pedido.observaciones}</td>
             <td>${pedido.nombre_usuario}</td>
             <td>
-                <button class="btn btn-danger eliminar" id=pedido${pedido.id}>Eliminar</button>
+                <button class="btn btn-danger eliminar" data-idPedido="${pedido.id}" data-toggle="modal" data-target="#confirmacionEliminar">Eliminar</button>
             </td>
         `;
         tablaPedidosBody.appendChild(row);
-        cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
-        cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
-        document.querySelector("#pedido" + pedido.id).addEventListener('click', function () {
-            $('#confirmacionEliminar').modal('show');
-        });
-        document.querySelector("#eliminarPedido").addEventListener("click", function () {
-            eliminarSolicitud(pedido.id);
+
+        // Almacenar temporalmente el ID del pedido cuando se presiona el botón "Eliminar"
+        row.querySelector(".eliminar").addEventListener("click", function () {
+            var idPedido = pedido.id;
+            console.log(idPedido);
+
+            document.querySelector("#eliminarPedido").addEventListener("click", function () {
+                eliminarSolicitud(idPedido);
+                $('#confirmacionEliminar').modal('toggle');
+
+            })
+
         });
     });
 }
+
 
 function cargarUnidades(idPedido, unidad) {
     // Encontrar la fila del pedido por su ID
@@ -161,7 +166,7 @@ function guardarCambiosEnCelda(cell, columna) {
 
 function eliminarPedido(idPedido) {
     // Aquí puedes implementar la lógica para eliminar el pedido con el ID proporcionado
-    $('#modalEliminar').modal('show');
+    $('#modalEliminar').modal('toggle');
     console.log('Eliminar pedido con ID:', idPedido);
 }
 
