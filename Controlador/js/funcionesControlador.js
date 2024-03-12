@@ -141,22 +141,31 @@ function addProveedor(datos) {
 }
 
 function verificacionPassword() {
-  let correo = document.querySelector("#correo");
+  let correo = $("#correoRecuperacion").val();
+  console.log(correo);
   $.ajax({
     url: '../../Controlador/php/verificarPassword.php',
     type: 'POST',
-    data: correo,
+    data: { correo: correo },
     success: function (data) {
-      console.log(data);
+      $("#modalRecuperarContraseña").modal('toggle');
+      $("#modalCodigoVerificacion").modal('toggle');
+      document.querySelector("#verificarCodigo").addEventListener("click", function () {
+        if ($("#codigoVerificacion").val() === data) {
+          $("#modalCodigoVerificacion").modal('toggle');
+          $("#contenedor").hide();
+          $("#contenedor2").addClass("visible");
+        }
+
+      })
+
     },
     error: function (xhr, status, error) {
       console.error('Error al recibir codigo de verificacion:', error);
     },
-    complete: function () {
-      location.reload();
-    },
-  })
+  });
 }
+
 
 
 function generarPDFPedidos() {

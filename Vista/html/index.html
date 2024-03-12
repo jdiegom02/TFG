@@ -18,6 +18,7 @@
     ></script>
     <link rel="stylesheet" href="../css/styles.css" />
     <script src="../js/login.js"></script>
+    <script src="../../Controlador/js/funcionesControlador.js"></script>
   </head>
   <body>
     <div class="modal" tabindex="-1" role="dialog" id="modalerror">
@@ -44,7 +45,7 @@
         <div class="contenedor-imagen">
           <img class="imagen" src="../img/logo/LogoFF.png" alt="imagenF" />
         </div>
-        <form action="" method="post" id="formulario">
+        <form action="" method="post" class="formulario">
           <h1>Iniciar Sesión</h1>
           <div class="campos">
             <input
@@ -62,6 +63,31 @@
           </div>
           <a href="#" id="login" class="boton-login">Iniciar Sesión</a>
           <a href="#" id="recuperar-contraseña" class="btn btn-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalRecuperarContraseña">¿Olvidaste tu contraseña?</a>
+        </form>
+      </div>
+    </div>
+    <div id="contenedor2">
+      <div id="contenedor-login">
+        <div class="contenedor-imagen">
+          <img class="imagen" src="../img/logo/LogoFF.png" alt="imagenF" />
+        </div>
+        <form action="" method="post" class="formulario">
+          <h1>Cambiar Contraseña</h1>
+          <div class="campos">
+            <input
+              type="password"
+              id="newPassword"
+              class="campo"
+              placeholder="Nueva contraseña"
+            />
+            <input
+              type="password"
+              id="confirmPassword"
+              class="campo"
+              placeholder="Repetir contraseña"
+            />
+          </div>
+          <a href="#" id="guardarCambios" class="boton-login">Guardar Cambios</a>
         </form>
       </div>
     </div>
@@ -84,7 +110,30 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Enviar</button>
+        <button type="button" class="btn btn-primary" id="cambioPassword">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCodigoVerificacion" tabindex="-1" aria-labelledby="modalCodigoVerificacionLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCodigoVerificacionLabel">Código de Verificación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="codigoVerificacion" class="form-label">Código de Verificación:</label>
+            <input type="text" class="form-control" id="codigoVerificacion" placeholder="Introduce tu código de verificación...">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="verificarCodigo">Verificar</button>
       </div>
     </div>
   </div>

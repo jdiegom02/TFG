@@ -4,22 +4,26 @@ $codigo = str_pad($codigo, 5, 0, STR_PAD_LEFT);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require './Server/PHPMailer/PHPMailer-master/src/Exception.php';
-require './Server/PHPMailer/PHPMailer-master/src/PHPMailer.php';
-require './Server/PHPMailer/PHPMailer-master/src/SMTP.php';
+require("../../Modelo/php/BD.php");
+
+require './PHPMailer/PHPMailer-master/src/Exception.php';
+require './PHPMailer/PHPMailer-master/src/PHPMailer.php';
+require './PHPMailer/PHPMailer-master/src/SMTP.php';
 
 // Recoge los datos del formulario
 $email = "no.reply.bonappetit@gmail.com";
-$mensaje = "Esto en un mensaje de prueba";
 $destinatario = $_POST["correo"];
+
+$conexion = new BD("bonAppetit", "admin", "1234");
+$conexion->realizarModificacion("UPDATE usuarios set cambioPassword= $codigo where email like '$destinatario'");
+
 // Crea una instancia de PHPMailer
 $mail = new PHPMailer(true);
 
 try {
     // Configura el servidor SMTP de Gmail
-    //Server settings                              
+    // Server settings                              
     $mail->CharSet = "UTF-8";
-    $mail->SMTPDebug = 2;
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';                       //Set the SMTP server to send through (google)
     $mail->SMTPAuth = true;                                   //Enable SMTP authentication
@@ -39,7 +43,7 @@ try {
     $mail->AltBody = 'Código de verificación: ' . $codigo;
 
     $mail->send();
-
+    echo $codigo;
     // echo 'El mensaje se envió correctamente';
 } catch (Exception $e) {
     echo "Error al enviar el mensaje: {$mail->ErrorInfo}";
