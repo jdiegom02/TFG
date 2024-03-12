@@ -71,7 +71,7 @@
         </div>
     </div>
 
-<!-- MODAL DEL PEDIDO SEMANAL -->
+    <!-- MODAL DEL PEDIDO SEMANAL -->
 
 <div class="modal fade" id="modalPedidoSemanal" tabindex="-1" role="dialog"
             aria-labelledby="modalPedidoSemanalLabel" aria-hidden="true">
@@ -93,13 +93,31 @@
                 </div>
             </div>
         </div>
+    </div>
 
-<!-- MODAL DEL PEDIDO SEMANAL FINAL-->
+    <!-- MODAL DEL PEDIDO SEMANAL FINAL-->
+
+    <div class="modal fade" id="confirmacionEliminar" tabindex="-1" role="dialog"
+        aria-labelledby="confirmacionEliminarLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header flex-column align-items-center">
+                    <h5 class="modal-title" id="confirmacionEliminarLabel">Estás seguro de eliminar el pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-footer align-items-center justify-content-center ">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" id="eliminarPedido">Si </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
-
-   
     <div id="contenedorBotones">
         <button id="btnValidarPedidos" class="btn botonNegro btn-lg btn-block mt-4">Validar Pedidos</button>
         <button id="btnRealizarPedidos" class="btn botonNegro btn-lg btn-block mt-4">Pedido Semanal</button>
