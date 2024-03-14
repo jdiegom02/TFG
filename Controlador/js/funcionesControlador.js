@@ -155,6 +155,25 @@ function verificacionPassword() {
           $("#modalCodigoVerificacion").modal('toggle');
           $("#contenedor").hide();
           $("#contenedor2").addClass("visible");
+          document.querySelector("#guardarCambios").addEventListener("click", function () {
+            let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
+            if (validarPass.test($("#newPassword").val()) && validarPass.test($("#confirmPassword").val()) && $("#confirmPassword").val() == $("#newPassword").val()) {
+              $.ajax({
+                url: '../../Controlador/php/guardarPassword.php',
+                type: 'POST',
+                data: { pass: $("#newPassword").val() },
+                success: function (data) {
+                  location.reload();
+                },
+                error: function (xhr, status, error) {
+                  console.error('Error al recibir codigo de verificacion:', error);
+                },
+              });
+            }
+            else {
+              crearMensajeError("Las contraseñas no coinciden");
+            }
+          })
         }
 
       })
