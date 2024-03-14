@@ -161,7 +161,7 @@ function verificacionPassword() {
               $.ajax({
                 url: '../../Controlador/php/guardarPassword.php',
                 type: 'POST',
-                data: { pass: $("#newPassword").val() },
+                data: { pass: $("#newPassword").val(), correo: correo },
                 success: function (data) {
                   location.reload();
                 },
