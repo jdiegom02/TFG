@@ -7,21 +7,52 @@ document.addEventListener("DOMContentLoaded", () => {
             location.href = "../html/index.html";
         } else {
             if (valor.esadmin) {
+                crearMenuOpciones(valor.nombre, valor.esadmin);
                 document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
-                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
+                // document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
+                // document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
+                // document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
                 usuarioIniciado = valor.nombre;
-                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
+                // document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
             } else {
                 //location.href = "../html/pedidos.html";
             }
-            mostrarDatosUsuario(valor.nombre, valor.esadmin)
+            // mostrarDatosUsuario(valor.nombre, valor.esadmin)
+            document.getElementById('botonMenuOpciones').addEventListener("click", abrirCerrarMenuOpciones);
+
         }
     });
+
     actualizarModoOscuro();
 
 });
+function crearMenuOpciones(nombre, esadmin) {
+    document.getElementById("menuOpciones").innerHTML = "";
+    console.log("entro")
+
+    mostrarOpcionesUsuario(nombre, esadmin);
+    let botonCerrarMenu = (crearElemento("input", undefined, { type: "button", id: "botonCerrarMenuOpciones" }))
+    botonCerrarMenu.addEventListener("click", abrirCerrarMenuOpciones)
+    document.getElementById("menuOpciones").appendChild(botonCerrarMenu)
+}
+function abrirCerrarMenuOpciones(event) {
+    document.getElementById("menuOpciones").classList.toggle("abrirCerrarMenuOpciones");
+}
+function mostrarOpcionesUsuario(nombreUsuario, esAdministrador) {
+    document.getElementById("")
+    let docActual = window.location.href;
+    let nombreArchivo = docActual.substring(docActual.lastIndexOf("/") + 1);
+    if (nombreArchivo == "pedidos.html") {
+        console.log(esAdministrador)
+        if (esAdministrador) {
+            crearOpcionAdministrar(esAdministrador);
+        }
+    } else {
+        crearBotonRegresar();
+        document.getElementById("titulo-pagina").innerHTML = "Panel de Administracion"
+    }
+    return
+}
 /* DESPLEGABLE DE USUARIO */
 function mostrarDatosUsuario(nombre, administrador) {
     document.getElementById("usuarioNombre").innerHTML = nombre;
@@ -49,7 +80,26 @@ function mostrarDatosUsuario(nombre, administrador) {
         style: "width:90%;margin:10px"
     });
     botonCerrarSesion.addEventListener("click", cerrarSesion);
+    crearBotonHistorial(nombre)
     document.querySelector("#desplegableFunciones").appendChild(botonCerrarSesion);
+}
+function crearBotonHistorial(nombreUsuario) {
+    let botonHistorial = crearElemento("input", undefined, {
+        type: "button",
+        id: "historial",
+        class: "btn",
+        value: "Historial",
+        style: "width:90%;margin:10px;border:1px black solid"
+    })
+    botonHistorial.addEventListener("click", () => {
+        recogerHistorial(nombreUsuario);
+    })
+    document.querySelector("#desplegableFunciones").appendChild(botonHistorial);
+}
+function mostrarHistorialUsuario(pedidos) {
+    pedidos.forEach(pedido => {
+        console.log(pedido)
+    });
 }
 function crearBotonAdministrar(admin) {
     console.log(admin)
@@ -58,7 +108,7 @@ function crearBotonAdministrar(admin) {
         id: "administrar",
         class: "btn",
         value: "Administrar",
-        style: "width:90%;margin:10px"
+        style: "width:90%;margin:10px;"
     });
     botonAdministrar.addEventListener("click", () => {
         location.href = "../html/panelAdmin.html";

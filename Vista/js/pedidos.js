@@ -30,9 +30,10 @@ function agregarEventListeners() {
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos);
   document.getElementById("searchInput").addEventListener("input", mostrarProductos);
   document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
-  document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-  document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-  document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
+  
+  // document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
+  // document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
+  // document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
 }
 
 function abrirCarrito(event) {
@@ -200,7 +201,6 @@ function confirmarProducto(event) {
   document.getElementById("contenedor-popUpConfirmacion").parentNode.removeChild(document.getElementById("contenedor-popUpConfirmacion"));
   actualizarContadorCarrito()
   agregarCheck()
-
 }
 function cancelarProducto(event) {
   document.body.style.overflow = "auto";

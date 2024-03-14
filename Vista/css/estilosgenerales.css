@@ -23,6 +23,23 @@ body {
     grid-template-columns: 1fr 6fr 1fr;
 }
 
+/*ESTILOS DE MENU LATERAL OPCIONES*/
+#menuOpciones {
+    width: 400px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -400px;
+    background-color: white;
+    z-index: 1000;
+    transition: transform 0.5s ease;
+}
+
+.abrirCerrarMenuOpciones {
+    transform: translateX(400px);
+}
+
+/*FIN DE ESTILOS MENU LATERAL OPCONES*/
 #desplegablellamar {
     display: flex;
     align-items: center;
