@@ -169,7 +169,7 @@ function verificacionPassword() {
                   console.error('Error al recibir codigo de verificacion:', error);
                 },
               });
-            }else {
+            } else {
               crearMensajeError("Las contraseñas no coinciden");
             }
           })
