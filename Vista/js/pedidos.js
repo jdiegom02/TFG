@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
       location.href = "../html/index.html";
     } else {
       if (valor.esadmin) {
-        mostrarDatosUsuario(valor.nombre, valor.esadmin);
       }
       nombreUsuario = valor.nombre;
       if (!verificarSessionStorage(nombreUsuario)) {
@@ -30,29 +29,55 @@ function agregarEventListeners() {
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos);
   document.getElementById("searchInput").addEventListener("input", mostrarProductos);
   document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
-  
+
   // document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
   // document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
   // document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
 }
+function abrirPopupHistorial(event) {
+  document.getElementById("contenedorpopupHistorial").style.display = 'block';
+  showModal('detallesHistorial', 'popup-contenedor')
+}
+function showModal(openButton, modalContent) {
+  let overlay = document.getElementById("overlayGeneral");
+  overlay.style.display = "block";
+  document.body.style.overflow = 'hidden';
+  overlay.addEventListener("click", closeModal);
+  let openBtn = document.getElementById(openButton),
+    modalContainer = document.getElementById(modalContent)
+  if (openBtn && modalContainer) {
+    modalContainer.classList.add('mostrar-popup')
+  }
+  let closeBtn = document.querySelectorAll('.popup-cerrar')
+  closeBtn.forEach(c => c.addEventListener('click', closeModal))
+}
+
+function closeModal() {
+  let modalContainer = document.getElementById('popup-contenedor')
+  modalContainer.classList.remove('mostrar-popup')
+  document.getElementById("contenedorpopupHistorial").style.display = 'none ';
+  document.body.style.overflow = '';
+  let overlay = document.getElementById("overlayGeneral");
+  overlay.style.display = "none";
+}
 
 function abrirCarrito(event) {
   let divCarrito = document.getElementById("carritoDerecha");
-  let overlay = document.getElementById("overlayCarrito")
-  console.log(overlay)
-  overlay.style.display="block";
+  let overlay = document.getElementById("overlayGeneral")
+  overlay.style.display = "block";
   divCarrito.style.display = "block";
   document.body.style.overflow = 'hidden';
   divCarrito.innerHTML = "";
   divCarrito.style.top = 0;
   divCarrito.style.right = 0;
   crearElementosCarrito(divCarrito);
-  overlay.addEventListener('click', cerrarCarrito);
+  overlay.addEventListener('click', function () {
+    cerrarDiv("carritoDerecha")
+  });
 }
-
-function cerrarCarrito() {
-  let divCarrito = document.getElementById("carritoDerecha");
-  let overlay = document.getElementById("overlayCarrito")
+function cerrarDiv(divID) {
+  let divCarrito = document.getElementById(divID);
+  let overlay = document.getElementById("overlayGeneral")
   divCarrito.style.right = -divCarrito.offsetWidth + 'px';
   overlay.style.display = 'none';
   document.body.style.overflow = '';
@@ -64,7 +89,9 @@ function crearElementosCarrito(divCarrito) {
   let cerrarBoton = crearElemento("button", undefined, { id: "cerrarBoton", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
   let iconoCerrar = crearElemento("img", undefined, { "src": "../assets/iconoCerrar.svg" });
   cerrarBoton.appendChild(iconoCerrar);
-  cerrarBoton.addEventListener("click", cerrarCarrito)
+  cerrarBoton.addEventListener("click", function () {
+    cerrarDiv("carritoDerecha")
+  })
   cabecera.appendChild(cerrarBoton);
   cabecera.appendChild(crearElemento("h2", "Carrito de Compras"));
   contenedorCarrito.appendChild(cabecera);
@@ -266,7 +293,7 @@ function pedirTodo(event) {
     insertarEnSolicitudes(JSON.parse(sessionStorage.getItem(nombreUsuario)));
     sessionStorage.setItem(nombreUsuario, "[]");
     if (localStorage.getItem("darkModeActive") == "off") {
-      console.log("off")
+      // console.log("off")
       aparecerVentanaEmergente("Se ha realizado el pedido", "Contacta con el administrador en caso de problemas", "../assets/checkmark.gif")
     } else {
       aparecerVentanaEmergente("Se ha realizado el pedido", "Contacta con el administrador en caso de problemas", "../assets/checkmarkDarkMode.gif")

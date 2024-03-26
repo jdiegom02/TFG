@@ -3,27 +3,25 @@ let usuarioIniciado;
 let contador = 0;
 let cargarBoton = false;
 function principal() {
-    comprobarSesion(function (valor) {
-        if (valor == 0) {
-            location.href = "../html/index.html";
-        } else {
-            if (valor.esadmin) {
-                document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
-                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
-                usuarioIniciado = valor.nombre;
-                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
-                document.querySelector("#cerrarsesion").addEventListener("click", () => {
-                    cerrarSesion();
-                });
-                console.log(valor.nombre)
-                mostrarDatosUsuario(valor.nombre, valor.esadmin)
-            } else {
-                location.href = "../html/pedidos.html";
-            }
-        }
-    });
+    // comprobarSesion(function (valor) {
+    //     // crearBarraDeNavegación();
+    //     if (valor == 0) {
+    //         location.href = "../html/index.html";
+    //     } else {
+    //         if (valor.esadmin) {
+    //             document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
+    //             usuarioIniciado = valor.nombre;
+    //             // document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
+    //         } else {
+    //             //location.href = "../html/pedidos.html";
+    //         }
+    //         // mostrarDatosUsuario(valor.nombre, valor.esadmin)
+    //         document.getElementById('botonMenuOpciones').addEventListener("click", function () {
+    //             abrirCerrarMenuOpciones(valor);
+    //         });
+    //     }
+    // });
+    actualizarModoOscuro();
     document.getElementById("realizarPedido").addEventListener("click", manejadorClick);
     document.getElementById("revisarPedidos").addEventListener("click", manejadorClick);
     document.getElementById("gestionarResiduos").addEventListener("click", manejadorClick);

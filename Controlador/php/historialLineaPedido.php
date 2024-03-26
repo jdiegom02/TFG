@@ -2,22 +2,22 @@
 include_once("../../Modelo/php/BD.php");
 session_start();
 // obtenerHistorial($_POST["usuario"]);
-$usuario = $_POST["usuario"];
+$numPedido = $_POST["idPedido"];
 $conexion = new BD("bonAppetit", "admin", "1234");
 // $sql = "SELECT * FROM pedidos WHERE fk_usuario = (SELECT id FROM usuarios WHERE nombre = '$usuario')";
-$sql = "SELECT pedidos.fecha, estados.descripcion, pedidos.observaciones, pedidos.fk_usuario,pedidos.id FROM pedidos JOIN estados ON pedidos.fk_estado = estados.id WHERE pedidos.fk_usuario = (SELECT id FROM usuarios WHERE nombre = '$usuario') ORDER BY pedidos.fecha DESC";
+$sql = "SELECT linea_pedido.descripcion, linea_pedido.cantidad, linea_pedido.unidades, linea_pedido.observaciones FROM linea_pedido WHERE linea_pedido.fk_pedido= '$numPedido'";
 //DESCOMENTAR LA SIGUIENTE LINEA SI SE TIENEN PEDIDOS EN LAS ULTIMAS 3 SEMANAS
 // -- AND fecha >= DATE_SUB(CURDATE(), INTERVAL 3 WEEK)";
-$pedidos = array();
+$lineaPedidos = array();
 $resultado = $conexion->realizarConsulta($sql);
 while ($fila = $resultado->fetch()) {
-    $pedido = [
-        "fecha" => $fila["fecha"],
-        "estado" => $fila["descripcion"],
+    $lineaPedido = [
+        "cantidad" => $fila["cantidad"],
+        "unidad" => $fila["unidades"],
+        "descripcion" => $fila["descripcion"],
         "observaciones" => $fila["observaciones"],
-        "numeroPedido" => $fila["id"],
     ];
-    array_push($pedidos, $pedido);
+    array_push($lineaPedidos, $lineaPedido);
 }
-echo json_encode($pedidos, JSON_UNESCAPED_UNICODE);
+echo json_encode($lineaPedidos, JSON_UNESCAPED_UNICODE);
 unset($conexion);

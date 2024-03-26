@@ -1,77 +1,86 @@
 //COSAS QUE SE EJECUTARAN EN TODAS LAS PAGINAS
 document.addEventListener("DOMContentLoaded", () => {
     /*REVISAR INICIO DE SESION BASE */
-
     comprobarSesion(function (valor) {
         if (valor == 0) {
             location.href = "../html/index.html";
         } else {
+            let docActual = window.location.href;
+            let nombreArchivo = docActual.substring(docActual.lastIndexOf("/") + 1);
+            if (nombreArchivo != "pedidos.html") {
+                document.getElementById("carritoCompras").parentNode.innerHTML = "";
+            }
             if (valor.esadmin) {
-                crearMenuOpciones(valor.nombre, valor.esadmin);
                 document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
-                // document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-                // document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-                // document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
-                usuarioIniciado = valor.nombre;
                 // document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
             } else {
                 //location.href = "../html/pedidos.html";
             }
-            // mostrarDatosUsuario(valor.nombre, valor.esadmin)
-            document.getElementById('botonMenuOpciones').addEventListener("click", abrirCerrarMenuOpciones);
-
+            // mostrarDatosUsuario(valor.nombre, valor.esadmin);
+            document.getElementById('botonMenuOpciones').addEventListener("click", function () {
+                abrirCerrarMenuOpciones(valor);
+            });
         }
     });
-
     actualizarModoOscuro();
-
 });
+
+function abrirCerrarMenuOpciones(valor) {
+    document.getElementById("menuOpciones").classList.toggle("abrirCerrarMenuOpciones");
+    let overlay = document.getElementById("overlayGeneral")
+    overlay.style.display = "block";
+    document.body.style.overflow = 'hidden';
+    overlay.addEventListener('click', function () {
+        document.getElementById("menuOpciones").classList.remove("abrirCerrarMenuOpciones");
+        overlay.style.display = "none";
+        document.body.style.overflow = '';
+    });
+    if (valor.nombre) {
+        crearMenuOpciones(valor.nombre, valor.esadmin);
+    }
+}
+
 function crearMenuOpciones(nombre, esadmin) {
     document.getElementById("menuOpciones").innerHTML = "";
-    console.log("entro")
+    menuOpciones = document.getElementById("menuOpciones")
+    let cabecera = crearElemento("div", undefined, { id: "menu-cabecera" });
+    let botonCerrarMenu = crearElemento("button", undefined, { id: "botonCerrarMenuOpciones", style: "background-color: transparent;color: initial;border: initial;padding: initial;margin: initial;font: initial;cursor: pointer;text-align: inherit;text-decoration: none;" });
+    let iconoCerrar = crearElemento("img", undefined, { "src": "../assets/iconoCerrar.svg" });
+    botonCerrarMenu.appendChild(iconoCerrar)
+    botonCerrarMenu.addEventListener("click", function () {
+        let overlay = document.getElementById("overlayGeneral")
+        document.getElementById("menuOpciones").classList.remove("abrirCerrarMenuOpciones");
+        overlay.style.display = "none";
+        document.body.style.overflow = '';
+    });
+    cabecera.appendChild(crearElemento("h2", "Menu de opciones"))
+    cabecera.appendChild(botonCerrarMenu)
+    menuOpciones.appendChild(cabecera)
+    let opciones = crearOpcionesUsuario(nombre, esadmin);
+    opciones.forEach(opcion => {
+        menuOpciones.appendChild(opcion);
+    });
+}
 
-    mostrarOpcionesUsuario(nombre, esadmin);
-    let botonCerrarMenu = (crearElemento("input", undefined, { type: "button", id: "botonCerrarMenuOpciones" }))
-    botonCerrarMenu.addEventListener("click", abrirCerrarMenuOpciones)
-    document.getElementById("menuOpciones").appendChild(botonCerrarMenu)
-}
-function abrirCerrarMenuOpciones(event) {
-    document.getElementById("menuOpciones").classList.toggle("abrirCerrarMenuOpciones");
-}
-function mostrarOpcionesUsuario(nombreUsuario, esAdministrador) {
-    document.getElementById("")
+function crearOpcionesUsuario(nombreUsuario, esAdministrador) {
+    arrayOpciones = [];
     let docActual = window.location.href;
     let nombreArchivo = docActual.substring(docActual.lastIndexOf("/") + 1);
     if (nombreArchivo == "pedidos.html") {
-        console.log(esAdministrador)
         if (esAdministrador) {
-            crearOpcionAdministrar(esAdministrador);
+            arrayOpciones.push(crearOpcionAdministrar(esAdministrador))
         }
+        arrayOpciones.push(crearOpcionHistorial(nombreUsuario));
     } else {
-        crearBotonRegresar();
+        // document..innerHTML="";
+        arrayOpciones.push(crearOpcionRegresar());
         document.getElementById("titulo-pagina").innerHTML = "Panel de Administracion"
     }
-    return
+    arrayOpciones.push(crearOpcionCerrarSesion());
+    return arrayOpciones;
 }
-/* DESPLEGABLE DE USUARIO */
-function mostrarDatosUsuario(nombre, administrador) {
-    document.getElementById("usuarioNombre").innerHTML = nombre;
-    document.querySelector("#desplegableFunciones").innerHTML = ""
-    // document.getElementById("usuariopedido").textContent = "Pedido de " + valor.nombre;
-    let docActual = window.location.href;
 
-    // Obtener el nombre del archivo de la URL
-    let nombreArchivo = docActual.substring(docActual.lastIndexOf("/") + 1);
-    document.querySelector("#desplegableFunciones").innerHTML = "";
-    if (nombreArchivo == "pedidos.html") {
-        console.log(administrador)
-        if (administrador) {
-            crearBotonAdministrar(administrador)
-        }
-    } else {
-        crearBotonRegresar();
-        document.getElementById("titulo-pagina").innerHTML = "Panel de Administracion"
-    }
+function crearOpcionCerrarSesion(params) {
     let botonCerrarSesion = crearElemento("input", undefined, {
         type: "button",
         id: "cerrarsesion",
@@ -80,10 +89,9 @@ function mostrarDatosUsuario(nombre, administrador) {
         style: "width:90%;margin:10px"
     });
     botonCerrarSesion.addEventListener("click", cerrarSesion);
-    crearBotonHistorial(nombre)
-    document.querySelector("#desplegableFunciones").appendChild(botonCerrarSesion);
+    return botonCerrarSesion;
 }
-function crearBotonHistorial(nombreUsuario) {
+function crearOpcionHistorial(nombreUsuario) {
     let botonHistorial = crearElemento("input", undefined, {
         type: "button",
         id: "historial",
@@ -94,15 +102,71 @@ function crearBotonHistorial(nombreUsuario) {
     botonHistorial.addEventListener("click", () => {
         recogerHistorial(nombreUsuario);
     })
-    document.querySelector("#desplegableFunciones").appendChild(botonHistorial);
+    return botonHistorial
+}
+function crearBotonDetalles() {
+    let botonDetalles = crearElemento("input", undefined, {
+        type: "button",
+        id: "detallesHistorial",
+        class: "btn",
+        value: "Ver Detalles",
+        style: "width:90%;margin:10px;border:1px black solid"
+    })
+    botonDetalles.addEventListener("click", (event) => {
+        abrirPopupHistorial();
+        recogerLineasPedidos(event.target.parentNode.parentNode.id);
+    })
+    return botonDetalles;
 }
 function mostrarHistorialUsuario(pedidos) {
-    pedidos.forEach(pedido => {
-        console.log(pedido)
+    document.getElementById("informacionProductos").innerHTML = "";
+    document.getElementById("informacionProductos").appendChild(crearElemento("button", "Pedir Productos", { id: "botonPedirProductos", class: "btn" }));
+    document.getElementById('botonPedirProductos').addEventListener('click', function () {
+        location.reload();
     });
+    let objeto;
+    pedidos.forEach(pedido => {
+        objeto = pedido;
+    });
+    let tablaHistorial = crearElemento('table', undefined, { id: "tablaHistorial" });
+
+    let encabezado = crearElemento('tr');
+    for (let key in objeto) {
+        if (key != "numeroPedido") {
+            let th = crearElemento('th', key);
+            encabezado.appendChild(th);
+        }
+    }
+    encabezado.appendChild(crearElemento('th', "Detalles"))
+    tablaHistorial.appendChild(encabezado);
+
+    // Crear filas de datos
+    pedidos.forEach(pedido => {
+        let filaDatos = crearElemento('tr', undefined, { id: pedido.numeroPedido });
+        for (let key in pedido) {
+            if (key != "numeroPedido") {
+                let td = crearElemento('td', pedido[key]);
+                filaDatos.appendChild(td);
+            }
+        }
+        let detallesTd = crearElemento('td')
+        detallesTd.appendChild(crearBotonDetalles());
+        filaDatos.appendChild(detallesTd)
+        tablaHistorial.appendChild(filaDatos);
+    });
+    document.getElementById("informacionProductos").appendChild(tablaHistorial);
+    document.getElementById("informacionProductos").appendChild(crearElemento("div", undefined, { id: "contenedorLineaPedido" }))
 }
-function crearBotonAdministrar(admin) {
-    console.log(admin)
+function mostrarLineasPedidos(lineasPedidos) {
+    document.getElementById("informacionHistorialProductos").innerHTML = ""
+    let lista = crearElemento("div", undefined);
+    lineasPedidos.forEach(lineaPedido => {
+        let elementoLista = crearElemento("p", lineaPedido.cantidad + " " + lineaPedido.unidad + " de " + lineaPedido.descripcion)
+        lista.appendChild(elementoLista)
+    });
+    document.getElementById("informacionHistorialProductos").appendChild(lista)
+}
+function crearOpcionAdministrar(admin) {
     let botonAdministrar = crearElemento("input", undefined, {
         type: "button",
         id: "administrar",
@@ -113,9 +177,9 @@ function crearBotonAdministrar(admin) {
     botonAdministrar.addEventListener("click", () => {
         location.href = "../html/panelAdmin.html";
     });
-    document.querySelector("#desplegableFunciones").appendChild(botonAdministrar);
+    return botonAdministrar;
 }
-function crearBotonRegresar() {
+function crearOpcionRegresar() {
     let botonRegresar = crearElemento("input", undefined, {
         type: "button",
         id: "regresar",
@@ -126,8 +190,7 @@ function crearBotonRegresar() {
     botonRegresar.addEventListener("click", () => {
         location.href = "../html/panelAdmin.html";
     });
-    document.querySelector("#desplegableFunciones").appendChild(botonRegresar);
-
+    return botonRegresar;
 }
 function desplegarBotonesUsuario(params) {
     let contenido = document.getElementById("desplegableFunciones")
@@ -140,11 +203,6 @@ function cerrarBotonesUsuario() {
     contenido.style.display = 'none';
 }
 /* FIN DE DESPLEGABLE DE USUARIO */
-function crearBarraDeNavegación() {
-    console.log("crear barra")
-    //barra de navegacion para todas las paginas del admin
-    document.body.innerHTML += '<div class="darkMode-container col-sm-6"><button class="darkMode-button" id="botonDarkMode"><img src="../img/iconos/darkModeSun.svg" alt=""></button></div>'
-}
 function activarDesactivarModoOscuro(event) {
     if (localStorage.getItem("darkModeActive") == "off") {
         localStorage.setItem("darkModeActive", "on")
@@ -155,17 +213,11 @@ function activarDesactivarModoOscuro(event) {
     }
 }
 function actualizarModoOscuro() {
-    console.log("esta:")
-    console.log(localStorage.getItem("darkModeActive"));
     let imagenes = ["../img/iconos/darkModeSun.svg", "../img/iconos/darkModeMoon.png"]
     let botonDarkMode = document.getElementById("botonDarkMode");
-    console.log(document.head.lastChild)
 
     if (document.head.lastChild.href == "../css/estilosDarkMode.css") {
-        console.log(document.head.lastChild)
-        console.log("encontrado ultima pos")
         document.head.lastChild.parentNode.removeChild(document.head.lastChild);
-        console.log("removido");
     }
     if (localStorage.getItem("darkModeActive") == "on") {
         botonDarkMode ? botonDarkMode.children[0].setAttribute("src", imagenes[1]) : console.log("no existe");
@@ -179,13 +231,10 @@ function actualizarModoOscuro() {
         botonDarkMode ? botonDarkMode.children[0].setAttribute("src", imagenes[0]) : console.log("no existe");
         if (document.head.lastChild.href == "../css/estilosDarkMode.css") {
             document.head.lastChild.parentNode.removeChild(document.head.lastChild);
-            console.log("removido");
         }
     }
 }
 function actualizarModoOscuro() {
-    console.log("esta:")
-    console.log(localStorage.getItem("darkModeActive"));
     let imagenes = ["../img/iconos/darkModeSun.svg", "../img/iconos/darkModeMoon.png"];
     let botonDarkMode = document.getElementById("botonDarkMode");
 

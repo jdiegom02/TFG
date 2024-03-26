@@ -19,34 +19,34 @@
     <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
     <div class="container-fluid">
         <div id="cabecera" class=" align-items-center">
-            <div id="datosUsuario" class=" ">
-                <div id="desplegablellamar" class=" align-items-center">
-                    <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-                    <h3 id="usuarioNombre"></h3>
+            <div id="menu">
+                <div id="">
+                    <div id="contenedorBotonMenuOpciones"><button id="botonMenuOpciones"><img src="../assets/menu.svg"
+                                alt="" srcset=""></button></div>
                 </div>
             </div>
-
             <div id="titulo" class="">
                 <h3 id="titulo-pagina" class="">Pedir Productos</h3>
             </div>
-
-            <div id="funcionesCabecera ">
+            <div id="funcionesCabecera">
                 <div id="iconoCarrito-container" class=" ">
                     <div class="darkMode-container">
                         <button class="darkMode-button" id="botonDarkMode">
                             <img src="../img/iconos/darkModeSun.svg" alt="">
                         </button>
                     </div>
-
                     <div class="">
+                        <button class="" id="carritoCompras">
+                            <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
+                            <i class="bi bi-cart"></i>
+                            <div id="contador-carrito">0</div> <!-- Contador de artículos en el carrito -->
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!--FIN DE CABECERA-->
-    <div id="desplegableFunciones" class="container">
-    </div>
     <div class="contenido">
         <div class="container" id="opcionesAdmin">
             <!-- Opciones del panel de administración -->
@@ -103,7 +103,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                     </div>
-                    <button type="button" class="btn añadirProductosButton" id="abrirModal">Añadir Productos</button>
+                    <button type="button" class="btn añadirProductosButton" id="abrirModal">Añadir
+                        Productos</button>
 
                     <div class="modal-body" id="gestionarProductoBody">
                         <div class="" id="cabecerasTabla">
@@ -261,7 +262,7 @@
                                     <label for="kilos">Kg</label>
                                     <select id="despegableResiduos" class="form-control despegablesResiduos">
                                     </select>
-                                    
+
                                 </div>
                             </div>
                             <button id="agregarResiduo" type="button" class="btn rounded-circle">
@@ -532,7 +533,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn botonNegro" id="anadirUnidadGuardar">Guardar Cambios</button>
+                        <button type="button" class="btn botonNegro" id="anadirUnidadGuardar">Guardar
+                            Cambios</button>
                     </div>
                 </div>
             </div>
@@ -601,7 +603,17 @@
         </div>
     </div>
     <!-- MODAL pRODUCTO ASOCIADO A PEDIDO TRAMITADO, NO SE PUEDE MODIFICAR FIN-->
+    <div id="menuOpciones">
+        <div id="datosUsuario" class=" ">
+            <div id="desplegablellamar" class=" align-items-center">
+                <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+                <h3 id="usuarioNombre"></h3>
+            </div>
+        </div>
+        <div class="contenedorMenuOpciones"></div>
+    </div>
 
+    <div id="overlayGeneral"></div>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"

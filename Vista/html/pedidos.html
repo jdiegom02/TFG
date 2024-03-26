@@ -21,27 +21,22 @@
   <!--CABECERA CON CARRITO DE COMPRAS QUE AL DARLE CLICK TE SALGA UN MODAL MOSTRANDO TODOS LOS DATOS-->
   <div class="container-fluid">
     <div id="cabecera" class=" align-items-center">
-      <div id="">
-        <div id="contenedorBotonMenuOpciones">
-          <button id="botonMenuOpciones">
-            BotonMenu
-          </button>
+      <div id="menu">
+        <div id="">
+          <div id="contenedorBotonMenuOpciones"><button id="botonMenuOpciones"><img src="../assets/menu.svg" alt=""
+                srcset=""></button></div>
         </div>
       </div>
-
-
       <div id="titulo" class="">
         <h3 id="titulo-pagina" class="">Pedir Productos</h3>
       </div>
-
-      <div id="funcionesCabecera ">
+      <div id="funcionesCabecera">
         <div id="iconoCarrito-container" class=" ">
           <div class="darkMode-container">
             <button class="darkMode-button" id="botonDarkMode">
               <img src="../img/iconos/darkModeSun.svg" alt="">
             </button>
           </div>
-
           <div class="">
             <button class="" id="carritoCompras">
               <img src="../assets/market-purchase-svgrepo-com.svg" alt="" id="imagenCarritoCompras">
@@ -96,23 +91,59 @@
         <div class="row d-flex   justify-content-center" id="nuevosProductos"></div>
       </div>
       <!--MOSTRAR CARRITO A LA DERECHA DE LA PAGINA-->
-      <div id="menuOpciones">
-        <div id="datosUsuario" class=" ">
-          <div id="desplegablellamar" class=" align-items-center">
-            <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
-            <h3 id="usuarioNombre"></h3>
-          </div>
-        </div>
-        <div class="contenedorMenuOpciones"></div>
-      </div>
+
       <div id="carritoDerecha">
       </div>
       <div id="desplegableFunciones" class="container">
       </div>
+
     </div>
   </div>
+  <div id="menuOpciones">
+    <div id="datosUsuario" class=" ">
+      <div id="desplegablellamar" class=" align-items-center">
+        <img src="../img/iconos/iconoUsuario.png" id="iconoUsuario" alt="IMAGEN DEL ICONO DE USUARIO">
+        <h3 id="usuarioNombre"></h3>
+      </div>
+    </div>
+    <div class="contenedorMenuOpciones"></div>
+  </div>
+  <!-- <section class="popup contenedor">
+    <button class="boton_modal" id="abrir-modal">Detalles de Pedido</button>
+    <div class="popup__contenedor" id="modal-contenedor">
+      <div class="modal__contenido">
+        <div class="modal__cerrar">
+          <i class='bx bx-x'></i>
+        </div>
+        <img src="../img/iconos/carritoHistorial.png" alt="imagen de carrito de compras" class="modal__imagen">
+        <h1 class="modal__titulo">Detalles de Pedido</h1>
+
+      </div>
+    </div>
+  </section> -->
+
+
+  <section class="popup contenedorpopupHistorial" id="contenedorpopupHistorial">
+    <div class="popup__contenedor" id="popup-contenedor">
+      <div class="popup__contenido">
+
+        <img src="../img/iconos/carritoHistorial.png" alt="imagen de carrito de compras" class="popup__imagen">
+
+        <h1 class="popup__titulo">Productos Encargados:</h1>
+        <p class="popup__descripcion"></p>
+        <div id="informacionHistorialProductos">
+
+        </div>
+        <button class="popup__boton popup__boton-link popup-cerrar">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </section>
+
+
   <div id="overlay"></div>
-  <div id="overlayCarrito"></div>
+  <div id="overlayGeneral"></div>
   <div id="overlayVentanaEmergente"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

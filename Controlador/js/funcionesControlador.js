@@ -47,6 +47,17 @@ function recogerHistorial(usuario) {
     },
   })
 }
+function recogerLineasPedidos(idPedido) {
+  $.ajax({
+    type: "POST",
+    url: "../../Controlador/php/historialLineaPedido.php", 
+    data: { idPedido: idPedido },
+    dataType: 'json',
+    success: function (data) {
+      mostrarLineasPedidos(data);
+    },
+  })
+}
 function insertarEnSolicitudes(pedido) {
   let datos = pedido;
   $.ajax({
