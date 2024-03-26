@@ -1,7 +1,7 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 $productos = array();
-$conexion = new BD("bonAppetit", "admin", "1234");
+$conexion = new BD();
 
 //ARMAMOS LA QUERY
 $sql = "SELECT descripcion, sum(linea_pedido.cantidad) as cantidad from linea_pedido group by descripcion;";

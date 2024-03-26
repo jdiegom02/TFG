@@ -1,6 +1,6 @@
 <?php
 include_once("../../Modelo/php/BD.php");
-$conexion = new BD("bonAppetit", "admin", "1234");
+$conexion = new BD();
 $sqlProveedores = "SELECT descripcion from proveedores";
 $resultado = $conexion->realizarConsulta($sqlProveedores);
 $pedidos = [];

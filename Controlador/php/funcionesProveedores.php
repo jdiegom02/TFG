@@ -1,27 +1,31 @@
 <?php
-include_once("../../Modelo/php/BD.php");
+include_once ("../../Modelo/php/BD.php");
 
-if (isset($_POST["cargaProveedor"])) {
+if (isset ($_POST["cargaProveedor"]))
+{
     mandarProveedores();
 }
 
-if (isset($_POST["actualizarProveedor"])) {
+if (isset ($_POST["actualizarProveedor"]))
+{
     actualizarProveedor($_POST["actualizarProveedor"]);
 }
 
-if (isset($_POST["addProveedor"])) {
+if (isset ($_POST["addProveedor"]))
+{
     addProveedor($_POST["addProveedor"]);
 }
 
 
 function mandarProveedores()
 {
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     $proveedores = array();
 
     $sql = "SELECT * from proveedores";
     $resultado = $conexion->realizarConsulta($sql);
-    foreach ($resultado as $fila) {
+    foreach ($resultado as $fila)
+    {
         $proveedor = array(
             "id" => $fila["id"],
             "telefono" => $fila["telefono"],
@@ -46,10 +50,11 @@ function actualizarProveedor($datos)
     $telefono = $datos[4];
     $observaciones = $datos[5];
 
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     $sql = "UPDATE proveedores set descripcion='$descripcion', direccion='$direccion', email='$email', telefono='$telefono', observaciones='$observaciones' where id=$id";
     echo $sql;
     $conexion->realizarModificacion($sql);
+    unset($conexion);
 }
 
 function addProveedor($datos)
@@ -59,7 +64,7 @@ function addProveedor($datos)
     $email = $datos[2];
     $telefono = $datos[3];
     $observaciones = $datos[4];
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     $sql = "INSERT INTO proveedores (descripcion, direccion, email, telefono, observaciones) VALUES ('$descripcion', '$direccion', '$email', '$telefono', '$observaciones')";
     $conexion->realizarModificacion($sql);
     echo $sql;
