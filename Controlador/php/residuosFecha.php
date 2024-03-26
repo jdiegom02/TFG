@@ -6,7 +6,7 @@ $mesSeleccionado = $_POST['mes'];
 $anioSeleccionado = $_POST['anio'];
 
 // Crear la conexión a la base de datos
-$conexion = new BD("bonAppetit", "admin", "1234");
+$conexion = new BD();
 $residuos = array();
 
 

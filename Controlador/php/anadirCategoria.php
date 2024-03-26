@@ -5,7 +5,7 @@ include_once("../../Modelo/php/BD.php");
 function anadirCategoria($categoria, $observaciones)
 {
     // Crear una instancia de la clase BD
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
 
 
     $query_insertar_categoria = "INSERT INTO categorias (descripcion, observaciones) VALUES ('$categoria', '$observaciones')";

@@ -6,7 +6,7 @@ include_once("../../Modelo/php/BD.php");
 function addProducto($desc, $unidad, $categoria,$residuos)
 {
     // Crear una instancia de la clase BD
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
 
     // Consultar el ID de la unidad
     $sqlIDUnidad = "SELECT id FROM unidades WHERE unidad LIKE '{$unidad}'";

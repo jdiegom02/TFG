@@ -14,8 +14,9 @@ require './PHPMailer/PHPMailer-master/src/SMTP.php';
 $email = "no.reply.bonappetit@gmail.com";
 $destinatario = $_POST["correo"];
 
-$conexion = new BD("bonAppetit", "admin", "1234");
-$conexion->realizarModificacion("UPDATE usuarios set cambioPassword= $codigo where email like '$destinatario'");
+// $conexion = new BD();
+// $conexion->realizarModificacion("UPDATE usuarios set cambioPassword= $codigo where email like '$destinatario'");
+// No veo necesario guardaro en la base de datos
 
 // Crea una instancia de PHPMailer
 $mail = new PHPMailer(true);

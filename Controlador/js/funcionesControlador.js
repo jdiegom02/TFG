@@ -148,6 +148,7 @@ function verificacionPassword() {
     type: 'POST',
     data: { correo: correo },
     success: function (data) {
+      // console.log(data);
       $("#modalRecuperarContraseña").modal('toggle');
       $("#modalCodigoVerificacion").modal('toggle');
       document.querySelector("#verificarCodigo").addEventListener("click", function () {

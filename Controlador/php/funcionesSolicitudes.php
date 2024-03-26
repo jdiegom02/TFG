@@ -24,7 +24,7 @@ function addSolicitud()
     // $correo = $datos[0]; // Obtener el correo del primer elemento
     print_r($datos);
     // Iterar sobre los elementos restantes de $datos
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
 
     for ($i = 0; $i < count($datos); $i++) {
         $solicitud = $datos[$i]; // Obtener la información de la solicitud actual
@@ -74,7 +74,7 @@ function idProveedor($nombre, $conexion)
 
 function mostrarSolicitudes()
 {
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     $sqlSolicitudes = "SELECT solicitudes.id AS solicitud_id, descripcion, unidades, cantidad, usuarios.nombre AS usuario_nombre
                     FROM solicitudes
                     JOIN usuarios ON solicitudes.fk_usuario = usuarios.id where tramitado=0 order by solicitudes.descripcion asc;";
@@ -97,7 +97,7 @@ function mostrarSolicitudes()
 
 function eliminarSolicitud()
 {
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     $idSolicitud = $_POST["eliminarSolicitud"];
     $sqlEliminar = "UPDATE solicitudes SET tramitado=1 WHERE id=$idSolicitud";
     $conexion->realizarModificacion($sqlEliminar);
@@ -107,7 +107,7 @@ function eliminarSolicitud()
 function addPedido($datos)
 {
     print_r($datos);
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     foreach ($datos as $dato) {
         $idUsuario = idUsuarioNombre($dato[5], $conexion);
         $observaciones = $dato[4];

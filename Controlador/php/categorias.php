@@ -1,7 +1,7 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 $productos = array();
-$conexion = new BD("bonAppetit", "admin", "1234");
+$conexion = new BD();
 //ARMAMOS LA QUERY
 $sql = "SELECT descripcion from categorias ";
 $resultado = $conexion->realizarConsulta($sql);

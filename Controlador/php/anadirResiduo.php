@@ -5,7 +5,7 @@ include_once("../../Modelo/php/BD.php");
 function anadirResiduo($residuoNuevo, $cantidad,$idProducto)
 {
     
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
 
     $query = "SELECT id  FROM residuos  WHERE descripcion = '$residuoNuevo'";
     $resultado = $conexion->realizarConsulta($query);
