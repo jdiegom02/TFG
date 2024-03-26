@@ -4,7 +4,7 @@ include_once("../../Modelo/php/BD.php");
 
 function sacarResiduos($producto_id)
 {
-    $conexion = new BD("bonAppetit", "admin", "1234");
+    $conexion = new BD();
     $productos = array();
 
     $sql = "SELECT 

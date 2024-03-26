@@ -162,6 +162,52 @@ function addProveedor(datos) {
   });
 }
 
+function verificacionPassword() {
+  let correo = $("#correoRecuperacion").val();
+  console.log(correo);
+  $.ajax({
+    url: '../../Controlador/php/verificarPassword.php',
+    type: 'POST',
+    data: { correo: correo },
+    success: function (data) {
+      // console.log(data);
+      $("#modalRecuperarContraseña").modal('toggle');
+      $("#modalCodigoVerificacion").modal('toggle');
+      document.querySelector("#verificarCodigo").addEventListener("click", function () {
+        if ($("#codigoVerificacion").val() === data) {
+          $("#modalCodigoVerificacion").modal('toggle');
+          $("#contenedor").hide();
+          $("#contenedor2").addClass("visible");
+          document.querySelector("#guardarCambios").addEventListener("click", function () {
+            let validarPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
+            if (validarPass.test($("#newPassword").val()) && validarPass.test($("#confirmPassword").val()) && $("#confirmPassword").val() == $("#newPassword").val()) {
+              $.ajax({
+                url: '../../Controlador/php/guardarPassword.php',
+                type: 'POST',
+                data: { pass: $("#newPassword").val(), correo: correo },
+                success: function (data) {
+                  location.reload();
+                },
+                error: function (xhr, status, error) {
+                  console.error('Error al recibir codigo de verificacion:', error);
+                },
+              });
+            } else {
+              crearMensajeError("Las contraseñas no coinciden");
+            }
+          })
+        }
+
+      })
+
+    },
+    error: function (xhr, status, error) {
+      console.error('Error al recibir codigo de verificacion:', error);
+    },
+  });
+}
+
+
 
 function generarPDFPedidos() {
   $.ajax({

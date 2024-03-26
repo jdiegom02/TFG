@@ -4,6 +4,7 @@ function principal() {
   document.querySelector("#login").addEventListener("click", validarFormulario);
   var container = document.getElementById("contenedor");
   container.classList.add("visible"); // Agrega la clase 'visible' para iniciar la animación al cargar la página
+  document.querySelector("#cambioPassword").addEventListener("click", verificacionPassword);
 }
 
 function validarFormulario() {
@@ -23,9 +24,9 @@ function validarFormulario() {
         password: passwordUsuario,
       },
     }).done(function (a) {
-      if(a == 0) {
+      if (a == 0) {
         location.href = "../html/pedidos.html";
-      } else if(a == 1) {
+      } else if (a == 1) {
         location.href = "../html/panelAdmin.html";
       } else {
         crearMensajeError(a);

@@ -4,12 +4,8 @@ include_once("../../Modelo/php/BD.php");
 function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
 {
     // Crear una instancia de la clase BD
-    $conexion = new BD("bonAppetit", "admin", "1234");
-    /*echo $id;
-    echo $desc;
-    print_r($categorias);
-    echo ($unidad);
-    print_r($residuos);*/
+    $conexion = new BD();
+
     try {
         $conexion->comenzarTransaccion();
 

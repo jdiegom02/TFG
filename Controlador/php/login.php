@@ -4,7 +4,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     if (preg_match("/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/", $_POST["email"]) && preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/", $_POST["password"])) {
         include_once("../../Modelo/php/BD.php");
         $sessionIniciada = false;
-        $conexion = new BD("bonAppetit", "admin", "1234");
+        $conexion = new BD();
         if ($conexion) {
             $resultado = $conexion->realizarConsulta("SELECT * from usuarios");
             while ($fila = $resultado->fetch()) {

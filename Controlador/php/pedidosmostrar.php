@@ -1,6 +1,6 @@
 <?php
 include_once("../../Modelo/php/BD.php");
-$conexion = new BD("bonAppetit", "admin", "1234");
+$conexion = new BD();
 $solicitudes = array();
 // ARMAMOS LA QUERY
 $sql = "SELECT solicitudes.id, solicitudes.descripcion AS nombre_pedido, solicitudes.fecha, solicitudes.cantidad, solicitudes.unidades, usuarios.nombre AS nombre_usuario, solicitudes.observaciones

@@ -39,15 +39,14 @@ function principal(e) {
 
 
 function mostrarPedidos(pedidos) {
-    // console.log(pedidos);
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
+
     pedidos.forEach(function (pedido) {
-        console.log(pedido);
         var row = document.createElement('tr');
         row.dataset.idPedido = pedido.id;
         row.innerHTML = `
-            <td><label class="checkboxEstilizado"><input type="checkbox" class="form-check-input "><span class="checkmark"></span></label></td>
+            <td class="pl-5"><input type="checkbox" class="form-check-input"></td>
             <td>${pedido.fecha}</td>
             <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
             <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
@@ -56,17 +55,26 @@ function mostrarPedidos(pedidos) {
             <td class="editable observacion-editable">${pedido.observaciones}</td>
             <td>${pedido.nombre_usuario}</td>
             <td>
-                <button class="btn btn-danger" id=pedido${pedido.id}>Eliminar</button>
+                <button class="btn btn-danger eliminar" data-idPedido="${pedido.id}" data-toggle="modal" data-target="#confirmacionEliminar">Eliminar</button>
             </td>
         `;
         tablaPedidosBody.appendChild(row);
-        cargarUnidades(pedido.id, pedido.unidad); // Cargar las unidades para este pedido
-        cargarProveedores(pedido.id, pedido.proveedor); // Cargar los proveedores para este pedido
-        document.querySelector("#pedido" + pedido.id).addEventListener('click', function () {
-            eliminarSolicitud(pedido.id);
+
+        // Almacenar temporalmente el ID del pedido cuando se presiona el botón "Eliminar"
+        row.querySelector(".eliminar").addEventListener("click", function () {
+            var idPedido = pedido.id;
+            console.log(idPedido);
+
+            document.querySelector("#eliminarPedido").addEventListener("click", function () {
+                eliminarSolicitud(idPedido);
+                $('#confirmacionEliminar').modal('toggle');
+
+            })
+
         });
     });
 }
+
 
 function cargarUnidades(idPedido, unidad) {
     // Encontrar la fila del pedido por su ID
@@ -158,6 +166,7 @@ function guardarCambiosEnCelda(cell, columna) {
 
 function eliminarPedido(idPedido) {
     // Aquí puedes implementar la lógica para eliminar el pedido con el ID proporcionado
+    $('#modalEliminar').modal('toggle');
     console.log('Eliminar pedido con ID:', idPedido);
 }
 
@@ -204,10 +213,10 @@ function mostrarPedidosValidados() {
         url: '../../Controlador/php/pedidoMostrarTramitados.php',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             construirTablaPedidos(data);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error al obtener los pedidos:', error);
         }
     });
@@ -227,8 +236,8 @@ function construirTablaPedidos(pedidos) {
     tabla += '<tbody>';
 
     // Recorrer los datos de los pedidos y construir filas
-    $.each(pedidos, function(proveedor, productos) {
-        $.each(productos, function(index, producto) {
+    $.each(pedidos, function (proveedor, productos) {
+        $.each(productos, function (index, producto) {
             tabla += '<tr>';
             tabla += '<td>' + proveedor + '</td>';
             tabla += '<td>' + producto.descripcion + '</td>';
