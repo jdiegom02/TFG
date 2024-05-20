@@ -25,10 +25,12 @@ function validarFormulario() {
       },
     }).done(function (a) {
       if (a == 0) {
-        location.href = "../html/pedidos.html";
+        location.href = "./Vista/html/pedidos.html";
       } else if (a == 1) {
-        location.href = "../html/panelAdmin.html";
+        console.log("admin")
+        location.href = "./Vista/html/panelAdmin.html";
       } else {
+		  console.log(a);
         crearMensajeError(a);
       }
     });

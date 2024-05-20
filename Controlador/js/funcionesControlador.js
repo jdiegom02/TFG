@@ -20,7 +20,7 @@ function cerrarSesion() {
       sesion: false,
     },
   }).done(function () {
-    location.href = "../html/index.html";
+    location.href = "/index.html";
   });
 }
 

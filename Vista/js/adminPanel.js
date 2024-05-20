@@ -31,7 +31,6 @@ function principal() {
     document.getElementById("gestionarProveedores").addEventListener("click", manejadorClick);
     document.getElementById("agregarResiduo").addEventListener("click", manejarsuma);
     document.getElementById("abrirModal").addEventListener("click", manejadorClick);
-
     document.getElementById("crearCategoria").addEventListener("click", manejadoranadirCategoria);
     document.getElementById("crearUnidad").addEventListener("click", manejadoranadirUnidad);
 

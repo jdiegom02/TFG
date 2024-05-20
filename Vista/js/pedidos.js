@@ -4,7 +4,7 @@ let nombreUsuario;
 document.addEventListener("DOMContentLoaded", () => {
   comprobarSesion((valor) => {
     if (valor == 0) {
-      location.href = "../html/index.html";
+      location.href = "/index.html";
     } else {
       if (valor.esadmin) {
       }
@@ -324,7 +324,7 @@ function agregarCheck() {
 }
 function cerrarSesion() {
   sessionStorage.clear();
-  location.href = "../html/index.html";
+  location.href = "/index.html";
 }
 function verificarSessionStorage(nombreDelKeyDeLaSesion) {
   return sessionStorage.getItem(nombreDelKeyDeLaSesion) != null;
