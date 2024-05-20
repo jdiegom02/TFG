@@ -18,7 +18,7 @@ function validarFormulario() {
   if (validarEmail.test(emailUsuario) && validarPass.test(passwordUsuario)) {
     $.ajax({
       type: "POST",
-      url: "../../Controlador/php/login.php",
+      url: "./Controlador/php/login.php",
       data: {
         email: emailUsuario,
         password: passwordUsuario,

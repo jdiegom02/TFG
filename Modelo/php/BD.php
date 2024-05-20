@@ -7,7 +7,7 @@ class BD
     public function __construct()
     {
         // $this->conexion = $this->realizarConexion("iesfuen2_inventario", "webBD", "W3b-.2024");
-        $this->conexion = $this->realizarConexion("bonAppetit", "admin", "1234");
+        $this->conexion = $this->realizarConexion("bonappetitcopiahosting", "admin", "1234");
 
     }
 

@@ -122,98 +122,14 @@ function agregarNuevoCampoResiduo(numero) {
     cargarResiduos();
 }
 
-
-
 function cargarDatosProductos() {
-    let sumatorio = 0;
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/productoResiduo.php",
         dataType: "JSON",
         success: function (data) {
-            $('.producto').empty();
-
-            $.each(data, function (index, producto) {
-                var productoID = producto.producto_id
-
-                var categoriasHTML = '';
-                $.each(producto.categorias, function (index, categoria) {
-                    categoriasHTML += '<li>' + categoria + '</li>';
-                });
-
-                var residuosHTML = '';
-                $.each(producto.residuos, function (index, residuo) {
-                    residuosHTML += '<li>' + residuo + '</li>';
-                });
-
-                var productoHTML = '<div class="filaProducto" id="' + productoID + '" style="border: 1px solid black;">';
-                productoHTML += '<div class=""><span>' + producto.nombre_producto + '</span></div>';
-                productoHTML += '<div class=""><ul>' + categoriasHTML + '</ul></div>';
-                productoHTML += '<div class=""><span>' + producto.unidad + '</span></div>';
-                productoHTML += '<div class=""><ul>' + residuosHTML + '</ul></div>';
-                productoHTML += '<div class=""><button type="button" id="' + producto.producto_id + '" class="btn btnEditar" data-producto-id="' + producto.producto_id + '">Editar</button></div>';
-                productoHTML += '</div>';
-
-                $('#gestionPRO').append(productoHTML);
-            });
-
-            $(document).on('click', '.btnEditar', function () {
-                var productoID2 = $(this).data('producto-id');
-                console.log(productoID2);
-                cargarResiduosPorProducto(productoID2);
-
-                var producto = data.find(prod => prod.producto_id == productoID2);
-
-                if (producto) {
-                    sumatorio++;
-                    $('#productoIDModificar').val(producto.producto_id);
-                    $('#nombreProductoModificar').val(producto.nombre_producto);
-                    $('#unidadProductoModificar').val(producto.unidad);
-
-                    $('#tablaResiduos tbody').empty();
-                    /* $.each(producto.residuos, function (index, residuo) {
-                         var newRow = '<tr>' +
-                             '<td>' + residuo.cantidad + '</td>' +
-                             '<td>' + residuo.unidad + '</td>' +
-                             '<td>' + residuo.tipo + '</td>' +
-                             '<td><button type="button" class="btn btn-danger eliminar-residuo">Eliminar</button></td>' +
-                             '</tr>';
- 
-                         $('#tablaResiduos tbody').append(newRow);
-                     });
- 
-                     $(document).on('click', '.eliminar-residuo', function () {
-                         $(this).closest('.residuo-row').remove();
-                     });*/
-
-                    $('#categoriaProductoModificar').empty();
-                    $.each(producto.categorias, function (index, categoria) {
-                        var nuevoDivSelect = $('<div class="form-group"></div>');
-                        var nuevoCategoriaDropdown = '<select class="form-control categoriaProductoModi" id="categoria_' + producto.producto_id + '_' + index + '">' +
-                            '<option value="' + categoria + '">' + categoria + '</option>' +
-                            '</select>';
-                        nuevoDivSelect.append(nuevoCategoriaDropdown);
-                        $('#categoriaProductoModificar').append(nuevoDivSelect);
-                        cargarOpcionesCategoriaModiPro(producto.categorias);
-                    });
-
-                    $('#editarProductoModal').modal('show');
-                    cargarResiduosModiPro();
-                    if (!cargarBoton) {
-                        cargarBoton = true;
-                        $('#formularioEditarProducto').append(crearElemento("button", "Añadir residuo", {
-                            "type": "button",
-                            "class": "btn btn-secondary",
-                            "data-producto-id": " " + producto.producto_id + " ",
-                            "id": "anadirResiduoAUnProducto"
-                        }));
-                        document.getElementById("anadirResiduoAUnProducto").addEventListener("click", manejadorAnadirResiduoAPRoducto);
-                    } else { }
-
-                } else {
-                    console.error("Producto no encontrado");
-                }
-            });
+            renderProductos(data);
+            initializeEditButtonHandler(data);
         },
         error: function (xhr, status, error) {
             console.error(error);
@@ -221,6 +137,91 @@ function cargarDatosProductos() {
     });
 }
 
+function renderProductos(data) {
+    $('.producto').empty();
+
+    $.each(data, function (index, producto) {
+        let productoHTML = createProductoHTML(producto);
+        $('#gestionPRO').append(productoHTML);
+    });
+}
+
+function createProductoHTML(producto) {
+    let categoriasHTML = createListHTML(producto.categorias);
+    let residuosHTML = createListHTML(producto.residuos);
+
+    return `
+        <div class="filaProducto" id="${producto.producto_id}" style="border: 1px solid black;">
+            <div><span>${producto.nombre_producto}</span></div>
+            <div><ul>${categoriasHTML}</ul></div>
+            <div><span>${producto.unidad}</span></div>
+            <div><ul>${residuosHTML}</ul></div>
+            <div><button type="button" id="${producto.producto_id}" class="btn btnEditar" data-producto-id="${producto.producto_id}">Editar</button></div>
+        </div>
+    `;
+}
+
+function createListHTML(items) {
+    return items.map(item => `<li>${item}</li>`).join('');
+}
+
+function initializeEditButtonHandler(data) {
+    $(document).on('click', '.btnEditar', function () {
+        let productoID = $(this).data('producto-id');
+        let producto = data.find(prod => prod.producto_id == productoID);
+        
+        if (producto) {
+            openEditModal(producto);
+        } else {
+            console.error("Producto no encontrado");
+        }
+    });
+}
+
+
+function openEditModal(producto) {
+    $('#productoIDModificar').val(producto.producto_id);
+    $('#nombreProductoModificar').val(producto.nombre_producto);
+    $('#unidadProductoModificar').val(producto.unidad);
+    $('#tablaResiduos tbody').empty();
+    $('#categoriaProductoModificar').empty();
+
+    producto.categorias.forEach((categoria, index) => {
+        let nuevoDivSelect = $('<div class="form-group"></div>');
+        let nuevoCategoriaDropdown = `
+            <select class="form-control categoriaProductoModi" id="categoria_${producto.producto_id}_${index}">
+                <option value="${categoria}">${categoria}</option>
+            </select>
+        `;
+        nuevoDivSelect.append(nuevoCategoriaDropdown);
+        $('#categoriaProductoModificar').append(nuevoDivSelect);
+    });
+
+    cargarOpcionesCategoriaModiPro(producto.categorias);
+    $('#editarProductoModal').modal('show');
+    cargarResiduosModiPro();
+    updateAddResiduoButton(producto.producto_id);
+}
+
+function updateAddResiduoButton(productoID) {
+    let addButton = $('#anadirResiduoAUnProducto');
+
+    if (addButton.length === 0) {
+        addButton = $('<button>', {
+            type: "button",
+            class: "btn btn-secondary",
+            id: "anadirResiduoAUnProducto",
+            text: "Añadir residuo"
+        });
+        $('#formularioEditarProducto').append(addButton);
+        addButton.on("click", manejadorAnadirResiduoAPRoducto);
+    }
+    
+    addButton.data("producto-id", productoID);
+}
+
+
+//fin refactorizacion de cargar productos original
 function cargarResiduosPorProducto(productoID) {
     // Realizar solicitud AJAX para obtener los residuos del producto
     $.ajax({
@@ -917,18 +918,20 @@ function anadirUnidad(e) {
 
 
 
-function manejadorAnadirResiduoAPRoducto(e) {
-    let idproducto = $(this).data('producto-id');
+function manejadorAnadirResiduoAPRoducto(event) {
+    let idproducto = $(event.target).data('producto-id');
+    console.log(idproducto);
     $('#modalanadirResiduoAProducto').modal('show');
     $('#idProductoModal').val(idproducto);
     cargarResiduosModiPro();
 }
 
 
+
 function manejadorResiduoInsertarBase(e) {
     let productoID = $('#idProductoModal').val();
-    let nuevoResiduo = $('#nuevoResiduo').val();
-    let cantidad = $('#cantidadResiduo').val();
+    var nuevoResiduo = $('#nuevoResiduo').val();
+    var cantidad = $('#cantidadResiduo').val();
 
     if (cantidad > 0) {
         let residuoNuevo = {
