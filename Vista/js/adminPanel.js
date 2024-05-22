@@ -101,6 +101,45 @@ function manejarsuma(e) {
     agregarNuevoCampoResiduo(contador);
 
 }
+function enfocarModalPorId(idModal) {
+    // Mostrar el modal con el ID especificado
+    $('#' + idModal).modal('show');
+
+    // Enfocar el modal
+    $('#' + idModal).focus();
+}
+function setScrollOnTopModal() {
+    // Obtener todos los modals que están visibles
+    var $visibleModals = $('.modal.show');
+
+    // Si hay al menos un modal visible
+    if ($visibleModals.length > 0) {
+        // Obtener el modal que está más arriba en la pila
+        var $topModal = $visibleModals.last();
+
+        // Asegurarse de que el body no tiene scroll
+        $('body').addClass('modal-open');
+
+        // Deshabilitar el scroll en todos los modals visibles
+        $visibleModals.css('overflow', 'hidden');
+
+        // Habilitar el scroll en el modal superior
+        $topModal.css('overflow', 'auto');
+    } else {
+        // Si no hay modals visibles, permitir el scroll en el body
+        $('body').removeClass('modal-open');
+    }
+}
+
+// Llamar a la función cuando un modal se muestra
+$('.modal').on('shown.bs.modal', function () {
+    setScrollOnTopModal();
+});
+
+// Llamar a la función cuando un modal se oculta
+$('.modal').on('hidden.bs.modal', function () {
+    setScrollOnTopModal();
+});
 
 function agregarNuevoCampoResiduo(numero) {
 
@@ -333,7 +372,7 @@ function modificarProducto() {
             } else { console.log("si"); }
 
             $('#editarProductoModal').modal('hide');
-
+            $('body').addClass('modal-open');
             cargarDatosProductos();
         },
         error: function (xhr, status, error) {
@@ -661,169 +700,171 @@ cargarOpcionesCategoria();
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS--------------------- */
 
+
+
 function cargarUsuarios() {
     $.ajax({
         type: "POST",
         url: "../../Controlador/php/usuarios.php",
         dataType: "json",
         success: function (data) {
-            // Limpiar el contenedor de usuarios
             $('#tablaUsuarios').empty();
-            // Iterar sobre los datos de los usuarios y agregarlos al modal
             data.forEach(function (usuario) {
-                var esAdmin = usuario.esAdmin;
-                var activo = usuario.activo;
-                var nombreUsuario = usuario.nombre;
-                // Verificar si el usuario es un administrador
-                if (esAdmin === "Sí" && nombreUsuario === usuarioIniciado) {
-                    // Si el usuario es un administrador, no se agregan los botones
-                    var fila = '<tr>' +
-                        '<td>' + usuario.nombre + '</td>' +
-                        '<td>' + usuario.email + '</td>' +
-                        '<td>' + usuario.telefono + '</td>' +
-                        '<td>' + esAdmin + '</td>' +
-                        '<td>' + activo + '</td>' +
-                        '</tr>';
-                } else {
-                    // Si el usuario no es un administrador, se agregan los botones de editar y cambiar contraseña
-                    var fila = '<tr>' +
-                        '<td>' + usuario.nombre + '</td>' +
-                        '<td>' + usuario.email + '</td>' +
-                        '<td>' + usuario.telefono + '</td>' +
-                        '<td>' + esAdmin + '</td>' +
-                        '<td>' + activo + '</td>' +
-                        '<td>' +
-                        '<button type="button" class="btn btn-editar-usuario botonNegro" id="' + usuario.id + '" data-id="' + usuario.id + '">Editar</button>' +
-                        '</td>' +
-                        '<td>' +
-                        '<button type="button" class="btn btn-cambiar-contrasena botonNegro ml-2" data-id="' + usuario.id + '">Cambiar Contraseña</button>' +
-                        '</td>' +
-                        '</tr>';
-                }
-                // Agregar la fila a la tabla
+                const fila = crearFilaUsuario(usuario);
                 $('#tablaUsuarios').append(fila);
             });
 
-
-            // Agregar evento a los botones "Editar" de los usuarios
-            $('.btn-editar-usuario').click(function () {
-                var fila = $(this).closest('tr'); // Obtener la fila más cercana al botón de editar
-                var idUsuario = $(this).data('id'); // Obtener el ID del usuario
-                var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
-                var email = fila.find('td:eq(1)').text(); // Obtener el texto del segundo td (columna) de la fila
-                var telefono = fila.find('td:eq(2)').text(); // Obtener el texto del tercer td (columna) de la fila
-                var admin = fila.find('td:eq(3)').text(); // Obtener el estado de administrador del usuario
-
-                $('#nombreEditar').val(nombre);
-                $('#emailEditar').val(email);
-                if (admin === 'Sí') {
-                    $('#primero').val("Sí");
-                    $('#primero').text("Sí");
-
-                    $('#segundo').val("No");
-                    $('#segundo').text("No");
-
-                } else {
-                    $('#primero').val("No");
-                    $('#primero').text("No");
-
-                    $('#segundo').val("Sí");
-                    $('#segundo').text("Sí");
-                }
-                console.log($('#adminEditar').val());
-                $('#telefonoEditar').val(telefono);
-                $('#guardarCambios').data('idUsuario', idUsuario);
-                $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
-                //SE ABRE MODAL DE EDITAR
-                $('#modalEditar').modal('show');
-
-            });
-
-            // Agregar evento a los botones "Cambiar Contraseña" de los usuarios 
-            $('.btn-cambiar-contrasena').click(function () {
-                var fila = $(this).closest('tr');
-                var nombre = fila.find('td:eq(0)').text(); // Obtener el texto del primer td (columna) de la fila
-                $('#modalCambiarContrasena .modal-title').text('Cambiar Contraseña de: ' + nombre);
-                $('#guardarPass').data('idUsuario', $(this).data('id'));
-                $('#modalCambiarContrasena').modal('show');
-            });
-
-            $('#guardarCambios').click(function () {
-                if ($('#nombreEditar').val().length > 0 && /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test($('#emailEditar').val()) && /^\d{9}$/.test($('#telefonoEditar').val())) {
-                    $.ajax({
-                        type: "POST",
-                        url: "../../Controlador/php/gestionarUsuarios.php",
-                        data: {
-                            id: $(this).data('idUsuario'),
-                            nombre: $('#nombreEditar').val(),
-                            email: $('#emailEditar').val(),
-                            telefono: $('#telefonoEditar').val(),
-                            admin: $('#adminEditar').val(),
-                            activo: $('#activoEditar').val()
-
-                        },
-                    }).done(function (a) {
-                        $('#modalEditar').modal('hide');
-                        cargarUsuarios();
-                    });
-                }
-
-            });
-
-            $('#guardarPass').click(function () {
-                if ($('#nuevaContrasena').val() === $('#repetirNuevaContrasena').val()) {
-                    if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/.test($('#nuevaContrasena').val())) {
-                        $.ajax({
-                            type: "POST",
-                            url: "../../Controlador/php/gestionarUsuarios.php",
-                            data: {
-                                id: $(this).data('idUsuario'),
-                                password: $('#nuevaContrasena').val()
-                            },
-                        }).done(function (a) {
-                            $('#modalCambiarContrasena').modal('hide');
-                        });
-                    } else {
-                        console.log("La contraseña tiene poca seguridad");
-                    }
-                } else {
-                    console.log("Las contraseñas no coinciden");
-                }
-
-            });
-
-            $('#guardarUsuario').click(function () {
-
-                if ($('#nombreAgregar').val().length > 0 && /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test($('#emailAgregar').val()) && /^\d{9}$/.test($('#telefonoAgregar').val()) && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/.test($('#passwordAgregar').val())) {
-                    $.ajax({
-                        type: "POST",
-                        url: "../../Controlador/php/gestionarUsuarios.php",
-                        data: {
-                            nombreA: $('#nombreAgregar').val(),
-                            emailA: $('#emailAgregar').val(),
-                            telefonoA: $('#telefonoAgregar').val(),
-                            adminA: $('#adminAgregar').val(),
-                            activoA: $('#activoAgregar').val(),
-                            passwordA: $('#passwordAgregar').val()
-                        },
-                    }).done(function (a) {
-                        $('#modalAgregarUsuario').modal('hide');
-                        cargarUsuarios();
-                    });
-                } else {
-                    console.log("fallo");
-                }
-
-            });
+            agregarEventosBotones();
         },
         error: function (xhr, status, error) {
             console.error(error);
-            // Manejar errores, como mostrar un mensaje al usuario
             $('#tablaUsuarios').html('<tr><td colspan="6">Error al cargar usuarios</td></tr>');
         }
     });
-
 }
+
+function crearFilaUsuario(usuario) {
+    const { id, nombre, email, telefono, esAdmin, activo } = usuario;
+    const esUsuarioAdmin = esAdmin === "Sí" && nombre === usuarioIniciado;
+    const botones = esUsuarioAdmin ? '' :
+        `<td>
+            <button type="button" class="btn btn-editar-usuario botonNegro" data-id="${id}">Editar</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-cambiar-contrasena botonNegro ml-2" data-id="${id}">Cambiar Contraseña</button>
+        </td>`;
+    return `<tr>
+        <td>${nombre}</td>
+        <td>${email}</td>
+        <td>${telefono}</td>
+        <td>${esAdmin}</td>
+        <td>${activo}</td>
+        ${botones}
+    </tr>`;
+}
+
+function agregarEventosBotones() {
+    $('.btn-editar-usuario').click(function () {
+        const fila = $(this).closest('tr');
+        const idUsuario = $(this).data('id');
+        const nombre = fila.find('td:eq(0)').text();
+        const email = fila.find('td:eq(1)').text();
+        const telefono = fila.find('td:eq(2)').text();
+        const admin = fila.find('td:eq(3)').text();
+
+        $('#nombreEditar').val(nombre);
+        $('#emailEditar').val(email);
+        $('#telefonoEditar').val(telefono);
+        actualizarAdminSelect(admin);
+        $('#guardarCambios').data('idUsuario', idUsuario);
+        $('#modalEditar .modal-title').text('Editar Usuario: ' + nombre);
+        $('#modalEditar').modal('show');
+    });
+
+    $('.btn-cambiar-contrasena').click(function () {
+        const fila = $(this).closest('tr');
+        const nombre = fila.find('td:eq(0)').text();
+        $('#modalCambiarContrasena .modal-title').text('Cambiar Contraseña de: ' + nombre);
+        $('#guardarPass').data('idUsuario', $(this).data('id'));
+        $('#modalCambiarContrasena').modal('show');
+    });
+
+    $('#guardarCambios').click(guardarCambiosUsuario);
+    $('#guardarPass').click(cambiarContrasenaUsuario);
+    $('#guardarUsuario').click(guardarNuevoUsuario);
+}
+
+function actualizarAdminSelect(admin) {
+    const opciones = admin === 'Sí' ? ['Sí', 'No'] : ['No', 'Sí'];
+    $('#primero').val(opciones[0]).text(opciones[0]);
+    $('#segundo').val(opciones[1]).text(opciones[1]);
+}
+
+function guardarCambiosUsuario() {
+    const nombre = $('#nombreEditar').val();
+    const email = $('#emailEditar').val();
+    const telefono = $('#telefonoEditar').val();
+    if (nombre.length > 0 && validarEmail(email) && validarTelefono(telefono)) {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/gestionarUsuarios.php",
+            data: {
+                id: $(this).data('idUsuario'),
+                nombre: nombre,
+                email: email,
+                telefono: telefono,
+                admin: $('#adminEditar').val(),
+                activo: $('#activoEditar').val()
+            },
+        }).done(function () {
+            $('#modalEditar').modal('hide');
+            cargarUsuarios();
+        });
+    }
+}
+
+function cambiarContrasenaUsuario() {
+    const nuevaContrasena = $('#nuevaContrasena').val();
+    const repetirNuevaContrasena = $('#repetirNuevaContrasena').val();
+    if (nuevaContrasena === repetirNuevaContrasena && validarContrasena(nuevaContrasena)) {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/gestionarUsuarios.php",
+            data: {
+                id: $(this).data('idUsuario'),
+                password: nuevaContrasena
+            },
+        }).done(function () {
+            $('#modalCambiarContrasena').modal('hide');
+        });
+    } else {
+        console.log("Las contraseñas no coinciden o la seguridad es insuficiente");
+    }
+}
+
+function guardarNuevoUsuario() {
+    const nombre = $('#nombreAgregar').val();
+    const email = $('#emailAgregar').val();
+    const telefono = $('#telefonoAgregar').val();
+    const password = $('#passwordAgregar').val();
+    if (nombre.length > 0 && validarEmail(email) && validarTelefono(telefono) && validarContrasena(password)) {
+        $.ajax({
+            type: "POST",
+            url: "../../Controlador/php/gestionarUsuarios.php",
+            data: {
+                nombreA: nombre,
+                emailA: email,
+                telefonoA: telefono,
+                adminA: $('#adminAgregar').val(),
+                activoA: $('#activoAgregar').val(),
+                passwordA: password
+            },
+        }).done(function () {
+            $('#modalAgregarUsuario').modal('hide');
+            cargarUsuarios();
+        });
+    } else {
+        console.log("fallo en la validación");
+    }
+}
+
+function validarEmail(email) {
+    const emailRegex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+    return emailRegex.test(email);
+}
+
+function validarTelefono(telefono) {
+    const telefonoRegex = /^\d{9}$/;
+    return telefonoRegex.test(telefono);
+}
+
+function validarContrasena(contrasena) {
+    const contrasenaRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
+    return contrasenaRegex.test(contrasena);
+}
+
+/**Fin de refactorizacion cargar Usuarios */
+
 
 
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
@@ -960,7 +1001,6 @@ function manejadorResiduoInsertarBase(e) {
     }
     else {
         console.log("Añadir mensaje de error, que meta cantidad");
-
     }
 
 
