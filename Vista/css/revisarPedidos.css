@@ -241,16 +241,3 @@ tbody tr:hover {
     border-width: 0 4px 4px 0;
     transform: rotate(45deg);
 }
-
-.checkboxEstilizado input:checked~.checkmark:after {
-    display: block;
-}
-
-.checkboxEstilizado:hover input~.checkmark {
-    background-color: #f4f4f4;
-}
-
-.checkboxEstilizado input:checked~.checkmark {
-    background-color: #000000;
-    /* Cambiar a un color verde cuando está marcado */
-}

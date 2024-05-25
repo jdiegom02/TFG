@@ -50,14 +50,13 @@ function mostrarPedidos(pedidos) {
             <td>${pedido.fecha}</td>
             <td class="editable nombre-editable" contenteditable>${pedido.nombre_pedido}</td>
             <td class="editable cantidad-editable" contenteditable>${pedido.cantidad}</td>
-            <td class="unidad-editable"></td>
+            <td class="unidad-editable">${pedido.unidad}</td>
             <td class="proveedor-editable"></td>
             <td class="editable observacion-editable">${pedido.observaciones}</td>
             <td>${pedido.nombre_usuario}</td>
             <td>
                 <button class="btn btn-danger eliminar" data-idPedido="${pedido.id}" data-toggle="modal" data-target="#confirmacionEliminar">Eliminar</button>
-            </td>
-        `;
+            </td>`;
         tablaPedidosBody.appendChild(row);
 
         // Almacenar temporalmente el ID del pedido cuando se presiona el botón "Eliminar"
@@ -68,7 +67,6 @@ function mostrarPedidos(pedidos) {
             document.querySelector("#eliminarPedido").addEventListener("click", function () {
                 eliminarSolicitud(idPedido);
                 $('#confirmacionEliminar').modal('toggle');
-
             })
 
         });
@@ -178,15 +176,15 @@ function validarPedidosYGenerarPDF(idPedido) {
     idPedido.forEach(pedido => {
         // Seleccionar la fila del pedido por su atributo data-id-pedido
         let fila = document.querySelector(`tr[data-id-pedido="${pedido}"]`);
+        console.log(fila)
         if (fila) {
             // Acceder al checkbox en la primera columna de la fila
             let chequeo = fila.children[0].children[0];
+            // Solo procesar si el checkbox está marcado y tiene el atributo 'checked'
             if (chequeo.checked) {
-                // Recopilar los datos de la fila
                 let nombre = fila.children[2].textContent;
                 let cantidad = fila.children[3].textContent;
                 
-                // Verificar la existencia del <select> en la columna correspondiente antes de acceder a su valor
                 let unidadSelect = fila.children[4].querySelector('select');
                 let unidad = unidadSelect ? unidadSelect.selectedOptions[0].textContent : '';
                 
@@ -197,13 +195,12 @@ function validarPedidosYGenerarPDF(idPedido) {
                 let usuario = fila.children[7].textContent;
                 let idPedido = fila.getAttribute('data-id-pedido');
 
-                // Añadir los datos recopilados al array checkeds
                 checkeds.push([nombre, cantidad, unidad, proveedor, observaciones, usuario, idPedido]);
             }
         }
     });
+
     insertarEnPedidos(checkeds);
-    console.log('Validar pedidos y generar PDF');
 }
 
 function abrirModal(e) {
