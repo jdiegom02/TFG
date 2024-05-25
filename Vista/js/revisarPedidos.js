@@ -171,34 +171,38 @@ function eliminarPedido(idPedido) {
 }
 
 function validarPedidosYGenerarPDF(idPedido) {
-    // Aquí puedes recopilar todos los cambios y aplicarlos a la base de datos
+    // Inicializar el array para los pedidos seleccionados
     let checkeds = [];
-    console.log(idPedido);
+
+    // Iterar sobre cada pedido
     idPedido.forEach(pedido => {
-        let i = 0;
-        let chequeo = document.querySelector(`tr[data-id-pedido="${pedido}"]`).children[0].children[0];
-        if (chequeo.checked) {
-            checkeds.push([
-                chequeo.parentNode.parentNode.children[2].textContent, // Texto de la columna 2
-                chequeo.parentNode.parentNode.children[3].textContent, // Texto de la columna 3
-                chequeo.parentNode.parentNode.children[4].querySelector('select').selectedOptions[0].textContent, // Texto de la columna 4
-                chequeo.parentNode.parentNode.children[5].querySelector('select').selectedOptions[0].textContent, // Texto seleccionado del select de la columna 5
-                chequeo.parentNode.parentNode.children[6].textContent,
-                chequeo.parentNode.parentNode.children[7].textContent,
-                chequeo.parentNode.parentNode.getAttribute('data-id-pedido')
-            ]);
+        // Seleccionar la fila del pedido por su atributo data-id-pedido
+        let fila = document.querySelector(`tr[data-id-pedido="${pedido}"]`);
+        if (fila) {
+            // Acceder al checkbox en la primera columna de la fila
+            let chequeo = fila.children[0].children[0];
+            if (chequeo.checked) {
+                // Recopilar los datos de la fila
+                let nombre = fila.children[2].textContent;
+                let cantidad = fila.children[3].textContent;
+                
+                // Verificar la existencia del <select> en la columna correspondiente antes de acceder a su valor
+                let unidadSelect = fila.children[4].querySelector('select');
+                let unidad = unidadSelect ? unidadSelect.selectedOptions[0].textContent : '';
+                
+                let proveedorSelect = fila.children[5].querySelector('select');
+                let proveedor = proveedorSelect ? proveedorSelect.selectedOptions[0].textContent : '';
+                
+                let observaciones = fila.children[6].textContent;
+                let usuario = fila.children[7].textContent;
+                let idPedido = fila.getAttribute('data-id-pedido');
+
+                // Añadir los datos recopilados al array checkeds
+                checkeds.push([nombre, cantidad, unidad, proveedor, observaciones, usuario, idPedido]);
+            }
         }
-        // console.log(chequeo.parentNode.parentNode.children[2].textContent);
     });
-    console.log(checkeds);
     insertarEnPedidos(checkeds);
-
-    // Luego, generar el PDF con la información actualizada
-    // generarPDFPedidos(); GENERAR PDF BIEN CAMBIAR A DONDE TIENE QUE ESTAR
-
-
-
-
     console.log('Validar pedidos y generar PDF');
 }
 
