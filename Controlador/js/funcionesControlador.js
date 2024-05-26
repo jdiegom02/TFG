@@ -90,6 +90,8 @@ function cargarPedidosDesdePHP() {
     dataType: 'json',
     success: function (data) {
       mostrarPedidos(data); // Llamar a la función mostrarPedidos con los datos obtenidos
+      cargarProveedoresDesdePHP(crearSeleccionableProveedores);
+
     },
     error: function (xhr, status, error) {
       console.error('Error al cargar los pedidos desde PHP:', error);
@@ -115,7 +117,6 @@ function insertarEnPedidos(datos) {
     url: "../../Controlador/php/funcionesSolicitudes.php",
     data: { addPedido: datos },
   }).done(function (a) {
-    console.log(a);
     cargarPedidosDesdePHP();
   });
 }
@@ -127,7 +128,6 @@ function cargarProveedoresDesdePHP(callback) {
     dataType: 'json',
     data: { cargaProveedor: "true" },
     success: function (data) {
-      console.log(data);
       callback(data);
     },
   });

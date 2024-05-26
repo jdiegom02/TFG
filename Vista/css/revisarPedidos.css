@@ -241,3 +241,7 @@ tbody tr:hover {
     border-width: 0 4px 4px 0;
     transform: rotate(45deg);
 }
+
+.mensaje-error {
+    color: red;
+}

@@ -41,7 +41,6 @@ function principal(e) {
 function mostrarPedidos(pedidos) {
     var tablaPedidosBody = document.getElementById('tabla-pedidos-body');
     tablaPedidosBody.innerHTML = '';
-
     pedidos.forEach(function (pedido) {
         var row = document.createElement('tr');
         row.dataset.idPedido = pedido.id;
@@ -62,8 +61,6 @@ function mostrarPedidos(pedidos) {
         // Almacenar temporalmente el ID del pedido cuando se presiona el botón "Eliminar"
         row.querySelector(".eliminar").addEventListener("click", function () {
             var idPedido = pedido.id;
-            console.log(idPedido);
-
             document.querySelector("#eliminarPedido").addEventListener("click", function () {
                 eliminarSolicitud(idPedido);
                 $('#confirmacionEliminar').modal('toggle');
@@ -111,6 +108,29 @@ function cargarUnidades(idPedido, unidad) {
     } else {
         console.error('No se encontró la fila de pedido con ID:', idPedido);
     }
+}
+
+function crearSeleccionableProveedores(proveedores) {
+    // Crear el elemento select
+    var selectTemplate = $('<select>').addClass('form-control select-proveedor');
+
+    // Crear y agregar la opción inicial
+    var opcionInicial = $('<option>').val('noValue').text('Seleccione un proveedor');
+    selectTemplate.append(opcionInicial);
+
+    // Iterar sobre los proveedores y agregar opciones al select
+    proveedores.forEach(function (proveedor) {
+        var opcion = $('<option>').val(proveedor.id).text(proveedor.descripcion);
+        selectTemplate.append(opcion.clone());
+    });
+
+    // Añadir el select a todos los elementos con la clase .proveedor-editable
+    $('.proveedor-editable').each(function () {
+        $(this).empty().append(selectTemplate.clone());
+        var mensajeErrorDiv = $('<div>').attr('id', 'mensajeErrorProveedor').css('color', 'red').text('No se agregó el pedido por falta de proveedor').hide();
+        // Añadir el div de mensaje de error debajo del select
+        $(this).append(mensajeErrorDiv);
+    });
 }
 
 function cargarProveedores(idPedido, proveedor) {
@@ -169,39 +189,66 @@ function eliminarPedido(idPedido) {
 }
 
 function validarPedidosYGenerarPDF(idPedido) {
-    // Inicializar el array para los pedidos seleccionados
     let checkeds = [];
+    let error = false;
 
-    // Iterar sobre cada pedido
     idPedido.forEach(pedido => {
-        // Seleccionar la fila del pedido por su atributo data-id-pedido
         let fila = document.querySelector(`tr[data-id-pedido="${pedido}"]`);
-        console.log(fila)
         if (fila) {
-            // Acceder al checkbox en la primera columna de la fila
+            let errorFila = false;
             let chequeo = fila.children[0].children[0];
-            // Solo procesar si el checkbox está marcado y tiene el atributo 'checked'
+
+            let mensajeError = fila.querySelector("#mensajeErrorProveedor");
+            if (!mensajeError) {
+                mensajeError = document.createElement("div");
+                mensajeError.id = "mensajeErrorProveedor";
+                mensajeError.style.color = "red";
+                mensajeError.style.display = "none";
+                mensajeError.textContent = "No se agregó el pedido por falta de proveedor";
+                fila.children[5].appendChild(mensajeError);
+            }
+
             if (chequeo.checked) {
                 let nombre = fila.children[2].textContent;
                 let cantidad = fila.children[3].textContent;
-                
+
                 let unidadSelect = fila.children[4].querySelector('select');
                 let unidad = unidadSelect ? unidadSelect.selectedOptions[0].textContent : '';
-                
+
                 let proveedorSelect = fila.children[5].querySelector('select');
                 let proveedor = proveedorSelect ? proveedorSelect.selectedOptions[0].textContent : '';
-                
+
                 let observaciones = fila.children[6].textContent;
                 let usuario = fila.children[7].textContent;
                 let idPedido = fila.getAttribute('data-id-pedido');
 
-                checkeds.push([nombre, cantidad, unidad, proveedor, observaciones, usuario, idPedido]);
+                if (proveedor !== "Seleccione un proveedor") {
+                    checkeds.push([nombre, cantidad, unidad, proveedor, observaciones, usuario, idPedido]);
+                    activarDesactivarDisplay(mensajeError, false);
+                } else {
+                    error = true;
+                    errorFila = true;
+                    activarDesactivarDisplay(mensajeError, errorFila);
+                }
+            } else {
+                activarDesactivarDisplay(mensajeError, false);
             }
         }
     });
 
-    insertarEnPedidos(checkeds);
+    if (!error) {
+        insertarEnPedidos(checkeds);
+    }
 }
+
+function activarDesactivarDisplay(element, error) {
+    if (error && element.style.display === 'none') {
+        element.style.display = 'block';
+    } else if (!error) {
+        element.style.display = 'none';
+    }
+}
+
 
 function abrirModal(e) {
     $('#modalPedidoSemanal').modal('show');
