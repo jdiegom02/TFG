@@ -1,6 +1,8 @@
 <?php
 include_once("../../Modelo/php/BD.php");
 
+include_once("../../Modelo/php/BD.php");
+
 function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
 {
     // Crear una instancia de la clase BD
@@ -18,7 +20,6 @@ function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
         $resultado = $conexion->realizarConsulta($query);
         $datoCorrecto = $resultado->fetchColumn();
 
-   
         if ($datoCorrecto === 0) {
             // Consulta para modificar el producto
             $query_modificacion = "UPDATE productos SET descripcion = '$desc', fk_unidades = (SELECT id FROM unidades WHERE unidad = '$unidad'), observaciones = 'Nuevas observaciones' WHERE id = $id";
@@ -35,24 +36,25 @@ function modificarProducto($id, $desc, $categorias, $unidad, $residuos)
                 $conexion->realizarConsulta("INSERT INTO productos_categoria (fk_producto, fk_categoria) VALUES ($id, $categoriaId)");
             }
 
-            // Consulta para eliminar los residuos asociados al producto
-            $query_eliminar_residuos = "DELETE FROM productos_residuo WHERE fk_producto = $id";
-            $conexion->realizarConsulta($query_eliminar_residuos);
+            // Verificar si hay residuos en la lista antes de eliminarlos
+            if (!empty($residuos)) {
+                // Consulta para eliminar los residuos asociados al producto
+                $query_eliminar_residuos = "DELETE FROM productos_residuo WHERE fk_producto = $id";
+                $conexion->realizarConsulta($query_eliminar_residuos);
 
-            // Consulta para insertar los nuevos residuos asociados al producto
-            foreach ($residuos as $residuo) {
-                $cantidad = $residuo['cantidad'];
-                $nombre_residuo = $residuo['nombre_residuo'];
-                $query_insertar_residuo = "INSERT INTO productos_residuo (fk_producto, fk_residuo, cantidad) VALUES ($id, (SELECT id FROM residuos WHERE descripcion = '$nombre_residuo'), $cantidad)";
-                $conexion->realizarConsulta($query_insertar_residuo);
+                // Consulta para insertar los nuevos residuos asociados al producto
+                foreach ($residuos as $residuo) {
+                    $cantidad = $residuo['cantidad'];
+                    $nombre_residuo = $residuo['nombre_residuo'];
+                    $query_insertar_residuo = "INSERT INTO productos_residuo (fk_producto, fk_residuo, cantidad) VALUES ($id, (SELECT id FROM residuos WHERE descripcion = '$nombre_residuo'), $cantidad)";
+                    $conexion->realizarConsulta($query_insertar_residuo);
+                }
             }
 
             // Confirmar la transacción
             $conexion->completarTransaccion();
             echo "El producto ha sido modificado exitosamente.";
-        }
-        else{ //echo " El producto tiebe asociado un pedido tramitado, no se puede modificar";
-
+        } else {
             echo $datoCorrecto;
         }
     } catch (Exception $e) {
@@ -72,10 +74,8 @@ if (isset($_POST["modificar"])) {
     $idNuevo = $arrayDatos["idProducto"];
     $nombreNuevo = $arrayDatos["nombreProducto"];
     $unidadNuevo = $arrayDatos["unidadesProducto"];
-    $categoriasNuevas = $arrayDatos["categorias"]; 
+    $categoriasNuevas = $arrayDatos["categorias"];
     $residuosNuevos = $arrayDatos["residuos"];
-
-
 
     // Llamar a la función para modificar el producto
     modificarProducto($idNuevo, $nombreNuevo, $categoriasNuevas, $unidadNuevo, $residuosNuevos);

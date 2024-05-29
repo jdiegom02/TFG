@@ -50,7 +50,6 @@ function principal() {
 }
 
 function manejadorClick(e) {
-    //console.log(this.id);
     if (this.id === "anadir") {
         $('#modalGestionarProducto').modal('show');
         limpiarMemoria()
@@ -208,7 +207,7 @@ function initializeEditButtonHandler(data) {
     $(document).on('click', '.btnEditar', function () {
         let productoID = $(this).data('producto-id');
         let producto = data.find(prod => prod.producto_id == productoID);
-        
+
         if (producto) {
             openEditModal(producto);
         } else {
@@ -239,6 +238,7 @@ function openEditModal(producto) {
     cargarOpcionesCategoriaModiPro(producto.categorias);
     $('#editarProductoModal').modal('show');
     cargarResiduosModiPro();
+    cargarResiduosPorProducto(producto.producto_id)
     updateAddResiduoButton(producto.producto_id);
 }
 
@@ -255,7 +255,7 @@ function updateAddResiduoButton(productoID) {
         $('#formularioEditarProducto').append(addButton);
         addButton.on("click", manejadorAnadirResiduoAPRoducto);
     }
-    
+
     addButton.data("producto-id", productoID);
 }
 
@@ -272,7 +272,7 @@ function cargarResiduosPorProducto(productoID) {
             $('#tablaResiduos tbody').empty();
 
             $.each(data.residuos, function (index, residuo) {
-                var newRow = '<tr>' +
+                let newRow = '<tr>' +
                     '<td>' + residuo.cantidad + '</td>' +
                     '<td>' + "Kilogramos" + '</td>' +
                     '<td>' + residuo.nombre_residuo + '</td>' +
@@ -283,7 +283,7 @@ function cargarResiduosPorProducto(productoID) {
             });
 
             $('.eliminar-residuo').click(function () {
-                var producto_residuo = $(this).data('residuo-id');
+                let producto_residuo = $(this).data('residuo-id');
                 $(this).closest('tr').remove();
                 eliminarResiduo(producto_residuo);
             });
@@ -337,16 +337,14 @@ function modificarProducto() {
 
     // Recorrer cada fila de la tabla de residuos y obtener los valores de residuos
     $('#tablaResiduos tbody tr').each(function () {
-        var cantidad = $(this).find('td:eq(0)').text();
-        var nombre_residuo = $(this).find('td:eq(2)').text();
-        var residuo = {
+        let cantidad = $(this).find('td:eq(0)').text();
+        let nombre_residuo = $(this).find('td:eq(2)').text();
+        let residuo = {
             cantidad: cantidad,
             nombre_residuo: nombre_residuo
         };
         residuos.push(residuo);
     });
-
-
 
     // Realizar solicitud AJAX para enviar los datos al backend
     var arrayModificarProducto = {
@@ -362,8 +360,6 @@ function modificarProducto() {
         url: "../../Controlador/php/modificarProducto.php",
         data: { modificar: arrayModificarProducto },
         success: function (response) {
-            console.log(response);
-
             if (response === "1") {
                 $('#noSePuedeModificar').modal('show');
                 setTimeout(function () {
@@ -471,10 +467,6 @@ function cargarResiduosModiPro() {
 
 
 
-function abrirModificarProducto(e) {
-    console.log(this.id);
-}
-
 
 function limpiarMemoria() {
     $('#gestionPRO').empty();
@@ -514,7 +506,6 @@ function insertarProducto(e) {
     });
 
     for (let index = 0; index < residuosUnidad.length; index++) {
-
         // console.log(residuosUnidad[index]);
         // console.log(residuosTipo[index]);
     }
@@ -542,8 +533,6 @@ function insertarProducto(e) {
         data: { datosProducto: arrayDatosProducto },
         success: function (response) {
             // Manejar la respuesta del servidor
-            console.log(response);
-
             // Mostrar mensaje de éxito
             mostrarMensajeExito();
             // Limpiar los campos del formulario después de la inserción exitosa
@@ -916,7 +905,6 @@ function anadirCategoria(e) {
         url: "../../Controlador/php/anadirCategoria.php",
         data: { anadirCategoria: datosCategoria },
         success: function (response) {
-            console.log(response);
             // Actualizar la interfaz de usuario, cerrar el modal
             $('#modalAnadirCategoria').modal('hide');
 
@@ -943,7 +931,6 @@ function anadirUnidad(e) {
         url: "../../Controlador/php/anadirUnidad.php",
         data: { anadirUnidad: datosUnidad },
         success: function (response) {
-            console.log(response);
             // Actualizar la interfaz de usuario, cerrar el modal
             $('#modalAnadirUnidad').modal('hide');
 
@@ -961,7 +948,6 @@ function anadirUnidad(e) {
 
 function manejadorAnadirResiduoAPRoducto(event) {
     let idproducto = $(event.target).data('producto-id');
-    console.log(idproducto);
     $('#modalanadirResiduoAProducto').modal('show');
     $('#idProductoModal').val(idproducto);
     cargarResiduosModiPro();
