@@ -720,7 +720,7 @@ function crearFilaUsuario(usuario) {
             <button type="button" class="btn btn-editar-usuario botonNegro" data-id="${id}">Editar</button>
         </td>
         <td>
-            <button type="button" class="btn btn-cambiar-contrasena botonNegro ml-2" data-id="${id}">Cambiar Contraseña</button>
+            <button type="button" class="btn btn-cambiar-contrasena botonNegro" data-id="${id}">Cambiar Contraseña</button>
         </td>`;
     return `<tr>
         <td>${nombre}</td>
@@ -773,7 +773,7 @@ function guardarCambiosUsuario() {
     let nombre = $('#nombreEditar');
     let email = $('#emailEditar');
     let telefono = $('#telefonoEditar');
-    if (manejadorDeMensajesDeError(nombre,email,telefono)) {
+    if (manejadorDeMensajesDeError(nombre, email, telefono)) {
         $.ajax({
             type: "POST",
             url: "../../Controlador/php/gestionarUsuarios.php",
@@ -793,21 +793,31 @@ function guardarCambiosUsuario() {
 }
 
 function cambiarContrasenaUsuario() {
-    const nuevaContrasena = $('#nuevaContrasena').val();
-    const repetirNuevaContrasena = $('#repetirNuevaContrasena').val();
-    if (nuevaContrasena === repetirNuevaContrasena && validarContrasena(nuevaContrasena)) {
+    const nuevaContrasena = $('#nuevaContrasena');
+    const repetirNuevaContrasena = $('#repetirNuevaContrasena');
+    let estiloMensajeError = "color:red; font-weight:700;";
+    let msgErrorContraseña = "La contraseña debe tener al menos 8 caracteres y debe incluir al menos una letra mayúscula, una letra minúscula y un número";
+    if (repetirNuevaContrasena.val() === nuevaContrasena.val() && validarContrasena(nuevaContrasena.val())) {
         $.ajax({
             type: "POST",
             url: "../../Controlador/php/gestionarUsuarios.php",
             data: {
                 id: $(this).data('idUsuario'),
-                password: nuevaContrasena
+                password: nuevaContrasena.val()
             },
         }).done(function () {
             $('#modalCambiarContrasena').modal('hide');
         });
-    } else {
-        console.log("Las contraseñas no coinciden o la seguridad es insuficiente");
+    }
+    manejarErrorDeValidacion(nuevaContrasena, msgErrorContraseña, validarContrasena, estiloMensajeError);
+    compararContraseñas(repetirNuevaContrasena, nuevaContrasena, repetirNuevaContrasena, estiloMensajeError);
+}
+
+function compararContraseñas(campoEnValidacion, nuevaContrasena, repetirNuevaContrasena, estiloMensajeError) {
+    campoEnValidacion.next('.mensaje-error').remove();
+    if (!(nuevaContrasena.val() === repetirNuevaContrasena.val())) {
+        const errorMensaje = crearElemento('div', "Las contraseñas no coinciden", { class: 'mensaje-error', style: estiloMensajeError });
+        campoEnValidacion.parent().append(errorMensaje);
     }
 }
 
