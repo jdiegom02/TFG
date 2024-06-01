@@ -770,18 +770,18 @@ function actualizarAdminSelect(admin) {
 }
 
 function guardarCambiosUsuario() {
-    const nombre = $('#nombreEditar').val();
-    const email = $('#emailEditar').val();
-    const telefono = $('#telefonoEditar').val();
-    if (nombre.length > 0 && validarEmail(email) && validarTelefono(telefono)) {
+    let nombre = $('#nombreEditar');
+    let email = $('#emailEditar');
+    let telefono = $('#telefonoEditar');
+    if (manejadorDeMensajesDeError(nombre,email,telefono)) {
         $.ajax({
             type: "POST",
             url: "../../Controlador/php/gestionarUsuarios.php",
             data: {
                 id: $(this).data('idUsuario'),
-                nombre: nombre,
-                email: email,
-                telefono: telefono,
+                nombre: nombre.val(),
+                email: email.val(),
+                telefono: telefono.val(),
                 admin: $('#adminEditar').val(),
                 activo: $('#activoEditar').val()
             },
@@ -838,14 +838,16 @@ function guardarNuevoUsuario() {
     }
 }
 
-function manejadorDeMensajesDeError(nombre, email, telefono, password) {
+function manejadorDeMensajesDeError(nombre, email, telefono, password = null) {
     let estiloMensajeError = "color:red; font-weight:700;";
     let errores = 0;
 
     errores += manejarErrorDeValidacion(nombre, "El usuario debe tener un nombre", validarNombre, estiloMensajeError);
     errores += manejarErrorDeValidacion(email, "El Email debe tener un formato correcto, ejemplo: 'nombre@email.com'", validarEmail, estiloMensajeError);
     errores += manejarErrorDeValidacion(telefono, "El teléfono debe contar con 9 números y no debe tener letras", validarTelefono, estiloMensajeError);
-    errores += manejarErrorDeValidacion(password, "La contraseña debe tener al menos 8 caracteres y debe incluir al menos una letra mayúscula, una letra minúscula y un número", validarContrasena, estiloMensajeError);
+    if (password != null) {
+        errores += manejarErrorDeValidacion(password, "La contraseña debe tener al menos 8 caracteres y debe incluir al menos una letra mayúscula, una letra minúscula y un número", validarContrasena, estiloMensajeError);
+    }
 
     if (errores > 0) {
         return false;
