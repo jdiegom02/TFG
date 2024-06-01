@@ -52,7 +52,7 @@ function principal() {
 function manejadorClick(e) {
     if (this.id === "anadir") {
         $('#modalGestionarProducto').modal('show');
-        limpiarMemoria()
+        limpiarMemoria();
         cargarDatosProductos();
         cargarResiduos();
     }
@@ -812,21 +812,22 @@ function cambiarContrasenaUsuario() {
 }
 
 function guardarNuevoUsuario() {
-    const nombre = $('#nombreAgregar').val();
-    const email = $('#emailAgregar').val();
-    const telefono = $('#telefonoAgregar').val();
-    const password = $('#passwordAgregar').val();
-    if (nombre.length > 0 && validarEmail(email) && validarTelefono(telefono) && validarContrasena(password)) {
+    let nombre = $('#nombreAgregar');
+    let email = $('#emailAgregar');
+    let telefono = $('#telefonoAgregar');
+    let password = $('#passwordAgregar');
+
+    if (manejadorDeMensajesDeError(nombre, email, telefono, password)) {
         $.ajax({
             type: "POST",
             url: "../../Controlador/php/gestionarUsuarios.php",
             data: {
-                nombreA: nombre,
-                emailA: email,
-                telefonoA: telefono,
+                nombreA: nombre.val(),
+                emailA: email.val(),
+                telefonoA: telefono.val(),
                 adminA: $('#adminAgregar').val(),
                 activoA: $('#activoAgregar').val(),
-                passwordA: password
+                passwordA: password.val()
             },
         }).done(function () {
             $('#modalAgregarUsuario').modal('hide');
@@ -835,6 +836,36 @@ function guardarNuevoUsuario() {
     } else {
         console.log("fallo en la validación");
     }
+}
+
+function manejadorDeMensajesDeError(nombre, email, telefono, password) {
+    let estiloMensajeError = "color:red; font-weight:700;";
+    let errores = 0;
+
+    errores += manejarErrorDeValidacion(nombre, "El usuario debe tener un nombre", validarNombre, estiloMensajeError);
+    errores += manejarErrorDeValidacion(email, "El Email debe tener un formato correcto, ejemplo: 'nombre@email.com'", validarEmail, estiloMensajeError);
+    errores += manejarErrorDeValidacion(telefono, "El teléfono debe contar con 9 números y no debe tener letras", validarTelefono, estiloMensajeError);
+    errores += manejarErrorDeValidacion(password, "La contraseña debe tener al menos 8 caracteres y debe incluir al menos una letra mayúscula, una letra minúscula y un número", validarContrasena, estiloMensajeError);
+
+    if (errores > 0) {
+        return false;
+    }
+    return true;
+}
+
+function manejarErrorDeValidacion(campoEnValidacion, mensaje, validador, estiloMensajeError) {
+    campoEnValidacion.next('.mensaje-error').remove();
+    if (!validador(campoEnValidacion.val())) {
+        const errorMensaje = crearElemento('div', mensaje, { class: 'mensaje-error', style: estiloMensajeError });
+        campoEnValidacion.parent().append(errorMensaje);
+        return 1; //esto para que sume 1
+    }
+    return 0;
+}
+
+function validarNombre(nombre) {
+    let nombreEsValido = nombre.length > 0;
+    return nombreEsValido;
 }
 
 function validarEmail(email) {
@@ -854,13 +885,9 @@ function validarContrasena(contrasena) {
 
 /**Fin de refactorizacion cargar Usuarios */
 
-
-
 /*-------------------------Para MODAL GESTIONAR USUARIOS-------- FIN----------------- */
 
 /*---------------------------PARA LOS RESIDUOS DE AÑADIR---------------------------------------------------- */
-
-
 
 function cargarResiduos() {
     $.ajax({
