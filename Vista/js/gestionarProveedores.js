@@ -1,32 +1,14 @@
 document.addEventListener("DOMContentLoaded", principal);
 
+//Al cargar la pagina, carga los proveedores en una tabla con botones para realizar accioens
 function principal(params) {
-    comprobarSesion(function (valor) {
-        if (valor == 0) {
-            location.href = "../html/index.html";
-        } else {
-            if (valor.esadmin) {
 
-                document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
-                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
-                usuarioIniciado = valor.nombre;
-                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
-                mostrarDatosUsuario(usuarioIniciado)
-            } else {
-                location.href = "../html/pedidos.html";
-            }
-        }
-    });
     actualizarModoOscuro();
 
     cargarProveedoresDesdePHP(function (proveedores) {
         let tabla = document.createElement("table");
-        tabla.classList.add("table"); // Add Bootstrap table class if using Bootstrap
-        // tabla.classList.add("table-responsive"); // Add Bootstrap table class if using Bootstrap
-
-        // Crear encabezado de tabla
+        tabla.classList.add("table");
+        // tabla.classList.add("table-responsive");
         let encabezado = tabla.createTHead();
         let filaEncabezado = encabezado.insertRow();
         let thDescripcion = document.createElement("th");
@@ -43,7 +25,6 @@ function principal(params) {
 
         proveedores.forEach(proveedor => {
             let fila = cuerpoTabla.insertRow();
-
             let descripcionCell = fila.insertCell();
             descripcionCell.textContent = proveedor.descripcion;
 
@@ -53,7 +34,7 @@ function principal(params) {
             let editarCell = fila.insertCell();
             let botonEditar = document.createElement("button");
             botonEditar.type = "button";
-            botonEditar.classList.add("btn", "btn-sm", "ml-3", "botonEditar","botonNegro");
+            botonEditar.classList.add("btn", "btn-sm", "ml-3", "botonEditar", "botonNegro");
             botonEditar.textContent = "Editar";
             botonEditar.setAttribute("data-toggle", "modal");
             botonEditar.setAttribute("data-target", "#editarProveedorModal");
@@ -64,29 +45,29 @@ function principal(params) {
             editarCell.appendChild(botonEditar);
         });
 
-        // Agregar la tabla al contenedor en el DOM
         let padre = document.querySelector("#infoProveedores");
         padre.innerHTML = "";
         padre.appendChild(tabla);
     });
     document.querySelector("#confirmarAccion").addEventListener("click", function () {
-        
+
         let descripcion = document.querySelector("#addDescripcion").value;
         let direccion = document.querySelector("#addDireccion").value;
         let email = document.querySelector("#addEmail").value;
         let telefono = document.querySelector("#addTelefono").value;
         let observaciones = document.querySelector("#addObservaciones").value;
-    
+
         if (descripcion.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             let datos = [descripcion, direccion, email, telefono, observaciones];
             console.log(datos);
             addProveedor(datos);
         }
-        else { console.log("no entro");}
+        else { console.log("no entro"); }
     });
 
 }
 
+//Esto edita un proveedor con los datos que tenga en el formulario
 function editar(hijo) {
     let nombre = hijo.descripcion;
     let direccion = hijo.direccion;
@@ -114,17 +95,13 @@ function editar(hijo) {
         }
     }
 
-
-    // Agrega el evento al botón de guardar cambios solo una vez
     document.querySelector("#confirmarAccion").addEventListener("click", guardarCambios);
-
-    // Agrega el evento al botón de cancelar para quitar el evento del botón de guardar cambios
     document.querySelector("#cerrarModal").addEventListener("click", function () {
         document.querySelector("#cambioProveedor").removeEventListener("click", guardarCambios);
     });
 }
 
-
+//Funcion crear Elemento
 function crearElemento(etiqueta, texto, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
     if (texto !== undefined) {

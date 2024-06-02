@@ -5,14 +5,11 @@ function principal(e) {
     cargarPedidosDesdePHP();
     var btnValidarPedidos = document.getElementById('btnValidarPedidos');
     btnValidarPedidos.addEventListener('click', function () {
-        // Obtener todas las filas de la tabla de pedidos
         let pedidos = [];
         let filasPedidos = document.querySelectorAll('#tabla-pedidos-body tr');
-        // Iterar sobre cada fila de pedido
+
         filasPedidos.forEach(function (fila) {
-            // Obtener el ID del pedido de la fila actual
             pedidos.push(fila.dataset.idPedido);
-            // Llamar a la función validarPedidosYGenerarPDF con el ID del pedido
         });
         validarPedidosYGenerarPDF(pedidos);
     });
@@ -20,7 +17,6 @@ function principal(e) {
     //     guardarCambiosPedido();
     // });
 
-    // Agregar event listener para detectar cambios en las celdas editables
     document.querySelectorAll('.editable').forEach(function (cell, index) {
         cell.addEventListener('input', function () {
             guardarCambiosEnCelda(this, index);
@@ -58,7 +54,6 @@ function mostrarPedidos(pedidos) {
             </td>`;
         tablaPedidosBody.appendChild(row);
 
-        // Almacenar temporalmente el ID del pedido cuando se presiona el botón "Eliminar"
         row.querySelector(".eliminar").addEventListener("click", function () {
             var idPedido = pedido.id;
             document.querySelector("#eliminarPedido").addEventListener("click", function () {
@@ -72,20 +67,16 @@ function mostrarPedidos(pedidos) {
 
 
 function cargarUnidades(idPedido, unidad) {
-    // Encontrar la fila del pedido por su ID
     var filaPedido = document.querySelector(`tr[data-id-pedido="${idPedido}"]`);
     if (filaPedido) {
-        // Crear un elemento select para las unidades
         var selectUnidad = document.createElement('select');
         selectUnidad.classList.add('form-control');
 
-        // Realizar una solicitud AJAX para obtener las unidades desde el servidor
         $.ajax({
             url: "../../Controlador/php/unidades.php",
             type: "POST",
             dataType: "json",
             success: function (unidades) {
-                // Iterar sobre las unidades recibidas y agregarlas al desplegable
                 unidades.forEach(function (unidadActual) {
                     var option = document.createElement('option');
                     option.value = unidadActual.unidad;
@@ -95,7 +86,6 @@ function cargarUnidades(idPedido, unidad) {
                     }
                     selectUnidad.appendChild(option);
                 });
-
                 // Encontrar la celda de la columna de unidades y añadir el desplegable
                 var tdUnidad = filaPedido.querySelector('.unidad-editable');
                 tdUnidad.innerHTML = ''; // Limpiar el contenido existente
@@ -111,56 +101,46 @@ function cargarUnidades(idPedido, unidad) {
 }
 
 function crearSeleccionableProveedores(proveedores) {
-    // Crear el elemento select
     var selectTemplate = $('<select>').addClass('form-control select-proveedor');
-
-    // Crear y agregar la opción inicial
     var opcionInicial = $('<option>').val('noValue').text('Seleccione un proveedor');
     selectTemplate.append(opcionInicial);
 
-    // Iterar sobre los proveedores y agregar opciones al select
     proveedores.forEach(function (proveedor) {
         var opcion = $('<option>').val(proveedor.id).text(proveedor.descripcion);
         selectTemplate.append(opcion.clone());
     });
 
-    // Añadir el select a todos los elementos con la clase .proveedor-editable
     $('.proveedor-editable').each(function () {
         $(this).empty().append(selectTemplate.clone());
         var mensajeErrorDiv = $('<div>').attr('id', 'mensajeErrorProveedor').css('color', 'red').text('No se agregó el pedido por falta de proveedor').hide();
-        // Añadir el div de mensaje de error debajo del select
         $(this).append(mensajeErrorDiv);
     });
 }
 
 function cargarProveedores(idPedido, proveedor) {
-    // Encontrar la fila del pedido por su ID
     var filaPedido = document.querySelector(`tr[data-id-pedido="${idPedido}"]`);
     if (filaPedido) {
-        // Crear un elemento select para los proveedores
         var selectProveedor = document.createElement('select');
         selectProveedor.classList.add('form-control');
 
-        // Realizar una solicitud AJAX para obtener los proveedores desde el servidor
+        //obtener los proveedores desde el servidor
         $.ajax({
             url: "../../Controlador/php/proveedores.php",
             type: "POST",
             dataType: "json",
             success: function (proveedores) {
-                // Iterar sobre los proveedores recibidos y agregarlos al desplegable
                 proveedores.forEach(function (proveedorActual) {
                     var option = document.createElement('option');
                     option.value = proveedorActual.descripcion;
                     option.textContent = proveedorActual.descripcion;
-                    if (proveedorActual.descripcion === proveedor) { // Si el proveedor actual coincide con el del pedido
-                        option.selected = true; // Establecer como preseleccionado
+                    if (proveedorActual.descripcion === proveedor) { // si el proveedor actual coincide con el del pedido
+                        option.selected = true; // establecer como preseleccionado
                     }
                     selectProveedor.appendChild(option);
                 });
 
-                // Encontrar la celda de la columna de proveedores y añadir el desplegable
                 var tdProveedor = filaPedido.querySelector('.proveedor-editable');
-                tdProveedor.innerHTML = ''; // Limpiar el contenido existente
+                tdProveedor.innerHTML = '';
                 tdProveedor.appendChild(selectProveedor);
             },
             error: function (xhr, status, error) {
@@ -176,14 +156,12 @@ function guardarCambiosEnCelda(cell, columna) {
     var idPedido = cell.closest('tr').dataset.idPedido;
     var nuevoValor = cell.textContent.trim();
 
-    // Aquí puedes implementar la lógica para guardar los cambios en el servidor
     console.log('Guardar cambios del pedido con ID:', idPedido);
     console.log('Columna:', columna);
     console.log('Nuevo valor:', nuevoValor);
 }
 
 function eliminarPedido(idPedido) {
-    // Aquí puedes implementar la lógica para eliminar el pedido con el ID proporcionado
     $('#modalEliminar').modal('toggle');
     console.log('Eliminar pedido con ID:', idPedido);
 }
@@ -271,19 +249,15 @@ function mostrarPedidosValidados() {
 }
 
 function construirTablaPedidos(pedidos) {
-    // Obtener el div donde se colocará la tabla
     var tablaDiv = $('#tablaPedidos');
-    // Limpiar el contenido anterior del div
     tablaDiv.empty();
 
-    // Construir la tabla
     var tabla = '<table class="table">';
     tabla += '<thead>';
     tabla += '<tr><th>Proveedor</th><th>Producto</th><th>Cantidad</th><th>Unidad de Medida</th></tr>';
     tabla += '</thead>';
     tabla += '<tbody>';
 
-    // Recorrer los datos de los pedidos y construir filas
     $.each(pedidos, function (proveedor, productos) {
         $.each(productos, function (index, producto) {
             tabla += '<tr>';
@@ -299,7 +273,6 @@ function construirTablaPedidos(pedidos) {
     tabla += '</table>';
 
     tablaDiv.html(tabla);
-
     //$('#modalPedidoSemanal').modal('show');
 }
 

@@ -1,39 +1,23 @@
 window.addEventListener("load", principal, false);
 
 function principal() {
-    comprobarSesion(function (valor) {
-        if (valor == 0) {
-            location.href = "../html/index.html";
-        } else {
-            if (valor.esadmin) {
-
-                document.getElementById("botonDarkMode").addEventListener("click", activarDesactivarModoOscuro);
-                document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-                document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-                document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
-                usuarioIniciado = valor.nombre;
-                document.querySelector("#desplegableFunciones").appendChild(crearElemento("input", undefined, { "type": "button", "id": "cerrarsesion", "class": "btn btn-danger", "value": "Cerrar Sesión" }));
-                mostrarDatosUsuario(usuarioIniciado)
-            } else {
-                location.href = "../html/pedidos.html";
-            }
-        }
-    });
     actualizarModoOscuro();
-
     llenarDesplegableAnios();
     obtenerResiduosDesdeFuenteExterna();
-
     document.getElementById("mes").addEventListener("change", obtenerResiduosDesdeFuenteExterna);
     document.getElementById("anio").addEventListener("change", obtenerResiduosDesdeFuenteExterna);
     document.getElementById("btnGenerarPDF").addEventListener("click", generarPDFResiduos);
 }
 
+/**NO SE HACE AUN
+ *  Desplegable de fechas, que deberia cambiar segun cuando se haya solicitado
+ *  el primer pedido y el pedido mas nuevo, asi evitamos tener fechas con pedidos vacios
+ * 
+ */
 function llenarDesplegableAnios() {
     var selectAnio = document.getElementById("anio");
     var arrayAnos = ["2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"];
 
-    // Iterar sobre el array de años y crear una opción para cada año
     arrayAnos.forEach(function (year) {
         var option = document.createElement("option");
         option.value = year;
@@ -42,31 +26,10 @@ function llenarDesplegableAnios() {
     });
 }
 
-function obtenerResiduosDesdeFuenteExternaORIGINAL() {
-    $.ajax({
-        url: '../../Controlador/php/residuosFecha.php',
-        type: 'POST',
-        dataType: 'json',
-        success: function (data) {
-            $.each(data, function (index, opcion) {
-                console.log("fkProducto: " + opcion.descripcion);
-                console.log("idProducto: " + opcion.cantidad);
-                console.log("Producto: " + opcion.unidad);
-            });
-
-        },
-        error: function (xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
-
 function obtenerResiduosDesdeFuenteExterna() {
-    var mesSeleccionado = document.getElementById("mes").value;
-    var anioSeleccionado = document.getElementById("anio").value;
-
-
-    var parametros = {
+    let mesSeleccionado = document.getElementById("mes").value;
+    let anioSeleccionado = document.getElementById("anio").value;
+    let parametros = {
         mes: mesSeleccionado,
         anio: anioSeleccionado
     };
@@ -85,14 +48,12 @@ function obtenerResiduosDesdeFuenteExterna() {
     });
 }
 
-
 function mostrarCantidadResiduosPorTipo(data) {
-
-    var cantidadResiduosPorTipo = {};
+    let cantidadResiduosPorTipo = {};
 
     data.forEach(function (residuo) {
-        var tipoResiduo = residuo.descripcion;
-        var cantidad = parseInt(residuo.cantidad);
+        let tipoResiduo = residuo.descripcion;
+        let cantidad = parseInt(residuo.cantidad);
 
         if (cantidadResiduosPorTipo[tipoResiduo]) {
             cantidadResiduosPorTipo[tipoResiduo] += cantidad;
@@ -101,10 +62,9 @@ function mostrarCantidadResiduosPorTipo(data) {
         }
     });
 
+    let tabla = '<table class="table"><thead><tr><th>Tipo de Residuo</th><th>Cantidad</th><th>Unidad</th></tr></thead><tbody>';
 
-    var tabla = '<table class="table"><thead><tr><th>Tipo de Residuo</th><th>Cantidad</th><th>Unidad</th></tr></thead><tbody>';
-
-    for (var tipo in cantidadResiduosPorTipo) {
+    for (let tipo in cantidadResiduosPorTipo) {
         tabla += '<tr><td>' + tipo + '</td><td>' + cantidadResiduosPorTipo[tipo] + '</td><td> Kg </td></tr>';
     }
 
