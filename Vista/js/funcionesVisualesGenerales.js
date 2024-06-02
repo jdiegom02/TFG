@@ -91,6 +91,7 @@ function crearOpcionCerrarSesion(params) {
     botonCerrarSesion.addEventListener("click", cerrarSesion);
     return botonCerrarSesion;
 }
+
 function crearOpcionHistorial(nombreUsuario) {
     let botonHistorial = crearElemento("input", undefined, {
         type: "button",
@@ -104,6 +105,7 @@ function crearOpcionHistorial(nombreUsuario) {
     })
     return botonHistorial
 }
+
 function crearBotonDetalles() {
     let botonDetalles = crearElemento("input", undefined, {
         type: "button",
@@ -118,6 +120,7 @@ function crearBotonDetalles() {
     })
     return botonDetalles;
 }
+
 function mostrarHistorialUsuario(pedidos) {
     document.getElementById("informacionProductos").innerHTML = "";
     document.getElementById("informacionProductos").appendChild(crearElemento("button", "Pedir Productos", { id: "botonPedirProductos", class: "btn" }));
@@ -140,7 +143,7 @@ function mostrarHistorialUsuario(pedidos) {
     encabezado.appendChild(crearElemento('th', "Detalles"))
     tablaHistorial.appendChild(encabezado);
 
-    // Crear filas de datos
+    // crecion de filas de datos
     pedidos.forEach(pedido => {
         let filaDatos = crearElemento('tr', undefined, { id: pedido.numeroPedido });
         for (let key in pedido) {
@@ -157,6 +160,7 @@ function mostrarHistorialUsuario(pedidos) {
     document.getElementById("informacionProductos").appendChild(tablaHistorial);
     document.getElementById("informacionProductos").appendChild(crearElemento("div", undefined, { id: "contenedorLineaPedido" }))
 }
+
 function mostrarLineasPedidos(lineasPedidos) {
     document.getElementById("informacionHistorialProductos").innerHTML = ""
     let lista = crearElemento("div", undefined);
@@ -166,6 +170,7 @@ function mostrarLineasPedidos(lineasPedidos) {
     });
     document.getElementById("informacionHistorialProductos").appendChild(lista)
 }
+
 function crearOpcionAdministrar(admin) {
     let botonAdministrar = crearElemento("input", undefined, {
         type: "button",
@@ -179,6 +184,7 @@ function crearOpcionAdministrar(admin) {
     });
     return botonAdministrar;
 }
+
 function crearOpcionRegresar() {
     let botonRegresar = crearElemento("input", undefined, {
         type: "button",
@@ -192,16 +198,19 @@ function crearOpcionRegresar() {
     });
     return botonRegresar;
 }
+
 function desplegarBotonesUsuario(params) {
     let contenido = document.getElementById("desplegableFunciones")
     contenido.style.display = 'block';
     contenido.addEventListener("mouseleave", cerrarBotonesUsuario)
     this.addEventListener("mouseleave", cerrarBotonesUsuario)
 }
+
 function cerrarBotonesUsuario() {
     let contenido = document.getElementById("desplegableFunciones")
     contenido.style.display = 'none';
 }
+
 /* FIN DE DESPLEGABLE DE USUARIO */
 function activarDesactivarModoOscuro(event) {
     if (localStorage.getItem("darkModeActive") == "off") {
@@ -219,6 +228,7 @@ function actualizarModoOscuro() {
     if (document.head.lastChild.href == "../css/estilosDarkMode.css") {
         document.head.lastChild.parentNode.removeChild(document.head.lastChild);
     }
+
     if (localStorage.getItem("darkModeActive") == "on") {
         botonDarkMode ? botonDarkMode.children[0].setAttribute("src", imagenes[1]) : console.log("no existe");
         let hojaEstilos = document.createElement('link');
@@ -234,29 +244,28 @@ function actualizarModoOscuro() {
         }
     }
 }
+
 function actualizarModoOscuro() {
     let imagenes = ["../img/iconos/darkModeSun.svg", "../img/iconos/darkModeMoon.png"];
     let botonDarkMode = document.getElementById("botonDarkMode");
-
-    // Verificar si ya hay un enlace de estilos presente en el documento
     let enlaceEstilos = document.querySelector('link[href="../css/estilosDarkMode.css"]');
 
-    // Si el modo oscuro está activado y no hay un enlace de estilos, agregarlo
+    // Si el modo oscuro está activado y no hay un enlace de estilos lo agrega
     if (localStorage.getItem("darkModeActive") == "on" && !enlaceEstilos) {
         botonDarkMode ? botonDarkMode.children[0].setAttribute("src", imagenes[1]) : console.log("no existe");
         let hojaEstilos = document.createElement('link');
         hojaEstilos.rel = 'stylesheet';
         hojaEstilos.href = '../css/estilosDarkMode.css'; // Cambia 'estilos.css' por la ruta de tu hoja de estilos
-        // Agregar la etiqueta <link> al head del documento
         document.head.appendChild(hojaEstilos);
     }
-    // Si el modo oscuro está desactivado y hay un enlace de estilos, eliminarlo
+    // Si el modo oscuro está desactivado y hay un enlace de estilos lo elimina
     else if (localStorage.getItem("darkModeActive") != "on" && enlaceEstilos) {
         botonDarkMode ? botonDarkMode.children[0].setAttribute("src", imagenes[0]) : console.log("no existe");
         enlaceEstilos.parentNode.removeChild(enlaceEstilos);
     }
 }
-// FUNCION CREAR ELEMENTO
+
+// Funcion crear elemento
 function crearElemento(etiqueta, texto, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
     if (texto !== undefined) {

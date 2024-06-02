@@ -3,7 +3,7 @@ addEventListener("DOMContentLoaded", principal);
 function principal() {
   document.querySelector("#login").addEventListener("click", validarFormulario);
   var container = document.getElementById("contenedor");
-  container.classList.add("visible"); // Agrega la clase 'visible' para iniciar la animación al cargar la página
+  container.classList.add("visible"); // Agrega la clase visible para iniciar la animación al cargar la página
   document.querySelector("#cambioPassword").addEventListener("click", verificacionPassword);
 }
 
@@ -40,6 +40,7 @@ function validarFormulario() {
     crearMensajeError("La contraseña debe tener un minimo de 8 caracteres incluyendo letra minuscula, letra mayuscula y numeros sin espacios");
   }
 }
+
 function crearMensajeError(mensaje) {
   $("#modalerror").modal("show");
   imprimirMensaje(mensaje);

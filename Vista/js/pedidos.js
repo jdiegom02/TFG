@@ -29,15 +29,13 @@ function agregarEventListeners() {
   document.getElementById("categorySelect").addEventListener("change", mostrarProductos);
   document.getElementById("searchInput").addEventListener("input", mostrarProductos);
   document.getElementById('carritoCompras').addEventListener("click", abrirCarrito);
-
-  // document.getElementById("desplegablellamar").addEventListener("mouseover", desplegarBotonesUsuario)
-  // document.getElementById("desplegablellamar").addEventListener("click", desplegarBotonesUsuario)
-  // document.getElementById("desplegableFunciones").addEventListener("mouseover", desplegarBotonesUsuario)
 }
+
 function abrirPopupHistorial(event) {
   document.getElementById("contenedorpopupHistorial").style.display = 'block';
   showModal('detallesHistorial', 'popup-contenedor')
 }
+
 function showModal(openButton, modalContent) {
   let overlay = document.getElementById("overlayGeneral");
   overlay.style.display = "block";
@@ -75,6 +73,7 @@ function abrirCarrito(event) {
     cerrarDiv("carritoDerecha")
   });
 }
+
 function cerrarDiv(divID) {
   let divCarrito = document.getElementById(divID);
   let overlay = document.getElementById("overlayGeneral")
@@ -142,6 +141,7 @@ function mostrarCarrito(contenedor) {
   }
   contenedor.appendChild(contenedorProductos)
 }
+
 function borrarFilaPedido(event) {
   let miArray = JSON.parse(sessionStorage.getItem(nombreUsuario));
   miArray = eliminarPosicionDelArray(miArray, this.id - 1)
@@ -158,6 +158,7 @@ function añadirNuevoProducto() {
   crearPopUpConfirmacion("nuevoProducto", nombreNuevoProducto, cantidadNuevoProducto, unidad, "../img/iconos/iconoProductoNuevo.png");
   cantidadNuevoProducto = 1;
 }
+
 function añadirProducto(event) {
   if (this.getAttribute("identificador")) {
     let inputCantidad = document.getElementById("cantidad" + this.getAttribute("identificador"));
@@ -229,10 +230,12 @@ function confirmarProducto(event) {
   actualizarContadorCarrito()
   agregarCheck()
 }
+
 function cancelarProducto(event) {
   document.body.style.overflow = "auto";
   document.getElementById("contenedor-popUpConfirmacion").parentNode.removeChild(document.getElementById("contenedor-popUpConfirmacion"));
 }
+
 function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada) {
   let almacenar = ([nombre, parseInt(cantidad), unidad, observacion, imagenRelacionada]);
   if (sessionStorage.getItem(nombreUsuario) != null) {
@@ -244,6 +247,7 @@ function añadirCarrito(nombre, unidad, cantidad, observacion, imagenRelacionada
     sessionStorage.setItem(nombreUsuario, almacenado);
   }
 }
+
 function aparecerVentanaEmergente(titulo, descripcion, imagenMuestra) {
   let overlay = document.getElementById("overlayVentanaEmergente");
   overlay.style.display = "block";
@@ -264,6 +268,7 @@ function aparecerVentanaEmergente(titulo, descripcion, imagenMuestra) {
   `;
   setTimeout(() => desaparecerElementoFadeOut(contenedorVentanaEmergente), 2000);
 }
+
 function desaparecerElementoFadeOut(elemento) {
   let elementoDesaparecer
   if (elemento == undefined) {
@@ -282,11 +287,13 @@ function desaparecerElementoFadeOut(elemento) {
     }
     elementoDesaparecer.style.opacity = opacidad;
     opacidad -= opacidad * 0.1;
-  }, 50); // Velocidad de la animación (50 milisegundos)
+  }, 50); //milisegundos
 }
+
 function verificarSessionStorage(nombreUsuario) {
   return sessionStorage.getItem(nombreUsuario) !== null;
 }
+
 function pedirTodo(event) {
   if (sessionStorage.getItem(nombreUsuario) == null) {
   } else {
@@ -306,6 +313,7 @@ function pedirTodo(event) {
   mostrarProductos()
   actualizarContadorCarrito();
 }
+
 function agregarCheck() {
   recogerProductos(function (productos) {
     productos.forEach(producto => {
@@ -322,14 +330,16 @@ function agregarCheck() {
     });
   });
 }
+
 function cerrarSesion() {
   sessionStorage.clear();
   location.href = "/index.html";
 }
+
 function verificarSessionStorage(nombreDelKeyDeLaSesion) {
   return sessionStorage.getItem(nombreDelKeyDeLaSesion) != null;
 }
-// Obtener las categorías únicas y mostrarlas en el selector de categorías
+
 function mostrarSeleccionableCategorias() {
   let selectCategoria = document.getElementById("categorySelect");
   recogerProductos(function (productos) {
@@ -344,25 +354,26 @@ function mostrarSeleccionableCategorias() {
     });
   });
 }
+
 function mostrarProductos() {
   recogerProductos(function (productos) {
     let productosFiltrados = filtrarProductos(productos);
     document.getElementById("nuevosProductos").innerHTML = ""
     let contenedorProductos = document.getElementById("productos");
-    contenedorProductos.innerHTML = ""; // Limpiar el contenedor antes de mostrar los productos
+    contenedorProductos.innerHTML = ""; 
     if (productosFiltrados.length > 0) {
       productosFiltrados.forEach(producto => {
         contenedorProductos.appendChild(crearTarjetaProducto(producto));
       });
     } else {
-      document.getElementById("nuevosProductos").innerHTML = ""; // Limpiar el contenedor antes de mostrar los producto
+      document.getElementById("nuevosProductos").innerHTML = ""; 
       contenedorProductos.innerHTML = "<p>No se encontraron productos</p>";
       document.getElementById("nuevosProductos").appendChild(crearTarjetaProducto())
     }
   });
   agregarCheck()
-
 }
+
 function crearTarjetaProducto(producto) {
   let grid = "col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-4 col-xs-12";
   let identificador;
@@ -454,14 +465,11 @@ function obtenerImagenURL(categoria) {
     "Cafeteria y restaurante": "../img/iconos/iconoCafe.png",
     "Pan": "../img/iconos/iconoPan.png",
     "Utiles y materiales": "../img/iconos/iconoUtiles.png"
-    // Añadir más categorías y sus correspondientes imágenes según haya
   };
 
-  // Verificar si la categoría está definida en el objeto
   if (categoria in imagenesPorCategoria) {
     return imagenesPorCategoria[categoria]; // Devolver la URL de la imagen
   } else {
-    // Devolver una imagen por defecto o una URL genérica
     return "../img/iconos/default.jpg";
   }
 }
@@ -476,7 +484,6 @@ function obtenerCantidadArticulos() {
   return cantidad;
 }
 
-// Actualizar el contador del carrito
 function actualizarContadorCarrito() {
   let contador = document.getElementById("contador-carrito");
   contador.textContent = obtenerCantidadArticulos();
@@ -487,8 +494,8 @@ function actualizarContadorCarrito() {
 function filtrarProductos(array) {
   let categoria = document.getElementById("categorySelect").value;
   let resultadosFiltradosPorNombre;
-  // Primero filtrar por categoría
   let resultadosFiltradosPorCategoria;
+  //filtro por categoria
   if (categoria !== "all") {
     resultadosFiltradosPorCategoria = array.filter(producto =>
       producto.getCategoria().toLowerCase().includes(categoria.toLowerCase())
@@ -496,7 +503,7 @@ function filtrarProductos(array) {
   } else {
     resultadosFiltradosPorCategoria = array;
   }
-  // Luego, filtrar por nombre si hay una entrada en el campo de búsqueda
+  //filtro en caso de que escriban algo en el buscador
   if (document.getElementById("searchInput").value.trim() !== "") {
     resultadosFiltradosPorNombre = resultadosFiltradosPorCategoria.filter(producto =>
       producto.getNombre().toLowerCase().includes(document.getElementById("searchInput").value.trim().toLowerCase())
@@ -517,19 +524,16 @@ function eliminarPosicionDelArray(array, posicionEnArray) {
   }
   return arrayTempo;
 }
+
 function verificarProductoEnSesionStorage(nombreDelProducto) {
-  // Obtener el array de sessionStorage
   var arrayPrincipal = JSON.parse(sessionStorage.getItem(nombreUsuario));
-  // Verificar si el arrayPrincipal existe y es un array
   if (Array.isArray(arrayPrincipal)) {
-    // Iterar sobre cada subarray dentro del arrayPrincipal
     for (var i = 0; i < arrayPrincipal.length; i++) {
-      // Verificar si el argumento está en la primera posición del subarray actual
       if (arrayPrincipal[i][0] === nombreDelProducto) {
-        return true; // El argumento está presente
+        return true; 
       }
     }
   }
 
-  return false; // El argumento no está presente
+  return false; 
 }
