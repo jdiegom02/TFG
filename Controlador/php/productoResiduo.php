@@ -14,17 +14,17 @@ $sql = "SELECT
             r.id AS residuo_id,
             r.descripcion AS residuo_nombre
         FROM 
-            Productos AS p
+            productos AS p
         JOIN 
-            Productos_Categoria AS pc ON p.id = pc.fk_producto
+            productos_categoria AS pc ON p.id = pc.fk_producto
         JOIN 
-            Categorias AS c ON pc.fk_categoria = c.id
+            categorias AS c ON pc.fk_categoria = c.id
         JOIN 
-            Productos_Residuo AS pr ON p.id = pr.fk_producto
+            productos_residuo AS pr ON p.id = pr.fk_producto
         JOIN 
-            Residuos AS r ON pr.fk_residuo = r.id
+            residuos AS r ON pr.fk_residuo = r.id
         JOIN 
-            Unidades AS u ON p.fk_unidades = u.id
+            unidades AS u ON p.fk_unidades = u.id
         ORDER BY 
             producto_id";
 
