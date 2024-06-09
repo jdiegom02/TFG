@@ -90,12 +90,12 @@ function enfocarModalPorId(idModal) {
 }
 function setScrollOnTopModal() {
     // Obtener todos los modals que están visibles
-    var $visibleModals = $('.modal.show');
+    let $visibleModals = $('.modal.show');
 
     // Si hay al menos un modal visible
     if ($visibleModals.length > 0) {
         // Obtener el modal que está más arriba en la pila
-        var $topModal = $visibleModals.last();
+        let $topModal = $visibleModals.last();
 
         // Asegurarse de que el body no tiene scroll
         $('body').addClass('modal-open');
@@ -124,13 +124,13 @@ $('.modal').on('hidden.bs.modal', function () {
 function agregarNuevoCampoResiduo(numero) {
 
     // Crear el nuevo campo de entrada de residuos
-    var nuevoCampoResiduo = crearElemento('div', undefined, { 'class': 'input-group' });
+    let nuevoCampoResiduo = crearElemento('div', undefined, { 'class': 'input-group' });
 
-    var inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;', 'min': '0' });
+    let inputResiduo = crearElemento('input', undefined, { 'type': 'number', 'class': 'form-control input-sm claseResiduos', 'id': 'residuos' + numero, 'placeholder': 'Residuos  ' + (numero + 1), 'style': 'max-width: 100px;', 'min': '0' });
 
-    var labelKilos = crearElemento('label', 'Kg', { 'for': 'kilos' });
+    let labelKilos = crearElemento('label', 'Kg', { 'for': 'kilos' });
 
-    var selectDespegable = crearElemento('select', undefined, { 'class': 'form-control despegablesResiduos', 'id': 'despegableResiduos' + numero });
+    let selectDespegable = crearElemento('select', undefined, { 'class': 'form-control despegablesResiduos', 'id': 'despegableResiduos' + numero });
 
     nuevoCampoResiduo.appendChild(inputResiduo);
     nuevoCampoResiduo.appendChild(labelKilos);
@@ -301,12 +301,12 @@ function eliminarResiduo(producto_residuo) {
 
 function modificarProducto() {
     // Obtener los valores de los campos del modal de edición
-    var idProducto = $('#productoIDModificar').val();
-    var nombreProducto = $('#nombreProductoModificar').val();
-    var unidadesProducto = $('#unidadProductoModificar').val();
+    let idProducto = $('#productoIDModificar').val();
+    let nombreProducto = $('#nombreProductoModificar').val();
+    let unidadesProducto = $('#unidadProductoModificar').val();
     // Inicializar un array para almacenar las categorías y los residuos seleccionados
-    var categorias = [];
-    var residuos = [];
+    let categorias = [];
+    let residuos = [];
 
     // Recorrer cada checkbox de categorías y obtener los valores seleccionados
     $('#categoriaProductoModificar input[type="checkbox"]').each(function () {
@@ -328,7 +328,7 @@ function modificarProducto() {
     });
 
     // Realizar solicitud AJAX para enviar los datos al backend
-    var arrayModificarProducto = {
+    let arrayModificarProducto = {
         idProducto: idProducto,
         nombreProducto: nombreProducto,
         unidadesProducto: unidadesProducto,
@@ -341,12 +341,14 @@ function modificarProducto() {
         url: "../../Controlador/php/modificarProducto.php",
         data: { modificar: arrayModificarProducto },
         success: function (response) {
-            if (response === "1") {
+            if (response.trim() === "1") {
                 $('#noSePuedeModificar').modal('show');
                 setTimeout(function () {
                     $('#noSePuedeModificar').modal('hide');
                 }, 2500);
-            } else { console.log("si"); }
+            } else {
+                console.log("se pudo modificar ");
+            }
 
             $('#editarProductoModal').modal('hide');
             $('body').addClass('modal-open');
@@ -356,7 +358,7 @@ function modificarProducto() {
             console.error(error);
             alert("Hubo un error al procesar la solicitud.");
         }
-    });
+    });    
     $('#modalGestionarProducto').modal('hide');
     $('#modalGestionarProducto').modal('show');
 }
@@ -378,7 +380,7 @@ function cargarOpcionesCategoriaModiPro(categoriasSeleccionadas) {
             // Iterar sobre los datos y agregar casillas de verificación
             $.each(data, function (index, categoria) {
                 // Crear el input checkbox
-                var checkbox = $('<input>').attr({
+                let checkbox = $('<input>').attr({
                     type: 'checkbox',
                     id: 'categoria_' + index,
                     class: 'categoriasCheck', // Asignar un ID único a cada checkbox
@@ -386,7 +388,7 @@ function cargarOpcionesCategoriaModiPro(categoriasSeleccionadas) {
                 });
 
                 // Crear una etiqueta para el checkbox
-                var label = $('<label>').attr('for', 'categoria_' + index).text(categoria.descripcion);
+                let label = $('<label>').attr('for', 'categoria_' + index).text(categoria.descripcion);
 
                 // Verificar si la categoría está seleccionada
                 if (categoriasSeleccionadas.includes(categoria.descripcion)) {
@@ -460,28 +462,28 @@ function limpiarMemoria() {
 /*Funcion para mandar los productos al php para hacer la inserccion. */
 function insertarProducto(e) {
     // Obtener los valores de los campos de entrada
-    var nombreProducto = document.getElementById('nombreProducto').value.trim();
-    var categoriaProducto = document.getElementById('categoriaProducto').value;
-    var unidadMedida = document.getElementById('unidadMedida').value.trim();
+    let nombreProducto = document.getElementById('nombreProducto').value.trim();
+    let categoriaProducto = document.getElementById('categoriaProducto').value;
+    let unidadMedida = document.getElementById('unidadMedida').value.trim();
 
 
     // Crear arrays para almacenar los valores de los residuos
-    var residuosUnidad = [];
-    var residuosTipo = [];
+    let residuosUnidad = [];
+    let residuosTipo = [];
 
     // Obtener todos los campos de residuos dinámicos
-    var camposResiduos = document.querySelectorAll('.claseResiduos');
+    let camposResiduos = document.querySelectorAll('.claseResiduos');
 
     // Iterar sobre los campos de residuos
     camposResiduos.forEach(function (campo) {
         // Obtener el valor del campo de residuos de unidad
-        var residuoUnidad = campo.value.trim();
+        let residuoUnidad = campo.value.trim();
         if (residuoUnidad !== '') {
             residuosUnidad.push(residuoUnidad); // Agregar el valor al array de residuos de unidad
 
             // Obtener el valor del campo de residuos de tipo correspondiente
-            var idNumero = campo.id.replace('residuos', ''); // Obtener el número de identificación del campo
-            var residuoTipo = document.getElementById('despegableResiduos' + idNumero).value.trim(); // Obtener el valor del campo de residuos de tipo
+            let idNumero = campo.id.replace('residuos', ''); // Obtener el número de identificación del campo
+            let residuoTipo = document.getElementById('despegableResiduos' + idNumero).value.trim(); // Obtener el valor del campo de residuos de tipo
             residuosTipo.push(residuoTipo); // Agregar el valor al array de residuos de tipo
         }
     });
@@ -499,7 +501,7 @@ function insertarProducto(e) {
         return;
     }
 
-    var arrayDatosProducto = [
+    let arrayDatosProducto = [
         nombreProducto,
         categoriaProducto,
         unidadMedida,
@@ -543,7 +545,7 @@ function insertarProducto(e) {
 
 function mostrarMensajeExito() {
     // Crear elemento de mensaje de éxito
-    var mensajeElemento = crearElemento('div', 'Producto añadido a la base de datos', { 'class': 'mensaje-exito' });
+    let mensajeElemento = crearElemento('div', 'Producto añadido a la base de datos', { 'class': 'mensaje-exito' });
     // Establecer estilos para el mensaje
     mensajeElemento.style.position = 'fixed';
     mensajeElemento.style.top = '20%';
@@ -562,7 +564,7 @@ function mostrarMensajeExito() {
     document.body.appendChild(mensajeElemento);
 
     // Difuminar el fondo
-    var contenedorPrincipal = document.querySelector('.container');
+    let contenedorPrincipal = document.querySelector('.container');
     contenedorPrincipal.style.filter = 'blur(5px)';
 
     // Eliminar el efecto de difuminado después de 2 segundos
@@ -584,7 +586,7 @@ function mostrarMensajeExito() {
 
 function mostrarMensajeError(mensaje) {
     // Crear elemento de mensaje de error
-    var mensajeElemento = crearElemento('div', mensaje, { 'class': 'mensaje-error' });
+    let mensajeElemento = crearElemento('div', mensaje, { 'class': 'mensaje-error' });
     // Establecer estilos para el mensaje
     mensajeElemento.style.position = 'fixed';
     mensajeElemento.style.top = '20%';
@@ -603,7 +605,7 @@ function mostrarMensajeError(mensaje) {
     document.body.appendChild(mensajeElemento);
 
     // Difuminar el fondo
-    var contenedorPrincipal = document.querySelector('.container');
+    let contenedorPrincipal = document.querySelector('.container');
     contenedorPrincipal.style.filter = 'blur(5px)';
 
     // Eliminar el efecto de difuminado después de 5 segundos
@@ -915,7 +917,7 @@ function anadirCategoria(e) {
 
     let categoriaNueva = document.getElementById("nuevaCategoria").value;
     let observacionesCat = document.getElementById("observacionCategoria").value;
-    var datosCategoria = {
+    let datosCategoria = {
         categoriasNueva: categoriaNueva,
         observaciones: observacionesCat
     };
@@ -941,7 +943,7 @@ function anadirCategoria(e) {
 function anadirUnidad(e) {
     let unidadNueva = document.getElementById("nuevaUnidad").value;
     let observacionesUni = document.getElementById("observacionesUnidad").value;
-    var datosUnidad = {
+    let datosUnidad = {
         unidadNueva: unidadNueva,
         observaciones: observacionesUni
     };
@@ -977,8 +979,8 @@ function manejadorAnadirResiduoAPRoducto(event) {
 
 function manejadorResiduoInsertarBase(e) {
     let productoID = $('#idProductoModal').val();
-    var nuevoResiduo = $('#nuevoResiduo').val();
-    var cantidad = $('#cantidadResiduo').val();
+    let nuevoResiduo = $('#nuevoResiduo').val();
+    let cantidad = $('#cantidadResiduo').val();
 
     if (cantidad > 0) {
         let residuoNuevo = {
@@ -992,7 +994,7 @@ function manejadorResiduoInsertarBase(e) {
             url: "../../Controlador/php/anadirResiduo.php",
             data: { anadirResiduo: residuoNuevo },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
             },
             error: function (xhr, status, error) {
                 console.error(error);

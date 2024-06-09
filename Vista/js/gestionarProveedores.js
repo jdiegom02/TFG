@@ -59,10 +59,10 @@ function principal(params) {
 
         if (descripcion.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             let datos = [descripcion, direccion, email, telefono, observaciones];
-            console.log(datos);
+            // console.log(datos);
             addProveedor(datos);
         }
-        else { console.log("no entro"); }
+        // else { console.log("no entro"); }
     });
 
 }
@@ -90,7 +90,7 @@ function editar(hijo) {
         let observaciones = document.querySelector("#observaciones").value || "";
         let datos = [id, nombre, direccion, email, telefono, observaciones];
         if (nombre.trim() !== "" && /^\d{9}$/.test(telefono) && direccion.trim() !== "" && email.trim() !== "" && /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-            console.log(datos);
+            // console.log(datos);
             actualizarProveedor(datos);
         }
     }
